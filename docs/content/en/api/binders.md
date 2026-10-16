@@ -12,7 +12,7 @@ importance: 1
 **Import:**
 
 ```js
-import * as binders from 'matreshka/binders';
+import { binders } from 'matreshka';
 ```
 
 A namespace for binders. Out of the box it contains general-purpose binders and can be extended by you so as not to make a mess of the global namespace.
@@ -30,10 +30,14 @@ this.bindNode('x', node, html());
 Or import them as CJS/ES2015 module:
 ```js
 // import few binders per once
-import { html, text, prop } from 'matreshka/binders';
+import { binders } from 'matreshka';
+
+const { html, text, prop } = binders;
 
 // import binders separately
-import html from 'matreshka/binders/html';
+import { binders } from 'matreshka';
+
+const { html } = binders;
 ```
 
 The binders ship with the ``matreshka`` package.

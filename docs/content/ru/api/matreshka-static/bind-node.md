@@ -12,7 +12,7 @@ importance: 1
 **Импорт:**
 
 ```js
-import bindNode from 'matreshka/bindnode';
+import { bindNode } from 'matreshka';
 ```
 
 ```js

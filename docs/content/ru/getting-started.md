@@ -13,55 +13,38 @@ npm install matreshka
 
 ```js
 import Matreshka from 'matreshka';
-// или через CommonJS
-const Matreshka = require('matreshka');
+// или через CommonJS (Node.js 22.12+)
+const { Matreshka } = require('matreshka');
 ```
 
-Роутер и парсер форм — отдельные пакеты: [matreshka-router](https://github.com/finom/matreshka/tree/main/packages/router) связывает свойства с частями URL, [matreshka-parse-form](https://github.com/finom/matreshka/tree/main/packages/parse-form) связывает именованные поля формы со свойствами.
+Роутер и парсер форм — в том же пакете: `matreshka/router` связывает свойства с частями URL, `matreshka/parse-form` связывает именованные поля формы со свойствами.
 
 `initRouter(object, '/a/b/')` синхронизирует `object.a` и `object.b` с частями `location.hash` после `#!` (`#!/foo/bar/`); в URL значения закодированы, в свойствах — декодированы. Чтобы вместо этого использовать путь через History API, передайте `'history'` третьим аргументом. `parseForm(object, form)` возвращает форму или `null`, если форма не найдена.
 
-```sh
-npm install matreshka-router matreshka-parse-form
+```js
+import { initRouter } from 'matreshka/router';
+import { parseForm } from 'matreshka/parse-form';
 ```
 
 ### Тег script
 
-Без сборщика подключите браузерный бандл. Он определяет глобальную переменную `Matreshka` и её короткое имя `MK`. Бандлы рассчитаны на современные браузеры.
+Без сборщика подключите браузерный бандл. Он определяет глобальную переменную `Matreshka` с роутером и парсером форм: `Matreshka.initRouter`, `Matreshka.Router` и `Matreshka.parseForm`. Бандл рассчитан на современные браузеры.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/matreshka-router@2/dist/matreshka-router.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/matreshka-parse-form@2/dist/matreshka-parse-form.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
 ```
 
-Эти же файлы отдаёт и этот сайт: [/matreshka.min.js](/matreshka.min.js), [/matreshka-router.min.js](/matreshka-router.min.js) и [/matreshka-parse-form.min.js](/matreshka-parse-form.min.js). Роутер добавляет `Matreshka.initRouter` и `Matreshka.Router` к глобальной `Matreshka`, парсер форм — `Matreshka.parseForm`.
+Этот же файл отдаёт и этот сайт: [/matreshka.min.js](/matreshka.min.js).
 
 ## Модули
 
-Размер результирующего JavaScript файла можно сократить за счет импорта только необходимых частей фреймворка. Путь к модулю указан на каждой странице справочника API.
+Каждая статичная функция или класс — именованный экспорт главного модуля.
 
 ```js
-// каждое статичное свойство какого-либо объекта
-// или функции можно импортировать в виде модуля
-import MatreshkaArray from 'matreshka/array';
-import bindNode from 'matreshka/bindnode';
-import { prop } from 'matreshka/binders';
+import { MatreshkaArray, bindNode, binders } from 'matreshka';
+
+const { prop } = binders;
 ```
-
-В CommonJS эти модули доступны через `require`:
-
-```js
-const bindNode = require('matreshka/bindnode');
-```
-
-Импорт главного модуля подтянет весь фреймворк.
-
-```js
-import Matreshka from 'matreshka';
-```
-
-> Модуль класса [`Matreshka`](/ru/api/matreshka/), без `binders`, `Array` и `Object`, находится по адресу `'matreshka/matreshka'`.
 
 ## Уровни важности
 

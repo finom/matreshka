@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { API, INFO, linkTarget, sectionsOf, START } from '../src/site.mjs';
 import { LANG_CODES, pages, prose } from './pages';
@@ -71,6 +73,38 @@ describe('docs content', () => {
           if (/^\/(ua\/|ru\/)?$/.test(href) || /^\/(examples\/|[^/]+\.js$)/.test(href)) continue;
           expect(linkTarget(href, lang, sections), `${file} links to ${href}`).not.toBeNull();
         }
+      }
+    }
+  });
+  // 3.0 has three entry points and named exports; the 2.x pages imported deep paths (`matreshka/bindnode`).
+  it('imports only what the package exports', () => {
+    const root = path.join(import.meta.dirname, '..', '..');
+    const entries = Object.keys(JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8')).exports)
+      .filter((key) => !key.includes('package.json'))
+      .map((key) => key.replace(/^\./, 'matreshka'));
+    const namesOf = (file) =>
+      new Set(
+        [...readFileSync(path.join(root, 'src', file), 'utf8').matchAll(/^export \{([^}]+)\}/gm)].flatMap(([, list]) =>
+          list.split(',').map((name) => name.trim())
+        )
+      );
+    const names = {
+      matreshka: namesOf('index.ts'),
+      'matreshka/router': namesOf('router/index.ts'),
+      'matreshka/parse-form': namesOf('parse-form/index.ts')
+    };
+    for (const { file, md } of pages) {
+      for (const [, list, from] of md.matchAll(/import (?:\w+, )?(?:\{([^}]*)\} )?(?:\w+ )?from '(matreshka[^']*)'/g)) {
+        expect(entries, `${file} imports ${from}`).toContain(from);
+        for (const name of list
+          ?.split(',')
+          .map((item) => item.trim().split(' ')[0])
+          .filter(Boolean) ?? []) {
+          expect(names[from].has(name), `${file} imports { ${name} } from ${from}`).toBe(true);
+        }
+      }
+      for (const [, from] of md.matchAll(/require\('(matreshka[^']*)'\)/g)) {
+        expect(entries, `${file} requires ${from}`).toContain(from);
       }
     }
   });

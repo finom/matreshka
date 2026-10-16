@@ -19,7 +19,7 @@ Matreshka#bindNode(key, node, [binder], [eventOptions]) → object
 
 > Обратите внимание, что у метода есть [статичный аналог](/ru/api/matreshka-static/bind-node/), который работает в точности так же, но принимает любой целевой объект в качестве первого аргумента, cдвигая остальные аргументы вправо.
 ```js
-import bindNode from 'matreshka/bindnode';
+import { bindNode } from 'matreshka';
 const object = {};
 bindNode(object, key, node, binder, eventOptions);
 // вместо this.bindNode(key, node, binder, eventOptions);

@@ -1,36 +1,36 @@
 ---
-title: "How to use this site"
-description: "How the Matreshka.js docs page works: everything on one page or one section at a time, the three levels of the API and their switch, search, dark mode."
+title: "Website instructions"
+description: "How to read the Matreshka.js documentation: the three importance levels, links to the source of each article, and the package's entry points."
 ---
 
-# How to use this site
-
-## Everything or one by one
-
-The documentation is one page per language. **Everything** shows every section: scroll through it or search it with Ctrl+F (⌘F). **One by one** shows only the section you opened, with links to the previous and the next one. The switch is at the top of the menu, and the site remembers your choice.
+# Website instructions
 
 ## Importance levels
+The API is split up into three parts.
 
-The API has three levels. In the menu and next to each title, the circles show a member's level.
+### <span class="mk-circles" data-level="1" aria-hidden="true"><i></i></span> The first level - the most important stuff
+After you've learned the most important API parts you can hardily start doing fantastic things. Classes, methods and properties marked with <span class="mk-circles" data-level="1" aria-hidden="true"><i></i></span> need to be learned primarily.
 
-- **One circle, essential.** Learn these first: they are enough for a whole app.
-- **Two circles, recommended.** The rest of the everyday API.
-- **Three circles, advanced.** Most apps don't need them at first.
+### <span class="mk-circles" data-level="2" aria-hidden="true"><i></i><i></i></span> The second level - recommended to learn
+If you already know the quick-start basics, you can look at less important (but still important) methods and properties of the framework.
 
-The switch under "Levels" in the menu sets how much you see: level 1 only (the default), levels 1 and 2, or all three. A link to a member of a hidden level shows that level by itself.
+### <span class="mk-circles" data-level="3" aria-hidden="true"><i></i><i></i><i></i></span> The third level - other methods and properties
+If you want to know everything about Matreshka.js, choose <span class="mk-circles" data-level="3" aria-hidden="true"><i></i><i></i><i></i></span> on the switch in the menu.
 
-## Search
+**Warning**. If you open a link to a method or a property of the third level of importance, the third level is turned on automatically.
 
-The field at the top of the menu filters it by name, and Enter opens the first match. Press `/` to jump to the field from anywhere on the page. In Everything mode the browser's own search (Ctrl+F) finds text in every visible section.
+## Inaccuracies and typos
 
-## Links
+In a footer of every article of the documentation you can find a link to a source of that article. You can fix a typo directly at Github editor.
 
-Each section has its own address, such as `matreshka.js.org/#Matreshka-bindNode`. Links in the old format (`#!Matreshka-bindNode`) still work.
+> The documentation is written using GitHub Flavored Markdown.
 
-## Mistakes and typos
+## Modules
 
-Each section ends with a link to its source file on GitHub. Fix it there, or open an issue.
+The framework is one package with three entry points.
 
-## Dark mode
-
-The site follows your system's theme. The button in the top bar switches between light and dark.
+```js
+import Matreshka from 'matreshka';
+import { initRouter } from 'matreshka/router';
+import { parseForm } from 'matreshka/parse-form';
+```

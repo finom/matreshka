@@ -20,7 +20,7 @@ description: "Hello World крок за кроком і живі додатки 
 	<body>
 		<input type="text" class="my-input">
 		<div class="my-output"></div>
-		<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
 		<script src="js/app.js"></script>
 	</body>
 </html>
@@ -78,8 +78,8 @@ app.x = 'Hello World!';
 4. [Contact List](/examples/contact-list/) – дозволяє додавати, видаляти, сортувати, змінювати і шукати контакти. ([Код](https://github.com/finom/matreshka/tree/main/examples/contact-list))
 5. [Форма входу](/examples/matreshka-object/) на `Matreshka.Object`. ([Посібник](https://github.com/finom/matreshka/tree/main/examples/matreshka-object), англійською)
 6. [Таблиця користувачів](/examples/matreshka-array/) на `Matreshka.Array`. ([Посібник](https://github.com/finom/matreshka/tree/main/examples/matreshka-array), англійською)
-7. [Демо matreshka-router](/examples/router/#!/foo/bar/baz/) – властивості, зв’язані з частинами URL. ([Код](https://github.com/finom/matreshka/tree/main/examples/router))
-8. [Демо matreshka-parse-form](/examples/parse-form/) – поля форми, зв’язані з властивостями за іменами. ([Код](https://github.com/finom/matreshka/tree/main/examples/parse-form))
+7. [Демо matreshka/router](/examples/router/#!/foo/bar/baz/) – властивості, зв’язані з частинами URL. ([Код](https://github.com/finom/matreshka/tree/main/examples/router))
+8. [Демо matreshka/parse-form](/examples/parse-form/) – поля форми, зв’язані з властивостями за іменами. ([Код](https://github.com/finom/matreshka/tree/main/examples/parse-form))
 
 ## Посібники
 

@@ -12,7 +12,7 @@ importance: 2
 **Импорт:**
 
 ```js
-import chain from 'matreshka/chain';
+import { chain } from 'matreshka';
 ```
 
 ```js

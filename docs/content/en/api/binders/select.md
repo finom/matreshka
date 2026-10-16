@@ -12,9 +12,13 @@ importance: 3
 **Import:**
 
 ```js
-import select from 'matreshka/binders/select';
+import { binders } from 'matreshka';
+
+const { select } = binders;
 // or
-import { select } from 'matreshka/binders';
+import { binders } from 'matreshka';
+
+const { select } = binders;
 ```
 
 ```js

@@ -12,7 +12,7 @@ importance: 3
 **Імпорт:**
 
 ```js
-import unbindNode from 'matreshka/unbindnode';
+import { unbindNode } from 'matreshka';
 ```
 
 ```js

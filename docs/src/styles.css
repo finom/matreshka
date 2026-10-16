@@ -211,6 +211,9 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
 .mk-nav-heading {
   @apply mt-5 mb-1 px-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase;
 }
+.mk-nav-sub {
+  @apply mt-2 px-2 py-1 text-xs text-muted-foreground;
+}
 .mk-nav ul {
   @apply grid gap-px;
 }
@@ -240,13 +243,10 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
   @apply mt-px;
 }
 .mk-levels {
-  @apply grid gap-1.5 px-2 py-1;
+  @apply flex items-center gap-2 px-2 py-1;
 }
-.mk-levels-head {
-  @apply flex items-center justify-between text-xs text-muted-foreground;
-}
-.mk-levels-head a {
-  @apply inline-flex size-5 items-center justify-center rounded-full border text-xs hover:bg-accent hover:text-accent-foreground;
+.mk-levels > a {
+  @apply text-xs text-muted-foreground hover:text-foreground;
 }
 .mk-segmented {
   @apply grid grid-cols-3 gap-1 rounded-lg bg-muted p-1;
@@ -282,8 +282,8 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
 .mk-level-2 [data-importance='3'] {
   display: none;
 }
-.mk-nav.mk-searching li a[data-importance] {
-  display: flex;
+.mk-nav.mk-searching li[data-importance] {
+  display: list-item;
 }
 .mk-one .mk-section:not(.mk-current),
 .mk-one .mk-footer {
@@ -317,7 +317,7 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
   @apply text-foreground no-underline;
 }
 .mk-badge {
-  @apply mt-2 inline-flex items-center gap-2 rounded-full border px-2.5 py-0.5 text-xs font-medium text-muted-foreground;
+  @apply mt-2 inline-flex items-center rounded-full border px-2 py-1 text-muted-foreground;
 }
 .mk-badge[data-level='1'] .mk-circles {
   @apply text-brand;

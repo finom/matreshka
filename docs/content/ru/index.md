@@ -10,7 +10,7 @@ sidebarTitle: "Главная"
 <output class="out"></output>
 <input class="in" type="text">
 
-<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
 <script>
 const app = new Matreshka();
 app.bindNode('x', '.in, .out');

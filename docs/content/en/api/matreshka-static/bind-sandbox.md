@@ -12,7 +12,7 @@ importance: 3
 **Import:**
 
 ```js
-import bindSandbox from 'matreshka/bindsandbox';
+import { bindSandbox } from 'matreshka';
 ```
 
 ```js

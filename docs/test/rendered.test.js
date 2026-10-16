@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import oldAnchors from '../src/old-anchors.json' with { type: 'json' };
+import { UI } from '../src/i18n.mjs';
 import { page } from '../src/page.mjs';
 import { LANGS, oldAnchorsOf, sectionsOf } from '../src/site.mjs';
 
@@ -28,9 +29,9 @@ describe.each(rendered)('the $code page', ({ code, prefix, sections, html, ids, 
   });
 
   it('has a section for every file and a menu link to each', () => {
-    for (const { id } of sections) {
+    for (const { id, importance } of sections) {
       expect(ids.has(id), id).toBe(true);
-      expect(html, id).toContain(`<li><a href="#${id}"`);
+      expect(html, id).toContain(`<li data-importance="${importance}"><a href="#${id}"`);
     }
   });
 
@@ -84,6 +85,17 @@ describe.each(rendered)('the $code page', ({ code, prefix, sections, html, ids, 
     }
     expect(html).not.toMatch(/<article[^>]* hidden/);
     expect(html.match(/<button type="button" data-level="[123]"/g)).toHaveLength(3);
+  });
+
+  // As on the old site: a class's members under Methods, Properties, Static Methods and Static Props.
+  it("lists a class's members under the old menu's headings", () => {
+    const group = /<details open data-group="matreshka">([\s\S]*?)<\/details>/.exec(html)[1];
+    const headings = Array.from(group.matchAll(/<li class="mk-nav-sub"[^>]*>([^<]+)<\/li>/g), ([, text]) => text);
+    expect(headings).toEqual(Object.values(UI[code].kinds));
+    const staticPart = group.slice(group.indexOf(UI[code].kinds.static_methods));
+    expect(staticPart).toContain('href="#Matreshka.bindNode"');
+    expect(group.slice(0, group.indexOf(UI[code].kinds.static_methods))).toContain('href="#Matreshka-bindNode"');
+    expect(html).not.toContain('data-group="matreshka-static"');
   });
 });
 

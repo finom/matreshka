@@ -12,7 +12,7 @@ importance: 3
 **Імпорт:**
 
 ```js
-import onDebounce from 'matreshka/ondebounce';
+import { onDebounce } from 'matreshka';
 ```
 
 ```js

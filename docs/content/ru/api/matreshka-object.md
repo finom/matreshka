@@ -12,7 +12,7 @@ importance: 1
 **Импорт:**
 
 ```js
-import MatreshkaObject from 'matreshka/object';
+import { MatreshkaObject } from 'matreshka';
 ```
 
 ``Matreshka.Object`` - класс, который отвечает за данные вида ключ-значение. Его задачей является отделение служебных свойств от данных, которые можно передать на сервер или сохранить в локальном хранилище. Класс наследуется от класса [`Matreshka`](/ru/api/matreshka/) и включает все его свойства и методы.

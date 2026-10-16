@@ -12,9 +12,13 @@ importance: 3
 **Імпорт:**
 
 ```js
-import textarea from 'matreshka/binders/textarea';
+import { binders } from 'matreshka';
+
+const { textarea } = binders;
 // або
-import { textarea } from 'matreshka/binders';
+import { binders } from 'matreshka';
+
+const { textarea } = binders;
 ```
 
 ```js

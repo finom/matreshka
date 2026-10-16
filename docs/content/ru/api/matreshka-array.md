@@ -12,7 +12,7 @@ importance: 1
 **Импорт:**
 
 ```js
-import MatreshkaArray from 'matreshka/array';
+import { MatreshkaArray } from 'matreshka';
 ```
 
 Класс ``Matreshka.Array`` служит коллекцией во фреймворке Matreshka.js. Он наследуется от класса [`Matreshka`](/ru/api/matreshka/) и включает все его свойства и методы. Кроме этого, ``Matreshka.Array`` имеет все методы, которые есть у обычного массива, тем самым упрощая изучение его возможностей.

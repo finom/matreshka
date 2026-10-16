@@ -12,7 +12,7 @@ importance: 1
 **Імпорт:**
 
 ```js
-import Matreshka from 'matreshka/matreshka';
+import Matreshka from 'matreshka';
 ```
 
 Клас `` Matreshka`` - це ядро ​​фреймворка Matreshka.js, від якого успадковуються [`Matreshka.Array`](/ua/api/matreshka-array/), [`Matreshka.Object`](/ua/api/matreshka-object/) і кожен клас створюваного додатка. Він містить основний функціонал фреймворка: [медіатори](/ua/api/matreshka/mediate/), [залежності](/ua/api/matreshka/calc/), [прив'язки до DOM](/ua/api/matreshka/bind-node/), [механізм подій](/ua/api/matreshka/on/) тощо.

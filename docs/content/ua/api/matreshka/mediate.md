@@ -19,7 +19,7 @@ Matreshka#mediate(key, mediator)
 
 > Зверніть увагу, що у метода є [статичний аналог](/ua/api/matreshka-static/mediate/), який працює в точності так само, але приймає будь-який об'єкт в якості першого аргументу, зсуваючи інші аргументи вправо.
 ```js
-import mediate from 'matreshka/mediate';
+import { mediate } from 'matreshka';
 const object = {};
 mediate(object, key, mediator);
 // Замість this.mediate(key, mediator);

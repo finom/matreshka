@@ -12,9 +12,13 @@ importance: 2
 **Імпорт:**
 
 ```js
-import existence from 'matreshka/binders/existence';
+import { binders } from 'matreshka';
+
+const { existence } = binders;
 // або
-import { existence } from 'matreshka/binders';
+import { binders } from 'matreshka';
+
+const { existence } = binders;
 ```
 
 ```js

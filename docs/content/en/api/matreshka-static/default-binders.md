@@ -12,7 +12,7 @@ importance: 2
 **Import:**
 
 ```js
-import defaultBinders from 'matreshka/defaultbinders';
+import { defaultBinders } from 'matreshka';
 ```
 
 ```js

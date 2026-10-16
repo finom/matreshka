@@ -12,7 +12,7 @@ importance: 3
 **Імпорт:**
 
 ```js
-import parserBrackets from 'matreshka/parserbrackets';
+import { parserBrackets } from 'matreshka';
 ```
 
 ```js

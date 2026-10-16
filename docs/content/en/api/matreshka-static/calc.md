@@ -12,7 +12,7 @@ importance: 1
 **Import:**
 
 ```js
-import calc from 'matreshka/calc';
+import { calc } from 'matreshka';
 ```
 
 ```js

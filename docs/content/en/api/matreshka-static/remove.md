@@ -12,7 +12,7 @@ importance: 3
 **Import:**
 
 ```js
-import remove from 'matreshka/remove';
+import { remove } from 'matreshka';
 ```
 
 ```js

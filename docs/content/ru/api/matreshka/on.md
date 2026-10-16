@@ -19,7 +19,7 @@ Matreshka#on(names, callback, [triggerOnInit=false], [context]) → object
 
 > Обратите внимание, что у метода есть [статичный аналог](/ru/api/matreshka-static/on/), который работает в точности так же, но принимает любой объект в качестве первого аргумента, cдвигая остальные аргументы вправо.
 ```js
-import on from 'matreshka/on';
+import { on } from 'matreshka';
 const object = {};
 on(object, names, callback, triggerOnInit, context);
 // вместо this.on(names, callback, triggerOnInit, context);

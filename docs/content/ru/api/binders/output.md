@@ -12,9 +12,13 @@ importance: 3
 **Импорт:**
 
 ```js
-import output from 'matreshka/binders/output';
+import { binders } from 'matreshka';
+
+const { output } = binders;
 // или
-import { output } from 'matreshka/binders';
+import { binders } from 'matreshka';
+
+const { output } = binders;
 ```
 
 ```js

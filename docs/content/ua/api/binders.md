@@ -12,7 +12,7 @@ importance: 1
 **Імпорт:**
 
 ```js
-import * as binders from 'matreshka/binders';
+import { binders } from 'matreshka';
 ```
 
 Простір імен для байндерів. З коробки містить байндери загального призначення (для зв'язування атрибутів і ін.). Цей об'єкт можна розширювати власними властивостями, щоб не засмічувати глобальний простір імен.
@@ -30,10 +30,14 @@ this.bindNode('x', node, html());
 Або імпортувати в якості CJS модуля:
 ```js
 // імпорт відразу декількох байндерів
-import { html, text, prop } from 'matreshka/binders';
+import { binders } from 'matreshka';
+
+const { html, text, prop } = binders;
 
 // імпорт байндерів окремо
-import html from 'matreshka/binders/html';
+import { binders } from 'matreshka';
+
+const { html } = binders;
 ```
 
 Біндери входять до пакета ``matreshka``.

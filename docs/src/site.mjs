@@ -180,6 +180,21 @@ function idOf(file, title) {
 // The route each section had as a page of its own, so links written as routes resolve to sections.
 const routeOf = (file) => (file === 'index' ? '/' : `/${file}/`);
 
+// A class's members in the old menu's order: methods, properties, static methods, static props. The static
+// `Matreshka` members live in their own folder but belong to the `Matreshka` group.
+export const KINDS = ['methods', 'properties', 'static_methods', 'static_properties'];
+const CLASS_GROUPS = {
+  matreshka: 'matreshka',
+  'matreshka-static': 'matreshka',
+  'matreshka-object': 'matreshka-object',
+  'matreshka-array': 'matreshka-array'
+};
+function kindOf(file, title) {
+  const en = readFileSync(path.join(CONTENT, 'en', `${file}.md`), 'utf8');
+  const property = /^\*\*Property\*\*/m.test(en);
+  return `${title.includes('#') ? '' : 'static_'}${property ? 'properties' : 'methods'}`;
+}
+
 // Every section of one language in page order, with the menu group it belongs to.
 export function sectionsOf(lang) {
   const read = (file, group) => {
@@ -200,10 +215,17 @@ export function sectionsOf(lang) {
   };
   return [
     ...START.map((file) => read(file, 'start')),
-    ...API.flatMap(({ dir, index, members }) => [
-      ...(index ? [read(`api/${dir}`, dir)] : []),
-      ...members.map((member) => read(`api/${dir}/${member}`, dir))
-    ]),
+    ...Object.values(
+      Object.groupBy(
+        API.flatMap(({ dir, index, members }) => {
+          const group = CLASS_GROUPS[dir] ?? dir;
+          const sections = members.map((member) => read(`api/${dir}/${member}`, group));
+          if (CLASS_GROUPS[dir]) for (const section of sections) section.kind = kindOf(section.file, section.title);
+          return [...(index ? [read(`api/${dir}`, group)] : []), ...sections];
+        }),
+        ({ group }) => group
+      )
+    ).flatMap((sections) => sections.toSorted((a, b) => KINDS.indexOf(a.kind) - KINDS.indexOf(b.kind))),
     ...INFO.map((file) => read(file, 'info'))
   ];
 }

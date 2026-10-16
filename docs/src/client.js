@@ -105,8 +105,15 @@
       const text = link.textContent.toLowerCase();
       link.parentElement.hidden = !words.every((word) => text.includes(word));
     }
+    // a heading stays while one of its members matches, so a method and its static twin stay apart
+    for (const heading of document.querySelectorAll('.mk-nav-sub')) {
+      let next = heading.nextElementSibling;
+      let empty = true;
+      for (; next && !next.classList.contains('mk-nav-sub'); next = next.nextElementSibling) empty &&= next.hidden;
+      heading.hidden = empty;
+    }
     for (const group of document.querySelectorAll('.mk-nav details, .mk-nav ul')) {
-      group.hidden = !group.querySelector('li:not([hidden])');
+      group.hidden = !group.querySelector('li:not([hidden], .mk-nav-sub)');
     }
   });
   search.addEventListener('keydown', (event) => {

@@ -1,6 +1,6 @@
 import { UI } from './i18n.mjs';
 import { codeColorsCss, escapeHtml, renderSection, sourceUrl } from './markdown.mjs';
-import { API, LANGS, oldAnchorsOf, REPO, SITE } from './site.mjs';
+import { LANGS, oldAnchorsOf, REPO, SITE } from './site.mjs';
 
 const DISCORD = 'https://discord.com/invite/qdT8WEHUuP';
 const X = 'https://x.com/andrey_gubanov1';
@@ -30,15 +30,26 @@ const circles = (level, label) =>
 
 function menu(sections, ui, lang) {
   const link = ({ id, menuTitle, title, importance, description }) =>
-    `<li><a href="#${id}" data-importance="${importance}" title="${escapeHtml(description ?? title)}"><span>${escapeHtml(
+    `<li data-importance="${importance}"><a href="#${id}" title="${escapeHtml(description ?? title)}"><span>${escapeHtml(
       menuTitle
     )}</span>${importance ? circles(importance, ui.levels[importance - 1]) : ''}</a></li>`;
   const start = sections.filter(({ group }) => group === 'start');
   const info = sections.filter(({ group }) => group === 'info');
-  const groups = API.map(({ dir }) => {
-    const items = sections.filter(({ group }) => group === dir);
-    return `<details open data-group="${dir}"><summary>${ui.groups[dir]}</summary><ul>${items.map(link).join('')}</ul></details>`;
-  }).join('');
+  // a class's members under the old menu's headings; a heading takes the lowest level of its members
+  const items = (list) =>
+    list
+      .map((section, i) => {
+        if (!section.kind || section.kind === list[i - 1]?.kind) return link(section);
+        const level = Math.min(...list.filter(({ kind }) => kind === section.kind).map(({ importance }) => importance));
+        return `<li class="mk-nav-sub" data-importance="${level}">${ui.kinds[section.kind]}</li>${link(section)}`;
+      })
+      .join('');
+  const groups = Object.keys(ui.groups)
+    .map((dir) => {
+      const list = sections.filter(({ group }) => group === dir);
+      return `<details open data-group="${dir}"><summary>${ui.groups[dir]}</summary><ul>${items(list)}</ul></details>`;
+    })
+    .join('');
   const others = LANGS.filter(({ code }) => code !== lang)
     .map(
       ({ prefix, name, hreflang }) =>
@@ -53,14 +64,12 @@ function menu(sections, ui, lang) {
 <p class="mk-nav-heading">${ui.start}</p>
 <ul>${start.map(link).join('')}</ul>
 <p class="mk-nav-heading">${ui.api}</p>
-<div class="mk-levels"><div class="mk-levels-head"><span>${ui.levelsLabel}</span><a href="#website-instructions" title="${ui.levelsHelp}" aria-label="${ui.levelsHelp}">?</a></div><div class="mk-segmented" role="group" aria-label="${ui.levelsLabel}">${[
-    1, 2, 3
-  ]
+<div class="mk-levels"><div class="mk-segmented" role="group" aria-label="${ui.api}">${[1, 2, 3]
     .map(
       (level) =>
-        `<button type="button" data-level="${level}" title="${ui.levelButtons[level - 1]}" aria-label="${ui.levelButtons[level - 1]}">${circles(level)}</button>`
+        `<button type="button" data-level="${level}" title="${ui.levels[level - 1]}" aria-label="${ui.levels[level - 1]}">${circles(level)}</button>`
     )
-    .join('')}</div></div>
+    .join('')}</div><a href="#website-instructions">(?)</a></div>
 ${groups}
 <p class="mk-nav-heading">${ui.info}</p>
 <ul>${info.map(link).join('')}</ul>
@@ -71,7 +80,7 @@ ${groups}
 function homeExtras(html, ui) {
   const hero = `<div class="mk-hero"><h1><img class="mk-light" src="/logo/matreshka-full-horizontal.svg" alt="Matreshka.js" width="420" height="120"><img class="mk-dark" src="/logo/matreshka-full-horizontal-dark.svg" alt="" width="420" height="120"></h1></div>`;
   const demo = `<div class="mk-demo"><output class="out"></output><input class="in" type="text" aria-label="x" value="${escapeHtml(ui.demo)}"></div>`;
-  const buttons = `<div class="mk-buttons"><a class="mk-button mk-button-primary mk-button-lg" href="#getting-started">${ui.getStarted}</a><a class="mk-button mk-button-outline mk-button-lg" href="${REPO}" rel="noopener">GitHub</a><a class="mk-button mk-button-outline mk-button-lg" href="#examples">${ui.examples}</a></div>`;
+  const buttons = `<div class="mk-buttons"><a class="mk-button mk-button-primary mk-button-lg" href="/matreshka.min.js" download>${ui.download}</a><a class="mk-button mk-button-outline mk-button-lg" href="${REPO}" rel="noopener">Github</a><a class="mk-button mk-button-outline mk-button-lg" href="#examples">${ui.tutorials}</a></div>`;
   return html
     .replace(/<h1 class="mk-title">[\s\S]*?<\/h1>/, hero)
     .replace('<div class="mk-code">', `${demo}<div class="mk-code">`)
@@ -82,10 +91,9 @@ function article(section, sections, ui, lang) {
   let html = renderSection(section, lang, sections);
   if (section.id === 'home') html = homeExtras(html, ui);
   if (section.importance) {
-    const name = ui.levels[section.importance - 1];
     html = html.replace(
       /<\/h2>/,
-      `</h2><p class="mk-badge" data-level="${section.importance}">${circles(section.importance)}${name}</p>`
+      `</h2><p class="mk-badge" data-level="${section.importance}">${circles(section.importance, ui.levels[section.importance - 1])}</p>`
     );
   }
   return `<article id="${section.id}" class="mk-section" data-importance="${section.importance}" data-group="${section.group}">
@@ -186,7 +194,7 @@ ${LANGS.filter((l) => l.code !== lang)
 </header>
 <div class="mk-layout">
   <aside class="mk-nav" id="mk-nav" aria-label="${ui.menu}">${menu(sections, ui, lang)}
-    <p class="mk-updated">${ui.updated}: <time datetime="${updated}">${updated}</time></p>
+    <p class="mk-updated">${ui.updated} <time datetime="${updated}">${updated}</time></p>
   </aside>
   <main id="main" class="mk-main">
 ${articles}

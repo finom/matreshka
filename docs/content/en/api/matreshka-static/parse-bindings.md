@@ -12,7 +12,7 @@ importance: 3
 **Import:**
 
 ```js
-import parseBindings from 'matreshka/parsebindings';
+import { parseBindings } from 'matreshka';
 ```
 
 ```js

@@ -12,7 +12,7 @@ importance: 1
 **Import:**
 
 ```js
-import Matreshka from 'matreshka/matreshka';
+import Matreshka from 'matreshka';
 ```
 
 The class ``Matreshka`` is a core of the Matreshka.js framework which is inherited by [`Matreshka.Array`](/api/matreshka-array/), [`Matreshka.Object`](/api/matreshka-object/) (and every class of an application you create). It contains the main functionality of the framework: [mediators](/api/matreshka/mediate/), [dependencies](/api/matreshka/calc/), [two-way data binding](/api/matreshka/bind-node/), [an event engine](/api/matreshka/on/), etc.

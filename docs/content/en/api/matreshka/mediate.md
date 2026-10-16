@@ -19,7 +19,7 @@ This method is used for transforming property value on its changing. For example
 
 > Note that the method has [static alternative](/api/matreshka-static/mediate/), which works just the same but accepts any target object as the first argument, shifting rest arguments to the right.
 ```js
-import mediate from 'matreshka/mediate';
+import { mediate } from 'matreshka';
 const object = {};
 mediate(object, key, mediator);
 // instead of this.mediate(key, mediator);

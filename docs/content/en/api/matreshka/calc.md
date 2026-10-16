@@ -19,7 +19,7 @@ Creates a dependency of one property value on values of others
 
 > Note that the method has [static alternative](/api/matreshka-static/calc/), which works just the same but accepts any target object as the first argument, shifting rest arguments to the right.
 ```js
-import calc from 'matreshka/calc';
+import { calc } from 'matreshka';
 const object = {};
 calc(object, target, source, handler, eventOptions);
 // instead of this.calc(target, source, handler, eventOptions);

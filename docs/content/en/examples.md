@@ -20,7 +20,7 @@ Writing your first application is very easy. You should:
 	<body>
 		<input type="text" class="my-input">
 		<div class="my-output"></div>
-		<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
 		<script src="js/app.js"></script>
 	</body>
 </html>
@@ -79,8 +79,8 @@ Each example runs on this site; its source code is in the [examples folder](http
 4. [Contact List](/examples/contact-list/) – allows to add, remove, sort, search and change contacts. ([Source](https://github.com/finom/matreshka/tree/main/examples/contact-list))
 5. [A login form](/examples/matreshka-object/) made with `Matreshka.Object`. ([Tutorial](https://github.com/finom/matreshka/tree/main/examples/matreshka-object))
 6. [A table of users](/examples/matreshka-array/) made with `Matreshka.Array`. ([Tutorial](https://github.com/finom/matreshka/tree/main/examples/matreshka-array))
-7. [matreshka-router demo](/examples/router/#!/foo/bar/baz/) – properties bound to parts of the URL. ([Source](https://github.com/finom/matreshka/tree/main/examples/router))
-8. [matreshka-parse-form demo](/examples/parse-form/) – form fields bound to properties by their names. ([Source](https://github.com/finom/matreshka/tree/main/examples/parse-form))
+7. [matreshka/router demo](/examples/router/#!/foo/bar/baz/) – properties bound to parts of the URL. ([Source](https://github.com/finom/matreshka/tree/main/examples/router))
+8. [matreshka/parse-form demo](/examples/parse-form/) – form fields bound to properties by their names. ([Source](https://github.com/finom/matreshka/tree/main/examples/parse-form))
 
 ## Tutorials
 

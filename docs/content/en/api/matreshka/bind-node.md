@@ -19,7 +19,7 @@ Binds a property of an object to HTML node, implementing two-way data binding
 
 > Note that the method has [static alternative](/api/matreshka-static/bind-node/), which works just the same but accepts any object as the first argument, shifting rest arguments to the right.
 ```js
-import bindNode from 'matreshka/bindnode';
+import { bindNode } from 'matreshka';
 const object = {};
 bindNode(object, key, node, binder, eventOptions);
 // instead of this.bindNode(key, node, binder, eventOptions);
