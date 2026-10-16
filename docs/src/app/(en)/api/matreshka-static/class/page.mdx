@@ -11,7 +11,7 @@ description: "Matreshka.Class: An implementation of classes based on the prototy
 **Import:**
 
 ```js
-import Class from 'matreshka/class';
+import { Class } from 'matreshka';
 ```
 
 ```js
@@ -47,7 +47,7 @@ const B = Matreshka.Class({
 });
 
 const C = Matreshka.Class({
-	// С is inherited from B
+	// C is inherited from B
 	extends: B,
 	method2() {
 		// calling the parent method

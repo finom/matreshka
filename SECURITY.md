@@ -2,7 +2,7 @@
 
 ## Reporting
 
-Use GitHub's private vulnerability reporting on this repository: [Report a vulnerability](https://github.com/finom/matreshka/security/advisories/new). Do not open a public issue. Include the package (`matreshka`, `matreshka-router` or `matreshka-parse-form`), the version and a minimal page or script that reproduces it.
+Use GitHub's private vulnerability reporting on this repository: [Report a vulnerability](https://github.com/finom/matreshka/security/advisories/new). Do not open a public issue. Include the version and a minimal page or script that reproduces it.
 
 ## Scope
 

@@ -3,27 +3,27 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Matreshka Collections Example</title>
-    <link rel="stylesheet" type="text/css" href="
-https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.4/css/bootstrap.css">
-    <style>
-        body {
-            padding-top: 5%;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css">
 </head>
 
 <body>
-    <div class="container">
-        <table class="table users">
-            <thead>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
+    <main class="container py-6">
+        <h1 class="h4">Users</h1>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover users">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </main>
 
     <script type="text/html" id="user_template">
         <tr>

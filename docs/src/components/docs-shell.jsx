@@ -1,5 +1,6 @@
 import { Search } from 'nextra/components';
 import { getPageMap } from 'nextra/page-map';
+import { DiscordIcon } from 'nextra/icons';
 import { Footer, LastUpdated, Layout, Navbar } from 'nextra-theme-docs';
 import 'nextra-theme-docs/style.css';
 import '../app/globals.css';
@@ -33,7 +34,15 @@ export async function DocsShell({ code, children }) {
           }
           logoLink={`${lang.prefix}/`}
           projectLink={REPO}
+          chatLink="https://discord.com/invite/qdT8WEHUuP"
+          chatIcon={<DiscordIcon width="24" aria-label="Discord server" />}
         >
+          <a href="https://x.com/andrey_gubanov1" target="_blank" rel="noreferrer">
+            <svg viewBox="0 0 24 24" width={24} height={24} fill="currentColor">
+              <title>Andrey Gubanov on X</title>
+              <path d="M21.742 21.75l-7.563-11.179 7.056-8.321h-2.456l-5.691 6.714-4.54-6.714H2.359l7.29 10.776L2.25 21.75h2.456l6.035-7.118 4.818 7.118h6.191-.008zM7.739 3.818L18.81 20.182h-2.447L5.29 3.818h2.447z" />
+            </svg>
+          </a>
           <LanguageSwitch label={t.language} />
         </Navbar>
       }
@@ -43,7 +52,7 @@ export async function DocsShell({ code, children }) {
             <a href={`${REPO}/blob/main/LICENSE`} target="_blank" rel="noreferrer">
               {t.license}
             </a>{' '}
-            © {new Date().getFullYear()}{' '}
+            © 2013–{new Date().getFullYear()}{' '}
             <a href="https://github.com/finom" target="_blank" rel="noreferrer">
               Andrey Gubanov
             </a>{' '}

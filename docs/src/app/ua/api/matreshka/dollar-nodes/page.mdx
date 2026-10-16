@@ -1,7 +1,7 @@
 ---
 title: "Matreshka#$nodes"
 sidebarTitle: "$nodes"
-description: "Matreshka#$nodes: Об'єкт містить колекції (jQuery, Zepto, інстанси вбудованої мікро-бібліотеки, успадкованої від Array.prototype) прив'язаних елементів для…"
+description: "Matreshka#$nodes: Об’єкт, у якому для кожної властивості зберігається масив прив’язаних до неї елементів — для швидкого доступу."
 ---
 
 import { Advanced } from '@/components/advanced';
@@ -10,13 +10,13 @@ import { Advanced } from '@/components/advanced';
 
 **Властивість** · Починаючи з версії 1.1
 
-<Advanced>Член для просунутих: на початку він рідко потрібен.</Advanced>
+<Advanced>Для досвідчених користувачів: на початку це зазвичай не потрібно.</Advanced>
 
 ```js
 Matreshka#$nodes: $nodes
 ```
 
-Об'єкт містить колекції (jQuery, Zepto, інстанси вбудованої мікро-бібліотеки, успадкованої від ``Array.prototype``) прив'язаних елементів для швидкого доступу.
+Об’єкт, у якому для кожної властивості зберігається масив прив’язаних до неї елементів — для швидкого доступу.
 
 ## Посилання
 
@@ -26,5 +26,5 @@ Matreshka#$nodes: $nodes
 
 ```js
 this.bindNode('myKey', '.my-node');
-this.$nodes.myKey; // Те ж саме, що і $('.my-node')
+this.$nodes.myKey; // масив з тими самими елементами, що й [...document.querySelectorAll('.my-node')]
 ```

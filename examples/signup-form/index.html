@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signup form · Matreshka.js</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 28rem; margin: 3rem auto; padding: 0 1rem; }
+    label { display: block; margin-top: 1rem; }
+    input { width: 100%; box-sizing: border-box; padding: .4rem; font: inherit; }
+    .hint { font-size: .875rem; color: #b42318; min-height: 1.3em; }
+    .strength { height: 6px; background: #eee; border-radius: 3px; margin-top: .4rem; }
+    .strength span { display: block; height: 100%; border-radius: 3px; background: #2e7d32; transition: width .2s; }
+    button { margin-top: 1.5rem; padding: .5rem 1rem; font: inherit; }
+  </style>
+</head>
+<body>
+  <!-- The server renders this form; the script below adds behavior and changes no markup. -->
+  <form id="signup" action="/signup" method="post">
+    <h1>Create an account</h1>
+    <label>Email <input name="email" type="email" value="ann@example"></label>
+    <div class="hint email-hint"></div>
+    <label>Password <input name="password" type="password"></label>
+    <div class="strength"><span></span></div>
+    <div class="hint password-hint"></div>
+    <label><input name="terms" type="checkbox" style="width:auto"> I accept the terms</label>
+    <button type="submit">Sign up</button>
+  </form>
+
+  <script src="/matreshka.min.js"></script>
+  <script>
+    const { bindNode, calc, binders } = Matreshka;
+    const form = {};
+
+    // the fields' current values become properties of a plain object
+    bindNode(form, {
+      email: '#signup [name=email]',
+      password: '#signup [name=password]',
+      terms: '#signup [name=terms]'
+    });
+
+    calc(form, 'emailError', 'email', (email) => (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) ? '' : 'Enter a valid email'));
+    calc(form, 'strength', 'password', (password) =>
+      [/.{8,}/, /[A-Z]/, /\d/, /[^A-Za-z0-9]/].filter((rule) => rule.test(password)).length
+    );
+    calc(form, 'passwordError', 'strength', (strength) => (strength < 3 ? 'Use 8+ characters with a capital, a digit or a symbol' : ''));
+    calc(form, 'invalid', ['emailError', 'passwordError', 'terms'], (emailError, passwordError, terms) =>
+      Boolean(emailError || passwordError || !terms)
+    );
+
+    bindNode(form, 'emailError', '#signup .email-hint', binders.text());
+    bindNode(form, 'passwordError', '#signup .password-hint', binders.text());
+    bindNode(form, 'strength', '#signup .strength span', binders.style('width', (strength) => `${strength * 25}%`));
+    bindNode(form, 'invalid', '#signup button', binders.prop('disabled'));
+  </script>
+</body>
+</html>

@@ -10,12 +10,12 @@ import { Advanced } from '@/components/advanced';
 
 **Свойство** · Начиная с версии 1.5
 
-<Advanced>Член для продвинутых: на старте он редко нужен.</Advanced>
+<Advanced>Для опытных пользователей: на первых порах это обычно не нужно.</Advanced>
 
 **Импорт:**
 
 ```js
-import parserBrackets from 'matreshka/parserbrackets';
+import { parserBrackets } from 'matreshka';
 ```
 
 ```js
@@ -26,7 +26,7 @@ Matreshka.parserBrackets: object
 
 Объект ``parserBrackets`` позволяет изменить стандартный синтаксис парсера привязок. Он содержит два свойства: ``left`` (левая скобка, по умолчанию "\{\{") и ``right`` (правая скобка, по умолчанию "\}\}")
 
-Скобками могут быть любые символы. Старое имя ``Matreshka.parserBrackers`` оставлено как псевдоним того же объекта.
+В качестве скобок можно задать любые символы.
 
 ## Примеры
 

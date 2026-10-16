@@ -1,13 +1,37 @@
 ---
 title: "Приклади"
-description: "Hello World крок за кроком і живі додатки на Matreshka.js: TodoMVC, TreeView, редактор Markdown, список контактів, посібники та демо плагінів."
+description: "Приклади в одному HTML-файлі для сторінок із серверним рендерингом, Hello World крок за кроком і живі застосунки на Matreshka.js: TodoMVC, TreeView та інші."
 ---
+
+import { ExampleGrid, ExampleCard } from '@/components/example-card';
 
 # Приклади
 
+## Приклади в одному HTML-файлі
+
+Кожен приклад — це один HTML-файл: розмітка, дані й скрипт. Бандл підключається одним тегом `<script>`, збирання не потрібне.
+
+<ExampleGrid>
+<ExampleCard lang="ua" title="Форма реєстрації" demo="/examples/signup-form/" source="https://github.com/finom/matreshka/tree/main/examples/signup-form">
+
+Форма в тому вигляді, в якому її віддав би сервер, розмітку не змінено: email перевіряється просто під час введення, смужка показує надійність пароля, а кнопка надсилання неактивна, доки форму не заповнено правильно. Лише звичайні об’єкти, `bindNode` і `calc`.
+
+</ExampleCard>
+<ExampleCard lang="ua" title="Таблиця товарів" demo="/examples/product-table/" source="https://github.com/finom/matreshka/tree/main/examples/product-table">
+
+Таблиця за даними JSON, вбудованими в сторінку: пошук, сортування, фільтр «є в наявності» й лічильники. Рядки відмальовує `Matreshka.Array`.
+
+</ExampleCard>
+<ExampleCard lang="ua" title="Віджет ціни" demo="/examples/price-widget/" source="https://github.com/finom/matreshka/tree/main/examples/price-widget">
+
+Калькулятор економії, вбудований у чужу сторінку. `bindSandbox` і селектори `:sandbox` не дають йому вийти за межі власного кореня, а `mediate` перетворює рядки з полів на числа.
+
+</ExampleCard>
+</ExampleGrid>
+
 ## Hello World
 
-Написати перший додаток за допомогою фреймворка Matreshka.js дуже просто.
+Перший застосунок із двох файлів:
 
 **1\.** Створіть HTML файл з наступним змістом
 
@@ -20,7 +44,7 @@ description: "Hello World крок за кроком і живі додатки 
 	<body>
 		<input type="text" class="my-input">
 		<div class="my-output"></div>
-		<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
 		<script src="js/app.js"></script>
 	</body>
 </html>
@@ -68,19 +92,59 @@ app.x = 'Hello World!';
 - [Метод `Matreshka#bindNode`](/ua/api/matreshka/bind-node/)
 - [Метод `Matreshka#on`](/ua/api/matreshka/on/)
 
-## Живі приклади
+## Інші живі приклади
 
 Кожен приклад працює на цьому сайті; його код лежить у [папці examples](https://github.com/finom/matreshka/tree/main/examples) репозиторію.
 
-1. [TodoMVC](/examples/todomvc/) – список справ. ([Код з анотаціями](/examples/todomvc/docs/todomvc/js/app.html), [код](https://github.com/finom/matreshka/tree/main/examples/todomvc))
-2. [TreeView](/examples/treeview/) – деревовидний список необмеженої вкладеності. ([Код](https://github.com/finom/matreshka/tree/main/examples/treeview))
-3. [Markdown editor](/examples/markdown-editor/) – найпростіший редактор Markdown. ([Код](https://github.com/finom/matreshka/tree/main/examples/markdown-editor))
-4. [Contact List](/examples/contact-list/) – дозволяє додавати, видаляти, сортувати, змінювати і шукати контакти. ([Код](https://github.com/finom/matreshka/tree/main/examples/contact-list))
-5. [Форма входу](/examples/matreshka-object/) на `Matreshka.Object`. ([Посібник](https://github.com/finom/matreshka/tree/main/examples/matreshka-object), англійською)
-6. [Таблиця користувачів](/examples/matreshka-array/) на `Matreshka.Array`. ([Посібник](https://github.com/finom/matreshka/tree/main/examples/matreshka-array), англійською)
-7. [Демо matreshka-router](/examples/router/#!/foo/bar/baz/) – властивості, зв’язані з частинами URL. ([Код](https://github.com/finom/matreshka/tree/main/examples/router))
-8. [Демо matreshka-parse-form](/examples/parse-form/) – поля форми, зв’язані з властивостями за іменами. ([Код](https://github.com/finom/matreshka/tree/main/examples/parse-form))
-9. [Simple SoundCloud player](/examples/soundcloud-search/) – пошук музики, що використовує SoundCloud API. ([Код](https://github.com/finom/matreshka/tree/main/examples/soundcloud-search)) **Тепер він нічого не знаходить:** API SoundCloud вимагає токен доступу OAuth і відхиляє публічний client ID, який надсилає демо. Код і далі показує, як `Matreshka.Array` рендерить і програє список треків.
+<ExampleGrid>
+<ExampleCard lang="ua" title="TodoMVC" demo="/examples/todomvc/" source="https://github.com/finom/matreshka/tree/main/examples/todomvc">
+
+Список справ. Є [код з анотаціями](/examples/todomvc/docs/todomvc/js/app.html).
+
+</ExampleCard>
+<ExampleCard lang="ua" title="TreeView" demo="/examples/treeview/" source="https://github.com/finom/matreshka/tree/main/examples/treeview">
+
+Дерево елементів будь-якої глибини вкладеності.
+
+</ExampleCard>
+<ExampleCard lang="ua" title="Редактор Markdown" demo="/examples/markdown-editor/" source="https://github.com/finom/matreshka/tree/main/examples/markdown-editor">
+
+Редактор Markdown на кількох рядках коду: попередній перегляд оновлюється під час введення.
+
+</ExampleCard>
+<ExampleCard lang="ua" title="Список контактів" demo="/examples/contact-list/" source="https://github.com/finom/matreshka/tree/main/examples/contact-list">
+
+Додавання, видалення, сортування, пошук і редагування контактів.
+
+</ExampleCard>
+<ExampleCard lang="ua" title="Форма входу" demo="/examples/matreshka-object/" source="https://github.com/finom/matreshka/tree/main/examples/matreshka-object">
+
+Форма входу на `Matreshka.Object`. У теці з кодом є покроковий посібник (англійською).
+
+</ExampleCard>
+<ExampleCard lang="ua" title="Таблиця користувачів" demo="/examples/matreshka-array/" source="https://github.com/finom/matreshka/tree/main/examples/matreshka-array">
+
+Таблиця користувачів на `Matreshka.Array`. У теці з кодом є покроковий посібник (англійською).
+
+</ExampleCard>
+<ExampleCard lang="ua" title="Демо роутера" demo="/examples/router/#!/foo/bar/baz/" source="https://github.com/finom/matreshka/tree/main/examples/router">
+
+Властивості, прив’язані до частин URL.
+
+</ExampleCard>
+<ExampleCard lang="ua" title="Демо парсера форм" demo="/examples/parse-form/" source="https://github.com/finom/matreshka/tree/main/examples/parse-form">
+
+Поля форми, прив’язані до властивостей за іменами.
+
+</ExampleCard>
+<ExampleCard lang="ua" title="Плеєр SoundCloud" demo="/examples/soundcloud-search/" source="https://github.com/finom/matreshka/tree/main/examples/soundcloud-search">
+
+Пошук музики через SoundCloud API.
+
+**Тепер він нічого не знаходить:** API SoundCloud вимагає токен доступу OAuth і відхиляє публічний client ID, який надсилає демо. Код і далі показує, як `Matreshka.Array` рендерить і програє список треків.
+
+</ExampleCard>
+</ExampleGrid>
 
 ## Посібники
 

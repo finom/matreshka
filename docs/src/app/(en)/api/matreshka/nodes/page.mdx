@@ -10,7 +10,7 @@ import { Advanced } from '@/components/advanced';
 
 **Property** · Since 1.1
 
-<Advanced>An advanced member: you rarely need it to start with.</Advanced>
+<Advanced>For advanced use: most apps don't need it at first.</Advanced>
 
 ```js
 Matreshka#nodes: node
@@ -28,5 +28,5 @@ Pay attention, every object property has got the first node of the bound ones to
 
 ```js
 this.bindNode('myKey', '.my-node');
-this.nodes.myKey; // the same as $('.my-node')[0]
+this.nodes.myKey; // the same as document.querySelector('.my-node')
 ```

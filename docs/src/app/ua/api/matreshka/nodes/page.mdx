@@ -10,7 +10,7 @@ import { Advanced } from '@/components/advanced';
 
 **Властивість** · Починаючи з версії 1.1
 
-<Advanced>Член для просунутих: на початку він рідко потрібен.</Advanced>
+<Advanced>Для досвідчених користувачів: на початку це зазвичай не потрібно.</Advanced>
 
 ```js
 Matreshka#nodes: node
@@ -28,5 +28,5 @@ Matreshka#nodes: node
 
 ```js
 this.bindNode('myKey', '.my-node');
-this.nodes.myKey; // Те ж саме, що і $('.my-node')[0]
+this.nodes.myKey; // те саме, що й document.querySelector('.my-node')
 ```

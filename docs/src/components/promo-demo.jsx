@@ -5,10 +5,9 @@ import { useEffect, useRef } from 'react';
 export function PromoDemo({ text }) {
   const root = useRef(null);
   useEffect(() => {
-    let app;
+    const app = {};
     const start = () => {
-      app = new window.Matreshka();
-      app.bindNode('x', root.current.querySelectorAll('.in, .out'));
+      window.Matreshka.bindNode(app, 'x', root.current.querySelectorAll('.in, .out'));
       app.x = text;
     };
     if (window.Matreshka) start();
@@ -18,7 +17,7 @@ export function PromoDemo({ text }) {
       script.onload = start;
       document.head.append(script);
     }
-    return () => app?.unbindNode('x');
+    return () => window.Matreshka?.unbindNode(app, 'x');
   }, [text]);
   return (
     <div className="mk-demo" ref={root}>

@@ -15,7 +15,7 @@ export default {
   set: 'set',
   trigger: 'trigger',
   'unbind-node': 'unbindNode',
-  '-- Для продвинутых': { type: 'separator', title: 'Для продвинутых' },
+  '-- advanced': { type: 'separator', title: 'Для опытных' },
   'dollar-nodes': '$nodes',
   'bind-sandbox': 'bindSandbox',
   'is-matreshka': 'isMatreshka',

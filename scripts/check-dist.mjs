@@ -1,12 +1,8 @@
-// After `npm run build`: the published entry points load and work.
-// `npm run check:dist` runs this twice: as is (ESM, `require(esm)`, one copy for both, the UMD bundles in a page), and
-// with `--no-experimental-require-module`, where `require` gets the CommonJS build, as on Node versions without
-// `require(esm)`. That run has no DOM (jsdom itself needs `require(esm)`), which also checks a server-side import.
+// After `npm run build`: the published entry points load and work, the way a user loads them.
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const commonjs = process.execArgv.includes('--no-experimental-require-module');
 const html = '<form><input name="a"></form>';
 const fail = (message) => {
   console.error(`check-dist: ${message}`);
@@ -14,95 +10,53 @@ const fail = (message) => {
 };
 const check = (condition, message) => condition || fail(message);
 
-const doubled = (Matreshka) => {
-  const object = new Matreshka();
-  object.b = 3;
-  object.calc('a', 'b', (b) => b * 2);
-  return object;
-};
+// no DOM yet: an import on a server or in a test runner without jsdom
+const entry = await import('matreshka');
+const { initRouter, Router } = await import('matreshka/router');
+const { parseForm } = await import('matreshka/parse-form');
+const Matreshka = entry.default;
+check(typeof Matreshka === 'function' && entry.Matreshka === Matreshka, 'esm: default and named Matreshka');
+check(entry.MatreshkaArray === Matreshka.Array && entry.MatreshkaObject === Matreshka.Object, 'esm: the classes');
+check(entry.bindNode === Matreshka.bindNode && typeof entry.binders.html === 'function', 'esm: named functions');
+Matreshka.binders.custom = () => ({});
+check(
+  entry.binders === Matreshka.binders && typeof entry.binders.custom === 'function',
+  'esm: binders take a new binder'
+);
+delete Matreshka.binders.custom;
+check(typeof initRouter === 'function' && typeof Router === 'function', 'esm: matreshka/router');
+check(typeof parseForm === 'function', 'esm: matreshka/parse-form');
+check(!('initRouter' in Matreshka) && !('parseForm' in Matreshka), 'esm: the entry stays without router and parser');
 
-if (commonjs) {
-  const Matreshka = require('matreshka');
-  check(require.resolve('matreshka').includes('/dist/cjs/'), 'cjs: require does not resolve to dist/cjs');
-  // as in 2.4, a module with only a default export is its value
-  const bindNode = require('matreshka/bindnode');
-  const from = require('matreshka/array/from.js');
-  const MatreshkaArray = require('matreshka/array');
-  const { html } = require('matreshka/binders');
-  const Router = require('matreshka-router/router');
-  const initRouter = require('matreshka-router');
-  const parseForm = require('matreshka-parse-form');
-  check(typeof Matreshka === 'function' && typeof Matreshka.Array === 'function', 'cjs: matreshka');
-  check(typeof Matreshka.toMatreshka === 'function', 'cjs: Matreshka.toMatreshka');
-  check(typeof bindNode === 'function' && from([1, 2]).length === 2, 'cjs: deep paths');
-  check(MatreshkaArray === Matreshka.Array && typeof html === 'function', 'cjs: deep paths are values');
-  check(typeof Router === 'function' && typeof initRouter === 'function', 'cjs: router');
-  check(typeof parseForm === 'function', 'cjs: parse-form');
-  const object = doubled(Matreshka);
-  check(object.a === 6, 'cjs: calc');
-  const router = new Router('custom');
-  router.subscribe(object, '/a/');
-  check(router.path === '/6/', 'cjs: router');
-  console.log('check-dist: CommonJS build works without a DOM');
-  process.exit(0);
-}
+// require(esm) gives the same modules
+check(require('matreshka').Matreshka === Matreshka, 'require: another copy of Matreshka');
+check(require('matreshka/router').Router === Router, 'require: another copy of Router');
+
+const object = new Matreshka.Object({ b: 3 });
+object.calc('a', 'b', (b) => b * 2);
+check(object.a === 6, 'calc');
+const router = new Router('custom');
+router.subscribe(object, '/a/');
+check(router.path === '/6/', 'router');
 
 const { JSDOM } = await import('jsdom');
-// one page for every format, as an app has
 const { window } = new JSDOM(html, { url: 'http://localhost/' });
 globalThis.window = window;
 globalThis.document = window.document;
+parseForm(object, 'form');
+check(document.querySelector('input').value === '6', 'parseForm in a page');
 
-// ESM, and `require` of the same ESM modules
-{
-  const { default: Matreshka } = await import('matreshka');
-  const { default: toMatreshka } = await import('matreshka/tomatreshka');
-  const { default: of } = await import('matreshka/array/of');
-  const { default: Router } = await import('matreshka-router/router');
-  const { default: parseForm } = await import('matreshka-parse-form');
-  check(typeof Matreshka.Object === 'function', 'esm: matreshka');
-  check(toMatreshka({ a: [1] }).a.isMatreshkaArray === true, 'esm: toMatreshka');
-  check(of(1, 2, 3).length === 3, 'esm: deep paths');
-  const object = doubled(Matreshka);
-  parseForm(object, 'form');
-  check(object.a === 6 && document.querySelector('input').value === '6', 'esm: calc and parseForm');
-  const router = new Router('custom');
-  router.subscribe(object, '/a/');
-  check(router.path === '/6/', 'esm: router');
-
-  check(require('matreshka') === Matreshka, 'require and import give different Matreshka classes');
-  check(require('matreshka/bindnode') === (await import('matreshka/bindnode')).default, 'deep paths: two copies');
-  check(require('matreshka/array') === Matreshka.Array, 'require(matreshka/array) is not the class');
-  check(require('matreshka/binders').html === (await import('matreshka/binders')).html, 'binders: two copies');
-  check(require('matreshka-router/router') === Router, 'require and import give different Router classes');
-  check(require('matreshka-router') === (await import('matreshka-router')).default, 'initRouter: two copies');
-  check(require('matreshka-parse-form') === parseForm, 'parseForm: two copies');
-  const plain = {};
-  let calls = 0;
-  require('matreshka').on(plain, 'change:a', () => {
-    calls += 1;
-  });
-  Matreshka.set(plain, 'a', 1);
-  check(calls === 1, 'an event added through require does not fire through import');
-}
-
-// UMD bundles in a page, with the `MK` alias
+// the script-tag bundle in a page
 {
   const dom = new JSDOM(html, { runScripts: 'outside-only', url: 'http://localhost/' });
-  for (const file of [
-    'matreshka/dist/matreshka.min.js',
-    'matreshka-router/dist/matreshka-router.min.js',
-    'matreshka-parse-form/dist/matreshka-parse-form.min.js'
-  ]) {
-    dom.window.eval(readFileSync(require.resolve(file), 'utf8'));
-  }
+  dom.window.eval(readFileSync('dist/matreshka.min.js', 'utf8'));
   const result = dom.window.eval(`
-    const object = new MK.Object({ a: 'x' });
-    MK.parseForm(object, 'form');
-    [MK === Matreshka, typeof Matreshka.Array, typeof Matreshka.Router, typeof Matreshka.initRouter,
-      document.querySelector('input').value].join(' ');
+    const object = new Matreshka.Object({ a: 'x' });
+    Matreshka.parseForm(object, 'form');
+    [typeof Matreshka.Array, typeof Matreshka.Router, typeof Matreshka.initRouter, typeof Matreshka.bindNode,
+      typeof MK, document.querySelector('input').value].join(' ');
   `);
-  check(result === 'true function function function x', `umd: ${result}`);
+  check(result === 'function function function function undefined x', `umd: ${result}`);
 }
 
-console.log('check-dist: ESM, require(esm) with one copy, deep paths and UMD bundles work');
+console.log('check-dist: ESM, require(esm), a DOM-free import and the script-tag bundle work');

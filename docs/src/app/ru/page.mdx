@@ -1,11 +1,12 @@
 ---
-title: "Реактивный JavaScript фреймворк | Matreshka.js"
-description: "Matreshka.js — простой JavaScript фреймворк для одностраничных приложений: двустороннее связывание данных, зависимые свойства и события на обычных классах."
+title: "Привязка данных к готовому HTML | Matreshka.js"
+description: "Matreshka.js привязывает объекты JavaScript к HTML, который уже есть на странице: двусторонняя привязка, вычисляемые значения, списки. Тег script или npm."
 ---
 
 import { OldLinks } from '@/components/old-links';
 import { PromoDemo } from '@/components/promo-demo';
 import { Hero } from '@/components/hero';
+import { ButtonLink } from '@/components/button-link';
 
 <OldLinks lang="ru" />
 
@@ -13,45 +14,53 @@ import { Hero } from '@/components/hero';
 
 <Hero alt="Matreshka.js" />
 
-Простой фреймворк для создания одностраничных веб-приложений. Введите текст в поле: свойство `x` связано с обоими узлами.
+Реактивная привязка данных к HTML, который уже есть на странице. Введите текст в поле: свойство `x` привязано к обоим элементам.
 
-<PromoDemo text="Простой фреймворк для создания одностраничных веб-приложений" />
+<PromoDemo text="Привязка данных к готовому HTML" />
 
 ```html
-<output class="out"></output>
 <input class="in" type="text">
+<output class="out"></output>
 
-<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
 <script>
-const app = new Matreshka();
-app.bindNode('x', '.in, .out');
-app.x = 'Простой фреймворк для создания одностраничных веб-приложений';
+const { bindNode } = Matreshka;
+const app = {};
+bindNode(app, 'x', '.in, .out');
+app.x = 'Привязка данных к готовому HTML';
 </script>
 ```
 
 <div className="mk-buttons">
-  <a href="/ru/getting-started/">Начать</a>
-  <a href="https://github.com/finom/matreshka">GitHub</a>
-  <a href="/ru/examples/">Примеры и руководства</a>
+  <ButtonLink href="/ru/getting-started/" variant="default">Начать</ButtonLink>
+  <ButtonLink href="https://github.com/finom/matreshka" variant="outline">GitHub</ButtonLink>
+  <ButtonLink href="/ru/examples/" variant="outline">Примеры</ButtonLink>
 </div>
 
-## Фичи
+## Зачем Matreshka
 
-- Реактивный API, позволяющий эффективно решать сложные и запутанные задачи
-- Меньше ошибок в коде
-- Возможность рефакторинга легаси приложений, без переписывания с нуля
-- Освоить фреймворк можно за пару часов благодаря отсутствию сложных концепций
+Для страниц, у которых HTML уже готов: серверный рендеринг, виджеты, старые проекты, страница из одного HTML-файла. Подключите один тег `<script>` и привяжите свойства объекта к элементам прямо в JavaScript — разметку менять не нужно. Проект развивается с 2013 года; версия 3.0 — это один пакет с ES-модулями и типами TypeScript.
 
-Подробнее во [введении](/ru/introduction/), или сразу к [справочнику API](/ru/api/).
+Подробнее — во [введении](/ru/introduction/) и в [справочнике API](/ru/api/).
 
 ## Установка
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
+```
 
 ```sh
 npm install matreshka
 ```
 
 ```js
-import Matreshka from 'matreshka';
+import { bindNode, calc, binders } from 'matreshka';
 ```
 
-Документация также есть [на английском](/) и [на украинском](/ua/).
+Для ИИ-агентов, которые пишут код (Claude Code, Cursor, Codex и других), добавьте скилл Matreshka:
+
+```sh
+npx skills add finom/matreshka
+```
+
+Документация также доступна [на английском](/) и [на украинском](/ua/).

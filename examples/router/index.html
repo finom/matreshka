@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>matreshka-router demo</title>
+  <title>Matreshka.js router demo</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/skeleton-css@2.0.4/css/skeleton.css">
 </head>
 <body>
   <div class="container">
-    <h4>matreshka-router</h4>
+    <h4>Matreshka.js router</h4>
     <p>
       The first row is bound to <code>location.hash</code> (<code>#!/a/b/c/</code>), the second one to the path through
       the History API (<code>/d/e/f/</code>). Type into a field and watch the address bar, or use the back button.
@@ -43,7 +43,6 @@
     </div>
   </div>
   <script src="/matreshka.min.js"></script>
-  <script src="/matreshka-router.min.js"></script>
   <script>
     window.app = new class App extends Matreshka {
       constructor() {

@@ -1,6 +1,6 @@
 export default {
   matreshka: 'Matreshka',
-  'matreshka-static': 'Matreshka (статичні члени)',
+  'matreshka-static': 'Статичні властивості й методи Matreshka',
   'matreshka-object': 'Matreshka.Object',
   'matreshka-array': 'Matreshka.Array',
   binders: 'Matreshka.binders',

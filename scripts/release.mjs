@@ -1,44 +1,71 @@
-// `PACKAGE=<dir> npm run patch|minor` releases one package: after the gates it bumps the version, commits, and pushes a
-// `<dir>-v<version>` tag, whose push runs publish.yml. Several packages: one run each, in DIRS order.
-import { execSync } from 'node:child_process';
+// `npm run <patch|minor|major|beta|beta-minor|beta-major>` releases the package: the gates, a version bump, the
+// CHANGELOG's `## [Unreleased]` section becomes the version's section, a commit pushed to main, then the
+// `v<version>` tag, whose push runs .github/workflows/publish.yml. `-- --dry-run` stops before the commit and undoes
+// the changes.
+import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { DIRS } from './exports.mjs';
+import { fileURLToPath } from 'node:url';
+
+const TYPES = {
+  patch: ['patch'],
+  minor: ['minor'],
+  major: ['major'],
+  beta: ['prerelease', '--preid', 'beta'],
+  'beta-minor': ['preminor', '--preid', 'beta'],
+  'beta-major': ['premajor', '--preid', 'beta']
+};
+const REPO = 'https://github.com/finom/matreshka';
 
 const type = process.argv[2];
-const dir = process.env.PACKAGE;
-if (!['patch', 'minor'].includes(type) || !DIRS.includes(dir)) {
-  throw new Error(`Usage: PACKAGE=<${DIRS.join('|')}> npm run patch|minor`);
+const dryRun = process.argv.includes('--dry-run') || process.env.npm_config_dry_run === 'true';
+const fail = (message) => {
+  console.error(`release: ${message}`);
+  process.exit(1);
+};
+if (!Object.hasOwn(TYPES, type)) fail(`usage: npm run <${Object.keys(TYPES).join('|')}> [-- --dry-run]`);
+
+process.chdir(fileURLToPath(new URL('..', import.meta.url)));
+const run = (command, args) => execFileSync(command, args, { stdio: 'inherit' });
+const read = (command, args) => execFileSync(command, args, { encoding: 'utf8' }).trim();
+
+if (read('git', ['status', '--porcelain', '--untracked-files=all'])) {
+  fail('the tree is not clean; the release makes its own commit');
 }
+const branch = read('git', ['branch', '--show-current']);
+if (branch !== 'main') fail(`on ${branch || 'a detached HEAD'}; releases go from main`);
 
-const sh = (command) => execSync(command, { stdio: 'inherit' });
-const read = (command) => execSync(command, { encoding: 'utf8' }).trim();
-const manifest = () => JSON.parse(readFileSync(`packages/${dir}/package.json`, 'utf8'));
-if (read('git status --porcelain')) throw new Error('The tree is not clean; the release makes its own commit.');
-// A range bump from an earlier run counts as a change, so a package that depends on a released one goes through.
-// The first release under this scheme has no tag to compare with.
-const last = `${dir}-v${manifest().version}`;
-if (read(`git tag --list ${last}`) && !read(`git diff --name-only ${last} -- packages/${dir}`)) {
-  throw new Error(`packages/${dir} is unchanged since ${last}`);
-}
+// [Unreleased] holds the changes; an empty one has nothing to release
+const changelog = readFileSync('CHANGELOG.md', 'utf8');
+const unreleased = /^## \[Unreleased\]\n([\s\S]*?)(?=^## |^\[[^\]]+\]: |(?![\s\S]))/m.exec(changelog);
+if (!unreleased?.[1].trim()) fail('CHANGELOG.md has nothing under ## [Unreleased]');
 
-// the GitHub Release carries this section
-const [major, minor, patch] = manifest().version.split('.').map(Number);
-const next = type === 'minor' ? `${major}.${minor + 1}.0` : `${major}.${minor}.${patch + 1}`;
-sh(`node scripts/changelog-section.mjs packages/${dir}/CHANGELOG.md ${next} >/dev/null`);
+run('npm', ['run', 'lint']);
+run('npm', ['run', 'typecheck']);
+run('npm', ['run', 'test:coverage']);
+run('npm', ['run', 'build']);
+run('npm', ['run', 'check:dist']);
 
-sh('npm run lint && npm run test:coverage && npm run build && npm run check:dist');
-sh(`npm version ${type} --no-git-tag-version --prefix packages/${dir}`);
-sh('node scripts/sync-internal-deps.mjs');
-
-const { name, version } = manifest();
-if (version !== next) throw new Error(`npm version gave ${version}, not ${next}`);
-// `## [2.5.0] - unreleased` gets the release date
-const changelog = `packages/${dir}/CHANGELOG.md`;
+run('npm', ['version', ...TYPES[type], '--no-git-tag-version', '--no-workspaces-update']);
+const { version } = JSON.parse(readFileSync('package.json', 'utf8'));
+const tag = `v${version}`;
 const today = new Date().toISOString().slice(0, 10);
-writeFileSync(
-  changelog,
-  readFileSync(changelog, 'utf8').replace(`## [${version}] - unreleased`, `## [${version}] - ${today}`)
-);
-sh(`git commit -am "chore(release): ${name}@${version}"`);
-sh('git push');
-sh(`git tag ${dir}-v${version} && git push origin ${dir}-v${version}`);
+
+// Keep a Changelog: the section gets the version and the date, and both get a link at the bottom
+const previous = /^\[(\d[^\]]*)\]: /m.exec(changelog)?.[1];
+let updated = changelog.replace('## [Unreleased]\n', `## [Unreleased]\n\n## [${version}] - ${today}\n`);
+updated = updated.replace(/^\[Unreleased\]: .*$/m, `[Unreleased]: ${REPO}/compare/${tag}...HEAD`);
+const link = previous ? `${REPO}/compare/v${previous}...${tag}` : `${REPO}/releases/tag/${tag}`;
+updated = updated.replace(/^(\[Unreleased\]: .*)$/m, `$1\n[${version}]: ${link}`);
+writeFileSync('CHANGELOG.md', updated);
+run('node', ['scripts/changelog-section.mjs', 'CHANGELOG.md', version]);
+
+if (dryRun) {
+  run('git', ['checkout', '--', 'package.json', 'package-lock.json', 'CHANGELOG.md']);
+  console.log(`release: dry run; would commit, push and tag ${tag}`);
+  process.exit(0);
+}
+
+run('git', ['commit', '-am', `chore(release): ${version}`]);
+run('git', ['push', 'origin', 'main']);
+run('git', ['tag', tag]);
+run('git', ['push', 'origin', tag]);

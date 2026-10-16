@@ -11,7 +11,7 @@ description: "Matreshka.Object: Matreshka.Object - клас, який відпо
 **Імпорт:**
 
 ```js
-import MatreshkaObject from 'matreshka/object';
+import { MatreshkaObject } from 'matreshka';
 ```
 
 ``Matreshka.Object`` - клас, який відповідає за дані вида ключ-значення. Його завданням є відділення службових властивостей від даних, які можна передати на сервер або зберегти в локальному сховищі. Клас успадковується від класу [`Matreshka`](/ua/api/matreshka/) і включає всі його властивості та методи.
@@ -103,16 +103,16 @@ for(let item of matreshkaObject) {
 }
 ```
 
-## Члени класу
+## Властивості й методи
 
 - [`addDataKeys`](/ua/api/matreshka-object/add-data-keys/) – Додає задані імена властивостей в список імен властивостей, що відповідають за дані
 - [`each`](/ua/api/matreshka-object/each/) – Перебирає властивості, що відповідають за дані
-- [`entries`](/ua/api/matreshka-object/entries/) _(Для просунутих)_ – Повертає масив пар імен і значень властивостей, що відповідають за дані
+- [`entries`](/ua/api/matreshka-object/entries/) _(для досвідчених)_ – Повертає масив пар імен і значень властивостей, що відповідають за дані
 - [`isDataKey`](/ua/api/matreshka-object/is-data-key/) – Перевіряє, чи входить строка до списку імен властивостей, що відповідають за дані
-- [`isMatreshkaObject`](/ua/api/matreshka-object/is-matreshka-object/) _(Для просунутих)_ – Властивість ``isMatreshkaObject`` завжди дорівнює ``true`` для екземплярів [`Matreshka.Object`](/ua/api/matreshka-object/).
+- [`isMatreshkaObject`](/ua/api/matreshka-object/is-matreshka-object/) _(для досвідчених)_ – Властивість ``isMatreshkaObject`` завжди дорівнює ``true`` для екземплярів [`Matreshka.Object`](/ua/api/matreshka-object/).
 - [`keyOf`](/ua/api/matreshka-object/key-of/) – Шукає задане значення властивості серед властивостей, що відповідають за дані, і повертає ім'я властивості, якщо таке значення знайдено
 - [`keys`](/ua/api/matreshka-object/keys/) – Повертає масив імен властивостей, що відповідають за дані
 - [`removeDataKeys`](/ua/api/matreshka-object/remove-data-keys/) – Видаляє задані імена властивостей зі списку імен властивостей, що відповідають за дані (але не видаляє властивість)
 - [`setData`](/ua/api/matreshka-object/set-data/) – Встановлює значення властивості і додає його ім'я в список імен властивостей, що відповідають за дані
 - [`toJSON`](/ua/api/matreshka-object/to-json/) – Конвертує екземпляр [`Matreshka.Object`](/ua/api/matreshka-object/) в звичайний об'єкт
-- [`values`](/ua/api/matreshka-object/values/) _(Для просунутих)_ – Повертає масив значень властивостей, що відповідають за дані
+- [`values`](/ua/api/matreshka-object/values/) _(для досвідчених)_ – Повертає масив значень властивостей, що відповідають за дані

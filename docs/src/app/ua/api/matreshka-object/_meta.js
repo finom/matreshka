@@ -8,7 +8,7 @@ export default {
   'remove-data-keys': 'removeDataKeys',
   'set-data': 'setData',
   'to-json': 'toJSON',
-  '-- Для просунутих': { type: 'separator', title: 'Для просунутих' },
+  '-- advanced': { type: 'separator', title: 'Для досвідчених' },
   entries: 'entries',
   'is-matreshka-object': 'isMatreshkaObject',
   values: 'values'

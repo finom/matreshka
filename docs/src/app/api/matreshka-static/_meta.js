@@ -1,19 +1,19 @@
 export default {
   '-- Methods': { type: 'separator', title: 'Methods' },
+  'bind-node': 'bindNode',
+  calc: 'calc',
   chain: 'chain',
   class: 'Class',
+  mediate: 'mediate',
+  on: 'on',
   '-- Properties': { type: 'separator', title: 'Properties' },
   'default-binders': 'defaultBinders',
   '-- Advanced': { type: 'separator', title: 'Advanced' },
-  'bind-node': 'bindNode',
   'bind-optional-node': 'bindOptionalNode',
   'bind-sandbox': 'bindSandbox',
-  calc: 'calc',
   instantiate: 'instantiate',
   'look-for-binder': 'lookForBinder',
-  mediate: 'mediate',
   off: 'off',
-  on: 'on',
   once: 'once',
   'on-debounce': 'onDebounce',
   'parse-bindings': 'parseBindings',
@@ -24,6 +24,5 @@ export default {
   set: 'set',
   'to-matreshka': 'toMatreshka',
   trigger: 'trigger',
-  'unbind-node': 'unbindNode',
-  'use-dom-library': 'useDOMLibrary'
+  'unbind-node': 'unbindNode'
 };

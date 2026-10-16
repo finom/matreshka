@@ -15,7 +15,7 @@ export default {
   '-- Свойства': { type: 'separator', title: 'Свойства' },
   'item-renderer': 'itemRenderer',
   'track-by': 'trackBy',
-  '-- Для продвинутых': { type: 'separator', title: 'Для продвинутых' },
+  '-- advanced': { type: 'separator', title: 'Для опытных' },
   'is-matreshka-array': 'isMatreshkaArray',
   'render-if-possible': 'renderIfPossible',
   rerender: 'rerender'

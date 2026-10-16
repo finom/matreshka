@@ -1,17 +1,15 @@
 name: Publish
 
-# A `<dir>-v<version>` tag, pushed by `PACKAGE=<dir> npm run patch|minor`, publishes every package version npm does not
-# have yet and its CHANGELOG has a section for. A manual run is a dry run: npm publish --dry-run, and the release text
-# goes to the run summary.
+# A `v<version>` tag, pushed by `npm run patch|minor|major|beta|...`, publishes that version to npm with provenance and
+# makes a GitHub Release from its CHANGELOG section. A prerelease (3.1.0-beta.0) goes to the dist-tag its id names.
+# A manual run is a dry run: npm publish --dry-run, and the release text goes to the run summary.
 on:
   push:
-    tags: ["*-v*"]
+    tags: ["v*"]
   workflow_dispatch:
 
 permissions: read-all
 
-# Tags of one release publish one after another; a later run finds the versions already on npm.
-# Dry runs queue apart, so one never takes the place of a pending real run.
 concurrency:
   group: ${{ github.event_name == 'workflow_dispatch' && 'publish-dry-run' || 'publish' }}
   cancel-in-progress: false
@@ -20,7 +18,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # a GitHub Release per tag
+      contents: write # the GitHub Release
       id-token: write # npm trusted publishing (OIDC), which adds provenance
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -33,95 +31,85 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npm run typecheck
       - run: npm run test:coverage
       - run: npm run build
       - run: npm run check:dist
-      # A mistyped tag would otherwise publish whatever versions the tree holds.
-      - name: Check the tag matches its package
-        if: github.event_name != 'workflow_dispatch'
-        env:
-          TAG: ${{ github.ref_name }}
-        run: |
-          dir="${TAG%-v*}"
-          version="$(node -p "require('./packages/$dir/package.json').version")"
-          if [ "$TAG" != "$dir-v$version" ]; then
-            echo "tag $TAG does not match packages/$dir at $version" >&2
-            exit 1
-          fi
-      # A GitHub Release carries its version's CHANGELOG section, so a version without one never reaches npm. The
-      # tagged package must have one; another package's version without one waits for its own tag.
-      - name: Pick the versions to publish
+      - name: Read the version
+        id: version
         env:
           TAG: ${{ github.event_name == 'workflow_dispatch' && '' || github.ref_name }}
         run: |
-          : >publish.list
-          for dir in matreshka router parse-form; do
-            name="$(node -p "require('./packages/$dir/package.json').name")"
-            version="$(node -p "require('./packages/$dir/package.json').version")"
-            [ -n "$(npm view "$name@$version" version 2>/dev/null)" ] && continue
-            if node scripts/changelog-section.mjs "packages/$dir/CHANGELOG.md" "$version" >/dev/null 2>&1; then
-              echo "$dir" >>publish.list
-            elif [ "$TAG" = "$dir-v$version" ]; then
-              node scripts/changelog-section.mjs "packages/$dir/CHANGELOG.md" "$version"
-            else
-              echo "$name@$version has no CHANGELOG section; it waits for its own tag"
-            fi
-          done
-      - name: Publish every picked version
+          version="$(node -p "require('./package.json').version")"
+          # A mistyped tag would otherwise publish whatever version the tree holds.
+          if [ -n "$TAG" ] && [ "$TAG" != "v$version" ]; then
+            echo "tag $TAG does not match package.json at $version" >&2
+            exit 1
+          fi
+          # 3.1.0-beta.0 → beta, 3.0.0 → latest
+          case "$version" in
+            *-*) dist_tag="${version#*-}"; dist_tag="${dist_tag%%.*}" ;;
+            *) dist_tag=latest ;;
+          esac
+          echo "version=$version" >>"$GITHUB_OUTPUT"
+          echo "dist_tag=$dist_tag" >>"$GITHUB_OUTPUT"
+      # A GitHub Release carries its version's CHANGELOG section, so a version without one never reaches npm.
+      - name: Write the release text
         env:
+          VERSION: ${{ steps.version.outputs.version }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          # a dry run before the release shows what [Unreleased] would say
+          if [ "$DRY_RUN" = true ] && ! node scripts/changelog-section.mjs CHANGELOG.md "$VERSION" >/dev/null 2>&1; then
+            node scripts/changelog-section.mjs CHANGELOG.md Unreleased >notes.md
+          else
+            node scripts/changelog-section.mjs CHANGELOG.md "$VERSION" >notes.md
+          fi
+          printf '\n[Full changelog](https://github.com/%s/blob/v%s/CHANGELOG.md) · [npm](https://www.npmjs.com/package/matreshka/v/%s)\n' \
+            "$GITHUB_REPOSITORY" "$VERSION" "$VERSION" >>notes.md
+      - name: Publish
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          DIST_TAG: ${{ steps.version.outputs.dist_tag }}
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           set -o pipefail
-          while read -r dir; do
-            name="$(node -p "require('./packages/$dir/package.json').name")"
-            version="$(node -p "require('./packages/$dir/package.json').version")"
-            # A prerelease goes to the dist-tag its id names (0.3.0-beta.1 → beta), a release to latest.
-            case "$version" in
-              *-*) tag="${version#*-}"; tag="${tag%%.*}" ;;
-              *) tag=latest ;;
-            esac
-            args=(--workspace "packages/$dir" --access public --tag "$tag")
-            [ "$DRY_RUN" = true ] && args+=(--dry-run)
-            # npm validates a new version for a few minutes, unseen by npm view, so a later run may try it again.
-            npm publish "${args[@]}" 2>&1 | tee publish.log ||
-              grep -qE "previously (staged|published) version" publish.log
-          done <publish.list
-      # The release carries the version's CHANGELOG section, and the npm provenance as an in-toto file, which is what
-      # Scorecard's Signed-Releases reads. A dry run writes the text of each version npm lacks to the run summary.
-      - name: A GitHub Release per pushed tag, with the CHANGELOG section and the npm provenance
+          if [ -n "$(npm view "matreshka@$VERSION" version 2>/dev/null)" ]; then
+            echo "matreshka@$VERSION is on npm"
+            exit 0
+          fi
+          args=(--access public --tag "$DIST_TAG")
+          [ "$DRY_RUN" = true ] && args+=(--dry-run)
+          # npm validates a new version for a few minutes, unseen by npm view, so a rerun may try it again.
+          npm publish "${args[@]}" 2>&1 | tee publish.log ||
+            grep -qE "previously (staged|published) version" publish.log
+      # The release carries the npm provenance as an in-toto file, which is what Scorecard's Signed-Releases reads.
+      - name: The GitHub Release, with the CHANGELOG section and the npm provenance
         env:
           GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          DIST_TAG: ${{ steps.version.outputs.dist_tag }}
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           set -o pipefail
-          for dir in matreshka router parse-form; do
-            name="$(node -p "require('./packages/$dir/package.json').name")"
-            version="$(node -p "require('./packages/$dir/package.json').version")"
-            tag="$dir-v$version"
-            file="$tag.intoto.jsonl"
-            if [ "$DRY_RUN" = true ]; then
-              grep -qxF "$dir" publish.list || continue
-            else
-              gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" --silent 2>/dev/null || continue
-              # A release that has its provenance is done; its text stays as it is.
-              gh release view "$tag" --json assets --jq '.assets[].name' 2>/dev/null | grep -qxF "$file" && continue
-            fi
-            node scripts/changelog-section.mjs "packages/$dir/CHANGELOG.md" "$version" >notes.md
-            printf '\n[Full changelog](https://github.com/%s/blob/%s/packages/%s/CHANGELOG.md) · [npm](https://www.npmjs.com/package/%s/v/%s)\n' \
-              "$GITHUB_REPOSITORY" "$tag" "$dir" "$name" "$version" >>notes.md
-            if [ "$DRY_RUN" = true ]; then
-              { echo "## $name $version (dry run)"; echo; cat notes.md; echo; } | tee -a "$GITHUB_STEP_SUMMARY"
-              continue
-            fi
-            # The attestations appear once npm serves the version, a few minutes after the publish.
-            curl -fsSL --retry 40 --retry-delay 15 --retry-all-errors \
-              "https://registry.npmjs.org/-/npm/v1/attestations/${name/\//%2f}@$version" |
-              jq -ce '.attestations[] | select(.predicateType | startswith("https://slsa.dev/provenance/")) | .bundle.dsseEnvelope' \
-                >"$file"
-            if gh release view "$tag" >/dev/null 2>&1; then
-              gh release upload "$tag" "$file" --clobber
-              gh release edit "$tag" --notes-file notes.md
-            else
-              gh release create "$tag" "$file" --verify-tag --title "$name $version" --notes-file notes.md
-            fi
-          done
+          tag="v$VERSION"
+          if [ "$DRY_RUN" = true ]; then
+            { echo "## matreshka $VERSION → $DIST_TAG (dry run)"; echo; cat notes.md; } | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          file="$tag.intoto.jsonl"
+          # A release that has its provenance is done; its text stays as it is.
+          gh release view "$tag" --json assets --jq '.assets[].name' 2>/dev/null | grep -qxF "$file" && exit 0
+          # The attestations appear once npm serves the version, a few minutes after the publish.
+          curl -fsSL --retry 40 --retry-delay 15 --retry-all-errors \
+            "https://registry.npmjs.org/-/npm/v1/attestations/matreshka@$VERSION" |
+            jq -ce '.attestations[] | select(.predicateType | startswith("https://slsa.dev/provenance/")) | .bundle.dsseEnvelope' \
+              >"$file"
+          prerelease=()
+          [ "$DIST_TAG" != latest ] && prerelease=(--prerelease)
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "$file" --clobber
+            gh release edit "$tag" --notes-file notes.md
+          else
+            gh release create "$tag" "$file" --verify-tag "${prerelease[@]}" --title "matreshka $VERSION" --notes-file notes.md
+          fi

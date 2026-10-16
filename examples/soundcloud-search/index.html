@@ -3,8 +3,9 @@
 	<head>
 		<title>Matreshka.js SoundCloud Search</title>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css">
 		<style>
-			@import url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/css/bootstrap.min.css");
 			.track {
 				margin: 20px 0;
 			}
@@ -34,24 +35,24 @@
 		</style>
 	</head>
 	<body>
-		<main class="container">
+		<main class="container py-6 vstack gap-4">
 			<header>
 				<h1>Matreshka.js SoundCloud Search</h1>
 			</header>
-			<p class="alert alert-warning">
-				This demo no longer finds anything: SoundCloud's API now asks for an OAuth access token, and the
+			<div class="alert theme-warning">
+				<div>This demo no longer finds anything: SoundCloud's API now asks for an OAuth access token, and the
 				public client ID the demo sends is refused with <code>401 Unauthorized</code>. The code still shows
-				how a <code>Matreshka.Array</code> renders and plays a list of tracks.
-			</p>
+				how a <code>Matreshka.Array</code> renders and plays a list of tracks.</div>
+			</div>
 			<form class="search">
 				<div class="input-group">
 					<input type="search" class="form-control query" placeholder="Search">
-					<span class="input-group-btn"><button type="submit" class="btn btn-default btn-primary">Search</button></span>
+					<button type="submit" class="btn btn-solid theme-primary">Search</button>
 				</div>
 			</form>
 			<div class="row tracks">
 				<script type="text/html" id="track_template">
-					<div class="col-md-6 track">
+					<div class="md:col-6 track">
 						<img class="artwork">
 						<h4 class="title"></h4>
 						<audio controls preload="none"></audio>

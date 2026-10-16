@@ -1,43 +1,81 @@
 {
-  "name": "matreshka-repo",
-  "private": true,
-  "license": "MIT",
-  "type": "module",
-  "engines": {
-    "node": ">=24"
-  },
-  "workspaces": [
-    "packages/matreshka",
-    "packages/router",
-    "packages/parse-form",
-    "docs"
+  "name": "matreshka",
+  "version": "2.4.18",
+  "description": "Reactive data binding for the HTML you already have",
+  "keywords": [
+    "matreshka",
+    "reactive",
+    "data-binding",
+    "two-way-data-binding",
+    "no-build",
+    "dom",
+    "router",
+    "forms"
   ],
-  "scripts": {
-    "lint": "biome check --error-on-warnings .",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "build": "set -e; for P in matreshka router parse-form; do npm run build --prefix ./packages/$P; done",
-    "patch": "node scripts/release.mjs patch",
-    "minor": "node scripts/release.mjs minor",
-    "check:dist": "node scripts/check-dist.mjs && node --no-experimental-require-module scripts/check-dist.mjs",
-    "exports": "node scripts/exports.mjs --write",
-    "build:docs": "npm run build -w matreshka-docs"
-  },
+  "homepage": "https://matreshka.js.org",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/finom/matreshka.git"
   },
+  "author": "Andrey Gubanov <andrey.a.gubanov@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/finom/matreshka/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./router": {
+      "types": "./dist/router/index.d.ts",
+      "default": "./dist/router/index.js"
+    },
+    "./parse-form": {
+      "types": "./dist/parse-form/index.d.ts",
+      "default": "./dist/parse-form/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/matreshka.min.js",
+  "jsdelivr": "./dist/matreshka.min.js",
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "workspaces": [
+    "docs"
+  ],
+  "scripts": {
+    "lint": "biome check --error-on-warnings .",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "build": "node scripts/build.mjs",
+    "check:dist": "node scripts/check-dist.mjs",
+    "build:docs": "npm run build -w matreshka-docs",
+    "patch": "node scripts/release.mjs patch",
+    "minor": "node scripts/release.mjs minor",
+    "major": "node scripts/release.mjs major",
+    "beta": "node scripts/release.mjs beta",
+    "beta-minor": "node scripts/release.mjs beta-minor",
+    "beta-major": "node scripts/release.mjs beta-major",
+    "prepublishOnly": "node scripts/ci-only.mjs"
+  },
   "devDependencies": {
-    "@babel/core": "^8.0.7",
-    "@babel/plugin-transform-modules-commonjs": "^8.0.1",
     "@biomejs/biome": "^2.5.15",
-    "@rollup/plugin-commonjs": "^29.0.3",
-    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@vitest/coverage-v8": "^5.0.4",
     "jsdom": "^30.1.2",
     "rollup": "^4.64.6",
+    "typescript": "^7.0.2",
     "vitest": "^5.0.3"
   },
   "overrides": {
@@ -48,6 +86,9 @@
       "zod": "4.3.6"
     },
     "@xmldom/xmldom": "^0.9.12",
-    "katex": "^0.18.11"
+    "katex": "^0.18.11",
+    "@shikijs/twoslash": {
+      "typescript": "6.0.3"
+    }
   }
 }

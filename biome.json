@@ -2,10 +2,11 @@
   "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
   "files": {
     "includes": [
-      "packages/*/src/**/*.js",
-      "packages/*/test/**/*.js",
+      "src/**/*.{js,ts}",
+      "test/**/*.{js,ts}",
       "scripts/*.mjs",
       "*.mjs",
+      "*.ts",
       "docs/**/*.{js,jsx,ts,tsx,mjs}",
       "!docs/.next",
       "!docs/out",
@@ -34,6 +35,9 @@
       "preset": "recommended",
       "complexity": {
         "noArguments": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
       }
     }
   }

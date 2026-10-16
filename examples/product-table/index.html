@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product table · Matreshka.js</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; }
+    input, select { font: inherit; padding: .3rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { text-align: left; padding: .4rem; border-bottom: 1px solid #ddd; }
+    td.price, th.price { text-align: right; }
+    .empty { color: #777; }
+  </style>
+</head>
+<body>
+  <h1>Products</h1>
+  <div id="catalog">
+    <input class="query" type="search" placeholder="Search">
+    <select class="sort">
+      <option value="name">By name</option>
+      <option value="price">By price</option>
+    </select>
+    <label><input class="in-stock" type="checkbox"> In stock only</label>
+    <table>
+      <thead><tr><th>Name</th><th class="price">Price</th><th>Stock</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <p class="empty">Nothing matches.</p>
+    <p><span class="shown"></span> of <span class="total"></span> products</p>
+  </div>
+
+  <!-- the data a server would embed in the page -->
+  <script type="application/json" id="products">
+    [
+      { "name": "Kettle", "price": 39, "stock": 12 },
+      { "name": "Toaster", "price": 54, "stock": 0 },
+      { "name": "Blender", "price": 89, "stock": 3 },
+      { "name": "Coffee grinder", "price": 45, "stock": 7 },
+      { "name": "Rice cooker", "price": 72, "stock": 0 },
+      { "name": "Waffle iron", "price": 33, "stock": 5 }
+    ]
+  </script>
+
+  <script src="/matreshka.min.js"></script>
+  <script>
+    const { bindNode, calc, on, binders } = Matreshka;
+    const products = JSON.parse(document.querySelector('#products').textContent);
+
+    // the rows on screen: a Matreshka.Array renders one <tr> per item and keeps them in sync
+    const rows = new Matreshka.Array();
+    rows.itemRenderer = '<tr><td>{{name}}</td><td class="price">${{price}}</td><td>{{stock}}</td></tr>';
+    bindNode(rows, 'container', '#catalog tbody');
+
+    const catalog = {};
+    bindNode(catalog, {
+      query: '#catalog .query',
+      sort: '#catalog .sort',
+      inStock: '#catalog .in-stock'
+    });
+
+    calc(catalog, 'visible', ['query', 'sort', 'inStock'], (query, sort, inStock) =>
+      products
+        .filter((product) => product.name.toLowerCase().includes(query.trim().toLowerCase()))
+        .filter((product) => !inStock || product.stock > 0)
+        .sort((a, b) => (sort === 'price' ? a.price - b.price : a.name.localeCompare(b.name)))
+    );
+
+    // recreate keeps the rows of products still shown and only adds or removes the others
+    rows.recreate(catalog.visible);
+    on(catalog, 'change:visible', () => rows.recreate(catalog.visible));
+    calc(catalog, 'shown', 'visible', (visible) => visible.length);
+
+    bindNode(catalog, 'shown', '#catalog .shown', binders.text());
+    bindNode(catalog, 'shown', '#catalog .empty', binders.display(false));
+    catalog.total = products.length;
+    bindNode(catalog, 'total', '#catalog .total', binders.text());
+  </script>
+</body>
+</html>

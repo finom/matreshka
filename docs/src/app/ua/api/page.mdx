@@ -14,80 +14,79 @@ description: "Matreshka.js довідник API. Кожен клас, метод
 
 - [`bindNode`](/ua/api/matreshka/bind-node/) – Пов'язує властивість об'єкта з HTML елементом
 - [`bindOptionalNode`](/ua/api/matreshka/bind-optional-node/) – Працює в точності так само, як і [`Matreshka#bindNode`](/ua/api/matreshka/bind-node/) але не кидає виняток, якщо аргумент ``node`` - порожній масив, ``undefined`` або не існує
-- [`bindSandbox`](/ua/api/matreshka/bind-sandbox/) _(Для просунутих)_ – Прив'язує пісочницю
+- [`bindSandbox`](/ua/api/matreshka/bind-sandbox/) _(для досвідчених)_ – Прив'язує пісочницю
 - [`calc`](/ua/api/matreshka/calc/) – Створює залежність значення однієї властивості від значень інших
 - [`instantiate`](/ua/api/matreshka/instantiate/) – Створює фіксований екземпляр класу
-- [`isMatreshka`](/ua/api/matreshka/is-matreshka/) _(Для просунутих)_ – ``isMatreshka`` завжди дорівнює ``true`` для экземплярів [`Matreshka`](/ua/api/matreshka/)
+- [`isMatreshka`](/ua/api/matreshka/is-matreshka/) _(для досвідчених)_ – ``isMatreshka`` завжди дорівнює ``true`` для экземплярів [`Matreshka`](/ua/api/matreshka/)
 - [`mediate`](/ua/api/matreshka/mediate/) – Трансформує значення властивості при його зміні
-- [`$nodes`](/ua/api/matreshka/dollar-nodes/) _(Для просунутих)_ – Об'єкт містить колекції (jQuery, Zepto, інстанси вбудованої мікро-бібліотеки, успадкованої від ``Array.prototype``) прив'язаних елементів для швидкого доступу.
-- [`nodes`](/ua/api/matreshka/nodes/) _(Для просунутих)_ – Об'єкт містить прив'язані елементи для швидкого доступу, у вигляді окремих DOM вузлів.
+- [`$nodes`](/ua/api/matreshka/dollar-nodes/) _(для досвідчених)_ – Об’єкт, у якому для кожної властивості зберігається масив прив’язаних до неї елементів — для швидкого доступу.
+- [`nodes`](/ua/api/matreshka/nodes/) _(для досвідчених)_ – Об'єкт містить прив'язані елементи для швидкого доступу, у вигляді окремих DOM вузлів.
 - [`off`](/ua/api/matreshka/off/) – Видаляє обробник події
 - [`on`](/ua/api/matreshka/on/) – Додає обробник події
 - [`onDebounce`](/ua/api/matreshka/on-debounce/) – Додає обробник події, що викликається лише одного разу за певний проміжок часу
 - [`once`](/ua/api/matreshka/once/) – Додає обробник подій, який може бути викликаний один раз
 - [`parseBindings`](/ua/api/matreshka/parse-bindings/) – Парсить DOM дерево, оголошуючи прив'язки властивостей, взятих в подвійні фігурні дужки.
-- [`remove`](/ua/api/matreshka/remove/) _(Для просунутих)_ – Видаляє властивість
+- [`remove`](/ua/api/matreshka/remove/) _(для досвідчених)_ – Видаляє властивість
 - [`select`](/ua/api/matreshka/select/) – Повертає елемент з пісочниці, відповідний селектору
 - [`selectAll`](/ua/api/matreshka/select-all/) – Повертає єлементі з пісочниці, відповідні селектору
 - [`set`](/ua/api/matreshka/set/) – Встановлює значення властивості, дозволяючи передати об'єкт події в якості третьої аргументу
 - [`trigger`](/ua/api/matreshka/trigger/) – Генерує подію
 - [`unbindNode`](/ua/api/matreshka/unbind-node/) – Розриває зв'язок між властивістю і HTML елементом
 
-## Matreshka (статичні члени)
+## Статичні властивості й методи Matreshka
 
 - [`Class`](/ua/api/matreshka-static/class/) – Реалізація класів, заснована на прототипному спадкуванні
-- [`bindNode`](/ua/api/matreshka-static/bind-node/) _(Для просунутих)_ – Пов'язує властивість об'єкта з HTML елементом
-- [`bindOptionalNode`](/ua/api/matreshka-static/bind-optional-node/) _(Для просунутих)_ – Пов'язує елемент із властивістю, але не кидає виняток, якщо аргумент node - порожній масив, ``undefined`` або не існує
-- [`bindSandbox`](/ua/api/matreshka-static/bind-sandbox/) _(Для просунутих)_ – Пов'язує властивість ``sandbox`` з елементом і одв'язує попередній елемент, якщо такий існує
-- [`calc`](/ua/api/matreshka-static/calc/) _(Для просунутих)_ – Створює залежність значення одної властивості від значень інших
+- [`bindNode`](/ua/api/matreshka-static/bind-node/) – Пов'язує властивість об'єкта з HTML елементом
+- [`bindOptionalNode`](/ua/api/matreshka-static/bind-optional-node/) _(для досвідчених)_ – Пов'язує елемент із властивістю, але не кидає виняток, якщо аргумент node - порожній масив, ``undefined`` або не існує
+- [`bindSandbox`](/ua/api/matreshka-static/bind-sandbox/) _(для досвідчених)_ – Пов'язує властивість ``sandbox`` з елементом і одв'язує попередній елемент, якщо такий існує
+- [`calc`](/ua/api/matreshka-static/calc/) – Створює залежність значення одної властивості від значень інших
 - [`chain`](/ua/api/matreshka-static/chain/) – Дозволяє викликати універсальні методи ланцюгом
 - [`defaultBinders`](/ua/api/matreshka-static/default-binders/) – Масив функцій, які повертають відповідний Байндер або ``undefined``
-- [`instantiate`](/ua/api/matreshka-static/instantiate/) _(Для просунутих)_ – Створює фіксований екземпляр класу
-- [`lookForBinder`](/ua/api/matreshka-static/look-for-binder/) _(Для просунутих)_
-- [`mediate`](/ua/api/matreshka-static/mediate/) _(Для просунутих)_ – Трансформує значення властивості при його зміні
-- [`off`](/ua/api/matreshka-static/off/) _(Для просунутих)_ – Видаляє обробник події
-- [`on`](/ua/api/matreshka-static/on/) _(Для просунутих)_ – Додає обробник події
-- [`onDebounce`](/ua/api/matreshka-static/on-debounce/) _(Для просунутих)_ – Додатє обробник події, що викликається лише однин раз за певний проміжок часу
-- [`once`](/ua/api/matreshka-static/once/) _(Для просунутих)_ – Додає обробник події, який може бути викликаний лише один раз
-- [`parseBindings`](/ua/api/matreshka-static/parse-bindings/) _(Для просунутих)_ – Парсить DOM дерево, оголошуючи прив'язки властивостей, взятих в подвійні фігурні дужки
-- [`parserBrackets`](/ua/api/matreshka-static/parser-brackets/) _(Для просунутих)_ – Містить дужки для [парсера](/ua/api/matreshka/parse-bindings/)
-- [`remove`](/ua/api/matreshka-static/remove/) _(Для просунутих)_ – Видаляє властивість
-- [`select`](/ua/api/matreshka-static/select/) _(Для просунутих)_ – Повертає елемент з пісочниці, відповідний селектору
-- [`selectAll`](/ua/api/matreshka-static/select-all/) _(Для просунутих)_ – Повертає елементи з пісочниці, відповідні селектору
-- [`set`](/ua/api/matreshka-static/set/) _(Для просунутих)_ – Встановлює значення властивості, дозволяючи передати об'єкт події в якості третьої аргументу
-- [`toMatreshka`](/ua/api/matreshka-static/to-matreshka/) _(Для просунутих)_ – Функція, яка конвертує довільну структуру об'єктів і масивів в екземпляри [`Matreshka.Object`](/ua/api/matreshka-object/) та [`Matreshka.Array`](/ua/api/matreshka-array/)
-- [`trigger`](/ua/api/matreshka-static/trigger/) _(Для просунутих)_ – Генерує подію
-- [`unbindNode`](/ua/api/matreshka-static/unbind-node/) _(Для просунутих)_ – Розриває зв'язок між властивістю і HTML елементом
-- [`useDOMLibrary`](/ua/api/matreshka-static/use-dom-library/) _(Для просунутих)_ – Змушує використовувати певну бібліотеку для роботи з DOM
+- [`instantiate`](/ua/api/matreshka-static/instantiate/) _(для досвідчених)_ – Створює фіксований екземпляр класу
+- [`lookForBinder`](/ua/api/matreshka-static/look-for-binder/) _(для досвідчених)_
+- [`mediate`](/ua/api/matreshka-static/mediate/) – Трансформує значення властивості при його зміні
+- [`off`](/ua/api/matreshka-static/off/) _(для досвідчених)_ – Видаляє обробник події
+- [`on`](/ua/api/matreshka-static/on/) – Додає обробник події
+- [`onDebounce`](/ua/api/matreshka-static/on-debounce/) _(для досвідчених)_ – Додатє обробник події, що викликається лише однин раз за певний проміжок часу
+- [`once`](/ua/api/matreshka-static/once/) _(для досвідчених)_ – Додає обробник події, який може бути викликаний лише один раз
+- [`parseBindings`](/ua/api/matreshka-static/parse-bindings/) _(для досвідчених)_ – Парсить DOM дерево, оголошуючи прив'язки властивостей, взятих в подвійні фігурні дужки
+- [`parserBrackets`](/ua/api/matreshka-static/parser-brackets/) _(для досвідчених)_ – Містить дужки для [парсера](/ua/api/matreshka/parse-bindings/)
+- [`remove`](/ua/api/matreshka-static/remove/) _(для досвідчених)_ – Видаляє властивість
+- [`select`](/ua/api/matreshka-static/select/) _(для досвідчених)_ – Повертає елемент з пісочниці, відповідний селектору
+- [`selectAll`](/ua/api/matreshka-static/select-all/) _(для досвідчених)_ – Повертає елементи з пісочниці, відповідні селектору
+- [`set`](/ua/api/matreshka-static/set/) _(для досвідчених)_ – Встановлює значення властивості, дозволяючи передати об'єкт події в якості третьої аргументу
+- [`toMatreshka`](/ua/api/matreshka-static/to-matreshka/) _(для досвідчених)_ – Функція, яка конвертує довільну структуру об'єктів і масивів в екземпляри [`Matreshka.Object`](/ua/api/matreshka-object/) та [`Matreshka.Array`](/ua/api/matreshka-array/)
+- [`trigger`](/ua/api/matreshka-static/trigger/) _(для досвідчених)_ – Генерує подію
+- [`unbindNode`](/ua/api/matreshka-static/unbind-node/) _(для досвідчених)_ – Розриває зв'язок між властивістю і HTML елементом
 
 ## [Matreshka.Object](/ua/api/matreshka-object/)
 
 - [`addDataKeys`](/ua/api/matreshka-object/add-data-keys/) – Додає задані імена властивостей в список імен властивостей, що відповідають за дані
 - [`each`](/ua/api/matreshka-object/each/) – Перебирає властивості, що відповідають за дані
-- [`entries`](/ua/api/matreshka-object/entries/) _(Для просунутих)_ – Повертає масив пар імен і значень властивостей, що відповідають за дані
+- [`entries`](/ua/api/matreshka-object/entries/) _(для досвідчених)_ – Повертає масив пар імен і значень властивостей, що відповідають за дані
 - [`isDataKey`](/ua/api/matreshka-object/is-data-key/) – Перевіряє, чи входить строка до списку імен властивостей, що відповідають за дані
-- [`isMatreshkaObject`](/ua/api/matreshka-object/is-matreshka-object/) _(Для просунутих)_ – Властивість ``isMatreshkaObject`` завжди дорівнює ``true`` для екземплярів [`Matreshka.Object`](/ua/api/matreshka-object/).
+- [`isMatreshkaObject`](/ua/api/matreshka-object/is-matreshka-object/) _(для досвідчених)_ – Властивість ``isMatreshkaObject`` завжди дорівнює ``true`` для екземплярів [`Matreshka.Object`](/ua/api/matreshka-object/).
 - [`keyOf`](/ua/api/matreshka-object/key-of/) – Шукає задане значення властивості серед властивостей, що відповідають за дані, і повертає ім'я властивості, якщо таке значення знайдено
 - [`keys`](/ua/api/matreshka-object/keys/) – Повертає масив імен властивостей, що відповідають за дані
 - [`removeDataKeys`](/ua/api/matreshka-object/remove-data-keys/) – Видаляє задані імена властивостей зі списку імен властивостей, що відповідають за дані (але не видаляє властивість)
 - [`setData`](/ua/api/matreshka-object/set-data/) – Встановлює значення властивості і додає його ім'я в список імен властивостей, що відповідають за дані
 - [`toJSON`](/ua/api/matreshka-object/to-json/) – Конвертує екземпляр [`Matreshka.Object`](/ua/api/matreshka-object/) в звичайний об'єкт
-- [`values`](/ua/api/matreshka-object/values/) _(Для просунутих)_ – Повертає масив значень властивостей, що відповідають за дані
+- [`values`](/ua/api/matreshka-object/values/) _(для досвідчених)_ – Повертає масив значень властивостей, що відповідають за дані
 
 ## [Matreshka.Array](/ua/api/matreshka-array/)
 
 - [`METHOD`](/ua/api/matreshka-array/method/) – Будь-який метод iз ``Array.prototype``
 - [`METHOD_`](/ua/api/matreshka-array/method-silent/) – Будь-який метод iз ``Array.prototype`` з можливістю передати об'єкт події
 - [`Model`](/ua/api/matreshka-array/model/) – Властивість визначає клас елементів, які буде містити колекція
-- [`isMatreshkaArray`](/ua/api/matreshka-array/is-matreshka-array/) _(Для просунутих)_ – ``isMatreshkaArray`` завжди дорівнює ``true`` для экземплярів [`Matreshka.Array`](/ua/api/matreshka-array/)
+- [`isMatreshkaArray`](/ua/api/matreshka-array/is-matreshka-array/) _(для досвідчених)_ – ``isMatreshkaArray`` завжди дорівнює ``true`` для экземплярів [`Matreshka.Array`](/ua/api/matreshka-array/)
 - [`itemRenderer`](/ua/api/matreshka-array/item-renderer/) – HTML строка, селектор або функція, яка відповідає за рендерінг элементів масива на сторінці
 - [`mediateItem`](/ua/api/matreshka-array/mediate-item/) – Трансформує значення елементів масиву
 - [`onItemRender`](/ua/api/matreshka-array/on-item-render/) – Функція, яка запускається перед подією ``render``.
 - [`orderBy`](/ua/api/matreshka-array/order-by/) – Сортує масив за значеннями властивостей об'єктів, які в нього входять
 - [`pull`](/ua/api/matreshka-array/pull/) – Видаляє елемент за індексом або за значенням
 - [`recreate`](/ua/api/matreshka-array/recreate/) – Перестворює екземпляр [`Matreshka.Array`](/ua/api/matreshka-array/)
-- [`renderIfPossible`](/ua/api/matreshka-array/render-if-possible/) _(Для просунутих)_ – Властивість ``renderIfPossible`` скасовує рендеринг масиву якщо має значення `` false``
-- [`rerender`](/ua/api/matreshka-array/rerender/) _(Для просунутих)_ – Перемальовує DOM вузли об'єктів, що входять в масив
+- [`renderIfPossible`](/ua/api/matreshka-array/render-if-possible/) _(для досвідчених)_ – Властивість ``renderIfPossible`` скасовує рендеринг масиву якщо має значення `` false``
+- [`rerender`](/ua/api/matreshka-array/rerender/) _(для досвідчених)_ – Перемальовує DOM вузли об'єктів, що входять в масив
 - [`restore`](/ua/api/matreshka-array/restore/) – Відтворює [`Matreshka.Array`](/ua/api/matreshka-array/) з HTML вузлів на сторінці.
 - [`toJSON`](/ua/api/matreshka-array/to-json/) – Конвертує екземпляр [`Matreshka.Array`](/ua/api/matreshka-array/) в звичайний масив
 - [`trackBy`](/ua/api/matreshka-array/track-by/) – Властивість ``trackBy`` вказує на ім'я властивості ідентифікатора об'єктів, що входять в масив
@@ -102,14 +101,14 @@ description: "Matreshka.js довідник API. Кожен клас, метод
 - [`display`](/ua/api/binders/display/) – Повертає байндер для одностороннього зв'язування, який змінює видимість DOM елементу (використовуючи ``style.display``), в залежності від значення властивості об'єкта
 - [`existence`](/ua/api/binders/existence/) – Повертає байндер для одностороннього зв'язування, що перемикає наявність елемента в DOM дереві, в залежності від значення властивості об'єкта
 - [`html`](/ua/api/binders/html/) – Повертає байндер, який змінює ``innerHTML`` DOM елемента в залежності від значення властивості об'єкта
-- [`input`](/ua/api/binders/input/) _(Для просунутих)_ – Повертає байндер, що зв'язує властивість об'єкта з елементом ``input``. Безпосередньо байндер використовувати не обов'язково, так як він входить в список [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/).
-- [`output`](/ua/api/binders/output/) _(Для просунутих)_ – Повертає байндер, що зв'язує властивість об'єкта з елементом ``output``. Безпосередньо байндер використовувати не обов'язково, так як він входить в список [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/).
-- [`progress`](/ua/api/binders/progress/) _(Для просунутих)_ – Повертає байндер, що зв'язує властивість об'єкта з елементом ``progress``. Безпосередньо байндер використовувати не обов'язково, так як він входить в список [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/).
+- [`input`](/ua/api/binders/input/) _(для досвідчених)_ – Повертає байндер, що зв'язує властивість об'єкта з елементом ``input``. Безпосередньо байндер використовувати не обов'язково, так як він входить в список [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/).
+- [`output`](/ua/api/binders/output/) _(для досвідчених)_ – Повертає байндер, що зв'язує властивість об'єкта з елементом ``output``. Безпосередньо байндер використовувати не обов'язково, так як він входить в список [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/).
+- [`progress`](/ua/api/binders/progress/) _(для досвідчених)_ – Повертає байндер, що зв'язує властивість об'єкта з елементом ``progress``. Безпосередньо байндер використовувати не обов'язково, так як він входить в список [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/).
 - [`prop`](/ua/api/binders/prop/) – Повертає байндер, який змінює властивість DOM елемента на значення властивості об'єкта
-- [`select`](/ua/api/binders/select/) _(Для просунутих)_ – Повертає байндер, що зв'язує властивість об'єкта з елементом ``select``. Безпосередньо байндер використовувати не обов'язково, так як він входить в список [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/).
+- [`select`](/ua/api/binders/select/) _(для досвідчених)_ – Повертає байндер, що зв'язує властивість об'єкта з елементом ``select``. Безпосередньо байндер використовувати не обов'язково, так як він входить в список [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/).
 - [`style`](/ua/api/binders/style/) – Повертає байндер, який змінює задану властивість стилю DOM елемента в залежності від значення властивості об'єкта
 - [`text`](/ua/api/binders/text/) – Повертає байндер, який змінює ``textContent`` (текстовий вміст) DOM елемента в залежності від значення властивості об'єкта.
-- [`textarea`](/ua/api/binders/textarea/) _(Для просунутих)_ – Повертає байндер, що зв'язує властивість об'єкта з елементом ``textarea``. Безпосередньо байндер використовувати не обов'язково, так як він входить в список [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/).
+- [`textarea`](/ua/api/binders/textarea/) _(для досвідчених)_ – Повертає байндер, що зв'язує властивість об'єкта з елементом ``textarea``. Безпосередньо байндер використовувати не обов'язково, так як він входить в список [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/).
 
 ## Типи
 

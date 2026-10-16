@@ -9,7 +9,7 @@ export default {
   prop: 'prop',
   style: 'style',
   text: 'text',
-  '-- Для просунутих': { type: 'separator', title: 'Для просунутих' },
+  '-- advanced': { type: 'separator', title: 'Для досвідчених' },
   input: 'input',
   output: 'output',
   progress: 'progress',

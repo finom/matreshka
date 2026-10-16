@@ -1,19 +1,19 @@
 export default {
   '-- Методи': { type: 'separator', title: 'Методи' },
+  'bind-node': 'bindNode',
+  calc: 'calc',
   chain: 'chain',
   class: 'Class',
+  mediate: 'mediate',
+  on: 'on',
   '-- Властивості': { type: 'separator', title: 'Властивості' },
   'default-binders': 'defaultBinders',
-  '-- Для просунутих': { type: 'separator', title: 'Для просунутих' },
-  'bind-node': 'bindNode',
+  '-- advanced': { type: 'separator', title: 'Для досвідчених' },
   'bind-optional-node': 'bindOptionalNode',
   'bind-sandbox': 'bindSandbox',
-  calc: 'calc',
   instantiate: 'instantiate',
   'look-for-binder': 'lookForBinder',
-  mediate: 'mediate',
   off: 'off',
-  on: 'on',
   once: 'once',
   'on-debounce': 'onDebounce',
   'parse-bindings': 'parseBindings',
@@ -24,6 +24,5 @@ export default {
   set: 'set',
   'to-matreshka': 'toMatreshka',
   trigger: 'trigger',
-  'unbind-node': 'unbindNode',
-  'use-dom-library': 'useDOMLibrary'
+  'unbind-node': 'unbindNode'
 };

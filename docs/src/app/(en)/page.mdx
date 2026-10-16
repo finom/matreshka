@@ -1,11 +1,12 @@
 ---
-title: "A reactive JavaScript framework | Matreshka.js"
-description: "Matreshka.js is a simple JavaScript framework for single-page applications: two-way data binding, calculated properties and events on plain classes."
+title: "Data binding for the HTML you already have | Matreshka.js"
+description: "Matreshka.js binds plain JavaScript objects to the HTML already on the page: two-way binding, computed values, lists. One script tag, or npm with types."
 ---
 
 import { OldLinks } from '@/components/old-links';
 import { PromoDemo } from '@/components/promo-demo';
 import { Hero } from '@/components/hero';
+import { ButtonLink } from '@/components/button-link';
 
 <OldLinks lang="en" />
 
@@ -13,45 +14,53 @@ import { Hero } from '@/components/hero';
 
 <Hero alt="Matreshka.js" />
 
-A framework for single-page applications creation. Type into the field: the property `x` is bound to both nodes.
+Reactive data binding for the HTML you already have. Type into the field: the property `x` is bound to both nodes.
 
-<PromoDemo text="A framework for single-page applications creation" />
+<PromoDemo text="Data binding for the HTML you already have" />
 
 ```html
 <input class="in" type="text">
 <output class="out"></output>
 
-<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
 <script>
-const app = new Matreshka();
-app.bindNode('x', '.in, .out');
-app.x = 'A framework for single-page applications creation';
+const { bindNode } = Matreshka;
+const app = {};
+bindNode(app, 'x', '.in, .out');
+app.x = 'Data binding for the HTML you already have';
 </script>
 ```
 
 <div className="mk-buttons">
-  <a href="/getting-started/">Get started</a>
-  <a href="https://github.com/finom/matreshka">GitHub</a>
-  <a href="/examples/">Tutorials and examples</a>
+  <ButtonLink href="/getting-started/" variant="default">Get started</ButtonLink>
+  <ButtonLink href="https://github.com/finom/matreshka" variant="outline">GitHub</ButtonLink>
+  <ButtonLink href="/examples/" variant="outline">Examples</ButtonLink>
 </div>
 
-## Features
+## Why Matreshka
 
-- Reactive API which allows to solve hard and confusing problems easily
-- High robustness of developed apps
-- The ability to refactor legacy applications without rewriting them from scratch
-- Only couple of hours is needed to master the framework because of an absence of complex concepts
+For pages whose HTML already exists: server-rendered apps, widgets, old code, a single HTML file. Add one `<script>` tag, bind object properties to nodes in JavaScript, keep the markup as it is. Since 2013; 3.0 is one package with ES modules and TypeScript types.
 
-Read more in the [introduction](/introduction/), or go straight to the [API reference](/api/).
+Read the [introduction](/introduction/) or the [API reference](/api/).
 
 ## Install
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
+```
 
 ```sh
 npm install matreshka
 ```
 
 ```js
-import Matreshka from 'matreshka';
+import { bindNode, calc, binders } from 'matreshka';
+```
+
+For AI coding agents (Claude Code, Cursor, Codex and others), add the Matreshka skill:
+
+```sh
+npx skills add finom/matreshka
 ```
 
 The documentation is also available [in Ukrainian](/ua/) and [in Russian](/ru/).

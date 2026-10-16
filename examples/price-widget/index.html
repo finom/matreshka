@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Price widget · Matreshka.js</title>
+  <style>
+    body { font: 17px/1.6 Georgia, serif; max-width: 38rem; margin: 3rem auto; padding: 0 1rem; color: #222; }
+  </style>
+</head>
+<body>
+  <article>
+    <h1>Is a heat pump worth it?</h1>
+    <p>An article on a page you don't control. The widget below is one element and one script; it finds its nodes only inside its own root, so the page's other inputs and classes don't matter.</p>
+
+    <div id="savings-widget" style="font: 15px/1.4 system-ui, sans-serif; border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1.5rem 0;">
+      <strong>Estimate your savings</strong>
+      <p>Yearly heating bill, $ <input class="bill" type="number" value="1800" min="0" step="100" style="width: 6rem;"></p>
+      <p>Efficiency gain <input class="gain" type="range" min="10" max="70" value="40"> <span class="gain-label"></span>%</p>
+      <p>You'd save about <b class="savings"></b> a year; the pump pays off in <b class="payback"></b> years.</p>
+    </div>
+
+    <p>The rest of the article goes on here.</p>
+  </article>
+
+  <script src="/matreshka.min.js"></script>
+  <script>
+    (() => {
+      const { bindSandbox, bindNode, mediate, calc, binders } = Matreshka;
+      const pumpCost = 9000;
+      const widget = {};
+
+      // every :sandbox selector below starts at the widget's root
+      bindSandbox(widget, '#savings-widget');
+      bindNode(widget, {
+        bill: ':sandbox .bill',
+        gain: ':sandbox .gain'
+      });
+
+      // the inputs give strings; the properties hold numbers
+      mediate(widget, ['bill', 'gain'], Number);
+
+      calc(widget, 'savings', ['bill', 'gain'], (bill, gain) => Math.round((bill * gain) / 100));
+      calc(widget, 'payback', 'savings', (savings) => (savings > 0 ? (pumpCost / savings).toFixed(1) : '—'));
+
+      bindNode(widget, 'gain', ':sandbox .gain-label', binders.text());
+      bindNode(widget, 'savings', ':sandbox .savings', binders.text((savings) => `$${savings}`));
+      bindNode(widget, 'payback', ':sandbox .payback', binders.text());
+    })();
+  </script>
+</body>
+</html>

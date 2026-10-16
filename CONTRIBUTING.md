@@ -13,22 +13,21 @@ npm ci
 The same gate CI runs:
 
 ```sh
-npm run lint && npm test && npm run build && npm run check:dist
+npm run lint && npm run typecheck && npm run test:coverage && npm run build && npm run check:dist
 ```
 
 A fix or a feature comes with a test; a fix's test fails on the code before it. Lint warnings fail the gate (`npx biome check --write .` fixes most of them).
 
 ## Layout
 
-- `packages/matreshka`, `packages/router`, `packages/parse-form` — the npm packages. `src/` is plain ES modules; `npm run build` writes `dist/esm`, `dist/cjs` and the UMD bundles.
+- `src/` — the package, in TypeScript. `src/index.ts` is the `matreshka` entry, `src/router/` and `src/parse-form/` are `matreshka/router` and `matreshka/parse-form`, `src/bundle.ts` is the script-tag bundle. `npm run build` writes `dist/`: ES modules with type declarations, and `dist/matreshka.js` and `dist/matreshka.min.js`.
+- `test/` — the tests (Vitest, jsdom).
 - `docs/` — the site at [matreshka.js.org](https://matreshka.js.org), in English, Ukrainian and Russian.
 - `examples/` — the example apps, published on the site.
 
-A new module in `src/` gets its deep import path through the package's `exports` map: `npm run exports` updates the maps, and a test fails when one is stale.
+## Changelog and releases
 
-## Releases
-
-`PACKAGE=<dir> npm run patch|minor` releases one package; the version's `CHANGELOG.md` section must exist first. The tag it pushes publishes from GitHub Actions.
+Every change worth a line goes under `## [Unreleased]` in `CHANGELOG.md` ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/)). `npm run patch|minor|major` (or `beta`, `beta-minor`, `beta-major` for a prerelease) runs the gate, turns `[Unreleased]` into the version's section, commits, and pushes the `v<version>` tag. The tag publishes to npm from GitHub Actions, with provenance, and makes the GitHub Release from that section; a prerelease goes to the npm dist-tag its id names (`3.1.0-beta.0` → `beta`). `npm run patch -- --dry-run` runs everything but the commit.
 
 ## Security
 

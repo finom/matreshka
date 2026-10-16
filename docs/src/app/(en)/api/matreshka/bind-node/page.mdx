@@ -18,7 +18,7 @@ Binds a property of an object to HTML node, implementing two-way data binding
 
 > Note that the method has [static alternative](/api/matreshka-static/bind-node/), which works just the same but accepts any object as the first argument, shifting rest arguments to the right.
 ```js
-import bindNode from 'matreshka/bindnode';
+import { bindNode } from 'matreshka';
 const object = {};
 bindNode(object, key, node, binder, eventOptions);
 // instead of this.bindNode(key, node, binder, eventOptions);
@@ -61,6 +61,8 @@ After binding is declared, you can set value of an object property in your most 
 // sets checked = true
 this.myKey = true;
 ```
+
+A change that comes from a node isn't written back into that node. The new value goes to the property and to the other nodes bound to it, while the node being edited keeps what the user typed. With a [mediator](/api/matreshka/mediate/) that turns the value into a number or into upper case, the field keeps its own text, and the property and the other nodes get the converted value.
 
 More complicated example: binding object property to jQuery UI widget
 ```html
@@ -301,7 +303,7 @@ To cancel this behavior (e. g. initiate synchronous binding) use ``debounceSetVa
 
 As described above ``bindNode`` uses debounce pattern on property change and on bound node change. This doesn't apply to a moment when ``bindNode`` is called. To remind, when the method is called a property or a node is changed immediately. When ``debounceGetValueOnBind`` and/or ``debounceSetValueOnBind`` are set to ``true`` then debounce is turned on for binding initialization as well.
 
-#### Flags ``debounceSetValueDelay=0`` и ``debounceGetValueDelay=0``
+#### Flags ``debounceSetValueDelay=0`` and ``debounceGetValueDelay=0``
 
 These flags allow to set debounce delay. ``debounceSetValueDelay`` is used when ``debounceSetValue`` or ``debounceSetValueOnBind`` is ``true``, ``debounceGetValueDelay`` is used when ``debounceGetValue`` or ``debounceGetValueOnBind`` is true.
 
