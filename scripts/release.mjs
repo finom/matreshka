@@ -1,7 +1,7 @@
 // `PACKAGE=<dir> npm run patch|minor` releases one package: after the gates it bumps the version, commits, and pushes a
 // `<dir>-v<version>` tag, whose push runs publish.yml. Several packages: one run each, in DIRS order.
 import { execSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { DIRS } from './exports.mjs';
 
 const type = process.argv[2];
@@ -32,6 +32,13 @@ sh('node scripts/sync-internal-deps.mjs');
 
 const { name, version } = manifest();
 if (version !== next) throw new Error(`npm version gave ${version}, not ${next}`);
+// `## [2.5.0] - unreleased` gets the release date
+const changelog = `packages/${dir}/CHANGELOG.md`;
+const today = new Date().toISOString().slice(0, 10);
+writeFileSync(
+  changelog,
+  readFileSync(changelog, 'utf8').replace(`## [${version}] - unreleased`, `## [${version}] - ${today}`)
+);
 sh(`git commit -am "chore(release): ${name}@${version}"`);
 sh('git push');
 sh(`git tag ${dir}-v${version} && git push origin ${dir}-v${version}`);
