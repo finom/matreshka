@@ -1,8 +1,0 @@
-{
-  "name": "matreshka-post-publish",
-  "dependencies": {
-    "matreshka": "*",
-    "matreshka-parse-form": "*",
-    "matreshka-router": "*"
-  }
-}

@@ -2,12 +2,11 @@
 // minified copy for <script> tags and CDNs.
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
-import { transformSync } from '@babel/core';
+import { parseSync, transformSync } from '@babel/core';
 import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import { rollup } from 'rollup';
-import { COMMONJS_DEFAULT } from './exports.mjs';
 
 const PACKAGES = {
   matreshka: {
@@ -58,26 +57,38 @@ function modules(base = src) {
   });
 }
 
+// A module with only a default export is its value in CommonJS (`require('matreshka/array')` is the class), as in
+// 2.4. Where `require` loads ES modules, it gets the same value through the `module.exports` export name of a
+// `.sync.js` wrapper; every module has one, since the exports map points there by pattern.
+function exportKinds(code, filename) {
+  const exports = parseSync(code, { filename, babelrc: false, configFile: false }).program.body.filter((node) =>
+    node.type.startsWith('Export')
+  );
+  const hasDefault = exports.some((node) => node.type === 'ExportDefaultDeclaration');
+  return { hasDefault, valueOnly: hasDefault && exports.length === 1 };
+}
+
 rmSync(dist, { recursive: true, force: true });
 
 for (const file of modules()) {
   const path = relative(src, file);
   const code = readFileSync(file, 'utf8');
+  const { hasDefault, valueOnly } = exportKinds(code, file);
   for (const format of ['esm', 'cjs']) {
     const plugins = [fullSpecifiers];
     if (format === 'cjs') plugins.push('@babel/plugin-transform-modules-commonjs');
     let output = transformSync(code, { filename: file, babelrc: false, configFile: false, plugins }).code;
-    if (format === 'cjs' && COMMONJS_DEFAULT[dir].includes(path)) output += '\nmodule.exports = exports.default;\n';
+    if (format === 'cjs' && valueOnly) output += '\nmodule.exports = exports.default;\n';
     const out = join(dist, format, path);
     mkdirSync(dirname(out), { recursive: true });
     writeFileSync(out, `${output}\n`);
   }
-}
-for (const path of COMMONJS_DEFAULT[dir]) {
   const name = `./${path.split('/').pop()}`;
   writeFileSync(
     join(dist, 'esm', path.replace(/\.js$/, '.sync.js')),
-    `import value from '${name}';\n\nexport { value as 'module.exports', value as default };\n`
+    valueOnly
+      ? `import value from '${name}';\n\nexport { value as 'module.exports', value as default };\n`
+      : `export * from '${name}';\n${hasDefault ? `export { default } from '${name}';\n` : ''}`
   );
 }
 writeFileSync(join(dist, 'cjs', 'package.json'), '{ "type": "commonjs" }\n');

@@ -31,12 +31,12 @@
     "./package.json": "./package.json",
     "./dist/*": "./dist/*",
     "./*.js": {
-      "module-sync": "./dist/esm/*.js",
+      "module-sync": "./dist/esm/*.sync.js",
       "import": "./dist/esm/*.js",
       "require": "./dist/cjs/*.js"
     },
     "./*": {
-      "module-sync": "./dist/esm/*.js",
+      "module-sync": "./dist/esm/*.sync.js",
       "import": "./dist/esm/*.js",
       "require": "./dist/cjs/*.js"
     }

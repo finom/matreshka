@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Ships ES modules (`dist/esm`) and CommonJS (`dist/cjs`) with an `exports` map; every module keeps its deep import path (`matreshka-parse-form/<path>`). On Node.js versions where `require` loads ES modules, `require` and `import` share one copy.
+- Ships ES modules (`dist/esm`) and CommonJS (`dist/cjs`) with an `exports` map; every module keeps its deep import path (`matreshka-parse-form/<path>`), and `require` of a module with only a default export returns that value, as before. On Node.js versions where `require` loads ES modules, `require` and `import` share one copy.
 - The UMD bundles are in the package: `dist/matreshka-parse-form.js` and `dist/matreshka-parse-form.min.js` (also on jsDelivr and unpkg).
 - The code targets current browsers and Node.js; the bundles are no longer compiled to ES5.
 - Imports without a DOM (server-side rendering, Node.js, test runners without jsdom).

@@ -24,14 +24,18 @@ const doubled = (Matreshka) => {
 if (commonjs) {
   const Matreshka = require('matreshka');
   check(require.resolve('matreshka').includes('/dist/cjs/'), 'cjs: require does not resolve to dist/cjs');
-  const bindNode = require('matreshka/bindnode').default;
-  const from = require('matreshka/array/from.js').default;
+  // as in 2.4, a module with only a default export is its value
+  const bindNode = require('matreshka/bindnode');
+  const from = require('matreshka/array/from.js');
+  const MatreshkaArray = require('matreshka/array');
+  const { html } = require('matreshka/binders');
   const Router = require('matreshka-router/router');
   const initRouter = require('matreshka-router');
   const parseForm = require('matreshka-parse-form');
   check(typeof Matreshka === 'function' && typeof Matreshka.Array === 'function', 'cjs: matreshka');
   check(typeof Matreshka.toMatreshka === 'function', 'cjs: Matreshka.toMatreshka');
   check(typeof bindNode === 'function' && from([1, 2]).length === 2, 'cjs: deep paths');
+  check(MatreshkaArray === Matreshka.Array && typeof html === 'function', 'cjs: deep paths are values');
   check(typeof Router === 'function' && typeof initRouter === 'function', 'cjs: router');
   check(typeof parseForm === 'function', 'cjs: parse-form');
   const object = doubled(Matreshka);
@@ -67,10 +71,9 @@ globalThis.document = window.document;
   check(router.path === '/6/', 'esm: router');
 
   check(require('matreshka') === Matreshka, 'require and import give different Matreshka classes');
-  check(
-    require('matreshka/bindnode').default === (await import('matreshka/bindnode')).default,
-    'deep paths: two copies'
-  );
+  check(require('matreshka/bindnode') === (await import('matreshka/bindnode')).default, 'deep paths: two copies');
+  check(require('matreshka/array') === Matreshka.Array, 'require(matreshka/array) is not the class');
+  check(require('matreshka/binders').html === (await import('matreshka/binders')).html, 'binders: two copies');
   check(require('matreshka-router/router') === Router, 'require and import give different Router classes');
   check(require('matreshka-router') === (await import('matreshka-router')).default, 'initRouter: two copies');
   check(require('matreshka-parse-form') === parseForm, 'parseForm: two copies');

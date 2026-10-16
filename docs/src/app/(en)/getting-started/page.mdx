@@ -47,10 +47,10 @@ import bindNode from 'matreshka/bindnode';
 import { prop } from 'matreshka/binders';
 ```
 
-CommonJS gets the same modules through `.default`:
+CommonJS gets the same modules with `require`:
 
 ```js
-const bindNode = require('matreshka/bindnode').default;
+const bindNode = require('matreshka/bindnode');
 ```
 
 The import of the main module pulls the entire framework.

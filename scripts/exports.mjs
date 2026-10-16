@@ -8,21 +8,12 @@ import { join, relative } from 'node:path';
 
 export const DIRS = ['matreshka', 'router', 'parse-form'];
 
-// the modules whose CommonJS export is the value itself (`require('matreshka')` is the class), not `{ default }`
-export const COMMONJS_DEFAULT = {
-  matreshka: ['index.js'],
-  router: ['index.js', 'router.js'],
-  'parse-form': ['index.js']
-};
-
+// `module-sync` goes to the `.sync.js` wrapper next to each module (see build-package.mjs)
 const target = (path) => ({
-  'module-sync': `./dist/esm/${path}`,
+  'module-sync': `./dist/esm/${path.replace(/\.js$/, '.sync.js')}`,
   import: `./dist/esm/${path}`,
   require: `./dist/cjs/${path}`
 });
-
-// `require` gets their value through the `module.exports` export name of a `.sync.js` wrapper
-const valueTarget = (path) => ({ ...target(path), 'module-sync': `./dist/esm/${path.replace(/\.js$/, '.sync.js')}` });
 
 function directoriesWithIndex(root, dir = root, found = []) {
   for (const name of readdirSync(dir).sort()) {
@@ -35,12 +26,7 @@ function directoriesWithIndex(root, dir = root, found = []) {
 }
 
 export function expectedExports(dir) {
-  const exports = { '.': valueTarget('index.js') };
-  for (const path of COMMONJS_DEFAULT[dir]) {
-    if (path === 'index.js') continue;
-    exports[`./${path.replace(/\.js$/, '')}`] = valueTarget(path);
-    exports[`./${path}`] = valueTarget(path);
-  }
+  const exports = { '.': target('index.js') };
   for (const path of directoriesWithIndex(`packages/${dir}/src`)) exports[`./${path}`] = target(`${path}/index.js`);
   exports['./package.json'] = './package.json';
   exports['./dist/*'] = './dist/*';

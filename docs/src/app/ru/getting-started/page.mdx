@@ -49,10 +49,10 @@ import bindNode from 'matreshka/bindnode';
 import { prop } from 'matreshka/binders';
 ```
 
-В CommonJS эти модули доступны через `.default`:
+В CommonJS эти модули доступны через `require`:
 
 ```js
-const bindNode = require('matreshka/bindnode').default;
+const bindNode = require('matreshka/bindnode');
 ```
 
 Импорт главного модуля подтянет весь фреймворк.

@@ -30,25 +30,15 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./router": {
-      "module-sync": "./dist/esm/router.sync.js",
-      "import": "./dist/esm/router.js",
-      "require": "./dist/cjs/router.js"
-    },
-    "./router.js": {
-      "module-sync": "./dist/esm/router.sync.js",
-      "import": "./dist/esm/router.js",
-      "require": "./dist/cjs/router.js"
-    },
     "./package.json": "./package.json",
     "./dist/*": "./dist/*",
     "./*.js": {
-      "module-sync": "./dist/esm/*.js",
+      "module-sync": "./dist/esm/*.sync.js",
       "import": "./dist/esm/*.js",
       "require": "./dist/cjs/*.js"
     },
     "./*": {
-      "module-sync": "./dist/esm/*.js",
+      "module-sync": "./dist/esm/*.sync.js",
       "import": "./dist/esm/*.js",
       "require": "./dist/cjs/*.js"
     }

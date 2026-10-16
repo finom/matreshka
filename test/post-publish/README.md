@@ -1,1 +1,0 @@
-The folder contains a test which only checks if all packages correctly deployed to NPM. More specifically, if we didn't mess up with exporting (so you don't need to use `require('foo').default`) and if we've published `/npm` folder instead of package's root. Tests for libraries contain at `/packages/*/test`.
