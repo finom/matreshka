@@ -1,198 +1,191 @@
-A router for Seemple.js
-============
+# matreshka-router
 
-[![npm version](https://badge.fury.io/js/seemple-router.svg)](https://badge.fury.io/js/seemple-router)
+[![npm version](https://img.shields.io/npm/v/matreshka-router.svg)](https://www.npmjs.com/package/matreshka-router)
 
+Two-way binding between object properties and parts of the URL, for [Matreshka.js](https://matreshka.js.org).
 
-[Demo](https://finom.github.io/seemple/router-demo.html#!/foo/bar/baz/)
+[Demo](https://matreshka.js.org/examples/router/)
 
-Installing:
+## Installing
+
 ```
-npm install seemple-router
+npm install matreshka matreshka-router
 ```
-
-A bundle (downloadable version) lives at [gh-pages branch](https://github.com/finom/seemple/tree/gh-pages)
-
-# tl;dr
-
-The library turns on two-way data binding between properties and parts of URL.
 
 ```js
-// location.hash is used there
-Seemple.initRouter(object, '/a/b/c/');
+import initRouter from 'matreshka-router';
+import Router from 'matreshka-router/router';
+```
+
+CommonJS:
+
+```js
+const initRouter = require('matreshka-router');
+const Router = require('matreshka-router/router');
+```
+
+In a page, load the bundle after Matreshka's. It adds `Matreshka.initRouter` and `Matreshka.Router`:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka-router@2/dist/matreshka-router.min.js"></script>
+```
+
+Imported as a module, it adds them only when a global `Matreshka` exists (the bundle in a page), never to an imported `Matreshka`.
+
+## tl;dr
+
+```js
+// location.hash is used
+initRouter(object, '/a/b/c/');
 object.a = 'foo';
 object.b = 'bar';
 object.c = 'baz';
 
-// makes location.hash to be #!/foo/bar/baz/
+// location.hash becomes #!/foo/bar/baz/
 ```
 
-If you need to use History API instead of hash, pass ``"history"`` as the second argument.
+To use the History API instead of the hash, pass `'history'` as the third argument.
 
 ```js
-Seemple.initRouter(object, '/a/b/c/', 'history');
-```
-
-CJS module import:
-
-```js
-const initRouter = require('seemple-router');
 initRouter(object, '/a/b/c/', 'history');
 ```
 
 --------
 
-
-How does "traditional" routing works? A developer defines a rule (route) and defines a function which will be called when current path fits given rule.
+A "traditional" router takes a rule (route) and a function that runs when the current path fits the rule.
 
 ```js
-route("books/:id", id => {
-	// do something
+route('books/:id', (id) => {
+  // do something
 });
 ```
 
-The principle of **seemple-router** is different. You define which part of URL (both [hash](https://developer.mozilla.org/ru/docs/Web/API/Window/location), and [HTML5 History](https://developer.mozilla.org/ru/docs/Web/API/History_API) are supported) need to be synchronized with given property.
+**matreshka-router** works differently. You say which part of the URL ([hash](https://developer.mozilla.org/en-US/docs/Web/API/Location/hash) or [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) path) is synchronized with which property.
 
-Let's say you need to synchronize ``"x"`` with the first part of ``location.hash`` and ``"y"`` with the second.
+To synchronize `x` with the first part of `location.hash` and `y` with the second:
 
 ```js
-Seemple.initRouter(object, '/x/y/');
+initRouter(object, '/x/y/');
 ```
 
-Now when you type...
+Now this...
 
 ```js
 object.x = 'foo';
 object.y = 'bar';
 ```
 
-...``location.hash`` is automatically changed to ``#!/foo/bar/``
+...changes `location.hash` to `#!/foo/bar/`.
 
-
-And vice versa. When the URL is changed manually or via back and forward buttons, the properties will be changed automatically.
+And the other way round: when the URL changes by hand or with the back and forward buttons, the properties change.
 
 ```js
 location.hash = '#!/baz/qux/';
 
 // ... after a moment
-console.log(object.x, object.y); // ‘baz’, ‘qux’
+console.log(object.x, object.y); // 'baz', 'qux'
 ```
 
-As usually you can listen property changes with [Seemple#on](https://seemple.js.org/#!Seemple-on) method.
+Listen to the changes with [on](https://matreshka.js.org/#!Matreshka-on):
 
 ```js
-Seemple.on(object, 'change:x', handler);
-// for Seemple instances: this.on('change:x', handler);
+Matreshka.on(object, 'change:x', handler);
+// for Matreshka instances: this.on('change:x', handler);
 ```
 
-## An asterisk syntax
+Values are encoded in the URL and decoded back: `object.x = 'a b/c'` gives `#!/a%20b%2Fc/`, and `object.x` stays `'a b/c'`. A hash that doesn't start with `#!` (an anchor such as `#top`) is not a route: the properties get `null`.
 
-You can pass a string which contain asterisks to ``initRouter`` if you don't need to synchronize some part of the path with a property.
+## The asterisk syntax
+
+Put an asterisk in the route for a part of the path that isn't synchronized with a property.
 
 ```js
-Seemple.initRouter(object, '/x/*/y');
+initRouter(object, '/x/*/y');
 ```
 
-If the hash looks like ``#!/foo/bar/baz/``, then ``this.x = "foo"`` and ``this.y = "baz"``.
+If the hash is `#!/foo/bar/baz/`, then `object.x` is `'foo'` and `object.y` is `'baz'`.
 
-This feature is useful in cases when classes control different parts of the path.
-
+This is useful when classes control different parts of the path.
 
 **class1.js**
 
 ```js
-Seemple.initRouter(this, '/x/*/');
+initRouter(this, '/x/*/');
 ```
 
 **class2.js**
 
 ```js
-Seemple.initRouter(this, '/*/y/');
+initRouter(this, '/*/y/');
 ```
+
+When a property changes, the parts of the URL after the route are dropped; an asterisk at the end keeps that part. Subscribing doesn't drop anything.
 
 ## Two things to remember
 
-**1.** If a property has truthy value then URL will be changed immediately after ``initRouter`` call.
-
+**1.** If a property has a truthy value, the URL changes right after the `initRouter` call. A property that is `undefined`, `null` or `''` gets its value from the URL.
 
 ```js
 object.x = 'foo';
 
-Seemple.initRouter(object, '/x/y/');
-```
-
-**2.** If a property gets falsy value then all next listed properties will get ``null`` as new value.
-
-```js
-Seemple.initRouter(object, '/x/y/z/u/');
-
-Seemple.y = null; // makes this.z and this.u to be null as well
-```
-
-The idea is to get actual state of URL. It could be weird to get ``"z"`` with value ``"foo"`` in case of non-existing bound part of URL.
-
-## HTML5 History API
-
-The plugin supports  HTML5 History as well. To initialize it you need to pass optional argument ``type`` with ``"history"`` value to the ``initRoute`` function (by default ``type`` is ``"hash"``).
-
-```js
-Seemple.initRouter(object, 'x/y/z/', 'history');
-```
-
-## CommonJS import
-
-If an application is located at CJS environment  (NodeJS, Webpack, Rollup...) then requiring ``seemple-router`` doesn't add any static properties to ``Seemple`` class.
-
-```js
-const initRouter = require('seemple-router');
 initRouter(object, '/x/y/');
 ```
 
-``Router`` class import (read below):
+**2.** If a property gets a falsy value, all the properties after it get `null`.
 
 ```js
-const Router = require('seemple-router/router');
+initRouter(object, '/x/y/z/u/');
+
+object.y = null; // makes object.z and object.u null as well
+```
+
+The properties always show the state of the URL: `z` with the value `'foo'` would be odd when that part of the URL doesn't exist.
+
+## HTML5 History API
+
+Pass `'history'` as the third argument (the type; the default is `'hash'`).
+
+```js
+initRouter(object, '/x/y/z/', 'history');
+```
+
+The router reads and writes `location.pathname`; the query string and the hash stay as they are. Each change adds a history entry; the back and forward buttons update the properties, the entry of the first page load included.
+
+## `Router` class
+
+**matreshka-router** is built on the `Router` class (`Matreshka.Router` in a page). Its only argument is the type: `'hash'`, `'history'` or any other string.
+
+There are two instances, `Router.hash` and `Router.history`. They start lazily: loading the library does nothing until something subscribes.
+
+These two are singletons: `new Router('hash')` returns `Router.hash` instead of a new instance. All the URL handling lives in one place, and the objects passed to `initRouter` subscribe to the router of their type.
+
+Create other instances by hand to build a path for later use. Their properties don't touch `location.hash` and don't call `pushState`.
+
+### Properties
+
+- `path`: the path, for example `/foo/bar/baz/`, with each part encoded.
+- `hashPath`: the path with the hashbang, for example `#!/foo/bar/baz/`.
+- `parts`: the parts of the path, decoded, for example `['foo', 'bar', 'baz']`.
+
+These properties are made with [calc](https://matreshka.js.org/#!Matreshka-calc): change one, and the others follow.
+
+```js
+Router.hash.path = '/foo/bar/baz/';
+```
+
+Changing them updates the URL and the subscribed objects.
+
+### Methods
+
+- `subscribe(object, route)` subscribes an object to the router.
+- `init()` starts the router; `subscribe` calls it, so there is no need to call it by hand.
+
+```js
 const customRouter = new Router('myType');
-```
-
-## Additional information
-
-### ``Seemple.Router`` class
-
-**seemple-router** is powered by  ``Seemple.Router`` class. It accepts only one argument - router type (``"hash"``, ``"history"`` or a custom string).
-
-By default, the library creates two instances of ``Seemple.Router`` with types ``hash`` and ``history``. They live at ``Seemple.Router.hash`` and ``Seemple.Router.history``. **seemple-router** uses lazy initialization so when you just attach the script onto webpage, the library does nothing.
-
-For these two types of instances the singleton pattern is used. That means when you're trying to create another instance of ``hash`` routing via ``new Seemple.Router('hash')``, the ``Seemple.Router.hash`` will be returned instead of new instance creation. This logic centralizes URL handling, gives positive effect to the performance and doesn't make potential collisions. Objects which are handled by ``initRouter`` just subscribe to the changes of needed type of the router.
-
-Custom instances (non-hash and non-history) of ``Seemple.Router`` can be created manually in case if you generate URL for further use. At this case changes of target properties don't affect on ``hash`` and don't call ``pushState``.
-
-#### Properties
-
-``Seemple.Router`` instances has 3 properties.
-
-- ``path`` - contains actual URL, eg ``/foo/bar/baz/``.
-- ``hashPath`` - contains actual URL and hashbang as a prefix, eg ``#!/foo/bar/baz/``
-- ``parts`` - contains an array of all parts of the path, eg ``[‘foo’, ‘bar’, ‘baz’]``.
-
-All these properties are created using [calc](https://seemple.io/#!Seemple-calc), which means when you change one property, the others are changed automatically.
-
-```js
-Seemple.Router.hash.path = '/foo/bar/baz/';
-```
-
-By changing these properties you can trigger needed procedures (update the path, change subscribed objects etc.)
-
-#### Methods
-
-- ``subscribe(object, route)`` - subscribes object for route changes.
-- ``init()`` - used for lazy initialization in  ``subscribe`` method (no need to call it manually).
-
-```js
-const customRouter = new Seemple.Router('myType');
 const object = {
-	a: 'foo',
-	b: 'bar'
+  a: 'foo',
+  b: 'bar'
 };
 
 customRouter.subscribe(object, '/a/b/');

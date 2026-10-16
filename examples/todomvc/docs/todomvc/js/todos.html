@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>todos.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="app.html">
+                  ./todomvc/js/app.js
+                </a>
+              
+                
+                <a class="source" href="todo.html">
+                  ./todomvc/js/todo.js
+                </a>
+              
+                
+                <a class="source" href="todos.html">
+                  ./todomvc/js/todos.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>todos.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p><strong>todos.js</strong> - is the largest file in this app which contains most of logic. In bigger projects it is better to divide applications into smaller parts.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Todos</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Matreshka</span>.<span class="hljs-title">Array</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><a href="https://matreshka.js.org/api/matreshka-array/model/">Model</a> defines the class of items which will be included into the collection. In this case, the items of the collection will be instances of the <a href="todo.html">Todo</a> class.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">get</span> Model() {
+        <span class="hljs-keyword">return</span> Todo;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Defining the <a href="https://matreshka.js.org/api/matreshka-array/item-renderer/">itemRenderer</a> property, you create a renderer for every added item of the array (see HTML code).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">get</span> itemRenderer() {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'#todo_item_template'</span>;
+    }
+
+    <span class="hljs-keyword">constructor</span>() {
+        <span class="hljs-keyword">super</span>();
+        <span class="hljs-keyword">this</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Add the dependency of the <code>&quot;leftLength&quot;</code> property on <code>&quot;length&quot;</code> and <code>&quot;completedLength&quot;</code> ones, and use their difference as a value. The application listens to the changes in these properties calculating <code>“leftLength&quot;</code> on every their changing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .calc(<span class="hljs-string">'leftLength'</span>, [<span class="hljs-string">'length'</span>, <span class="hljs-string">'completedLength'</span>], (length, completedLength) =&gt; length - completedLength)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>The <code>&quot;bindings&quot;</code> method adds data bindings between the properties of the class instance and DOM nodes. The <code>&quot;events&quot;</code> method, as you may guess, adds the event handlers. These names of the methods are not special; they group different actions for the code purity. After their launching, take the data out of the local storage and restore the todo items from it using <a href="https://matreshka.js.org/api/matreshka-array/recreate/">recreate</a> method. After all we initialize <a href="https://github.com/finom/matreshka/tree/main/packages/router">a router</a>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+            .bindings()
+            .events()
+            .recreate(<span class="hljs-built_in">JSON</span>.parse(localStorage[<span class="hljs-string">'todos-matreshka'</span>] || <span class="hljs-string">'[]'</span>));
+
+        Matreshka.initRouter(<span class="hljs-keyword">this</span>, <span class="hljs-string">'/state/'</span>);
+    }
+
+    bindings() {
+        <span class="hljs-keyword">const</span> { binders } = Matreshka;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Declare a sandbox.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .bindNode(<span class="hljs-string">'sandbox'</span>, <span class="hljs-string">'.todoapp'</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Bind some other nodes (<code>main</code>, <code>footer</code>, etc.).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .bindNode({
+                <span class="hljs-attr">main</span>: <span class="hljs-string">':sandbox .main'</span>,
+                <span class="hljs-attr">footer</span>: <span class="hljs-string">':sandbox .footer'</span>,
+                <span class="hljs-attr">newTodo</span>: <span class="hljs-string">':sandbox .new-todo'</span>,
+                <span class="hljs-attr">container</span>: <span class="hljs-string">':sandbox .todo-list'</span>,
+                <span class="hljs-attr">allCompleted</span>: <span class="hljs-string">':sandbox .toggle-all'</span>,
+                <span class="hljs-attr">clearCompleted</span>: <span class="hljs-string">':sandbox .clear-completed'</span>
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>The next call of <a href="https://matreshka.js.org/api/matreshka/bind-node/">bindNode</a> makes the visibility of HTML nodes dependable on the values of corresponding properties (if the value passes a non-strict test for equality <code>true</code>, the element will be shown, otherwise - hidden).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .bindNode({
+                <span class="hljs-attr">completedLength</span>: <span class="hljs-string">':bound(clearCompleted)'</span>,
+                <span class="hljs-attr">length</span>: <span class="hljs-string">':bound(main), :bound(footer)'</span>
+            }, binders.display())</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>The next two bindings change inner HTML of the bound nodes depending on a value of the corresponding properties.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .bindNode(<span class="hljs-string">'completedLength'</span>, <span class="hljs-string">':bound(clearCompleted) .completed-length'</span>, binders.html())
+            .bindNode(<span class="hljs-string">'leftLength'</span>, <span class="hljs-string">'.todo-count'</span>, {
+                setValue(v) {
+                    <span class="hljs-keyword">this</span>.innerHTML = <span class="hljs-string">`&lt;strong&gt;<span class="hljs-subst">${v}</span>&lt;/strong&gt; item<span class="hljs-subst">${v !== <span class="hljs-number">1</span> ? <span class="hljs-string">'s'</span> : <span class="hljs-string">''</span>}</span> left`</span>;
+                }
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>This binding controls which exact link (“All”, “Active”, “Completed”) will be highlighted in bold. The following technique has been used for demonstrating the work of <code>bindNode</code> here: we bind the <code>#filters</code> element to the <code>&quot;state&quot;</code> property, but in the binder we manipulate the links inside this element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .bindNode(<span class="hljs-string">'state'</span>, <span class="hljs-string">'.filters'</span>, {
+                setValue(v) {
+                    <span class="hljs-keyword">const</span> links = [...this.querySelectorAll(<span class="hljs-string">'a'</span>)];
+
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> link <span class="hljs-keyword">of</span> links) {
+                        link.classList.toggle(<span class="hljs-string">'selected'</span>, link.getAttribute(<span class="hljs-string">'href'</span>) === <span class="hljs-string">`#!/<span class="hljs-subst">${v || <span class="hljs-string">''</span>}</span>`</span>);
+                    }
+                }
+            });
+    }
+
+    events() {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Add an event handler to the changing of the <code>&quot;JSON&quot;</code> property which keeps the representation of the todo list as JSON string. In order to access a hard drive as rare as possible (because it works slower than RAM), the <a href="https://matreshka.js.org/api/matreshka/on-debounce/">onDebounce</a> method is used, it prevents a multiple invocation of a handler over a period of time.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .onDebounce(<span class="hljs-string">'change:JSON'</span>, (evt) =&gt; {
+                localStorage[<span class="hljs-string">'todos-matreshka'</span>] = evt.value;
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>If the Enter key is pressed in the input bound to the <code>“newTodo&quot;</code> property and the trimmed value of this property is not an empty string, add a new todo item using the <code>push</code> method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .on(<span class="hljs-string">'keyup::newTodo'</span>, (evt) =&gt; {
+                <span class="hljs-keyword">if</span> (evt.which === ENTER_KEY) {
+                    <span class="hljs-keyword">const</span> newTodo = <span class="hljs-keyword">this</span>.newTodo.trim();
+
+                    <span class="hljs-keyword">if</span> (newTodo) {
+                        <span class="hljs-keyword">this</span>.push({
+                            <span class="hljs-attr">title</span>: newTodo
+                        });
+                    }
+
+                    <span class="hljs-keyword">this</span>.newTodo = <span class="hljs-string">''</span>;
+                }
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>When the value of the <code>&quot;allCompleted&quot;</code> property is changed, we change <code>&quot;completed&quot;</code> for all todo items to the same value. The <code>&quot;silent&quot;</code> flag means that the <code>&quot;change:completed&quot;</code> event must not be triggered.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .on(<span class="hljs-string">'change:allCompleted'</span>, (evt) =&gt; {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> todo <span class="hljs-keyword">of</span> <span class="hljs-keyword">this</span>) {
+                    todo.set(<span class="hljs-string">'completed'</span>, evt.value, {
+                        <span class="hljs-attr">silent</span>: <span class="hljs-literal">true</span>
+                    });
+                }
+
+                <span class="hljs-keyword">this</span>.completedLength = evt.value ? <span class="hljs-keyword">this</span>.length : <span class="hljs-number">0</span>;
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>A mouse click on the <code>&#39;#clear-completed&#39;</code> node deletes all the performed items using the <a href="https://matreshka.js.org/api/matreshka-array/pull/">pull</a> method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .on(<span class="hljs-string">'click::clearCompleted'</span>, () =&gt; {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.length; i++) {
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>[i].completed) {
+                        <span class="hljs-keyword">this</span>.pull(i--);
+                    }
+                }
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>The next handler is called by two events. The first one is <code>&quot;modify&quot;</code> which fires when <code>Matreshka.Array</code> is changed (when some elements are added or deleted). The second one is <code>&quot;*@change:completed&quot;</code> which means that we listen to the <code>&quot;change:completed&quot;</code> event for every item of todo list. As a result, the handler calls when an item is added or deleted and when the <code>&quot;completed&quot;</code> property of one of the items is changed. The code of the handler is self-explanatory: <code>&quot;allCompleted&quot;</code> becomes equal <code>true</code> if every item is performed and inversely – <code>false</code> when some item is not performed. Then the value of the <code>&quot;completedLength&quot;</code> property is calculated, which contains a number of the performed items.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .on(<span class="hljs-string">'modify *@change:completed'</span>, () =&gt; {
+                <span class="hljs-keyword">this</span>.set(<span class="hljs-string">'allCompleted'</span>, <span class="hljs-keyword">this</span>.every(<span class="hljs-function"><span class="hljs-params">todo</span> =&gt;</span> todo.completed), {
+                    <span class="hljs-attr">silent</span>: <span class="hljs-literal">true</span>
+                });
+
+                <span class="hljs-keyword">this</span>.completedLength = <span class="hljs-keyword">this</span>.filter(<span class="hljs-function"><span class="hljs-params">todo</span> =&gt;</span> todo.completed).length;
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>If some items have been added or deleted or the <code>&quot;completed&quot;</code> property of one of the items has been changed or the value of the <code>&quot;allCompleted&quot;</code> property has been changed, prepare the representation of our todo list in order to place it into the <code>localStorage</code> afterwards.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .on(<span class="hljs-string">'modify *@change:completed change:allCompleted'</span>, () =&gt; {
+                <span class="hljs-keyword">this</span>.JSON = <span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-keyword">this</span>);
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>The next strings control how the visibility of the items from the todo list is controlled by <code>location.hash</code> (or the <code>&quot;state&quot;</code> property). This part can be implemented in several ways. The way of adding dependencies of one property on the others using the <a href="https://matreshka.js.org/api/matreshka/calc/">calc</a> method has been chosen here. What happens here? We listen to the <code>&quot;addone&quot;</code> event which fires when a new item is added to the todo list. The event handler receives the object (<code>evt</code>) as an argument containing the <code>&quot;addedItem&quot;</code> property which is the added item. We add the dependency of the <code>&quot;visible&quot;</code> property for the added item on <code>todos.state</code> and on the own <code>&quot;completed&quot;</code> property.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .on(<span class="hljs-string">'addone'</span>, (evt) =&gt; {
+                <span class="hljs-keyword">const</span> todo = evt.addedItem;
+
+                todo.calc(<span class="hljs-string">'visible'</span>, [{
+                    <span class="hljs-attr">object</span>: todo,
+                    <span class="hljs-attr">key</span>: <span class="hljs-string">'completed'</span>
+                }, {
+                    <span class="hljs-attr">object</span>: <span class="hljs-keyword">this</span>,
+                    <span class="hljs-attr">key</span>: <span class="hljs-string">'state'</span>
+                }], (completed, state) =&gt; !state
+                        || (state === <span class="hljs-string">'completed'</span> &amp;&amp; completed)
+                        || (state === <span class="hljs-string">'active'</span> &amp;&amp; !completed));
+            });
+    }
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

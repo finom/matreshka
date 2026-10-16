@@ -1,0 +1,56 @@
+---
+title: "Matreshka.binders.prop"
+sidebarTitle: "prop"
+description: "Matreshka.binders.prop: Повертає байндер, який змінює властивість DOM елемента на значення властивості об'єкта"
+---
+
+# Matreshka.binders.prop
+
+**Метод** · Починаючи з версії 0.3
+
+**Імпорт:**
+
+```js
+import prop from 'matreshka/binders/prop';
+// або
+import { prop } from 'matreshka/binders';
+```
+
+```js
+Matreshka.binders.prop(property, [mappingFn]) → binder
+```
+
+Повертає байндер, який змінює властивість DOM елемента на значення властивості об'єкта
+
+Значення властивості можна перетворити за допомогою переданої функції ``mappingFn``.
+
+**Повертає:** [`binder`](/ua/api/types/binder/)
+
+## Аргументи
+
+| Ім'я | Тип | Опис |
+| --- | --- | --- |
+| `property` | [`string`](/ua/api/types/string/) | Ім'я властивості |
+| `mappingFn` (необов'язковий) | [`function`](/ua/api/types/function/) | Відображаюча функція |
+
+## Приклади
+
+```js
+this.bindNode('disabled', '.my-button',
+    Matreshka.binders.prop('disabled'));
+
+// встановлює властивість disabled = true для елемента
+this.disabled = true;
+
+// встановлює властивість disabled = false для елемента
+this.disabled = false;
+```
+
+**Використання ``mappingFn``**
+
+```js
+this.bindNode('myProp', '.my-node'
+    Matreshka.binders.prop('foo', value => `Hello, ${value}`));
+
+this.myProp = 'World'; // властивість елемента foo має значення "Hello, World"
+```

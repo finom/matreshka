@@ -1,0 +1,57 @@
+---
+title: "Реактивний JavaScript фреймворк | Matreshka.js"
+description: "Matreshka.js — простий JavaScript фреймворк для односторінкових додатків: двостороннє зв’язування даних, залежні властивості та події на звичайних класах."
+---
+
+import { OldLinks } from '@/components/old-links';
+import { PromoDemo } from '@/components/promo-demo';
+import { Hero } from '@/components/hero';
+
+<OldLinks lang="ua" />
+
+# Matreshka.js
+
+<Hero alt="Matreshka.js" />
+
+Простий фреймворк для створення односторінкових веб додатків. Введіть текст у поле: властивість `x` зв’язана з обома вузлами.
+
+<PromoDemo text="Простий фреймворк для створення односторінкових веб додатків" />
+
+```html
+<output class="out"></output>
+<input class="in" type="text">
+
+<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+<script>
+const app = new Matreshka();
+app.bindNode('x', '.in, .out');
+app.x = 'Простий фреймворк для створення односторінкових веб додатків';
+</script>
+```
+
+<div className="mk-buttons">
+  <a href="/ua/getting-started/">Почати</a>
+  <a href="https://github.com/finom/matreshka">GitHub</a>
+  <a href="/ua/examples/">Приклади та посібники</a>
+</div>
+
+## Фічі
+
+- Реактивний API, що дозволяє ефективно вирішувати складні й заплутані задачі
+- Менше помилок у коді
+- Можливість рефакторінга легасі додатків, без переписування з нуля
+- Освоїти фреймворк можна за кілька годин завдяки відсутності складних концепцій
+
+Детальніше у [вступі](/ua/introduction/), або одразу до [довідника API](/ua/api/).
+
+## Встановлення
+
+```sh
+npm install matreshka
+```
+
+```js
+import Matreshka from 'matreshka';
+```
+
+Документація також є [англійською](/) і [російською](/ru/).

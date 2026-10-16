@@ -1,11 +1,13 @@
-# seemple.js [![npm version](https://badge.fury.io/js/seemple.svg)](https://badge.fury.io/js/seemple) [![Coverage Status](https://coveralls.io/repos/github/finom/seemple/badge.svg?branch=master)](https://coveralls.io/github/finom/seemple?branch=master) [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+# Matreshka.js [![npm version](https://img.shields.io/npm/v/matreshka.svg)](https://www.npmjs.com/package/matreshka) [![CI](https://github.com/finom/matreshka/actions/workflows/ci.yml/badge.svg)](https://github.com/finom/matreshka/actions/workflows/ci.yml) [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/finom/matreshka/badge)](https://scorecard.dev/viewer/?uri=github.com/finom/matreshka)
 
+<a href="https://matreshka.js.org">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://matreshka.js.org/logo/matreshka-full-horizontal-dark.svg">
+    <img alt="Matreshka.js" src="https://matreshka.js.org/logo/matreshka-full-horizontal.svg" height="100">
+  </picture>
+</a>
 
-
-
-[![Seemple Website](https://seemple.js.org/logo/seemple-full-horizontal.svg)](https://seemple.js.org)
-
-> Seemple.js is a simple JavaScript framework to create single-page applications (SPAs). The simple and intuitive API is based on JavaScript classes and accessors which are accessible to all application developers of varying skills. The requirement to start your first project with Seemple.js is basic knowledge of JavaScript!
+> Matreshka.js is a simple JavaScript framework to create single-page applications (SPAs). The simple and intuitive API is based on JavaScript classes and accessors which are accessible to all application developers of varying skills. The requirement to start your first project with Matreshka.js is basic knowledge of JavaScript!
 
 ## Features
 - A nice reactive API to solve hard problems
@@ -13,29 +15,47 @@
 - The ability to refactor legacy applications without rewriting them from scratch
 - Only couple of hours is needed to master the framework because of the absence of complex concepts
 
-A bonus: the framework is documented in 3 languages: [English](https://seemple.js.org), [Ukrainian](https://seemple.js.org/ua) and [Russian](https://seemple.js.org/ru).
+A bonus: the framework is documented in 3 languages: [English](https://matreshka.js.org), [Ukrainian](https://matreshka.js.org/ua/) and [Russian](https://matreshka.js.org/ru/).
 
-**[Download](https://github.com/finom/seemple/tree/gh-pages)**
+## Install
 
-**Install via NPM**
-
+```sh
+npm install matreshka
 ```
-npm install seemple
+
+```js
+import Matreshka from 'matreshka';
+
+class Application extends Matreshka {
+  constructor() {
+    super();
+    this.bindNode('x', '.my-input');
+    this.bindNode('x', '.my-output', Matreshka.binders.html());
+  }
+}
+```
+
+Every function is also a module of its own: `import calc from 'matreshka/calc'`. CommonJS works too: `require('matreshka')`.
+
+Or with a script tag, which defines the globals `Matreshka` and `MK`:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
 ```
 
 ## Business needs
 Due to extreme simplicity of the framework, even novice web developers can quickly start to do small, then medium and then large web applications. This means that web studios are able to save money by hiring younger professionals, who, in turn, could not find a job before.
 
-## Project structure
-The project is structured as a monorepository powered by Lerna. */package* folder includes three packages:
+## Packages
 
-- [seemple](packages/seemple) itself
-- [seemple-router](packages/router) for routing
-- [seemple-parse-form](packages/parse-form) to make it easy to work with regular HTML forms
+- [matreshka](https://github.com/finom/matreshka/tree/main/packages/matreshka) itself
+- [matreshka-router](https://github.com/finom/matreshka/tree/main/packages/router) for routing
+- [matreshka-parse-form](https://github.com/finom/matreshka/tree/main/packages/parse-form) to make it easy to work with regular HTML forms
 
 ## Resources
-- [Website](https://seemple.js.org)
-- [Examples and tutorials](https://github.com/finom/seemple-examples-and-tutorials)
-- [JSDoc files](https://github.com/finom/seemple.js.org/tree/master/doc)
+- [Website](https://matreshka.js.org)
+- [Examples and tutorials](https://matreshka.js.org/examples/)
+- [Changelog](https://github.com/finom/matreshka/blob/main/packages/matreshka/CHANGELOG.md)
+- [Contributing](https://github.com/finom/matreshka/blob/main/CONTRIBUTING.md)
 
-**License:** [MIT License](https://raw.github.com/finom/seemple/master/LICENSE)
+**License:** [MIT License](https://github.com/finom/matreshka/blob/main/LICENSE)

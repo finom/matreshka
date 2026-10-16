@@ -1,0 +1,88 @@
+---
+title: "Matreshka#onDebounce"
+sidebarTitle: "onDebounce"
+description: "Matreshka#onDebounce: Добавляет обработчик события, вызываемый лишь однажды за определенный промежуток времени"
+---
+
+# Matreshka#onDebounce
+
+**Метод** · Начиная с версии 1.1
+
+```js
+Matreshka#onDebounce(names, callback, [debounceDelay=0], [triggerOnInit=false], [context]) → object
+```
+
+Добавляет обработчик события, вызываемый лишь однажды за определенный промежуток времени
+
+Метод позволяет добавить обработчик события на экземпляр класса [`Matreshka`](/ru/api/matreshka/), устраняя "дребезжание" обработчика. Функция может быть вызвана лишь один раз за определенный промежуток времени. В остальном, метод работает так же, как и [`Matreshka#on`](/ru/api/matreshka/on/).
+
+> У метода есть [статичный аналог](/ru/api/matreshka-static/on-debounce/).
+
+**Возвращает:** [`object`](/ru/api/types/object/) – self
+
+**Генерирует события:** `addevent`, `addevent:NAME`
+
+## Аргументы
+
+| Имя | По умолчанию | Тип | Описание |
+| --- | --- | --- | --- |
+| `names` |  | [`eventNames`](/ru/api/types/event-names/) | Имя события или несколько имен, разделенных пробелом  (например, ``"change:x ajaxcomplete change:y"``). |
+| `callback` |  | [`eventHandler`](/ru/api/types/event-handler/) | Функция, которая вызывается по событию |
+| `debounceDelay` (необязательный) | `0` | [`number`](/ru/api/types/number/) | Задержка |
+| `triggerOnInit` (необязательный) | `false` | [`boolean`](/ru/api/types/boolean/) | Если аргумент ``triggerOnInit`` равен ``true``, то обработчик будет вызван немедленно после инициализации |
+| `context` (необязательный) |  | [`object`](/ru/api/types/object/) | Контекст обработчика. Другими словами, ``this`` при вызове ``callback`` |
+
+## Ссылки
+
+- [`Matreshka#on`](/ru/api/matreshka/on/)
+- [`Matreshka#once`](/ru/api/matreshka/once/)
+- [`Matreshka#off`](/ru/api/matreshka/off/)
+- [`Matreshka#trigger`](/ru/api/matreshka/trigger/)
+- [Статья на Хабре о микропаттерне debounce](https://habr.com/ru/articles/60957/)
+
+## Примеры
+
+```js
+this.onDebounce('change:x', () => {
+	alert(`x = ${this.x}`); // x = 100
+}, 300);
+
+this.x = 1;
+
+for(let i = 0; i < 100; i++) {
+	this.x++;
+}
+```
+
+## Альтернативный синтаксис: пары "событие-обработчик" [#variation-2]
+
+```js
+Matreshka#onDebounce(evtnameHandlerObject, [debounceDelay=0], [triggerOnInit=false], [context]) → object
+```
+
+В метод [`Matreshka#onDebounce`](/ru/api/matreshka/on-debounce/) можно передать объект с парами событие-обработчик, чтобы избежать многократного вызова метода и сократить код.
+
+**Возвращает:** [`object`](/ru/api/types/object/) – self
+
+### Аргументы
+
+| Имя | По умолчанию | Тип | Описание |
+| --- | --- | --- | --- |
+| `evtnameHandlerObject` |  | [`object`](/ru/api/types/object/) | Объект с обработчиками событий |
+| `debounceDelay` (необязательный) | `0` | [`number`](/ru/api/types/number/) | Задержка |
+| `triggerOnInit` (необязательный) | `false` | [`boolean`](/ru/api/types/boolean/) | Если аргумент ``triggerOnInit`` равен ``true``, то обработчики будут вызван немедленно после инициализации |
+| `context` (необязательный) |  | [`object`](/ru/api/types/object/) | Контекст обработчиков |
+
+### Ссылки
+
+- [`Matreshka#on(2)`](/ru/api/matreshka/on/#variation-2)
+
+### Примеры
+
+```js
+this.onDebounce({
+	'custom': evt => { ... },
+	'click::x': evt => { ... },
+	'change:y': evt => { ... }
+});
+```

@@ -1,0 +1,38 @@
+---
+title: "Matreshka.parserBrackets"
+sidebarTitle: "parserBrackets"
+description: "Matreshka.parserBrackets: Содержит скобки для парсера. Matreshka.js справочник API"
+---
+
+import { Advanced } from '@/components/advanced';
+
+# Matreshka.parserBrackets
+
+**Свойство** · Начиная с версии 1.5
+
+<Advanced>Член для продвинутых: на старте он редко нужен.</Advanced>
+
+**Импорт:**
+
+```js
+import parserBrackets from 'matreshka/parserbrackets';
+```
+
+```js
+Matreshka.parserBrackets: object
+```
+
+Содержит скобки для [парсера](/ru/api/matreshka/parse-bindings/)
+
+Объект ``parserBrackets`` позволяет изменить стандартный синтаксис парсера привязок. Он содержит два свойства: ``left`` (левая скобка, по умолчанию "\{\{") и ``right`` (правая скобка, по умолчанию "\}\}")
+
+Скобками могут быть любые символы. Старое имя ``Matreshka.parserBrackers`` оставлено как псевдоним того же объекта.
+
+## Примеры
+
+**Заменяет поведение парсера, используя синтаксис ``[[=property]]`` вместо ``{{property}}``**
+
+```js
+Matreshka.parserBrackets.left = '[[=';
+Matreshka.parserBrackets.right = ']]';
+```

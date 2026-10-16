@@ -1,7 +1,0 @@
-!.*
-node_modules/
-coverage/
-bundle/
-packages/seemple/test/browser-test/
-packages/parse-form/index.js
-npm/

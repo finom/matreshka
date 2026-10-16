@@ -1,0 +1,8 @@
+.next/
+out/
+next-env.d.ts
+# copied by scripts/copy-static.mjs
+public/matreshka*.js
+public/matreshka*.js.map
+public/examples/
+public/_pagefind/

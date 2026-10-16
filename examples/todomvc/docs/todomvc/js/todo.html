@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>todo.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="app.html">
+                  ./todomvc/js/app.js
+                </a>
+              
+                
+                <a class="source" href="todo.html">
+                  ./todomvc/js/todo.js
+                </a>
+              
+                
+                <a class="source" href="todos.html">
+                  ./todomvc/js/todos.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>todo.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p><strong>todo.js</strong> contains the <code>Todo</code> class, which is inherited from the <a href="https://matreshka.js.org/api/matreshka-object/">Matreshka.Object</a> class and used as a (<a href="https://matreshka.js.org/api/matreshka-array/model/">Model</a>) for the main class (<a href="todos.html">Todos</a>).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Todo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Matreshka</span>.<span class="hljs-title">Object</span> </span>{
+    <span class="hljs-keyword">constructor</span>(data, parent) {
+        <span class="hljs-keyword">super</span>();
+        <span class="hljs-keyword">this</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Assign the default values and add the keys <code>&quot;title&quot;</code> and <code>&quot;completed&quot;</code> to the list of the keys which are responsible for the data (see <a href="https://matreshka.js.org/api/matreshka-object/set-data/">setData</a>).
+The <code>&quot;title&quot;</code> property by default is an empty string.
+The <code>&quot;completed&quot;</code> property by default is <code>false</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .setData({
+                <span class="hljs-attr">title</span>: <span class="hljs-string">''</span>,
+                <span class="hljs-attr">completed</span>: <span class="hljs-literal">false</span>
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Now assign the data which the constructor has received as an argument, overwriting the default values  (for example, <code>{ title: &#39;Do it!&#39; }</code>).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .set(data)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>The <code>&quot;visible&quot;</code> property is responsible for the visibility of an element from the todo list on the page.
+We’re saving a reference to <code>Todos</code> instance in <code>&quot;parent&quot;</code> property</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .set({
+                <span class="hljs-attr">visible</span>: <span class="hljs-literal">true</span>,
+                parent
+            });
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Wait for the <code>&quot;render&quot;</code> event using the <a href="https://matreshka.js.org/api/matreshka-array/on-item-render/">onRender</a> virtual method. The event fires when the element corresponding to the instance of the class is rendered.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    onRender() {
+        <span class="hljs-keyword">const</span> { binders } = Matreshka;
+        <span class="hljs-keyword">this</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>The binding of the elements that do not require the assignment of the binder (binder). The <a href="https://matreshka.js.org/api/matreshka-static/default-binders/">defaultBinders</a> are used here if it is possible.</p>
+<ul>
+<li>The <code>&quot;completed&quot;</code> property is bound to the checkbox with <code>toggle</code> class</li>
+<li>The <code>&quot;edit&quot;</code> property is bound to the field (<code>input type=text</code>) with <code>edit</code> class</li>
+<li>The <code>&quot;destroy&quot;</code> property is bound to the element with <code>destroy</code> class which does not have a default binder. It means that the element is simply associated with the property without synchronizing with its value.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .bindNode({
+                <span class="hljs-attr">completed</span>: <span class="hljs-string">':sandbox .toggle'</span>,
+                <span class="hljs-attr">edit</span>: <span class="hljs-string">':sandbox .edit'</span>,
+                <span class="hljs-attr">destroy</span>: <span class="hljs-string">':sandbox .destroy'</span>
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>These bindings use the third argument as a binder.</p>
+<ul>
+<li>The visibility of the sandbox element will depend on the value of the <code>&quot;visible&quot;</code> property (<a href="https://matreshka.js.org/api/binders/display/">binders.display</a>)</li>
+<li>The presence of the <code>&quot;completed&quot;</code> class in the sandbox element will depend on the value of the <code>&quot;completed&quot;</code> property (<a href="https://matreshka.js.org/api/binders/class-name/">binders.className</a>)</li>
+<li>The presence of the <code>&quot;editing&quot;</code> class in the sandbox element will depend on the value of the <code>&quot;editing&quot;</code> property</li>
+<li>Bind the element <code>label</code> whose <code>innerHTML</code> will be synchronized with the value of the <code>&quot;title&quot;</code> property (<a href="https://matreshka.js.org/api/binders/html/">binders.html</a>)</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .bindNode(<span class="hljs-string">'visible'</span>, <span class="hljs-string">':sandbox'</span>, binders.display())
+            .bindNode(<span class="hljs-string">'completed'</span>, <span class="hljs-string">':sandbox'</span>, binders.className(<span class="hljs-string">'completed'</span>))
+            .bindNode(<span class="hljs-string">'editing'</span>, <span class="hljs-string">':sandbox'</span>, binders.className(<span class="hljs-string">'editing'</span>))
+            .bindNode(<span class="hljs-string">'title'</span>, <span class="hljs-string">':sandbox label'</span>, binders.html())</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Add the event handler of the mouse double click (<code>&quot;dblclick&quot;</code>) to the element bound to the <code>&quot;title&quot;</code> property (<code>label</code> tag).
+When the handler fires, we change the instance mode to the editing and assign the value <code>true</code> to the <code>&quot;editing&quot;</code> property. This action adds the <code>&quot;edit&quot;</code> class to the sandbox element (see bindings above).
+Next we assign the current value of the <code>&quot;title&quot;</code> property to the <code>&quot;edit&quot;</code> property.
+After that we take focus on the field bound to the <code>&quot;edit&quot;</code> property.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .on(<span class="hljs-string">'dblclick::title'</span>, () =&gt; {
+                <span class="hljs-keyword">this</span>.editing = <span class="hljs-literal">true</span>;
+                <span class="hljs-keyword">this</span>.edit = <span class="hljs-keyword">this</span>.title;
+                <span class="hljs-keyword">this</span>.nodes.edit.focus();
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Add the <code>&quot;keyup&quot;</code> event handler to the element bound to the <code>&quot;edit&quot;</code> property.
+If the <code>Esc</code> key is pressed, go back from the edit mode to the normal mode.
+If the <code>Enter</code> key is pressed, delete unnecessary spaces from the <code>&quot;edit&quot;</code> property value and assign it to the <code>&quot;title&quot;</code> property. Then go back from the edit mode to the normal mode. If the value is an empty string, remove itsm from <code>Todos</code> instance.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .on(<span class="hljs-string">'keyup::edit'</span>, (evt) =&gt; {
+                <span class="hljs-keyword">if</span> (evt.which === ESC_KEY) {
+                    <span class="hljs-keyword">this</span>.editing = <span class="hljs-literal">false</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (evt.which === ENTER_KEY) {
+                    <span class="hljs-keyword">const</span> editValue = <span class="hljs-keyword">this</span>.edit.trim();
+
+                    <span class="hljs-keyword">if</span> (editValue) {
+                        <span class="hljs-keyword">this</span>.title = editValue;
+                        <span class="hljs-keyword">this</span>.editing = <span class="hljs-literal">false</span>;
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">this</span>.parent.pull(<span class="hljs-keyword">this</span>);
+                    }
+                }
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>If we click on the element that is responsible for the item deletion, we delete this item from the <code>Todos</code> instance using the <a href="https://matreshka.js.org/api/matreshka-array/pull/">pull</a> method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .on(<span class="hljs-string">'click::destroy'</span>, () =&gt; {
+                <span class="hljs-keyword">this</span>.parent.pull(<span class="hljs-keyword">this</span>);
+            });
+    }
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

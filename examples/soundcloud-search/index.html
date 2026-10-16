@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Matreshka.js SoundCloud Search</title>
+		<meta charset="UTF-8">
+		<style>
+			@import url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/css/bootstrap.min.css");
+			.track {
+				margin: 20px 0;
+			}
+
+			.track img {
+				float: left;
+				margin-right: 10px;
+			}
+
+			audio {
+				float: right;
+				width: calc( 100% - 110px );
+
+			}
+
+			.track:after {
+				content: ".";
+				display: block;
+				height: 0;
+				clear: both;
+				visibility: hidden;
+			}
+
+			.track .title {
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<main class="container">
+			<header>
+				<h1>Matreshka.js SoundCloud Search</h1>
+			</header>
+			<p class="alert alert-warning">
+				This demo no longer finds anything: SoundCloud's API now asks for an OAuth access token, and the
+				public client ID the demo sends is refused with <code>401 Unauthorized</code>. The code still shows
+				how a <code>Matreshka.Array</code> renders and plays a list of tracks.
+			</p>
+			<form class="search">
+				<div class="input-group">
+					<input type="search" class="form-control query" placeholder="Search">
+					<span class="input-group-btn"><button type="submit" class="btn btn-default btn-primary">Search</button></span>
+				</div>
+			</form>
+			<div class="row tracks">
+				<script type="text/html" id="track_template">
+					<div class="col-md-6 track">
+						<img class="artwork">
+						<h4 class="title"></h4>
+						<audio controls preload="none"></audio>
+					</div>
+				</script>
+			</div>
+		</main>
+
+		<script src="/matreshka.min.js"></script>
+		<script src="js/track.class.js"></script>
+		<script src="js/tracks.class.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>

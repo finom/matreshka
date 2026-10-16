@@ -1,0 +1,43 @@
+---
+title: "Matreshka.parseBindings"
+sidebarTitle: "parseBindings"
+description: "Matreshka.parseBindings: Парсить DOM дерево, оголошуючи прив'язки властивостей, взятих в подвійні фігурні дужки"
+---
+
+import { Advanced } from '@/components/advanced';
+
+# Matreshka.parseBindings
+
+**Метод** · Починаючи з версії 1.1
+
+<Advanced>Член для просунутих: на початку він рідко потрібен.</Advanced>
+
+**Імпорт:**
+
+```js
+import parseBindings from 'matreshka/parsebindings';
+```
+
+```js
+Matreshka.parseBindings() → $nodes
+```
+
+Парсить DOM дерево, оголошуючи прив'язки властивостей, взятих в подвійні фігурні дужки
+
+Цей статичний метод працює так само, як і [`Matreshka#parseBindings`](/ua/api/matreshka/parse-bindings/) та всі його варіації, але приймає в якості першого аргументу будь-який JavaScript об'єкт.
+
+**Повертає:** [`$nodes`](/ua/api/types/dollar-nodes/) – Колекція оброблених DOM вузлів, передана в функцію як аргумент
+
+## Посилання
+
+- [`Matreshka#parseBindings`](/ua/api/matreshka/parse-bindings/)
+
+## Приклади
+
+```js
+const object = {};
+const $node = Matreshka.parseBindings(object, `<h3>
+        Hello, {{name}}
+    </h3>`);
+object.name = 'World';
+```

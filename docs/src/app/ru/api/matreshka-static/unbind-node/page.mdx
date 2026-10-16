@@ -1,0 +1,40 @@
+---
+title: "Matreshka.unbindNode"
+sidebarTitle: "unbindNode"
+description: "Matreshka.unbindNode: Разрывает связь между свойством и HTML элементом"
+---
+
+import { Advanced } from '@/components/advanced';
+
+# Matreshka.unbindNode
+
+**Метод** · Начиная с версии 1.1
+
+<Advanced>Член для продвинутых: на старте он редко нужен.</Advanced>
+
+**Импорт:**
+
+```js
+import unbindNode from 'matreshka/unbindnode';
+```
+
+```js
+Matreshka.unbindNode() → object
+```
+
+Разрывает связь между свойством и HTML элементом
+
+Этот статичный метод работает так же, как и [`Matreshka#unbindNode`](/ru/api/matreshka/unbind-node/) и все его вариации, но принимает в качестве первого аргумента любой JavaScript объект.
+
+**Возвращает:** [`object`](/ru/api/types/object/) – Первый аргумент
+
+## Ссылки
+
+- [`Matreshka#unbindNode`](/ru/api/matreshka/unbind-node/)
+
+## Примеры
+
+```js
+const object = {};
+Matreshka.unbindNode(object, 'x', '.my-node');
+```

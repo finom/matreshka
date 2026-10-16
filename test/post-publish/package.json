@@ -1,8 +1,8 @@
 {
-  "name": "seemple-post-publish",
+  "name": "matreshka-post-publish",
   "dependencies": {
-    "seemple": "*",
-    "seemple-parse-form": "*",
-    "seemple-router": "*"
+    "matreshka": "*",
+    "matreshka-parse-form": "*",
+    "matreshka-router": "*"
   }
 }

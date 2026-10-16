@@ -1,0 +1,39 @@
+---
+title: "Matreshka.remove"
+sidebarTitle: "remove"
+description: "Matreshka.remove: Удаляет свойство. Matreshka.js справочник API"
+---
+
+import { Advanced } from '@/components/advanced';
+
+# Matreshka.remove
+
+**Метод** · Начиная с версии 1.1
+
+<Advanced>Член для продвинутых: на старте он редко нужен.</Advanced>
+
+**Импорт:**
+
+```js
+import remove from 'matreshka/remove';
+```
+
+```js
+Matreshka.remove() → object
+```
+
+Удаляет свойство
+
+Этот статичный метод работает так же, как и [`Matreshka#remove`](/ru/api/matreshka/remove/) и все его вариации, но принимает в качестве первого аргумента любой JavaScript объект.
+
+**Возвращает:** [`object`](/ru/api/types/object/) – Первый аргумент
+
+## Ссылки
+
+- [`Matreshka#remove`](/ru/api/matreshka/remove/)
+
+## Примеры
+
+```js
+Matreshka.remove(object, 'x');
+```

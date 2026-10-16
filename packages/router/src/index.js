@@ -1,16 +1,15 @@
-/* globals Seemple */
-const Router = require('./router');
+import Router from './router';
 
 function initRouter(obj, route, type) {
   Router[type || 'hash'].subscribe(obj, route);
   return obj;
 }
 
+// a page with the Matreshka bundle gets Matreshka.Router and Matreshka.initRouter
 /* istanbul ignore if */
-if (typeof Seemple === 'function') {
-  Seemple.Router = Router;
-  Seemple.initRouter = initRouter;
+if (typeof globalThis.Matreshka === 'function') {
+  globalThis.Matreshka.Router = Router;
+  globalThis.Matreshka.initRouter = initRouter;
 }
 
-
-module.exports = initRouter;
+export default initRouter;

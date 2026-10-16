@@ -1,0 +1,22 @@
+export default {
+  '-- Методи': { type: 'separator', title: 'Методи' },
+  from: 'from',
+  'mediate-item': 'mediateItem',
+  method: 'METHOD',
+  'method-silent': 'METHOD_',
+  model: 'Model',
+  of: 'of',
+  'on-item-render': 'onItemRender',
+  'order-by': 'orderBy',
+  pull: 'pull',
+  recreate: 'recreate',
+  restore: 'restore',
+  'to-json': 'toJSON',
+  '-- Властивості': { type: 'separator', title: 'Властивості' },
+  'item-renderer': 'itemRenderer',
+  'track-by': 'trackBy',
+  '-- Для просунутих': { type: 'separator', title: 'Для просунутих' },
+  'is-matreshka-array': 'isMatreshkaArray',
+  'render-if-possible': 'renderIfPossible',
+  rerender: 'rerender'
+};

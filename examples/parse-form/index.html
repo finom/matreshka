@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>matreshka-parse-form demo</title>
+  </head>
+  <body>
+    <form class="my-form">
+      <p><input name="x" value="Hello World!"> → <output name="x"></output></p>
+      <p>
+        <label><input type="checkbox" name="checked" checked> checked</label> →
+        <output name="checked"></output>
+      </p>
+    </form>
+    <p>Open the console and change <code>object.x</code> or <code>object.checked</code>.</p>
+
+    <script src="/matreshka.min.js"></script>
+    <script src="/matreshka-parse-form.min.js"></script>
+    <script>
+      window.object = {};
+      Matreshka.parseForm(object, '.my-form');
+    </script>
+  </body>
+</html>

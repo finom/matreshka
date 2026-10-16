@@ -1,0 +1,57 @@
+---
+title: "Matreshka.Array#onItemRender"
+sidebarTitle: "onItemRender"
+description: "Matreshka.Array#onItemRender: A function which is called before \"render\" event"
+---
+
+# Matreshka.Array#onItemRender
+
+**Method** · Since 1.1 · Defined by you
+
+```js
+Matreshka.Array#onItemRender(item, renderEvent)
+```
+
+A function which is called before ``"render"`` event
+
+The virtual method can be used instead of ``"render"`` event handler.
+
+At the same time ``onRender`` method is called in a rendered item with the only argument - an event object.
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `item` | [`object`](/api/types/object/) | A rendered node of a collection |
+| `renderEvent` | [`object`](/api/types/object/) | ``"render"`` event object |
+
+## Examples
+
+```js
+class MyModel extends Matreshka.Object {
+	constructor(data) {
+		super(data);
+	}
+	onRender(renderEvt) {
+		this.bindNode('isChecked', ':sandbox .my-checkbox');
+		this.bindNode('text', ':sandbox .text', Matreshka.binders.html());
+	}
+}
+
+class MyArray extends Matreshka.Array {
+	get Model() {
+		return MyModel;
+	}
+	itemRenderer() {
+		return '<li>'
+	}
+	constructor() {
+		this.bindNode('sandbox', '.my-form');
+	}
+	onItemRender(item, renderEvt) {
+		// ...
+	}
+}
+
+const app = new MyArray();
+```

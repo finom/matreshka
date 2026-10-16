@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Matreshka treeview example</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/finom/vanillatree@1d4cc653dfe728d5fc04e95565fe1664e2d38686/vanillatree.css">
+		<style>
+			button {
+				margin: 5px 20px;
+			}
+
+			.remove::after {
+				content: '✕';
+				margin-left: 5px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<ul class="list vtree"></ul>
+			<button class="add">Add</button>
+		</div>
+
+		<script id="item-template" type="text/html">
+			<li class="vtree-leaf closed">
+				<span class="expand vtree-toggle"></span>
+				<a class="label vtree-leaf-label" contenteditable></a>
+				<span class="remove"></span>
+				<div class="wrapper">
+					<button class="add">Add Subtree</button>
+					<ul class="list vtree-subtree"></ul>
+				</div>
+			</li>
+		</script>
+		<script src="/matreshka.min.js"></script>
+		<script src="js/tree-leaf.class.js"></script>
+		<script src="js/tree.class.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>

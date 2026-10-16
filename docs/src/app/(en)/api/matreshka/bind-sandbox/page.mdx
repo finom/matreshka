@@ -1,0 +1,44 @@
+---
+title: "Matreshka#bindSandbox"
+sidebarTitle: "bindSandbox"
+description: "Matreshka#bindSandbox: Binds a sandbox. Matreshka.js API reference"
+---
+
+import { Advanced } from '@/components/advanced';
+
+# Matreshka#bindSandbox
+
+**Method** · Since 1.5
+
+<Advanced>An advanced member: you rarely need it to start with.</Advanced>
+
+```js
+Matreshka#bindSandbox(node, [eventOptions])
+```
+
+Binds a sandbox
+
+Unbinds previous sandbox (if exists) and binds new one.
+
+> The method has [static alternative](/api/matreshka-static/bind-sandbox/)
+
+The ``sandbox`` key is reserved for the binding: it is left out of ``Object.keys`` and ``JSON.stringify``, and reading or assigning ``this.sandbox`` throws an error. The bound node is ``this.nodes.sandbox``.
+
+**Fires:** `bind`, `bind:sandbox`
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `node` | [`string`](/api/types/string/) \| [`node`](/api/types/node/) \| [`$nodes`](/api/types/dollar-nodes/) | A sandbox DOM node |
+| `eventOptions` (optional) | [`eventOptions`](/api/types/event-options/) | An event options |
+
+## Links
+
+- [`Matreshka#bindNode`](/api/matreshka/bind-node/)
+
+## Examples
+
+```js
+this.bindSandbox('.my-element');
+```

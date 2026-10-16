@@ -1,33 +1,55 @@
 {
-  "name": "seemple-parse-form",
+  "name": "matreshka-parse-form",
   "version": "2.4.17",
-  "description": "Binds named fields of HTML5 form",
-  "main": "index.js",
-  "scripts": {
-    "test": "npm run cover",
-    "cover": "../../node_modules/.bin/babel-node ../../node_modules/.bin/babel-istanbul cover test/index.js",
-    "npm-compile": "babel src -d npm && cp package.json npm/package.json && cp README.md npm/README.md",
-    "build": "../../node_modules/.bin/webpack --mode=production"
-  },
+  "description": "Binds the named fields of an HTML form to object properties, for Matreshka.js",
+  "keywords": [
+    "matreshka",
+    "form",
+    "data-binding"
+  ],
+  "homepage": "https://matreshka.js.org",
   "repository": {
     "type": "git",
-    "url": "https://github.com/finom/seemple-parse-form.git"
+    "url": "git+https://github.com/finom/matreshka.git",
+    "directory": "packages/parse-form"
   },
-  "keywords": [
-    "seemplejs",
-    "codemirror"
-  ],
-  "author": "Andrey Gubanov",
+  "author": "Andrey Gubanov <andrey.a.gubanov@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/finom/seemple-parse-form/issues"
+    "url": "https://github.com/finom/matreshka/issues"
   },
-  "homepage": "https://github.com/finom/seemple-parse-form#readme",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "unpkg": "./dist/matreshka-parse-form.min.js",
+  "jsdelivr": "./dist/matreshka-parse-form.min.js",
+  "exports": {
+    ".": {
+      "module-sync": "./dist/esm/index.sync.js",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./package.json": "./package.json",
+    "./dist/*": "./dist/*",
+    "./*.js": {
+      "module-sync": "./dist/esm/*.js",
+      "import": "./dist/esm/*.js",
+      "require": "./dist/cjs/*.js"
+    },
+    "./*": {
+      "module-sync": "./dist/esm/*.js",
+      "import": "./dist/esm/*.js",
+      "require": "./dist/cjs/*.js"
+    }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node ../../scripts/build-package.mjs parse-form",
+    "prepublishOnly": "node ../../scripts/ci-only.mjs"
+  },
   "peerDependencies": {
-    "seemple": "2.x"
-  },
-  "dependencies": {
-    "balajs": "^1.0.7"
-  },
-  "gitHead": "73cc162ade078967f510f052ee94a782a807a8af"
+    "matreshka": "^2.4.18"
+  }
 }

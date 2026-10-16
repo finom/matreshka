@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Matreshka Example App (Login form)</title>
+    <link rel="stylesheet" type="text/css" href="
+https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.4/css/bootstrap.css">
+    <style>
+        body {
+            padding-top: 5%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <form class="col-md-4 login-form">
+                <div class="form-group">
+                    <input type="text" class="user-name form-control" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="password form-control" placeholder="Password">
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" class="show-password"> Show Password
+                  </label>
+                </div>
+                <input type="submit" value="Sign In" class="btn btn-primary submit">
+                <label>
+                    <input type="checkbox" placeholder="Password" class="remember-me"> Remember me
+                </label>
+            </form>
+        </div>
+    </div>
+
+    <script src="/matreshka.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

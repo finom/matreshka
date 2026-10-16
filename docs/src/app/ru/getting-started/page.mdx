@@ -1,0 +1,82 @@
+---
+title: "Как начать"
+description: "Установка Matreshka.js из npm или CDN, импорт всего фреймворка или отдельных модулей и три уровня важности в справочнике API."
+---
+
+# Как начать
+
+## Установка
+
+```sh
+npm install matreshka
+```
+
+```js
+import Matreshka from 'matreshka';
+// или через CommonJS
+const Matreshka = require('matreshka');
+```
+
+Роутер и парсер форм — отдельные пакеты: [matreshka-router](https://github.com/finom/matreshka/tree/main/packages/router) связывает свойства с частями URL, [matreshka-parse-form](https://github.com/finom/matreshka/tree/main/packages/parse-form) связывает именованные поля формы со свойствами.
+
+`initRouter(object, '/a/b/')` синхронизирует `object.a` и `object.b` с частями `location.hash` после `#!` (`#!/foo/bar/`); в URL значения закодированы, в свойствах — декодированы. Чтобы вместо этого использовать путь через History API, передайте `'history'` третьим аргументом. `parseForm(object, form)` возвращает форму или `null`, если форма не найдена.
+
+```sh
+npm install matreshka-router matreshka-parse-form
+```
+
+### Тег script
+
+Без сборщика подключите браузерный бандл. Он определяет глобальную переменную `Matreshka` и её короткое имя `MK`. Бандлы рассчитаны на современные браузеры.
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka-router@2/dist/matreshka-router.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka-parse-form@2/dist/matreshka-parse-form.min.js"></script>
+```
+
+Эти же файлы отдаёт и этот сайт: [/matreshka.min.js](/matreshka.min.js), [/matreshka-router.min.js](/matreshka-router.min.js) и [/matreshka-parse-form.min.js](/matreshka-parse-form.min.js). Роутер добавляет `Matreshka.initRouter` и `Matreshka.Router` к глобальной `Matreshka`, парсер форм — `Matreshka.parseForm`.
+
+## Модули
+
+Размер результирующего JavaScript файла можно сократить за счет импорта только необходимых частей фреймворка. Путь к модулю указан на каждой странице справочника API.
+
+```js
+// каждое статичное свойство какого-либо объекта
+// или функции можно импортировать в виде модуля
+import MatreshkaArray from 'matreshka/array';
+import bindNode from 'matreshka/bindnode';
+import { prop } from 'matreshka/binders';
+```
+
+В CommonJS эти модули доступны через `.default`:
+
+```js
+const bindNode = require('matreshka/bindnode').default;
+```
+
+Импорт главного модуля подтянет весь фреймворк.
+
+```js
+import Matreshka from 'matreshka';
+```
+
+> Модуль класса [`Matreshka`](/ru/api/matreshka/), без `binders`, `Array` и `Object`, находится по адресу `'matreshka/matreshka'`.
+
+## Уровни важности
+
+Документация разбита на три уровня "продвинутости".
+
+### Первый уровень — самое важное
+
+Изучив самые важные свойства и методы, вы можете смело приступать к работе. Начните с [`Matreshka#bindNode`](/ru/api/matreshka/bind-node/), [`Matreshka#calc`](/ru/api/matreshka/calc/), [`Matreshka#on`](/ru/api/matreshka/on/), [`Matreshka.Object`](/ru/api/matreshka-object/) и [`Matreshka.Array`](/ru/api/matreshka-array/).
+
+### Второй уровень — рекомендуется изучить
+
+После того, как вы освоили необходимые для быстрого старта возможности, можете ознакомиться с другими, менее важными (но всё еще важными) свойствами и методами Matreshka.js.
+
+### Третий уровень — остальные методы и свойства
+
+Методы и свойства, которые используются относительно редко, помечены «Для продвинутых» и стоят последними в каждом разделе меню. Читайте их, когда захотите знать о фреймворке всё, без исключения.
+
+Далее: [Hello World и другие примеры](/ru/examples/).

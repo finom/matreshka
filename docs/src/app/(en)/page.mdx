@@ -1,0 +1,57 @@
+---
+title: "A reactive JavaScript framework | Matreshka.js"
+description: "Matreshka.js is a simple JavaScript framework for single-page applications: two-way data binding, calculated properties and events on plain classes."
+---
+
+import { OldLinks } from '@/components/old-links';
+import { PromoDemo } from '@/components/promo-demo';
+import { Hero } from '@/components/hero';
+
+<OldLinks lang="en" />
+
+# Matreshka.js
+
+<Hero alt="Matreshka.js" />
+
+A framework for single-page applications creation. Type into the field: the property `x` is bound to both nodes.
+
+<PromoDemo text="A framework for single-page applications creation" />
+
+```html
+<input class="in" type="text">
+<output class="out"></output>
+
+<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+<script>
+const app = new Matreshka();
+app.bindNode('x', '.in, .out');
+app.x = 'A framework for single-page applications creation';
+</script>
+```
+
+<div className="mk-buttons">
+  <a href="/getting-started/">Get started</a>
+  <a href="https://github.com/finom/matreshka">GitHub</a>
+  <a href="/examples/">Tutorials and examples</a>
+</div>
+
+## Features
+
+- Reactive API which allows to solve hard and confusing problems easily
+- High robustness of developed apps
+- The ability to refactor legacy applications without rewriting them from scratch
+- Only couple of hours is needed to master the framework because of an absence of complex concepts
+
+Read more in the [introduction](/introduction/), or go straight to the [API reference](/api/).
+
+## Install
+
+```sh
+npm install matreshka
+```
+
+```js
+import Matreshka from 'matreshka';
+```
+
+The documentation is also available [in Ukrainian](/ua/) and [in Russian](/ru/).

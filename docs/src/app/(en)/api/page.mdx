@@ -1,0 +1,133 @@
+---
+title: "API reference"
+asIndexPage: true
+description: "Matreshka.js API reference. Every class, method and property of the framework, one page each."
+---
+
+
+
+# API reference
+
+Every class, method and property of the framework, one page each.
+
+## [Matreshka](/api/matreshka/)
+
+- [`bindNode`](/api/matreshka/bind-node/) – Binds a property of an object to HTML node, implementing two-way data binding
+- [`bindOptionalNode`](/api/matreshka/bind-optional-node/) – Works just the same as [`Matreshka#bindNode`](/api/matreshka/bind-node/) but it does not throw an exception if the ``node`` argument is an empty array, ``undefined`` or non-existent.
+- [`bindSandbox`](/api/matreshka/bind-sandbox/) _(Advanced)_ – Binds a sandbox
+- [`calc`](/api/matreshka/calc/) – Creates a dependency of one property value on values of others
+- [`instantiate`](/api/matreshka/instantiate/) – Creates fixed class instance
+- [`isMatreshka`](/api/matreshka/is-matreshka/) _(Advanced)_ – ``isMatreshka`` always equals ``true`` for instances of [`Matreshka`](/api/matreshka/)
+- [`mediate`](/api/matreshka/mediate/) – Transforms property value on its changing
+- [`$nodes`](/api/matreshka/dollar-nodes/) _(Advanced)_ – An object contains collections (jQuery, Zepto, built-in micro-library instance inherited from ``Array.prototype``) of bound nodes for quick access.
+- [`nodes`](/api/matreshka/nodes/) _(Advanced)_ – The object contains bound elements in the form of separate DOM nodes for quick access
+- [`off`](/api/matreshka/off/) – Deletes an event handler
+- [`on`](/api/matreshka/on/) – Adds an event handler
+- [`onDebounce`](/api/matreshka/on-debounce/) – Adds an event handler which is called only once during a definite period of time
+- [`once`](/api/matreshka/once/) – Adds an event handler which can be called only once
+- [`parseBindings`](/api/matreshka/parse-bindings/) – Parses DOM tree, declaring property bindings on which are double braced.
+- [`remove`](/api/matreshka/remove/) _(Advanced)_ – Deletes a property
+- [`select`](/api/matreshka/select/) – Returns HTML node corresponding to a selector from a sandbox
+- [`selectAll`](/api/matreshka/select-all/) – Returns HTML nodes corresponding to a selector from a sandbox
+- [`set`](/api/matreshka/set/) – Sets a property value allowing to pass event options object as the third argument
+- [`trigger`](/api/matreshka/trigger/) – Fires an event
+- [`unbindNode`](/api/matreshka/unbind-node/) – Destroys a binding between given property and HTML node
+
+## Matreshka (static members)
+
+- [`Class`](/api/matreshka-static/class/) – An implementation of classes based on the prototype inheritance
+- [`bindNode`](/api/matreshka-static/bind-node/) _(Advanced)_ – Binds a property of an object to HTML node, implementing two-way data binding
+- [`bindOptionalNode`](/api/matreshka-static/bind-optional-node/) _(Advanced)_ – Initializes two-way data binding but does not throws an exception if ``node`` argument is an empty array, ``undefined`` or non-existent
+- [`bindSandbox`](/api/matreshka-static/bind-sandbox/) _(Advanced)_ – Binds or re-binds sandbox node
+- [`calc`](/api/matreshka-static/calc/) _(Advanced)_ – Creates a dependency of one property value on values of others
+- [`chain`](/api/matreshka-static/chain/) – Allows chained calls of universal methods
+- [`defaultBinders`](/api/matreshka-static/default-binders/) – An array of functions which return a corresponding binder
+- [`instantiate`](/api/matreshka-static/instantiate/) _(Advanced)_ – Creates fixed class instance
+- [`lookForBinder`](/api/matreshka-static/look-for-binder/) _(Advanced)_
+- [`mediate`](/api/matreshka-static/mediate/) _(Advanced)_ – Transforms property value on its changing
+- [`off`](/api/matreshka-static/off/) _(Advanced)_ – Deletes an event handler
+- [`on`](/api/matreshka-static/on/) _(Advanced)_ – Adds an event handler
+- [`onDebounce`](/api/matreshka-static/on-debounce/) _(Advanced)_ – Adds an event handler which is called only once during a definite period of time
+- [`once`](/api/matreshka-static/once/) _(Advanced)_ – Adds event handler which can be called only once
+- [`parseBindings`](/api/matreshka-static/parse-bindings/) _(Advanced)_ – Parses DOM tree, declaring bindings with properties enclosed in double braces
+- [`parserBrackets`](/api/matreshka-static/parser-brackets/) _(Advanced)_ – Contains brackets for [bindings parser](/api/matreshka/parse-bindings/)
+- [`remove`](/api/matreshka-static/remove/) _(Advanced)_ – Deletes a property
+- [`select`](/api/matreshka-static/select/) _(Advanced)_ – Returns HTML node corresponding to a selector from a sandbox
+- [`selectAll`](/api/matreshka-static/select-all/) _(Advanced)_ – Returns HTML nodes corresponding to a selector from a sandbox
+- [`set`](/api/matreshka-static/set/) _(Advanced)_ – Sets a property value allowing to pass an event object as the third argument
+- [`toMatreshka`](/api/matreshka-static/to-matreshka/) _(Advanced)_ – The function, converting any nested tree of objects and arrays into [`Matreshka.Object`](/api/matreshka-object/) and [`Matreshka.Array`](/api/matreshka-array/) instances
+- [`trigger`](/api/matreshka-static/trigger/) _(Advanced)_ – Fires an event
+- [`unbindNode`](/api/matreshka-static/unbind-node/) _(Advanced)_ – Breaks a binding between given property and HTML node
+- [`useDOMLibrary`](/api/matreshka-static/use-dom-library/) _(Advanced)_ – Forces to use a definite DOM library
+
+## [Matreshka.Object](/api/matreshka-object/)
+
+- [`addDataKeys`](/api/matreshka-object/add-data-keys/) – Adds given property names to a list of property names which are responsible for data
+- [`each`](/api/matreshka-object/each/) – Iterates properties which are responsible for data through ``callback`` function
+- [`entries`](/api/matreshka-object/entries/) _(Advanced)_ – Returns an array of ``[key, value]`` pairs of properties which are responsible for data
+- [`isDataKey`](/api/matreshka-object/is-data-key/) – Checks if given string a name of data property
+- [`isMatreshkaObject`](/api/matreshka-object/is-matreshka-object/) _(Advanced)_ – The ``isMatreshkaObject`` property always equals ``true`` for instances of [`Matreshka.Object`](/api/matreshka-object/) class
+- [`keyOf`](/api/matreshka-object/key-of/) – Searches for specified property value among others which are responsible for data and returns one key if this value has been found (very similar to ``Array.prototype.indexOf`` function)
+- [`keys`](/api/matreshka-object/keys/) – Returns an array of property names which are responsible for data
+- [`removeDataKeys`](/api/matreshka-object/remove-data-keys/) – Deletes given property names from a list of property names which are responsible for data (but does not delete the properties)
+- [`setData`](/api/matreshka-object/set-data/) – Sets a property and adds property name to a list of property names which are responsible for data
+- [`toJSON`](/api/matreshka-object/to-json/) – Converts an instance and its internal properties into an ordinary object
+- [`values`](/api/matreshka-object/values/) _(Advanced)_ – Returns an array of property values which are responsible for data
+
+## [Matreshka.Array](/api/matreshka-array/)
+
+- [`METHOD`](/api/matreshka-array/method/) – Any method from ``Array.prototype``
+- [`METHOD_`](/api/matreshka-array/method-silent/) – Any method from ``Array.prototype`` with the possibility of passing event object
+- [`Model`](/api/matreshka-array/model/) – The property defines a class of items which will be inserted to a collection
+- [`isMatreshkaArray`](/api/matreshka-array/is-matreshka-array/) _(Advanced)_ – The ``isMatreshkaArray`` property always equals ``true`` for instances of [`Matreshka.Array`](/api/matreshka-array/) class
+- [`itemRenderer`](/api/matreshka-array/item-renderer/) – HTML string, a selector or a function which is responsible for rendering DOM nodes of an array on a page
+- [`mediateItem`](/api/matreshka-array/mediate-item/) – Transforms an item value
+- [`onItemRender`](/api/matreshka-array/on-item-render/) – A function which is called before ``"render"`` event
+- [`orderBy`](/api/matreshka-array/order-by/) – Sorts by properties of array items
+- [`pull`](/api/matreshka-array/pull/) – Removes an item with specified index from an array or an item itself
+- [`recreate`](/api/matreshka-array/recreate/) – Recreates the [`Matreshka.Array`](/api/matreshka-array/) instance
+- [`renderIfPossible`](/api/matreshka-array/render-if-possible/) _(Advanced)_ – The ``renderIfPossible`` property cancels the array rendering if it equals ``false``
+- [`rerender`](/api/matreshka-array/rerender/) _(Advanced)_ – Rerenders DOM nodes of items which are included into an instance
+- [`restore`](/api/matreshka-array/restore/) – Restores [`Matreshka.Array`](/api/matreshka-array/) instance from existing HTML nodes on a page.
+- [`toJSON`](/api/matreshka-array/to-json/) – Converts [`Matreshka.Array`](/api/matreshka-array/) instance into native array
+- [`trackBy`](/api/matreshka-array/track-by/) – ``trackBy`` property indicates a key of unique IDs for collection items
+- [`from`](/api/matreshka-array/from/) – The function creates a new [`Matreshka.Array`](/api/matreshka-array/) instance from array-like or iterable object
+- [`of`](/api/matreshka-array/of/) – The function creates a new [`Matreshka.Array`](/api/matreshka-array/) instance with a variable number of arguments, regardless of number or type of the arguments
+
+## [Matreshka.binders](/api/binders/)
+
+- [`attr`](/api/binders/attr/) – Returns a binder which changes an attribute of DOM node depending on an object property value
+- [`className`](/api/binders/class-name/) – Returns a binder which switches over DOM node class name depending on an object property value. If property value equals ``true`` non-strictly, a class name is added, otherwise - it's removed. The logic can be changed by passing ``false`` as the second argument and in this way, a class name will be added  when a property value equals ``false`` non-strictly and vice versa.
+- [`dataset`](/api/binders/dataset/) – Returns a binder which changes given [dataset](https://developer.mozilla.org/ru/docs/Web/API/HTMLElement/dataset) property of bound DOM node depending on an object property value.
+- [`display`](/api/binders/display/) – Returns a binder which controls a visibility of DOM node (using ``style.display``) depending on an object property value
+- [`existence`](/api/binders/existence/) – Returns a binder which controls an existence of DOM node at DOM tree depending on an object property value
+- [`html`](/api/binders/html/) – Returns a binder which changes ``innerHTML`` of bound DOM node depending on an object property value
+- [`input`](/api/binders/input/) _(Advanced)_ – Returns a binder which binds an object property to an ``input`` element value. It is not obligatory to use the binder directly because it is included in the [`Matreshka.defaultBinders`](/api/matreshka-static/default-binders/) list.
+- [`output`](/api/binders/output/) _(Advanced)_ – Returns a binder which binds an object property to an ``output`` element value. It is not obligatory to use the binder directly because it is included in the [`Matreshka.defaultBinders`](/api/matreshka-static/default-binders/) list.
+- [`progress`](/api/binders/progress/) _(Advanced)_ – Returns a binder which binds an object property to a ``progress`` element value. It is not obligatory to use the binder directly because it is included in the [`Matreshka.defaultBinders`](/api/matreshka-static/default-binders/) list.
+- [`prop`](/api/binders/prop/) – Returns a binder which changes given property of DOM node depending on an object property value
+- [`select`](/api/binders/select/) _(Advanced)_ – Returns a binder which binds an object property to a ``select`` element value. It is not obligatory to use the binder directly because it is included in the [`Matreshka.defaultBinders`](/api/matreshka-static/default-binders/) list.
+- [`style`](/api/binders/style/) – Returns a binder which changes given style property of bound DOM node depending on an object property value
+- [`text`](/api/binders/text/) – Returns a binder which changes ``textContent`` of bound DOM node depending on an object property value
+- [`textarea`](/api/binders/textarea/) _(Advanced)_ – Returns a binder which binds an object property to a ``textarea`` element value. It is not obligatory to use the binder directly because it is included in the [`Matreshka.defaultBinders`](/api/matreshka-static/default-binders/) list.
+
+## Types
+
+- [`eventHandler`](/api/types/event-handler/)
+- [`matreshka`](/api/types/matreshka/)
+- [`matreshkaObject`](/api/types/matreshka-object/)
+- [`matreshkaArray`](/api/types/matreshka-array/)
+- [`eventNames`](/api/types/event-names/)
+- [`binder`](/api/types/binder/)
+- [`eventOptions`](/api/types/event-options/) – An event object
+- [`class`](/api/types/class/)
+- [`node`](/api/types/node/)
+- [`$nodes`](/api/types/dollar-nodes/)
+- [`string`](/api/types/string/)
+- [`boolean`](/api/types/boolean/)
+- [`number`](/api/types/number/)
+- [`object`](/api/types/object/)
+- [`array`](/api/types/array/)
+- [`function`](/api/types/function/)
+- [`null`](/api/types/null/)
+- [`*`](/api/types/any/)

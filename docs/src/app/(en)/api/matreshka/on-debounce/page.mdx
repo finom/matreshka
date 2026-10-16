@@ -1,0 +1,86 @@
+---
+title: "Matreshka#onDebounce"
+sidebarTitle: "onDebounce"
+description: "Matreshka#onDebounce: Adds an event handler which is called only once during a definite period of time"
+---
+
+# Matreshka#onDebounce
+
+**Method** · Since 1.1
+
+```js
+Matreshka#onDebounce(names, callback, [debounceDelay=0], [triggerOnInit=false], [context]) → object
+```
+
+Adds an event handler which is called only once during a definite period of time
+
+The method allows to add an event handler to an instance of the [`Matreshka`](/api/matreshka/) class, debouncing the handler. Callback function can be called only once during a definite period of time. As to the rest the method works the same as [`Matreshka#on`](/api/matreshka/on/).
+
+> The method has [static alternative](/api/matreshka-static/on-debounce/).
+
+**Returns:** [`object`](/api/types/object/) – self
+
+**Fires:** `addevent`, `addevent:NAME`
+
+## Arguments
+
+| Name | Default | Type | Details |
+| --- | --- | --- | --- |
+| `names` |  | [`eventNames`](/api/types/event-names/) | An event name or some names which are separated by a space (for example, ``"change:x ajaxcomplete change:y"``). |
+| `callback` |  | [`eventHandler`](/api/types/event-handler/) | A handler which is caused by an event |
+| `debounceDelay` (optional) | `0` | [`number`](/api/types/number/) | A delay |
+| `triggerOnInit` (optional) | `false` | [`boolean`](/api/types/boolean/) | If ``triggerOnInit`` argument equals ``true``, the handler will be called immediately after event initialization. |
+| `context` (optional) |  | [`object`](/api/types/object/) | A context of a handler. In other words, ``this`` when called ``callback`` |
+
+## Links
+
+- [`Matreshka#on`](/api/matreshka/on/)
+- [`Matreshka#once`](/api/matreshka/once/)
+- [`Matreshka#off`](/api/matreshka/off/)
+- [`Matreshka#trigger`](/api/matreshka/trigger/)
+- [JavaScript Debounce Function](http://davidwalsh.name/javascript-debounce-function)
+
+## Examples
+
+```js
+this.onDebounce('change:x', () => {
+	alert(`x = ${this.x}`); // x = 100
+}, 300);
+
+this.x = 1;
+
+for(let i = 0; i < 100; i++) {
+	this.x++;
+}
+```
+
+## Alternative syntax: "eventname-handler" pairs [#variation-2]
+
+```js
+Matreshka#onDebounce(evtnameHandlerObject, [debounceDelay=0], [triggerOnInit=false], [context]) → object
+```
+
+**Returns:** [`object`](/api/types/object/) – self
+
+### Arguments
+
+| Name | Default | Type | Details |
+| --- | --- | --- | --- |
+| `evtnameHandlerObject` |  | [`object`](/api/types/object/) | An object where keys are event names and values are event handlers |
+| `debounceDelay` (optional) | `0` | [`number`](/api/types/number/) | A delay |
+| `triggerOnInit` (optional) | `false` | [`boolean`](/api/types/boolean/) | If ``triggerOnInit`` argument equals ``true``, all handlers will be called immediately after event initialization |
+| `context` (optional) |  | [`object`](/api/types/object/) | A context of the handler |
+
+### Links
+
+- [`Matreshka#on(2)`](/api/matreshka/on/#variation-2)
+
+### Examples
+
+```js
+this.onDebounce({
+	'custom': evt => { ... },
+	'click::x': evt => { ... },
+	'change:y': evt => { ... }
+});
+```

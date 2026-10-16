@@ -1,9 +1,7 @@
 node_modules/
 *.log
-.directory
-coverage
-.coveralls.yml
-bundle
-npm
-.npmrc
 .DS_Store
+coverage/
+dist/
+.next/
+out/

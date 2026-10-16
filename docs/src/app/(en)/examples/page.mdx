@@ -1,0 +1,89 @@
+---
+title: "Examples"
+description: "Hello World step by step, then live apps built with Matreshka.js: TodoMVC, TreeView, a Markdown editor, a contact list, tutorials and the plugin demos."
+---
+
+# Examples
+
+## Hello World
+
+Writing your first application is very easy. You should:
+
+**1\.** Create an HTML file with the following content
+
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>My first Matreshka.js application</title>
+	</head>
+	<body>
+		<input type="text" class="my-input">
+		<div class="my-output"></div>
+		<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>
+```
+
+**2\.** Create the application class at **js/app.js**
+
+```js
+// store html binder in a short variable
+const htmlBinder = Matreshka.binders.html;
+
+// create the class which inherits Matreshka
+class Application extends Matreshka {
+    constructor() {
+        super();
+
+        // bind a property x and the text field
+        this.bindNode('x', '.my-input');
+
+        // bind the property x and the ".my-output" block
+        this.bindNode('x', '.my-output', htmlBinder());
+
+        // if the property "x" has changed,
+        // inform about it in the console
+        this.on('change:x', () =>
+            console.log(`x is changed to "${this.x}"`));
+    }
+}
+
+const app = new Application();
+```
+
+**3\.** That's it!
+
+Now you can open the developer's console (by pressing F12) and write:
+
+```js
+app.x = 'Hello World!';
+```
+
+Cool, isn't it? You can work with such magical properties directly. [Run it live](/examples/hello-world/).
+
+### Links
+
+- [`Matreshka` class](/api/matreshka/)
+- [`Matreshka#bindNode` method](/api/matreshka/bind-node/)
+- [`Matreshka#on` method](/api/matreshka/on/)
+
+## Live examples
+
+Each example runs on this site; its source code is in the [examples folder](https://github.com/finom/matreshka/tree/main/examples) of the repository.
+
+1. [TodoMVC](/examples/todomvc/) – a to-do list. ([Source code with annotations](/examples/todomvc/docs/todomvc/js/app.html), [source](https://github.com/finom/matreshka/tree/main/examples/todomvc))
+2. [TreeView](/examples/treeview/) of unlimited nesting depth. ([Source](https://github.com/finom/matreshka/tree/main/examples/treeview))
+3. [Markdown editor](/examples/markdown-editor/) made with few lines of code. ([Source](https://github.com/finom/matreshka/tree/main/examples/markdown-editor))
+4. [Contact List](/examples/contact-list/) – allows to add, remove, sort, search and change contacts. ([Source](https://github.com/finom/matreshka/tree/main/examples/contact-list))
+5. [A login form](/examples/matreshka-object/) made with `Matreshka.Object`. ([Tutorial](https://github.com/finom/matreshka/tree/main/examples/matreshka-object))
+6. [A table of users](/examples/matreshka-array/) made with `Matreshka.Array`. ([Tutorial](https://github.com/finom/matreshka/tree/main/examples/matreshka-array))
+7. [matreshka-router demo](/examples/router/#!/foo/bar/baz/) – properties bound to parts of the URL. ([Source](https://github.com/finom/matreshka/tree/main/examples/router))
+8. [matreshka-parse-form demo](/examples/parse-form/) – form fields bound to properties by their names. ([Source](https://github.com/finom/matreshka/tree/main/examples/parse-form))
+9. [Simple SoundCloud player](/examples/soundcloud-search/) – music search via SoundCloud API. ([Source](https://github.com/finom/matreshka/tree/main/examples/soundcloud-search)) **It no longer finds anything:** SoundCloud's API now asks for an OAuth access token and refuses the public client ID the demo sends. The code still shows how a `Matreshka.Array` renders and plays a list of tracks.
+
+## Tutorials
+
+- [The events](https://github.com/finom/matreshka/tree/main/examples/events) – an article about the event engine, which powers `calc`, `bindNode`, `instantiate` and the rest.
+- [`Matreshka.Object`](https://github.com/finom/matreshka/tree/main/examples/matreshka-object) and [`Matreshka.Array`](https://github.com/finom/matreshka/tree/main/examples/matreshka-array) step by step, with the live examples above.

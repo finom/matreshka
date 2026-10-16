@@ -1,10 +1,14 @@
-# seemple-parse-form [![npm version](https://badge.fury.io/js/seemple-parse-form.svg)](https://badge.fury.io/js/seemple-parse-form)
+# matreshka-parse-form
 
-The function binds named HTML form fields (input, select, textarea, etc.) in a given HTML form to their corresponding properties.
+[![npm version](https://img.shields.io/npm/v/matreshka-parse-form.svg)](https://www.npmjs.com/package/matreshka-parse-form)
+
+Binds the named fields of an HTML form (`input`, `select`, `textarea`, `output`, `progress`) to the properties of the same names, for [Matreshka.js](https://matreshka.js.org).
+
+[Demo](https://matreshka.js.org/examples/parse-form/)
 
 ```html
 <form class="my-form">
-    <input type="text" value="foo" name="x">
+  <input type="text" value="foo" name="x">
 </form>
 ```
 
@@ -12,51 +16,54 @@ The function binds named HTML form fields (input, select, textarea, etc.) in a g
 const object = {};
 parseForm(object, '.my-form');
 
-// ...
 console.log(object.x); // 'foo'
-object.x = 'bar'; // changes input value to 'bar'
+object.x = 'bar'; // changes the input value to 'bar'
 ```
 
-## Usage
+## Installing
 
-In **browser environment** (or whatever environment where ``Seemple`` is global variable)  ``Seemple`` is extended.
+```
+npm install matreshka matreshka-parse-form
+```
+
+```js
+import parseForm from 'matreshka-parse-form';
+```
+
+CommonJS:
+
+```js
+const parseForm = require('matreshka-parse-form');
+```
+
+In a page, load the bundle after Matreshka's. It adds `Matreshka.parseForm`:
+
 ```html
-<script src="path/to/seemple-parse-form.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka-parse-form@2/dist/matreshka-parse-form.min.js"></script>
 ```
 
 ```js
-Seemple.parseForm(object, form);
+Matreshka.parseForm(object, form);
 ```
 
-The bundle can be downloaded at [gh-pages branch](https://github.com/finom/seemple/tree/gh-pages)
-
--------------
-
-In **CJS environment** ``Seemple`` is not extended.
-
-```
-npm install seemple-parse-form
-```
-
-```js
-const parseForm = require('seemple-parse-form');
-```
-
+Imported as a module, it adds it only when a global `Matreshka` exists (the bundle in a page), never to an imported `Matreshka`.
 
 ## API
 
-The function accepts 4 arguments:
-- ``object`` - an object (required)
-- ``form`` - a selector, DOM node, etc. of the given form (custom selectors ``:sandbox`` and ``:bound(XXX)`` also acceptable) (required)
-- ``callback`` - a function which will be called on every found field; accepts field name and field element itself
-- ``eventOptions`` - event options which will be passed to every internal call of ``bindNode``.
+`parseForm(object, form, callback, eventOptions)`:
 
-Returns: parsed form element.
+- `object`: an object or a function (required).
+- `form`: the form, as a selector, an HTML string, a DOM node or an array-like of nodes; the custom selectors `:sandbox` and `:bound(KEY)` work too (required). For a `<form>`, the fields tied to it with the `form` attribute are bound as well. Any other element binds the fields inside it.
+- `callback`: called for every bound field with the field name and the field element.
+- `eventOptions`: event options passed to every internal `bindNode` call.
 
+Returns the form element, or `null` when the form isn't found (then nothing is bound).
 
-The third argument is useful when ``parseForm`` is used with ``Seemple.Object``: you can call ``addDataKeys`` method there.
+The callback is handy with `Matreshka.Object`, to call `addDataKeys`:
+
 ```js
-const form = parseForm(this, ':sandbox .foo', key => this.addDataKeys(key), {
-    getValueOnBind: false
+const form = parseForm(this, ':sandbox .foo', (key) => this.addDataKeys(key), {
+  getValueOnBind: false
 });
 ```

@@ -1,0 +1,42 @@
+---
+title: "Matreshka.Array#recreate"
+sidebarTitle: "recreate"
+description: "Matreshka.Array#recreate: Recreates the Matreshka.Array instance"
+---
+
+# Matreshka.Array#recreate
+
+**Method**
+
+```js
+Matreshka.Array#recreate([array], [eventOptions]) → matreshkaArray
+```
+
+Recreates the [`Matreshka.Array`](/api/matreshka-array/) instance
+
+The method allows to convert any array or array-like into the [`Matreshka.Array`](/api/matreshka-array/) instance. If nothing has been passed as the first argument, the instance is cleansed.
+
+**Returns:** [`matreshkaArray`](/api/types/matreshka-array/) – self
+
+**Fires:** `recreate`, `modify`, `add`, `addone`, `remove`, `removeone`
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `array` (optional) | [`array`](/api/types/array/) | An array or array-like object |
+| `eventOptions` (optional) | [`eventOptions`](/api/types/event-options/) | An event object |
+
+## Links
+
+- [`Matreshka.Array#trackBy`](/api/matreshka-array/track-by/)
+
+## Examples
+
+```js
+// cleanse the array and add 5 new items
+this.recreate([1, 2, 3, 4, 5]);
+
+// cleanse the array
+this.recreate();
+```

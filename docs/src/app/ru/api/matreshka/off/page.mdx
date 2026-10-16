@@ -1,0 +1,68 @@
+---
+title: "Matreshka#off"
+sidebarTitle: "off"
+description: "Matreshka#off: Удаляет обработчик события. Matreshka.js справочник API"
+---
+
+# Matreshka#off
+
+**Метод**
+
+```js
+Matreshka#off([names], [callback], [context]) → matreshka
+```
+
+Удаляет обработчик события
+
+Удаляет созданный ранее обработчик. Все три аргумента опциональны. Вы можете удалить как все события (не передавая ни одного аргумента), так и отдельные (передав только имя события, передав имя события и обработчик, передав и имя события, и обработчик, и контекст)
+
+Без аргументов ``off`` удаляет все обработчики, добавленные через ``on``, ``once`` и ``onDebounce``, и генерирует ``removeevent`` для каждого из них. Привязки, зависимости ``calc`` и внутренние события ``Matreshka.Object`` и ``Matreshka.Array`` остаются.
+
+**Возвращает:** [`matreshka`](/ru/api/types/matreshka/) – self
+
+**Генерирует события:** `removeevent`, `removeevent:NAME`
+
+## Аргументы
+
+| Имя | Тип | Описание |
+| --- | --- | --- |
+| `names` (необязательный) | [`eventNames`](/ru/api/types/event-names/) | Разделенный пробелами список имен событий (например, ``"change:x ajaxcomplete change:y"``) |
+| `callback` (необязательный) | [`eventHandler`](/ru/api/types/event-handler/) | Функция-обработчик |
+| `context` (необязательный) | [`object`](/ru/api/types/object/) | Контекст |
+
+## Ссылки
+
+- [`Matreshka#on`](/ru/api/matreshka/on/)
+- [`Matreshka#once`](/ru/api/matreshka/once/)
+- [`Matreshka#onDebounce`](/ru/api/matreshka/on-debounce/)
+- [`Matreshka#trigger`](/ru/api/matreshka/trigger/)
+
+## Примеры
+
+```js
+this.off('change:x bind');
+```
+
+**Удаление всех событий**
+
+```js
+this.off();
+```
+
+**Удаление события с определенным обработчиком**
+
+```js
+const handler = function() {
+	//...
+}
+this.on('change:x', handler);
+this.off('change:x', handler);
+```
+
+**Удаление события с определенным контекстом**
+
+```js
+const object = {};
+this.on('change:x', handler, object);
+this.off('change:x', handler, object);
+```

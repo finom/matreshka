@@ -1,0 +1,29 @@
+{
+  "name": "matreshka-docs",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "author": "Andrey Gubanov (https://github.com/finom)",
+  "type": "module",
+  "scripts": {
+    "icons": "node scripts/icons.mjs",
+    "predev": "node scripts/copy-static.mjs",
+    "dev": "next dev",
+    "prebuild": "node scripts/copy-static.mjs",
+    "build": "next build",
+    "postbuild": "node scripts/postbuild.mjs"
+  },
+  "devDependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "pagefind": "^1.5.2",
+    "sharp": "^0.35.5",
+    "zod": "4.3.6"
+  },
+  "dependencies": {
+    "next": "^16.4.0",
+    "nextra": "^4.6.1",
+    "nextra-theme-docs": "^4.6.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  }
+}

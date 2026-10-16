@@ -1,0 +1,38 @@
+---
+title: "Matreshka#select"
+sidebarTitle: "select"
+description: "Matreshka#select: Returns HTML node corresponding to a selector from a sandbox"
+---
+
+# Matreshka#select
+
+**Method**
+
+```js
+Matreshka#select(selector) → node|null
+```
+
+Returns HTML node corresponding to a selector from a sandbox
+
+The method is very similar to [`Matreshka#selectAll`](/api/matreshka/select-all/), but it returns only one element or ``null``.
+
+> The method has [static alternative](/api/matreshka-static/select/)
+
+**Returns:** [`node`](/api/types/node/) \| [`null`](/api/types/null/)
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `selector` | [`string`](/api/types/string/) | A selector |
+
+## Examples
+
+```js
+this.bindNode('sandbox', '.app');
+this.select('.my-element');
+// the same as
+this.nodes.sandbox.querySelector('.my-element');
+// the same as
+$('.app').find('.my-element')[0];
+```

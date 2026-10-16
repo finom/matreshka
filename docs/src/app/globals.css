@@ -1,0 +1,112 @@
+.mk-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+}
+
+.mk-langs {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.mk-langs a {
+  opacity: 0.6;
+}
+
+.mk-langs a:hover {
+  opacity: 1;
+}
+
+.mk-advanced {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: 9999px;
+  border: 1px solid #9c27b0;
+  color: #9c27b0;
+  font-size: 0.875rem;
+}
+
+:is(html.dark) .mk-advanced {
+  border-color: #ce93d8;
+  color: #ce93d8;
+}
+
+.mk-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  margin: 2rem 0 1rem;
+}
+
+.mk-hero img {
+  max-width: 100%;
+  height: auto;
+}
+
+.mk-demo {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.mk-demo output {
+  min-height: 1.5em;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.mk-demo input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #c8c8c8;
+  border-radius: 0.375rem;
+  background: transparent;
+  font: inherit;
+}
+
+.mk-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.mk-buttons a {
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.375rem;
+  border: 1px solid currentColor;
+  font-weight: 600;
+}
+
+.mk-buttons a:first-child {
+  background: #2e7d32;
+  border-color: #2e7d32;
+  color: #fff;
+}
+
+.mk-dark {
+  display: none;
+}
+
+html.dark .mk-light {
+  display: none;
+}
+
+html.dark .mk-dark {
+  display: inline;
+}
+
+.mk-not-found {
+  font-family: system-ui, sans-serif;
+  text-align: center;
+  padding: 20vh 1rem;
+}
+
+.mk-buttons {
+  margin: 1.5rem 0;
+}

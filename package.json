@@ -1,115 +1,53 @@
 {
-  "name": "seemple-monorepo",
+  "name": "matreshka-repo",
   "private": true,
-  "version": "0.0.0-by-lerna",
-  "description": "Seemple.js framework",
-  "main": "seemple.js",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "packages/matreshka",
+    "packages/router",
+    "packages/parse-form",
+    "docs"
+  ],
   "scripts": {
-    "test": "npm run lint && npm run unit && cat ./packages/seemple/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "post-publish-test": "node test/post-publish/post-publish.js",
-    "unit": "npm run --prefix packages/seemple npm-compile && lerna run test",
-    "build": "lerna run build",
-    "lint": "eslint .",
-    "commit": "git-cz",
-    "deploy-to-git": "shx rm -rf bundle && deploy-to-git",
-    "upgrade": "ncu -u && npm install",
-    "reinstall": "rm -rf package-lock.json node_modules/ && npm i",
-    "patch": "lerna run npm-compile && lerna version patch --yes && npm run npm-deploy",
-    "minor": "lerna run npm-compile && lerna version minor && npm run npm-deploy",
-    "install-all": "npm install && lerna exec --concurrency 1 -- npm install",
-    "npm-deploy": "lerna publish from-package --yes --contents npm && npm run post-publish-test"
+    "lint": "biome check --error-on-warnings .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "build": "set -e; for P in matreshka router parse-form; do npm run build --prefix ./packages/$P; done",
+    "patch": "node scripts/release.mjs patch",
+    "minor": "node scripts/release.mjs minor",
+    "check:dist": "node scripts/check-dist.mjs && node --no-experimental-require-module scripts/check-dist.mjs",
+    "exports": "node scripts/exports.mjs --write",
+    "build:docs": "npm run build -w matreshka-docs"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/finom/seemple.git"
+    "url": "git+https://github.com/finom/matreshka.git"
   },
-  "author": {
-    "name": "Andrey Gubanov",
-    "email": "andrey.a.gubanov@gmail.com"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/finom/seemple/issues"
-  },
-  "config": {
-    "deployToGit": {
-      "repository": "git@github.com:finom/seemple.git",
-      "_repository": "https://$GH_TOKEN@github.com/finom/seemple.git",
-      "branch": "gh-pages",
-      "folder": "bundle",
-      "script": "npm run build",
-      "commit": "Deploy",
-      "user": {
-        "email": "andrey.a.gubanov@gmail.com",
-        "name": "Andrey Gubanov (his digital clone)"
-      }
-    },
-    "commitizen": {
-      "path": "cz-simple-conventional-changelog"
-    },
-    "validate-commit-msg": {
-      "types": [
-        "feat",
-        "fix",
-        "refactor",
-        "perf",
-        "test",
-        "chore",
-        "revert"
-      ]
-    },
-    "ghooks": {
-      "commit-msg": "validate-commit-msg"
-    }
-  },
-  "homepage": "https://github.com/finom/seemple#readme",
   "devDependencies": {
-    "@babel/cli": "^7.8.3",
-    "@babel/core": "^7.8.3",
-    "@babel/node": "^7.8.3",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/plugin-transform-runtime": "^7.8.3",
-    "@babel/polyfill": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
-    "@babel/runtime": "^7.8.3",
-    "app-module-path": "^2.2.0",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^10.0.3",
-    "babel-istanbul": "^0.12.2",
-    "babel-istanbul-loader": "^0.1.0",
-    "babel-loader": "^8.0.6",
-    "commitizen": "^4.0.3",
-    "copy-webpack-plugin": "^5.1.1",
-    "coveralls": "^3.0.9",
-    "cz-simple-conventional-changelog": "0.0.1",
-    "deploy-to-git": "^0.1.5",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-loader": "^3.0.3",
-    "eslint-plugin-import": "^2.20.0",
-    "eslint-plugin-output-todo-comments": "0.0.7",
-    "ghooks": "^2.0.4",
-    "istanbul": "^1.1.0-alpha.1",
-    "jasmine": "^3.5.0",
-    "jasmine-core": "^3.5.0",
-    "jasmine-spec-reporter": "^4.2.1",
-    "jsdom": "^16.0.1",
-    "lerna": "^3.20.2",
-    "module-alias": "^2.2.2",
-    "npm-check-updates": "^4.0.1",
-    "npm-registry-client": "^8.6.0",
-    "optimist": "^0.6.1",
-    "shx": "^0.3.2",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "unminified-webpack-plugin": "^2.0.0",
-    "validate-commit-msg": "^2.14.0",
-    "webidl-conversions": "^5.0.0",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10",
-    "webpack-core": "^0.6.9",
-    "word-wrap": "^1.2.3"
+    "@babel/core": "^8.0.7",
+    "@babel/plugin-transform-modules-commonjs": "^8.0.1",
+    "@biomejs/biome": "^2.5.15",
+    "@rollup/plugin-commonjs": "^29.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^1.0.0",
+    "@vitest/coverage-v8": "^5.0.3",
+    "jsdom": "^30.1.2",
+    "rollup": "^4.64.3",
+    "vitest": "^5.0.3"
   },
-  "dependencies": {
-    "expect.js": "^0.3.1"
+  "overrides": {
+    "nextra": {
+      "zod": "4.3.6"
+    },
+    "nextra-theme-docs": {
+      "zod": "4.3.6"
+    },
+    "@xmldom/xmldom": "^0.9.12",
+    "katex": "^0.18.11"
   }
 }

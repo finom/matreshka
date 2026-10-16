@@ -1,0 +1,151 @@
+{
+  "name": "matreshka",
+  "version": "2.4.18",
+  "description": "A reactive JavaScript framework for single-page applications, built on classes and accessors",
+  "keywords": [
+    "matreshka",
+    "framework",
+    "reactive",
+    "two-way-data-binding",
+    "data-binding",
+    "spa",
+    "mvc"
+  ],
+  "homepage": "https://matreshka.js.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finom/matreshka.git",
+    "directory": "packages/matreshka"
+  },
+  "author": "Andrey Gubanov <andrey.a.gubanov@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/finom/matreshka/issues"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "unpkg": "./dist/matreshka.min.js",
+  "jsdelivr": "./dist/matreshka.min.js",
+  "exports": {
+    ".": {
+      "module-sync": "./dist/esm/index.sync.js",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./_dom": {
+      "module-sync": "./dist/esm/_dom/index.js",
+      "import": "./dist/esm/_dom/index.js",
+      "require": "./dist/cjs/_dom/index.js"
+    },
+    "./_dom/mq": {
+      "module-sync": "./dist/esm/_dom/mq/index.js",
+      "import": "./dist/esm/_dom/mq/index.js",
+      "require": "./dist/cjs/_dom/mq/index.js"
+    },
+    "./array": {
+      "module-sync": "./dist/esm/array/index.js",
+      "import": "./dist/esm/array/index.js",
+      "require": "./dist/cjs/array/index.js"
+    },
+    "./array/_processrendering": {
+      "module-sync": "./dist/esm/array/_processrendering/index.js",
+      "import": "./dist/esm/array/_processrendering/index.js",
+      "require": "./dist/cjs/array/_processrendering/index.js"
+    },
+    "./array/_pseudonativemethods": {
+      "module-sync": "./dist/esm/array/_pseudonativemethods/index.js",
+      "import": "./dist/esm/array/_pseudonativemethods/index.js",
+      "require": "./dist/cjs/array/_pseudonativemethods/index.js"
+    },
+    "./array/orderby": {
+      "module-sync": "./dist/esm/array/orderby/index.js",
+      "import": "./dist/esm/array/orderby/index.js",
+      "require": "./dist/cjs/array/orderby/index.js"
+    },
+    "./array/recreate": {
+      "module-sync": "./dist/esm/array/recreate/index.js",
+      "import": "./dist/esm/array/recreate/index.js",
+      "require": "./dist/cjs/array/recreate/index.js"
+    },
+    "./binders": {
+      "module-sync": "./dist/esm/binders/index.js",
+      "import": "./dist/esm/binders/index.js",
+      "require": "./dist/cjs/binders/index.js"
+    },
+    "./bindnode": {
+      "module-sync": "./dist/esm/bindnode/index.js",
+      "import": "./dist/esm/bindnode/index.js",
+      "require": "./dist/cjs/bindnode/index.js"
+    },
+    "./calc": {
+      "module-sync": "./dist/esm/calc/index.js",
+      "import": "./dist/esm/calc/index.js",
+      "require": "./dist/cjs/calc/index.js"
+    },
+    "./matreshka": {
+      "module-sync": "./dist/esm/matreshka/index.js",
+      "import": "./dist/esm/matreshka/index.js",
+      "require": "./dist/cjs/matreshka/index.js"
+    },
+    "./object": {
+      "module-sync": "./dist/esm/object/index.js",
+      "import": "./dist/esm/object/index.js",
+      "require": "./dist/cjs/object/index.js"
+    },
+    "./off": {
+      "module-sync": "./dist/esm/off/index.js",
+      "import": "./dist/esm/off/index.js",
+      "require": "./dist/cjs/off/index.js"
+    },
+    "./on": {
+      "module-sync": "./dist/esm/on/index.js",
+      "import": "./dist/esm/on/index.js",
+      "require": "./dist/cjs/on/index.js"
+    },
+    "./on/_delegatelistener": {
+      "module-sync": "./dist/esm/on/_delegatelistener/index.js",
+      "import": "./dist/esm/on/_delegatelistener/index.js",
+      "require": "./dist/cjs/on/_delegatelistener/index.js"
+    },
+    "./parsebindings": {
+      "module-sync": "./dist/esm/parsebindings/index.js",
+      "import": "./dist/esm/parsebindings/index.js",
+      "require": "./dist/cjs/parsebindings/index.js"
+    },
+    "./parsebindings/_processattribute": {
+      "module-sync": "./dist/esm/parsebindings/_processattribute/index.js",
+      "import": "./dist/esm/parsebindings/_processattribute/index.js",
+      "require": "./dist/cjs/parsebindings/_processattribute/index.js"
+    },
+    "./trigger": {
+      "module-sync": "./dist/esm/trigger/index.js",
+      "import": "./dist/esm/trigger/index.js",
+      "require": "./dist/cjs/trigger/index.js"
+    },
+    "./unbindnode": {
+      "module-sync": "./dist/esm/unbindnode/index.js",
+      "import": "./dist/esm/unbindnode/index.js",
+      "require": "./dist/cjs/unbindnode/index.js"
+    },
+    "./package.json": "./package.json",
+    "./dist/*": "./dist/*",
+    "./*.js": {
+      "module-sync": "./dist/esm/*.js",
+      "import": "./dist/esm/*.js",
+      "require": "./dist/cjs/*.js"
+    },
+    "./*": {
+      "module-sync": "./dist/esm/*.js",
+      "import": "./dist/esm/*.js",
+      "require": "./dist/cjs/*.js"
+    }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node ../../scripts/build-package.mjs matreshka",
+    "prepublishOnly": "node ../../scripts/ci-only.mjs"
+  }
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>matreshka-router demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/skeleton-css@2.0.4/css/skeleton.css">
+</head>
+<body>
+  <div class="container">
+    <h4>matreshka-router</h4>
+    <p>
+      The first row is bound to <code>location.hash</code> (<code>#!/a/b/c/</code>), the second one to the path through
+      the History API (<code>/d/e/f/</code>). Type into a field and watch the address bar, or use the back button.
+    </p>
+    <div class="row">
+      <div class="one-third column">
+        <label>this.a</label>
+        <input class="a u-full-width" type="text">
+      </div>
+      <div class="one-third column">
+        <label>this.b</label>
+        <input class="b u-full-width" type="text">
+      </div>
+      <div class="one-third column">
+        <label>this.c</label>
+        <input class="c u-full-width" type="text">
+      </div>
+    </div>
+    <div class="row">
+      <div class="one-third column">
+        <label>this.d</label>
+        <input class="d u-full-width" type="text">
+      </div>
+      <div class="one-third column">
+        <label>this.e</label>
+        <input class="e u-full-width" type="text">
+      </div>
+      <div class="one-third column">
+        <label>this.f</label>
+        <input class="f u-full-width" type="text">
+      </div>
+    </div>
+  </div>
+  <script src="/matreshka.min.js"></script>
+  <script src="/matreshka-router.min.js"></script>
+  <script>
+    window.app = new class App extends Matreshka {
+      constructor() {
+        super()
+          .bindNode({
+            a: '.a',
+            b: '.b',
+            c: '.c',
+            d: '.d',
+            e: '.e',
+            f: '.f'
+          }, {}, { getValueOnBind: false });
+
+        Matreshka.initRouter(this, '/a/b/c/');
+        Matreshka.initRouter(this, '/d/e/f/', 'history');
+      }
+    };
+  </script>
+</body>
+</html>

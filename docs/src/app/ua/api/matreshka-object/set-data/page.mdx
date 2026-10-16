@@ -1,0 +1,116 @@
+---
+title: "Matreshka.Object#setData"
+sidebarTitle: "setData"
+description: "Matreshka.Object#setData: Встановлює значення властивості і додає його ім'я в список імен властивостей, що відповідають за дані"
+---
+
+# Matreshka.Object#setData
+
+**Метод**
+
+```js
+Matreshka.Object#setData(key, value, [eventOptions]) → matreshkaObject
+```
+
+Встановлює значення властивості і додає його ім'я в список імен властивостей, що відповідають за дані
+
+Синонім: `Matreshka.Object#jset`
+
+Цей метод робить дві речі:
+
+1. Встановлює значення заданої властивості.
+
+2. Додає ключ властивості в список даних, що робить властивість доступною для використання в методах [`Matreshka.Object#each`](/ua/api/matreshka-object/each/), [`Matreshka.Object#keys`](/ua/api/matreshka-object/keys/), [`Matreshka.Object#toJSON`](/ua/api/matreshka-object/to-json/)) та інших.
+
+> Якщо передати прапор ``replaceData``, встановлений як ``true``, в об'єкт події, то інші властивості будуть вилучені зі списку властивостей, що відповідають за дані.
+
+В іншому, метод працює так само, як і [`Matreshka#set`](/ua/api/matreshka/set/).
+
+**Повертає:** [`matreshkaObject`](/ua/api/types/matreshka-object/) – self
+
+**Генерує події:** `change`, `change:KEY`, `modify`, `set`
+
+## Аргументи
+
+| Ім'я | Тип | Опис |
+| --- | --- | --- |
+| `key` | [`string`](/ua/api/types/string/) | Ключ |
+| `value` | [`*`](/ua/api/types/any/) | Значення |
+| `eventOptions` (необов'язковий) | [`eventOptions`](/ua/api/types/event-options/) | Об'єкт події |
+
+## Посилання
+
+- [`Matreshka#set`](/ua/api/matreshka/set/)
+
+## Приклади
+
+```js
+this.setData('a', 1).setData('b', 2);
+
+// Присвоювання властивості 'c' трійку,
+// але не додаємо ключ 'c' в список ключів, що відповідають за дані
+this.set('c', 3);
+
+this.each((value, key) => {
+	console.log(key, value);
+});
+
+// виводить 'a' 1 і 'b' 2
+
+console.log(this.keys()); // виводить ['a', 'b']
+
+console.log(this.toJSON()); // виводить { a: 1, b: 2 }
+```
+
+**Після використання методу ``setData`` з властивістю можна працювати, як із звичайною властивістю**
+
+```js
+this.setData('a', 1).setData('b', 2);
+this.set('a', 3);
+this.b = 4;
+```
+
+**Використання альтернативного імені методу: ``jset``**
+
+```js
+this.jset('a', 1);
+```
+
+## Альтернативний синтаксис методу Matreshka.Object#setData, який приймає об'єкт ключ-значення для встановлення декількох властивостей одночасно [#variation-2]
+
+```js
+Matreshka.Object#setData(keyValuePairs, evtOpts) → matreshkaObject
+```
+
+**Повертає:** [`matreshkaObject`](/ua/api/types/matreshka-object/) – self
+
+### Аргументи
+
+| Ім'я | Тип | Опис |
+| --- | --- | --- |
+| `keyValuePairs` | [`object`](/ua/api/types/object/) | Об'єкт ключ-значення |
+| `evtOpts` | [`eventOptions`](/ua/api/types/event-options/) | Об'єкт події |
+
+### Приклади
+
+```js
+this.setData({
+	a: 1,
+	b: 2
+});
+```
+
+**Якщо передати прапор ``replaceData``, встановлений як ``true`` в об'єкт події, то властивості, які не входять до переданого об'єкту, будуть вилучені зі списку властивостей, що відповідають за дані**
+
+```js
+this
+	.addDataKeys(['a', 'b', 'c'])
+	.setData({
+		a: 1,
+		b: 2
+	}, {
+		replaceData: true
+	});
+
+console.log(this.keys()); // ['a', 'b']
+```

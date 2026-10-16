@@ -1,0 +1,35 @@
+---
+title: "Matreshka.binders.progress"
+sidebarTitle: "progress"
+description: "Matreshka.binders.progress: Возвращает байндер, связывающий свойство объекта с элементом progress. Напрямую байндер использовать не обязательно, так как он…"
+---
+
+import { Advanced } from '@/components/advanced';
+
+# Matreshka.binders.progress
+
+**Метод** · Начиная с версии 1.1
+
+<Advanced>Член для продвинутых: на старте он редко нужен.</Advanced>
+
+**Импорт:**
+
+```js
+import progress from 'matreshka/binders/progress';
+// или
+import { progress } from 'matreshka/binders';
+```
+
+```js
+Matreshka.binders.progress() → binder
+```
+
+Возвращает байндер, связывающий свойство объекта с элементом ``progress``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+
+**Возвращает:** [`binder`](/ru/api/types/binder/)
+
+## Примеры
+
+```js
+this.bindNode('myKey', '.my-progress', Matreshka.binders.progress());
+```

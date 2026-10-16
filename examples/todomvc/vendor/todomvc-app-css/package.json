@@ -1,0 +1,109 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "todomvc-app-css@^2.3.0",
+        "scope": null,
+        "escapedName": "todomvc-app-css",
+        "name": "todomvc-app-css",
+        "rawSpec": "^2.3.0",
+        "spec": ">=2.3.0 <3.0.0",
+        "type": "range"
+      },
+      "/Users/finom/Work/matreshka-todomvc"
+    ]
+  ],
+  "_from": "todomvc-app-css@>=2.3.0 <3.0.0",
+  "_hasShrinkwrap": false,
+  "_id": "todomvc-app-css@2.3.0",
+  "_inCache": true,
+  "_location": "/todomvc-app-css",
+  "_nodeVersion": "10.16.3",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/todomvc-app-css_2.3.0_1570095742258_0.5776060555111988"
+  },
+  "_npmUser": {
+    "name": "sindresorhus",
+    "email": "sindresorhus@gmail.com"
+  },
+  "_npmVersion": "6.11.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "todomvc-app-css@^2.3.0",
+    "scope": null,
+    "escapedName": "todomvc-app-css",
+    "name": "todomvc-app-css",
+    "rawSpec": "^2.3.0",
+    "spec": ">=2.3.0 <3.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/todomvc-app-css/-/todomvc-app-css-2.3.0.tgz",
+  "_shasum": "cc27f1686ab4c418eef4e790289cc124baca2546",
+  "_shrinkwrap": null,
+  "_spec": "todomvc-app-css@^2.3.0",
+  "_where": "/Users/finom/Work/matreshka-todomvc",
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
+  "bugs": {
+    "url": "https://github.com/tastejs/todomvc-app-css/issues"
+  },
+  "dependencies": {},
+  "description": "CSS for TodoMVC apps",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-RG8hxqoVn8Be3wxyuyHfOSAXiY1Z0N+PYQOe/jxzy3wpU1Obfwd1RF1i/fz/fR+MrYL+Q+BdrUt8SsXdtR7Oow==",
+    "shasum": "cc27f1686ab4c418eef4e790289cc124baca2546",
+    "tarball": "https://registry.npmjs.org/todomvc-app-css/-/todomvc-app-css-2.3.0.tgz",
+    "fileCount": 4,
+    "unpackedSize": 26584,
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJdlcJ/CRA9TVsSAnZWagAAcNoQAJxbFTeNzpehzLRuVpe5\n/AwvW65mOMUBkYPl6Ph3mG7C6j4tNiJH6j9C4T94I8agB3BwInQQbkr7Bn54\nfzqznmff4HjpS4Y83hsRgkqaUT5ua5BWm1PTNGqQyYdS6dqdG9IKVgmSYFN8\nYrNlcYWttvzubUvNyWgCn0NWdV/0aBiztwQ1FSZ2Z3qVyB1mwW7DfCwSGFfo\n+iZTmkWxCIqAsutFo7ZivcJVAP6tkLMbsp02RD0AeIhNdtCP1IqkfHsmzHzS\n5EOf1UKQk4daPyzXVuh16cQNPlWTjW4/A4GhhvuANuDg8Ig9/dUygLZJ5X0U\nPIdR6SljY+jSmSN3EJEGZDwCV8rTJ9Dcn8den6/gFjxzsGW7ssgE7RJ49MMU\nkJz77M57Crc3caW1Jz+O7hFhwmpwROZzQAtami892S+sk86fySgk33Wa5Smi\n7mMNVdBQZ0M5UHM3lUU94Yu30APRF5/bU5+RRyEtexc6H+rF4Ey9iIZph9w6\neUImA8VMKKW7v2rTNon1pKouK+qrSzbAgDmIAKlMJZUFJVwfLFD9WqIAeKJg\nNdoa0tVXESiB5IwdKQH8J+dosPyhFO9UmZTitlu1UVWtpMK+3vXHluEnsYN/\n1qkjwbmwn66gtpoqUW301oMH08n4jMiM1q+CR9s94W9xGHK8wlQOVLoc62Un\nRwkL\r\n=/wVD\r\n-----END PGP SIGNATURE-----\r\n"
+  },
+  "gitHead": "825cc02e2ff209a77885c7ce1df4e33250517cce",
+  "homepage": "https://github.com/tastejs/todomvc-app-css#readme",
+  "keywords": [
+    "todomvc",
+    "tastejs",
+    "app",
+    "todo",
+    "template",
+    "css",
+    "style",
+    "stylesheet"
+  ],
+  "license": "CC-BY-4.0",
+  "maintainers": [
+    {
+      "name": "addyosmani",
+      "email": "addyosmani@gmail.com"
+    },
+    {
+      "name": "passy",
+      "email": "phartig@rdrei.net"
+    },
+    {
+      "name": "sindresorhus",
+      "email": "sindresorhus@gmail.com"
+    },
+    {
+      "name": "stephenplusplus",
+      "email": "sawchuk@gmail.com"
+    }
+  ],
+  "name": "todomvc-app-css",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tastejs/todomvc-app-css.git"
+  },
+  "style": "index.css",
+  "version": "2.3.0"
+}

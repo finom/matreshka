@@ -1,50 +1,67 @@
 {
-  "name": "seemple-router",
+  "name": "matreshka-router",
   "version": "2.4.18",
-  "description": "A router for Seemple.js",
-  "main": "index",
-  "scripts": {
-    "test": "npm run unit",
-    "unit": "../../node_modules/.bin/babel-node ../../node_modules/.bin/babel-istanbul cover test/index.js",
-    "lint": "eslint ./test ./src",
-    "npm-compile": "babel src -d npm && cp package.json npm/package.json && cp README.md npm/README.md",
-    "build": "../../node_modules/.bin/webpack --mode=production"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-simple-conventional-changelog"
-    },
-    "validate-commit-msg": {
-      "types": [
-        "feat",
-        "fix",
-        "refactor",
-        "perf",
-        "test",
-        "chore",
-        "revert"
-      ]
-    },
-    "ghooks": {
-      "commit-msg": "validate-commit-msg"
-    }
-  },
+  "description": "Two-way binding between object properties and parts of the URL, for Matreshka.js",
+  "keywords": [
+    "matreshka",
+    "router",
+    "routing",
+    "history",
+    "hash"
+  ],
+  "homepage": "https://matreshka.js.org",
   "repository": {
     "type": "git",
-    "url": "https://github.com/finom/seemple-router.git"
+    "url": "git+https://github.com/finom/matreshka.git",
+    "directory": "packages/router"
   },
-  "keywords": [
-    "seemple",
-    "router"
-  ],
-  "author": "Andrey Gubanov",
+  "author": "Andrey Gubanov <andrey.a.gubanov@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/finom/seemple-router/issues"
+    "url": "https://github.com/finom/matreshka/issues"
   },
-  "homepage": "https://github.com/finom/seemple-router#readme",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "unpkg": "./dist/matreshka-router.min.js",
+  "jsdelivr": "./dist/matreshka-router.min.js",
+  "exports": {
+    ".": {
+      "module-sync": "./dist/esm/index.sync.js",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./router": {
+      "module-sync": "./dist/esm/router.sync.js",
+      "import": "./dist/esm/router.js",
+      "require": "./dist/cjs/router.js"
+    },
+    "./router.js": {
+      "module-sync": "./dist/esm/router.sync.js",
+      "import": "./dist/esm/router.js",
+      "require": "./dist/cjs/router.js"
+    },
+    "./package.json": "./package.json",
+    "./dist/*": "./dist/*",
+    "./*.js": {
+      "module-sync": "./dist/esm/*.js",
+      "import": "./dist/esm/*.js",
+      "require": "./dist/cjs/*.js"
+    },
+    "./*": {
+      "module-sync": "./dist/esm/*.js",
+      "import": "./dist/esm/*.js",
+      "require": "./dist/cjs/*.js"
+    }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node ../../scripts/build-package.mjs router",
+    "prepublishOnly": "node ../../scripts/ci-only.mjs"
+  },
   "peerDependencies": {
-    "seemple": "2.x"
-  },
-  "gitHead": "73cc162ade078967f510f052ee94a782a807a8af"
+    "matreshka": "^2.4.18"
+  }
 }

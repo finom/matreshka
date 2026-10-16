@@ -1,0 +1,51 @@
+---
+title: "Matreshka.binders.style"
+sidebarTitle: "style"
+description: "Matreshka.binders.style: Возвращает байндер, меняющий заданное свойство стиля DOM элемента в зависимости от значения свойства объекта."
+---
+
+# Matreshka.binders.style
+
+**Метод** · Начиная с версии 1.1
+
+**Импорт:**
+
+```js
+import style from 'matreshka/binders/style';
+// или
+import { style } from 'matreshka/binders';
+```
+
+```js
+Matreshka.binders.style(property, [mappingFn]) → binder
+```
+
+Возвращает байндер, меняющий заданное свойство стиля DOM элемента в зависимости от значения свойства объекта.
+
+Значение свойства можно преобразить с помощью переданной функции ``mappingFn``.
+
+**Возвращает:** [`binder`](/ru/api/types/binder/)
+
+## Аргументы
+
+| Имя | Тип | Описание |
+| --- | --- | --- |
+| `property` | [`string`](/ru/api/types/string/) | Свойство ``style`` (camel-cased) |
+| `mappingFn` (необязательный) | [`function`](/ru/api/types/function/) | Отображающая функция |
+
+## Примеры
+
+```js
+this.bindNode('myKey', '.my-element',
+    Matreshka.binders.style('backgroundColor'));
+this.myKey = 'red'; // цвет фона .my-element стал красным
+```
+
+**Использование отображающей функции**
+
+```js
+this.bindNode('myKey', '.my-element',
+  Matreshka.binders.style('backgroundImage', value => `url("${value}")`));
+
+this.myKey = 'cats.jpg'; // backgroundImage теперь равен "url("cats.jpg")"
+```

@@ -1,0 +1,61 @@
+---
+title: "Matreshka.Array#mediateItem"
+sidebarTitle: "mediateItem"
+description: "Matreshka.Array#mediateItem: Трансформує значення елементів масиву"
+---
+
+# Matreshka.Array#mediateItem
+
+**Метод** · Починаючи з версії 0.1
+
+```js
+Matreshka.Array#mediateItem(mediator)
+```
+
+Трансформує значення елементів масиву
+
+Цей метод служить для того, щоб перехопити і трансформувати додані в масив елементи. Зверніть увагу, метод перевизначає властивість [`Matreshka.Array#Model`](/ua/api/matreshka-array/model/).
+
+Виклик методу конвертує елементи, які вже є в масиві, і замінює їх відрендерені вузли; події при цьому не генеруються.
+
+## Аргументи
+
+| Ім'я | Тип | Опис |
+| --- | --- | --- |
+| `mediator` | [`function`](/ua/api/types/function/) | Функція, що повертає трансформований елемент масиву |
+
+## Посилання
+
+- [`Matreshka.Array#Model`](/ua/api/matreshka-array/model/)
+- [`Matreshka#mediate`](/ua/api/matreshka/mediate/)
+
+## Приклади
+
+```js
+// всі елементи масиву - цілі числа
+this.mediateItem(item => parseInt(item) || 0);
+```
+
+```js
+this.push(1, 2, 3, 4, 5);
+
+// всі елементи масиву - строки
+this.mediateItem(String);
+
+this.push(6, 7);
+
+this.unshift(true, {});
+
+// ["true", "[object Object]", "1", "2", "3", "4", "5", "6", "7"]
+console.log(matreshkaArray.toJSON());
+```
+
+```js
+this.mediateItem(item => {
+	if(item.something) {
+		return new FirstModel(item);
+	} else {
+		return new SecondModel(item);
+	}
+});
+```

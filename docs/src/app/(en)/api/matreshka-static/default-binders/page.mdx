@@ -1,0 +1,48 @@
+---
+title: "Matreshka.defaultBinders"
+sidebarTitle: "defaultBinders"
+description: "Matreshka.defaultBinders: An array of functions which return a corresponding binder"
+---
+
+# Matreshka.defaultBinders
+
+**Property**
+
+**Import:**
+
+```js
+import defaultBinders from 'matreshka/defaultbinders';
+```
+
+```js
+Matreshka.defaultBinders: array
+```
+
+An array of functions which return a corresponding binder
+
+``defaultBinders`` is the array of functions which check an element in turn against given rules in these functions and return a binder (see [`binder`](/api/types/binder/)). This array is used when the third argument has not been passed to the [`Matreshka#bindNode`](/api/matreshka/bind-node/) method. See more detailed information about bindings in [`Matreshka#bindNode`](/api/matreshka/bind-node/) documentation.
+
+## Links
+
+- [`Matreshka#bindNode`](/api/matreshka/bind-node/)
+- [`Matreshka.lookForBinder`](/api/matreshka-static/look-for-binder/)
+
+## Examples
+
+```js
+Matreshka.defaultBinders.unshift(element => {
+	// check if the element has "foo" class name
+	if(element.classList.contains('foo')) {
+		// if checking is OK, return a new binder
+		return {
+			on: ...,
+			getValue: ...,
+			setValue: ...
+		};
+	}
+});
+
+// ...
+
+this.bindNode('myKey', '.foo.bar');
+```

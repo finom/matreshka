@@ -1,0 +1,133 @@
+---
+title: "Справочник API"
+asIndexPage: true
+description: "Matreshka.js справочник API. Каждый класс, метод и свойство фреймворка, каждый на своей странице."
+---
+
+
+
+# Справочник API
+
+Каждый класс, метод и свойство фреймворка, каждый на своей странице.
+
+## [Matreshka](/ru/api/matreshka/)
+
+- [`bindNode`](/ru/api/matreshka/bind-node/) – Связывает свойство объекта с HTML элементом
+- [`bindOptionalNode`](/ru/api/matreshka/bind-optional-node/) – Работает в точности так же, как и [`Matreshka#bindNode`](/ru/api/matreshka/bind-node/) но не бросает исключение, если аргумент ``node`` - пустой массив, ``undefined`` или не существует
+- [`bindSandbox`](/ru/api/matreshka/bind-sandbox/) _(Для продвинутых)_ – Привязывает песочницу
+- [`calc`](/ru/api/matreshka/calc/) – Создает зависимость значения одного свойства от значений других
+- [`instantiate`](/ru/api/matreshka/instantiate/) – Создаёт фиксированный экземпляр класса
+- [`isMatreshka`](/ru/api/matreshka/is-matreshka/) _(Для продвинутых)_ – ``isMatreshka`` всегда равен ``true`` для экземпляров [`Matreshka`](/ru/api/matreshka/)
+- [`mediate`](/ru/api/matreshka/mediate/) – Трансформирует значение свойства при его изменении
+- [`$nodes`](/ru/api/matreshka/dollar-nodes/) _(Для продвинутых)_ – Объект содержит коллекции (jQuery, Zepto, инстанс встроенной микро-библиотеки, унаследованной от ``Array.prototype``) привязанных элементов для быстрого доступа.
+- [`nodes`](/ru/api/matreshka/nodes/) _(Для продвинутых)_ – Объект содержит привязанные элементы для быстрого доступа, в виде отдельных DOM узлов.
+- [`off`](/ru/api/matreshka/off/) – Удаляет обработчик события
+- [`on`](/ru/api/matreshka/on/) – Добавляет обработчик события
+- [`onDebounce`](/ru/api/matreshka/on-debounce/) – Добавляет обработчик события, вызываемый лишь однажды за определенный промежуток времени
+- [`once`](/ru/api/matreshka/once/) – Добавляет обработчик событий, который может быть вызван однажды
+- [`parseBindings`](/ru/api/matreshka/parse-bindings/) – Парсит DOM дерево, объявляя привязки свойств, заключенных в двойные фигурные скобки.
+- [`remove`](/ru/api/matreshka/remove/) _(Для продвинутых)_ – Удаляет свойство
+- [`select`](/ru/api/matreshka/select/) – Возвращает элемент из песочницы, соответствующий селектору
+- [`selectAll`](/ru/api/matreshka/select-all/) – Возвращает элементы из песочницы, соответствующие селектору
+- [`set`](/ru/api/matreshka/set/) – Устанавливает значение свойства, позволяя передать объект события в качестве третьего аргумента
+- [`trigger`](/ru/api/matreshka/trigger/) – Генерирует событие
+- [`unbindNode`](/ru/api/matreshka/unbind-node/) – Разрывает связь между свойством и HTML элементом
+
+## Matreshka (статичные члены)
+
+- [`Class`](/ru/api/matreshka-static/class/) – Реализация классов, основанная на прототипном наследовании
+- [`bindNode`](/ru/api/matreshka-static/bind-node/) _(Для продвинутых)_ – Связывает свойство объекта с HTML элементом
+- [`bindOptionalNode`](/ru/api/matreshka-static/bind-optional-node/) _(Для продвинутых)_ – Связывает элемент со свойством, но не бросает исключение, если аргумент node - пустой массив, ``undefined`` или не существует
+- [`bindSandbox`](/ru/api/matreshka-static/bind-sandbox/) _(Для продвинутых)_ – Связывает свойство ``sandbox`` с элементом и отвязывает предыдущий элемент, если таковой существует
+- [`calc`](/ru/api/matreshka-static/calc/) _(Для продвинутых)_ – Создает зависимость значения одного свойства от значений других
+- [`chain`](/ru/api/matreshka-static/chain/) – Позволяет вызывать универсальные методы цепочкой
+- [`defaultBinders`](/ru/api/matreshka-static/default-binders/) – Массив функций, возвращающих соответствующий байндер или ``undefined``
+- [`instantiate`](/ru/api/matreshka-static/instantiate/) _(Для продвинутых)_ – Создаёт фиксированный экземпляр класса
+- [`lookForBinder`](/ru/api/matreshka-static/look-for-binder/) _(Для продвинутых)_
+- [`mediate`](/ru/api/matreshka-static/mediate/) _(Для продвинутых)_ – Трансформирует значение свойства при его изменении
+- [`off`](/ru/api/matreshka-static/off/) _(Для продвинутых)_ – Удаляет обработчик события
+- [`on`](/ru/api/matreshka-static/on/) _(Для продвинутых)_ – Добавляет обработчик события
+- [`onDebounce`](/ru/api/matreshka-static/on-debounce/) _(Для продвинутых)_ – Добавляет обработчик события, вызываемый лишь однажды за определенный промежуток времени
+- [`once`](/ru/api/matreshka-static/once/) _(Для продвинутых)_ – Добавляет обработчик события, который может быть вызван однажды
+- [`parseBindings`](/ru/api/matreshka-static/parse-bindings/) _(Для продвинутых)_ – Парсит DOM дерево, объявляя привязки свойств, заключенных в двойные фигурные скобки.
+- [`parserBrackets`](/ru/api/matreshka-static/parser-brackets/) _(Для продвинутых)_ – Содержит скобки для [парсера](/ru/api/matreshka/parse-bindings/)
+- [`remove`](/ru/api/matreshka-static/remove/) _(Для продвинутых)_ – Удаляет свойство
+- [`select`](/ru/api/matreshka-static/select/) _(Для продвинутых)_ – Возвращает элемент из песочницы, соответствующий селектору
+- [`selectAll`](/ru/api/matreshka-static/select-all/) _(Для продвинутых)_ – Возвращает элементы из песочницы, соответствующие селектору
+- [`set`](/ru/api/matreshka-static/set/) _(Для продвинутых)_ – Устанавливает значение свойства, позволяя передать объект события в качестве третьего аргумента
+- [`toMatreshka`](/ru/api/matreshka-static/to-matreshka/) _(Для продвинутых)_ – Функция, конвертирующая произвольную структуру объектов и массивов в экземпляры [`Matreshka.Object`](/ru/api/matreshka-object/) и [`Matreshka.Array`](/ru/api/matreshka-array/)
+- [`trigger`](/ru/api/matreshka-static/trigger/) _(Для продвинутых)_ – Генерирует событие
+- [`unbindNode`](/ru/api/matreshka-static/unbind-node/) _(Для продвинутых)_ – Разрывает связь между свойством и HTML элементом
+- [`useDOMLibrary`](/ru/api/matreshka-static/use-dom-library/) _(Для продвинутых)_ – Заставляет использовать определенную библиотеку для работы с DOM
+
+## [Matreshka.Object](/ru/api/matreshka-object/)
+
+- [`addDataKeys`](/ru/api/matreshka-object/add-data-keys/) – Добавляет заданные имена свойств в список имен свойств, отвечающих за данные
+- [`each`](/ru/api/matreshka-object/each/) – Перебирает свойства, отвечающие за данные
+- [`entries`](/ru/api/matreshka-object/entries/) _(Для продвинутых)_ – Возвращает массив пар имен и значений свойств, отвечающих за данные
+- [`isDataKey`](/ru/api/matreshka-object/is-data-key/) – Проверяет, входит ли строка в список ключей, отвечающих за данные
+- [`isMatreshkaObject`](/ru/api/matreshka-object/is-matreshka-object/) _(Для продвинутых)_ – Свойство ``isMatreshkaObject`` всегда равно ``true`` для экземпляров [`Matreshka.Object`](/ru/api/matreshka-object/).
+- [`keyOf`](/ru/api/matreshka-object/key-of/) – Ищет заданное значение свойства среди свойств, отвечающих за данные, и возвращает имя первого совпавшего свойства, если такое значение найдено
+- [`keys`](/ru/api/matreshka-object/keys/) – Возвращает массив имен свойств, отвечающих за данные
+- [`removeDataKeys`](/ru/api/matreshka-object/remove-data-keys/) – Удаляет заданные имена свойств из списка имен свойств, отвечающих за данные (но не удаляет само свойство)
+- [`setData`](/ru/api/matreshka-object/set-data/) – Устанавливает значение свойству и добавляет его имя в список имен, отвечающих за данные
+- [`toJSON`](/ru/api/matreshka-object/to-json/) – Конвертирует экземпляр [`Matreshka.Object`](/ru/api/matreshka-object/) в обычный объект
+- [`values`](/ru/api/matreshka-object/values/) _(Для продвинутых)_ – Возвращает массив значений свойств, отвечающих за данные
+
+## [Matreshka.Array](/ru/api/matreshka-array/)
+
+- [`METHOD`](/ru/api/matreshka-array/method/) – Любой метод из ``Array.prototype``
+- [`METHOD_`](/ru/api/matreshka-array/method-silent/) – Любой метод из ``Array.prototype`` с возможностью передать объект события
+- [`Model`](/ru/api/matreshka-array/model/) – Свойство определяет класс элементов, которые будет содержать коллекция
+- [`isMatreshkaArray`](/ru/api/matreshka-array/is-matreshka-array/) _(Для продвинутых)_ – ``isMatreshkaArray`` всегда равен ``true`` для экземпляров [`Matreshka.Array`](/ru/api/matreshka-array/)
+- [`itemRenderer`](/ru/api/matreshka-array/item-renderer/) – HTML строка, селектор или функция, отвечающая за отрисовку элементов массива на странице
+- [`mediateItem`](/ru/api/matreshka-array/mediate-item/) – Трансформирует значение элементов массива
+- [`onItemRender`](/ru/api/matreshka-array/on-item-render/) – Функция, которая запускается перед событием ``render``.
+- [`orderBy`](/ru/api/matreshka-array/order-by/) – Сортирует массив по значениям свойств объектов, которые в него входят
+- [`pull`](/ru/api/matreshka-array/pull/) – Удаляет элемент по индексу или по значению
+- [`recreate`](/ru/api/matreshka-array/recreate/) – Пересоздает экземпляр [`Matreshka.Array`](/ru/api/matreshka-array/)
+- [`renderIfPossible`](/ru/api/matreshka-array/render-if-possible/) _(Для продвинутых)_ – Свойство ``renderIfPossible`` отменяет рендеринг массива если имеет значение ``false``
+- [`rerender`](/ru/api/matreshka-array/rerender/) _(Для продвинутых)_ – Перерисовывает DOM узлы элементов, входящих в массив
+- [`restore`](/ru/api/matreshka-array/restore/) – Воссоздаёт [`Matreshka.Array`](/ru/api/matreshka-array/) из HTML узлов на странице.
+- [`toJSON`](/ru/api/matreshka-array/to-json/) – Конвертирует экземпляр [`Matreshka.Array`](/ru/api/matreshka-array/) в обычный массив
+- [`trackBy`](/ru/api/matreshka-array/track-by/) – Свойство ``trackBy`` указывает на имя свойства идентификатора объектов, входящих в массив
+- [`from`](/ru/api/matreshka-array/from/) – Метод создаёт новый экземпляр [`Matreshka.Array`](/ru/api/matreshka-array/) из массивоподобного или итерируемого объекта
+- [`of`](/ru/api/matreshka-array/of/) – Метод создаёт новый экземпляр [`Matreshka.Array`](/ru/api/matreshka-array/) из произвольного числа агрументов, вне зависимости от числа или типа аргумента
+
+## [Matreshka.binders](/ru/api/binders/)
+
+- [`attr`](/ru/api/binders/attr/) – Возвращает байндер, меняющий атрибут DOM элемента на значение свойства объекта
+- [`className`](/ru/api/binders/class-name/) – Возвращает байндер, который переключает имя класса DOM элемента в зависимости от значения свойства объекта. Если значение свойства нестрого равно ``true``, имя класса добавляется, в противном случае - убирается. Логику можно изменить, передав ``false`` вторым аргументом, и, таким образом, имя класса будет добавляться, когда значение свойства нестрого равно ``false`` и наоборот.
+- [`dataset`](/ru/api/binders/dataset/) – Возвращает байндер, меняющий заданное свойство объекта [dataset](https://developer.mozilla.org/ru/docs/Web/API/HTMLElement/dataset) DOM элемента в зависимости от значения свойства объекта.
+- [`display`](/ru/api/binders/display/) – Возвращает байндер для одностороннего связывания, меняющий видимость DOM элемента (используя ``style.display``), в зависимости от значения свойства объекта
+- [`existence`](/ru/api/binders/existence/) – Возвращает байндер для одностороннего связывания, переключающий наличие элемента в DOM дереве, в зависимости от значения свойства объекта
+- [`html`](/ru/api/binders/html/) – Возвращает байндер, меняющий ``innerHTML`` DOM элемента в зависимости от значения свойства объекта
+- [`input`](/ru/api/binders/input/) _(Для продвинутых)_ – Возвращает байндер, связывающий свойство объекта с элементом ``input``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+- [`output`](/ru/api/binders/output/) _(Для продвинутых)_ – Возвращает байндер, связывающий свойство объекта с элементом ``output``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+- [`progress`](/ru/api/binders/progress/) _(Для продвинутых)_ – Возвращает байндер, связывающий свойство объекта с элементом ``progress``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+- [`prop`](/ru/api/binders/prop/) – Возвращает байндер, меняющий свойство DOM элемента на значение свойства объекта
+- [`select`](/ru/api/binders/select/) _(Для продвинутых)_ – Возвращает байндер, связывающий свойство объекта с элементом ``select``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+- [`style`](/ru/api/binders/style/) – Возвращает байндер, меняющий заданное свойство стиля DOM элемента в зависимости от значения свойства объекта.
+- [`text`](/ru/api/binders/text/) – Возвращает байндер, меняющий ``textContent`` (текстовое содержимое) DOM элемента в зависимости от значения свойства объекта.
+- [`textarea`](/ru/api/binders/textarea/) _(Для продвинутых)_ – Возвращает байндер, связывающий свойство объекта с элементом ``textarea``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+
+## Типы
+
+- [`eventHandler`](/ru/api/types/event-handler/)
+- [`matreshka`](/ru/api/types/matreshka/)
+- [`matreshkaObject`](/ru/api/types/matreshka-object/)
+- [`matreshkaArray`](/ru/api/types/matreshka-array/)
+- [`eventNames`](/ru/api/types/event-names/)
+- [`binder`](/ru/api/types/binder/)
+- [`eventOptions`](/ru/api/types/event-options/) – Объект события
+- [`class`](/ru/api/types/class/)
+- [`node`](/ru/api/types/node/)
+- [`$nodes`](/ru/api/types/dollar-nodes/)
+- [`string`](/ru/api/types/string/)
+- [`boolean`](/ru/api/types/boolean/)
+- [`number`](/ru/api/types/number/)
+- [`object`](/ru/api/types/object/)
+- [`array`](/ru/api/types/array/)
+- [`function`](/ru/api/types/function/)
+- [`null`](/ru/api/types/null/)
+- [`*`](/ru/api/types/any/)

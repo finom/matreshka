@@ -8,17 +8,22 @@ describe('Common', () => {
       spy(key, node) {
         expect(key).toEqual('x');
         expect(node.name).toEqual('x');
-        expect(node.type).toEqual('INPUT');
+        expect(node.tagName).toEqual('INPUT');
       }
     };
 
     const object = {};
 
-    spyOn(spyObject, 'spy');
+    vi.spyOn(spyObject, 'spy');
 
-    const form = parseForm(object, `<form>
+    const form = parseForm(
+      object,
+      `<form>
             <input type="text" name="x">
-        </form>`, spyObject.spy, noDebounceFlag);
+        </form>`,
+      spyObject.spy,
+      noDebounceFlag
+    );
 
     object.x = 'foo';
 

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Matreshka Collections Example</title>
+    <link rel="stylesheet" type="text/css" href="
+https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.4/css/bootstrap.css">
+    <style>
+        body {
+            padding-top: 5%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <table class="table users">
+            <thead>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script type="text/html" id="user_template">
+        <tr>
+            <td class="name"></td>
+            <td class="email"></td>
+            <td class="phone"></td>
+        </tr>
+    </script>
+
+    <script>
+        const data = [{
+            name: 'Ida T. Heath',
+            email: 'ida@dayrep.com',
+            phone: '507-879-9766'
+        }, {
+            name: 'Robert C. Burkhardt',
+            email: 'rburkhardt@teleworm.us',
+            phone: '321-252-5698'
+        }, {
+            name: 'Gerald S. Reaves',
+            email: 'gsr@rhyta.com',
+            phone: '765-431-5347'
+        }]
+    </script>
+
+    <script src="/matreshka.min.js"></script>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

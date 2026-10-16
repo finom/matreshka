@@ -1,8 +1,0 @@
-src
-test
-.babelrc
-.coveralls.yml
-.directory
-.gitignore
-.travis.yml
-webpack.config.js

@@ -1,0 +1,68 @@
+---
+title: "Matreshka#off"
+sidebarTitle: "off"
+description: "Matreshka#off: Deletes an event handler. Matreshka.js API reference"
+---
+
+# Matreshka#off
+
+**Method**
+
+```js
+Matreshka#off([names], [callback], [context]) → object
+```
+
+Deletes an event handler
+
+It deletes a handler which has been created before. All the three arguments are optional. You can delete both all the events (without passing any argument) and separate ones (having passed only the event name, the event name and the handler, the event name and the handler and the context).
+
+Called without arguments, ``off`` removes every handler added with ``on``, ``once`` and ``onDebounce`` and fires ``removeevent`` for each one. Bindings, ``calc`` dependencies and the events that ``Matreshka.Object`` and ``Matreshka.Array`` use internally stay.
+
+**Returns:** [`object`](/api/types/object/) – self
+
+**Fires:** `removeevent`, `removeevent:NAME`
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `names` (optional) | [`eventNames`](/api/types/event-names/) | A list of event names which are separated by spaces (for example, ``"change:x ajaxcomplete change:y"``) |
+| `callback` (optional) | [`eventHandler`](/api/types/event-handler/) | A function-handler |
+| `context` (optional) | [`object`](/api/types/object/) | A context |
+
+## Links
+
+- [`Matreshka#on`](/api/matreshka/on/)
+- [`Matreshka#once`](/api/matreshka/once/)
+- [`Matreshka#onDebounce`](/api/matreshka/on-debounce/)
+- [`Matreshka#trigger`](/api/matreshka/trigger/)
+
+## Examples
+
+```js
+this.off('change:x bind');
+```
+
+**The deletion of all events**
+
+```js
+this.off();
+```
+
+**The deletion of an event with definite handler**
+
+```js
+const handler = function() {
+	//...
+}
+this.on('change:x', handler);
+this.off('change:x', handler);
+```
+
+**The deletion of an event with definite context**
+
+```js
+const object = {};
+this.on('change:x', handler, object);
+this.off('change:x', handler, object);
+```

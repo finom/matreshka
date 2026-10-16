@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Matreshka.js contact list</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/skeleton-css@2.0.4/css/skeleton.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+	<div class="container">
+		<form class="new-phone">
+			<h2>Add new contact</h2>
+			<h6>All fileds are required</h6>
+			<div class="row">
+				<div class="six columns">
+					<label>First Name</label>
+					<input class="u-full-width" name="first_name" type="text" required>
+				</div>
+				<div class="six columns">
+					<label>Last Name</label>
+					<input class="u-full-width" name="last_name" type="text" required>
+				</div>
+			</div>
+			<div class="row">
+				<div class="six columns">
+					<label>Date of Birth</label>
+					<input class="u-full-width" name="birth_date" type="date" required>
+				</div>
+				<div class="six columns">
+					<label>Phone Number</label>
+					<input class="u-full-width" name="phone_number" type="tel" required>
+				</div>
+			</div>
+			<input class="button-primary" type="submit" value="Submit">
+		</form>
+		<hr>
+		<section class="result-container">
+			<h2>Search</h2>
+			<input list="search-list" class="search u-full-width" type="search">
+		   	<datalist id="search-list"></datalist>
+			<table class="result-table u-full-width">
+				<thead>
+					<tr>
+						<th data-sort="first_name">First Name</th>
+						<th data-sort="last_name">Last Name</th>
+						<th data-sort="birth_date">Date of Birth</th>
+						<th data-sort="phone_number">Phone Number</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody class="result">
+					<script type="text/html" id="phone-template">
+						<tr>
+							<td contenteditable data-key="first_name"></td>
+							<td contenteditable data-key="last_name"></td>
+							<td contenteditable data-key="birth_date"></td>
+							<td contenteditable data-key="phone_number"></td>
+							<td class="remove">Remove</td>
+						</tr>
+					</script>
+				</tbody>
+			</table>
+		</section>
+	</div>
+	<script>
+		var fakeData = [
+			{
+				"first_name": "Ethan",
+				"last_name": "Livingston",
+				"birth_date": "2016-06-19",
+				"phone_number": "1-685-936-9965"
+			},
+			{
+				"first_name": "Chaim",
+				"last_name": "Sheppard",
+				"birth_date": "2016-09-04",
+				"phone_number": "1-191-323-7162"
+			},
+			{
+				"first_name": "Cade",
+				"last_name": "Sellers",
+				"birth_date": "2015-05-23",
+				"phone_number": "1-229-768-4811"
+			},
+			{
+				"first_name": "Hasad",
+				"last_name": "French",
+				"birth_date": "2015-01-13",
+				"phone_number": "1-469-519-4082"
+			},
+			{
+				"first_name": "Stuart",
+				"last_name": "Richmond",
+				"birth_date": "2015-03-29",
+				"phone_number": "1-501-556-2089"
+			},
+			{
+				"first_name": "Norman",
+				"last_name": "Dixon",
+				"birth_date": "2016-08-21",
+				"phone_number": "1-146-789-2349"
+			},
+			{
+				"first_name": "Edan",
+				"last_name": "Dennis",
+				"birth_date": "2015-05-09",
+				"phone_number": "1-598-738-9900"
+			},
+			{
+				"first_name": "Skyler",
+				"last_name": "Hubbard",
+				"birth_date": "2015-10-02",
+				"phone_number": "1-586-512-9444"
+			},
+			{
+				"first_name": "Abbot",
+				"last_name": "Singleton",
+				"birth_date": "2016-04-24",
+				"phone_number": "1-707-352-7674"
+			},
+			{
+				"first_name": "Thaddeus",
+				"last_name": "Sampson",
+				"birth_date": "2015-11-05",
+				"phone_number": "1-643-540-4282"
+			},
+			{
+				"first_name": "Germane",
+				"last_name": "Snow",
+				"birth_date": "2015-11-04",
+				"phone_number": "1-186-570-9001"
+			},
+			{
+				"first_name": "Ignacia",
+				"last_name": "Bradley",
+				"birth_date": "2016-09-10",
+				"phone_number": "1-449-221-9690"
+			},
+			{
+				"first_name": "Kirsten",
+				"last_name": "Rollins",
+				"birth_date": "2015-12-26",
+				"phone_number": "1-486-324-8677"
+			},
+			{
+				"first_name": "Gemma",
+				"last_name": "Nolan",
+				"birth_date": "2016-01-24",
+				"phone_number": "1-315-142-8328"
+			},
+			{
+				"first_name": "Rebekah",
+				"last_name": "Lindsay",
+				"birth_date": "2016-05-13",
+				"phone_number": "1-738-138-0591"
+			},
+			{
+				"first_name": "Kaitlin",
+				"last_name": "Bailey",
+				"birth_date": "2016-11-03",
+				"phone_number": "1-900-453-3193"
+			},
+			{
+				"first_name": "Malachi",
+				"last_name": "Ruiz",
+				"birth_date": "2016-04-14",
+				"phone_number": "1-552-627-2631"
+			},
+			{
+				"first_name": "Colby",
+				"last_name": "Conley",
+				"birth_date": "2015-04-24",
+				"phone_number": "1-793-826-9982"
+			},
+			{
+				"first_name": "Griffin",
+				"last_name": "Fulton",
+				"birth_date": "2016-05-03",
+				"phone_number": "1-731-718-3990"
+			},
+			{
+				"first_name": "Louis",
+				"last_name": "Swanson",
+				"birth_date": "2015-02-24",
+				"phone_number": "1-575-794-2021"
+			},
+			{
+				"first_name": "Carissa",
+				"last_name": "Daniel",
+				"birth_date": "2015-04-25",
+				"phone_number": "1-902-356-9781"
+			},
+			{
+				"first_name": "Winifred",
+				"last_name": "Mullen",
+				"birth_date": "2015-02-11",
+				"phone_number": "1-766-700-6205"
+			},
+			{
+				"first_name": "Nash",
+				"last_name": "Washington",
+				"birth_date": "2016-10-10",
+				"phone_number": "1-223-888-3426"
+			},
+			{
+				"first_name": "Cynthia",
+				"last_name": "Whitney",
+				"birth_date": "2015-10-07",
+				"phone_number": "1-260-408-5097"
+			},
+			{
+				"first_name": "Remedios",
+				"last_name": "Wolfe",
+				"birth_date": "2016-02-27",
+				"phone_number": "1-334-751-7636"
+			},
+			{
+				"first_name": "Maile",
+				"last_name": "Hart",
+				"birth_date": "2015-08-10",
+				"phone_number": "1-220-614-7454"
+			},
+			{
+				"first_name": "Chastity",
+				"last_name": "Page",
+				"birth_date": "2015-03-04",
+				"phone_number": "1-647-361-5338"
+			},
+			{
+				"first_name": "Hamilton",
+				"last_name": "Sharp",
+				"birth_date": "2016-06-23",
+				"phone_number": "1-399-849-7840"
+			},
+			{
+				"first_name": "Ali",
+				"last_name": "Yates",
+				"birth_date": "2015-09-30",
+				"phone_number": "1-824-755-1626"
+			},
+			{
+				"first_name": "Hyacinth",
+				"last_name": "Watkins",
+				"birth_date": "2015-09-08",
+				"phone_number": "1-642-745-1887"
+			},
+			{
+				"first_name": "Darrel",
+				"last_name": "Sawyer",
+				"birth_date": "2016-01-27",
+				"phone_number": "1-298-138-7437"
+			},
+			{
+				"first_name": "Xander",
+				"last_name": "Craft",
+				"birth_date": "2015-05-01",
+				"phone_number": "1-833-938-3060"
+			},
+			{
+				"first_name": "Josephine",
+				"last_name": "Merrill",
+				"birth_date": "2016-04-30",
+				"phone_number": "1-603-550-7782"
+			},
+			{
+				"first_name": "Zenaida",
+				"last_name": "Acevedo",
+				"birth_date": "2015-08-21",
+				"phone_number": "1-430-924-3678"
+			},
+			{
+				"first_name": "Meredith",
+				"last_name": "Wise",
+				"birth_date": "2016-06-13",
+				"phone_number": "1-614-566-0085"
+			}
+]
+	</script>
+
+	<script src="/matreshka.min.js"></script>
+	<script src="js/phone.js"></script>
+	<script src="js/phones.js"></script>
+	<script src="js/app.js"></script>
+</body>
+
+</html>

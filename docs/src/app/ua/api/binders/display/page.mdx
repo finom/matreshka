@@ -1,0 +1,41 @@
+---
+title: "Matreshka.binders.display"
+sidebarTitle: "display"
+description: "Matreshka.binders.display: Повертає байндер для одностороннього зв'язування, який змінює видимість DOM елементу (використовуючи style.display), в залежності…"
+---
+
+# Matreshka.binders.display
+
+**Метод** · Починаючи з версії 0.1
+
+**Імпорт:**
+
+```js
+import display from 'matreshka/binders/display';
+// або
+import { display } from 'matreshka/binders';
+```
+
+```js
+Matreshka.binders.display([bool=true]) → binder
+```
+
+Повертає байндер для одностороннього зв'язування, який змінює видимість DOM елементу (використовуючи ``style.display``), в залежності від значення властивості об'єкта
+
+**Повертає:** [`binder`](/ua/api/types/binder/)
+
+## Аргументи
+
+| Ім'я | За замовчуванням | Тип | Опис |
+| --- | --- | --- | --- |
+| `bool` (необов'язковий) | `true` | [`boolean`](/ua/api/types/boolean/) | Якщо аргумент дорівнює ``true``, то елемент ховається при неправдивому значенні властивості, якщо дорівнює ``false``, ховається при правдивому значенні |
+
+## Приклади
+
+```js
+this.bindNode('myKey', '.my-element', Matreshka.binders.display(true));
+```
+
+```js
+this.bindNode('myKey', '.my-element', Matreshka.binders.display(false));
+```

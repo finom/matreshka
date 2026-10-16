@@ -1,0 +1,59 @@
+---
+title: "Matreshka.Array#pull"
+sidebarTitle: "pull"
+description: "Matreshka.Array#pull: Видаляє елемент за індексом або за значенням"
+---
+
+# Matreshka.Array#pull
+
+**Метод** · Починаючи з версії 0.1
+
+```js
+Matreshka.Array#pull(indexOrValue, [eventOptions]) → *|null
+```
+
+Видаляє елемент за індексом або за значенням
+
+**Повертає:** [`*`](/ua/api/types/any/) \| [`null`](/ua/api/types/null/) – Видалений елемент або ``null``
+
+**Генерує події:** `pull`, `remove`, `removeone`, `modify`
+
+## Аргументи
+
+| Ім'я | Тип | Опис |
+| --- | --- | --- |
+| `indexOrValue` | [`object`](/ua/api/types/object/) \| [`number`](/ua/api/types/number/) | Індекс елемента, який потрібно видалити або видаляємий об'єкт |
+| `eventOptions` (необов'язковий) | [`eventOptions`](/ua/api/types/event-options/) | Об'єкт події на випадок, якщо потрібно передати в обробник події якісь дані або встановити службові прапори (наприклад, ``silent``) |
+
+## Приклади
+
+**Передача індексу масиву**
+
+```js
+let removed;
+
+this.recreate(['a', 'b', 'c']);
+
+removed = this.pull(1);
+
+console.log(removed); // 'b'
+
+console.log(this.join(',')); // 'a,c'
+```
+
+**Передача видаляємого об'єкту**
+
+```js
+const object1 = {};
+const object2 = {};
+const object3 = {};
+let removed;
+
+this.push(object1, object2, object3);
+
+removed = this.pull(object2);
+
+console.log(removed === object2); // true
+
+console.log(this.length); // 2
+```

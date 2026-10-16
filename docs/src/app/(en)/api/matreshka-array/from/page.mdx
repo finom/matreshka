@@ -1,0 +1,50 @@
+---
+title: "Matreshka.Array.from"
+sidebarTitle: "from"
+description: "Matreshka.Array.from: The function creates a new Matreshka.Array instance from array-like or iterable object"
+---
+
+# Matreshka.Array.from
+
+**Method** · Since 1.1
+
+```js
+Matreshka.Array.from(arrayLike, [mapFn], [thisArg]) → matreshkaArray
+```
+
+The function creates a new [`Matreshka.Array`](/api/matreshka-array/) instance from array-like or iterable object
+
+**Returns:** [`matreshkaArray`](/api/types/matreshka-array/)
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `arrayLike` | [`object`](/api/types/object/) | Array-like or iterable object |
+| `mapFn` (optional) | [`function`](/api/types/function/) | The mapping function which is called for each element of an array |
+| `thisArg` (optional) | [`*`](/api/types/any/) | An object which is used as ``this`` on calling ``mapFn`` |
+
+## Links
+
+- [Array.from](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
+
+## Examples
+
+```js
+const matreshkaArray = Matreshka.Array.from([1, 2, 3, 4]);
+```
+
+```js
+const matreshkaArray = Matreshka.Array.from([1, 2, 3, 4], item => item * 2);
+```
+
+**Inheritance of the method**
+
+```js
+class MyClass extends Matreshka.Array {
+    // ...
+}
+
+const myArray = MyClass.from([1, 2, 3, 4]);
+console.log(myArray instanceof MyClass); // true
+```

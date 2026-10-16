@@ -11,23 +11,23 @@ global.window = new JSDOM('<!doctype html><html><body><form><input name="a"></fo
 
 global.document = global.window.document;
 
-const Seemple = require('seemple');
-const parseForm = require('seemple-parse-form');
-const Router = require('seemple-router/router');
-const initRouter = require('seemple-router');
+const Matreshka = require('matreshka');
+const parseForm = require('matreshka-parse-form');
+const Router = require('matreshka-router/router');
+const initRouter = require('matreshka-router');
 
-// check if seemple itself is OK
-const seemple = new Seemple();
-seemple.b = 3;
-seemple.calc('a', 'b', (b) => b * 2);
-expect(seemple.a).to.eql(6);
+// check if matreshka itself is OK
+const matreshka = new Matreshka();
+matreshka.b = 3;
+matreshka.calc('a', 'b', (b) => b * 2);
+expect(matreshka.a).to.eql(6);
 
-// check if seemple-parse-form is OK
-parseForm(seemple, global.document.querySelector('form'));
+// check if matreshka-parse-form is OK
+parseForm(matreshka, global.document.querySelector('form'));
 expect(global.document.querySelector('input').value).to.eql('6');
 
-// check if seemple-router is OK
+// check if matreshka-router is OK
 const customRouter = new Router('custom');
-customRouter.subscribe(seemple, '/a/');
+customRouter.subscribe(matreshka, '/a/');
 expect(customRouter.path).to.eql('/6/');
 expect(typeof initRouter === 'function');

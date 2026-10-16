@@ -1,0 +1,30 @@
+---
+title: "Matreshka#$nodes"
+sidebarTitle: "$nodes"
+description: "Matreshka#$nodes: An object contains collections (jQuery, Zepto, built-in micro-library instance inherited from Array.prototype) of bound nodes for quick…"
+---
+
+import { Advanced } from '@/components/advanced';
+
+# Matreshka#$nodes
+
+**Property** · Since 1.1
+
+<Advanced>An advanced member: you rarely need it to start with.</Advanced>
+
+```js
+Matreshka#$nodes: $nodes
+```
+
+An object contains collections (jQuery, Zepto, built-in micro-library instance inherited from ``Array.prototype``) of bound nodes for quick access.
+
+## Links
+
+- [`Matreshka#bindNode`](/api/matreshka/bind-node/)
+
+## Examples
+
+```js
+this.bindNode('myKey', '.my-node');
+this.$nodes.myKey; // the same as $('.my-node')
+```

@@ -1,0 +1,48 @@
+---
+title: "Matreshka.Array#METHOD_"
+sidebarTitle: "METHOD_"
+description: "Matreshka.Array#METHOD_: Будь-який метод iз Array.prototype з можливістю передати об'єкт події"
+---
+
+# Matreshka.Array#METHOD_
+
+**Метод**
+
+```js
+Matreshka.Array#METHOD_()
+```
+
+Будь-який метод iз ``Array.prototype`` з можливістю передати об'єкт події
+
+Ознайомившись з [`Matreshka.Array#METHOD`](/ua/api/matreshka-array/method/) стає зрозуміло, що методи не підтримують передачу об'єкта події, так як в точності повторюють синтаксис і кількість аргументів методів вбудованого ``Array``. Синтаксис ``МЕТОД_`` дозволяє передати в обробник події якісь дані або встановити службові прапори, що відповідають за поведінку масиву після виклику методу.
+
+Службові прапори:
+- ``silent`` - відключає генерацію подій
+- ``dontRender`` - відключає [рендеринг](/ua/api/matreshka-array/item-renderer/)
+- ``skipItemMediator`` - відключає [медіатори](/ua/api/matreshka-array/mediate-item/)
+
+## Посилання
+
+- [`Matreshka.Array#METHOD`](/ua/api/matreshka-array/method/)
+
+## Приклади
+
+```js
+this.push_(1, 2, 3, {
+    silent: true
+});
+
+this.pop_({
+    silent: true
+});
+```
+
+```js
+this.on('modify', evt => {
+	alert(evt.flag); // 42
+});
+
+this.push_(1, 2, 3, {
+	flag: 42
+});
+```

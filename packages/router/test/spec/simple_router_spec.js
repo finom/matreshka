@@ -4,7 +4,6 @@ describe('Simple router (API test)', () => {
   const obj = { a: 'foo' };
   const router = new Router(null).subscribe(obj, 'a/b/c/d');
 
-
   it('initializes correctly', () => {
     expect(obj.a).toEqual('foo');
     expect(obj.b).toEqual(null);
