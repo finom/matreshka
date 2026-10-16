@@ -11,7 +11,7 @@ export default function createAddingMethod(
   return function pseudoNativeMethod(this: MatreshkaArrayInstance): number {
     const { itemMediator }: ArrayDef = syncFields(this);
     // +hasOptions is converted to 0 or 1 depending on its value (false/true)
-    const argsLength = arguments.length - +hasOptions;
+    const argsLength = Math.max(arguments.length - +hasOptions, 0);
     const args: any[] = Array(argsLength);
     const givenEventOptions = hasOptions ? arguments[arguments.length - 1] : null;
     const useMediator = typeof itemMediator === 'function' && !givenEventOptions?.skipItemMediator;

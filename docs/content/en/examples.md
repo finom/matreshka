@@ -81,6 +81,9 @@ Each example runs on this site; its source code is in the [examples folder](http
 6. [A table of users](/examples/matreshka-array/) made with `Matreshka.Array`. ([Tutorial](https://github.com/finom/matreshka/tree/main/examples/matreshka-array))
 7. [matreshka/router demo](/examples/router/#!/foo/bar/baz/) – properties bound to parts of the URL. ([Source](https://github.com/finom/matreshka/tree/main/examples/router))
 8. [matreshka/parse-form demo](/examples/parse-form/) – form fields bound to properties by their names. ([Source](https://github.com/finom/matreshka/tree/main/examples/parse-form))
+9. [Signup form](/examples/signup-form/) – a server-rendered form: the email is checked as you type, a bar shows the password's strength. ([Source](https://github.com/finom/matreshka/tree/main/examples/signup-form))
+10. [Product table](/examples/product-table/) – search, sorting and a filter over rows rendered by `Matreshka.Array`. ([Source](https://github.com/finom/matreshka/tree/main/examples/product-table))
+11. [Price widget](/examples/price-widget/) – a widget on someone else's page, kept inside its own root by `bindSandbox`. ([Source](https://github.com/finom/matreshka/tree/main/examples/price-widget))
 
 ## Tutorials
 

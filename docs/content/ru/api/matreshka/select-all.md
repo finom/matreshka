@@ -27,7 +27,7 @@ Matreshka#selectAll(selector) → $nodes
 
 | Имя | Тип | Описание |
 | --- | --- | --- |
-| `selector` | [`string`](/ru/api/types/string/) | Cелектор |
+| `selector` | [`string`](/ru/api/types/string/) | Селектор |
 
 ## Примеры
 

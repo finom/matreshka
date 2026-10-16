@@ -10,6 +10,8 @@ import forOwn from '../_helpers/forown.js';
 import addSource from './_addsource.js';
 import createCalcHandler from './_createcalchandler.js';
 import defineProp from '../_core/defineprop.js';
+import removeListener from '../off/_removelistener.js';
+import removeTreeListener from '../off/_removetreelistener.js';
 
 // defines a property which is dependend on other properties
 export default function calc<T extends object>(
@@ -160,6 +162,21 @@ export default function calc(
       }
     }
   });
+
+  // a hidden target belongs to one binding of the bindings parser, which removes the calc with the binding
+  if (isTargetPropertyHidden) {
+    def.props[target].removeCalc = () => {
+      forEach(allSources, ({ sourceKey, sourceObject, isDelegated }) => {
+        if (isDelegated) {
+          removeTreeListener(sourceObject, sourceKey, calcHandler);
+        } else {
+          removeListener(sourceObject, `_change:deps:${sourceKey}`, calcHandler);
+        }
+      });
+      debouncedCalcHandler?.cancel();
+      delete def.props[target];
+    };
+  }
 
   if (setOnInit) {
     if (debounceCalcOnInit) {

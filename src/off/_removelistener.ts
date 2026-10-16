@@ -5,6 +5,7 @@ import domEventReg from '../on/_domeventregexp.js';
 import forEach from '../_helpers/foreach.js';
 import forOwn from '../_helpers/forown.js';
 import removeDomListener from './_removedomlistener.js';
+import isSameCallback from '../_helpers/issamecallback.js';
 
 // removes simple event listener from an object
 export default function removeListener(
@@ -56,13 +57,10 @@ export default function removeListener(
   } else if (events) {
     // if events with given name are found
     forEach(events, (event) => {
-      const argCallback = callback?._callback || callback;
-      const eventCallback = event.callback._callback || event.callback;
-
       const owner = info?.delegated ? 'byDelegation' : 'byDirect';
       const otherOwner = info?.delegated ? 'byDirect' : 'byDelegation';
 
-      if ((argCallback && argCallback !== eventCallback) || (context && context !== event.context)) {
+      if ((callback && !isSameCallback(callback, event.callback)) || (context && context !== event.context)) {
         // keep event
         retain.push(event);
       } else if (event.info[otherOwner]) {
@@ -70,6 +68,8 @@ export default function removeListener(
         event.info = { ...event.info, [owner]: false };
         retain.push(event);
       } else {
+        // a pending onDebounce call doesn't fire after its listener is gone
+        (event.callback as { cancel?: () => void }).cancel?.();
         const removeEventData = {
           name,
           callback: event.callback,

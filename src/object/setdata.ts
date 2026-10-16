@@ -2,6 +2,9 @@ import initMK from '../_core/init.js';
 import defineProp from '../_core/defineprop.js';
 import forOwn from '../_helpers/forown.js';
 import set from '../set.js';
+import is from '../_helpers/is.js';
+import forEach from '../_helpers/foreach.js';
+import triggerOne from '../trigger/_triggerone.js';
 import type { AnyObject, EventOptions } from '../types.js';
 
 // returns an array of keys listed at inObject but not listed at fromObject
@@ -14,6 +17,38 @@ function getNotListedKeys(inObject: Record<string, any>, fromObject: object): st
   });
 
   return result;
+}
+
+// removes data keys; "silent" skips remove and modify, as remove() does
+function removeKeys(object: AnyObject, keys: Record<string, any>, removed: string[], silent?: boolean): void {
+  forEach(removed, (key) => {
+    const eventOptions = { key, value: object[key] };
+    delete keys[key];
+    triggerOne(object, '_asterisk:remove', eventOptions);
+    if (!silent) {
+      triggerOne(object, 'remove', eventOptions);
+      triggerOne(object, 'modify', eventOptions);
+    }
+  });
+}
+
+// makes a key a data key and sets its value; a value the key already holds still becomes data, as addDataKeys does
+function setOne(object: AnyObject, keys: Record<string, any>, key: string, value: any, eventOptions: EventOptions) {
+  const isNew = !(key in keys);
+  defineProp(object, key);
+  keys[key] = 1;
+
+  if (isNew && is(object[key], value)) {
+    const extendedEventOptions = { ...eventOptions, key, value };
+    triggerOne(object, '_asterisk:set', extendedEventOptions);
+    // with force, set() fires them itself
+    if (!eventOptions.silent && !eventOptions.force) {
+      triggerOne(object, 'set', extendedEventOptions);
+      triggerOne(object, 'modify', extendedEventOptions);
+    }
+  }
+
+  return set(object, key, value, eventOptions);
 }
 
 // changes property value and adds given key to a list of data keys
@@ -33,28 +68,16 @@ export default function setData<T extends AnyObject>(
   // allow to pass key-value object
   if (typeof key === 'object') {
     eventOptions = (value || {}) as EventOptions;
-
-    const { replaceData } = eventOptions;
+    // a Matreshka.Object gives its data, not its own fields such as nodes
+    const data: Record<string, any> = key.isMatreshkaObject ? Object.fromEntries(key.entries()) : key;
 
     // remove data keys not listed at key-value object
-    if (replaceData) {
-      const notListedKeys = getNotListedKeys(keys, key);
-
-      if (notListedKeys.length) {
-        this.removeDataKeys(notListedKeys);
-      }
+    if (eventOptions.replaceData) {
+      removeKeys(this, keys, getNotListedKeys(keys, data), eventOptions.silent);
     }
 
-    // do not call setData recursivally for better performance
-    forOwn(key, (objVal, objKey) => {
-      // define descriptors for given property
-      defineProp(this, objKey);
-
-      // add a key to a list of keys
-      keys[objKey] = 1;
-
-      // do other things with set method
-      set(this, objKey, objVal, eventOptions);
+    forOwn(data, (objVal, objKey) => {
+      setOne(this, keys, objKey, objVal, eventOptions as EventOptions);
     });
 
     return this;
@@ -62,23 +85,10 @@ export default function setData<T extends AnyObject>(
 
   eventOptions = eventOptions || {};
 
-  const { replaceData } = eventOptions;
-
   // remove all data keys except given key
-  if (replaceData) {
-    const notListedKeys = getNotListedKeys(keys, { [key]: true });
-
-    if (notListedKeys.length) {
-      this.removeDataKeys(notListedKeys);
-    }
+  if (eventOptions.replaceData) {
+    removeKeys(this, keys, getNotListedKeys(keys, { [key]: true }), eventOptions.silent);
   }
 
-  // define descriptors for given property
-  defineProp(this, key);
-
-  // add a key to a list of keys
-  keys[key] = 1;
-
-  // do other things with set method
-  return set(this, key, value, eventOptions);
+  return setOne(this, keys, key, value, eventOptions);
 }

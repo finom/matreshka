@@ -1,6 +1,7 @@
 import syncFields from '../_syncfields.js';
 import reportModified from '../_reportmodified.js';
 import updateTracked from './_updatetracked.js';
+import itemsNotIn from '../_diffitems.js';
 import type { ArrayMethodOptions, MatreshkaArrayInstance } from '../types.js';
 
 // recreates an array
@@ -19,8 +20,6 @@ export default function recreate(
   const was = this.toJSON(false);
   const { trackBy } = this;
   const { skipItemMediator, silent, dontRender } = eventOptions;
-  let added: any[];
-  let removed: any[];
   let newItems: any[];
 
   if (trackBy) {
@@ -31,8 +30,8 @@ export default function recreate(
       trackBy
     });
   } else {
-    // if trackBy is not given then use given new items as is
-    newItems = givenNewItems as any[];
+    // if trackBy is not given then use given new items as is (an array-like is copied into an array)
+    newItems = Array.isArray(givenNewItems) ? givenNewItems : Array.from(givenNewItems);
   }
 
   // call item mediator for every new item (but don't modify passed newItems)
@@ -61,39 +60,9 @@ export default function recreate(
     return this;
   }
 
-  // create an array of removed items
-  // TODO: Optimize creation of "added" and "removed" options in recreate method
-  // ... (do not use indexOf)
-  if (newLength) {
-    if (oldLength) {
-      removed = [];
-      for (let i = 0; i < oldLength; i++) {
-        if (!~newItems.indexOf(was[i])) {
-          removed.push(was[i]);
-        }
-      }
-    } else {
-      removed = [];
-    }
-  } else {
-    removed = was;
-  }
-
-  // create an array of added items
-  if (oldLength) {
-    if (newLength) {
-      added = [];
-      for (let i = 0; i < newLength; i++) {
-        if (!~was.indexOf(newItems[i])) {
-          added.push(newItems[i]);
-        }
-      }
-    } else {
-      added = [];
-    }
-  } else {
-    added = newItems;
-  }
+  // counted per value, so a dropped duplicate counts as removed
+  const removed = itemsNotIn(was, newItems);
+  const added = itemsNotIn(newItems, was);
 
   let reordered = false;
   if (!added.length && !removed.length) {

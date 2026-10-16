@@ -32,6 +32,8 @@ export default function triggerDOMEvent(
 
   forEach(bindings, ({ node }) => {
     if (selector) {
+      // a text or attribute node (bound by parseBindings) has no descendants
+      if (!('querySelectorAll' in node)) return;
       // if selector is given trigger an event on all node descendants
       const descendants = (node as Element).querySelectorAll(selector);
       forEach(descendants, (descendant) => {

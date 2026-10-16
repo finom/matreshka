@@ -74,7 +74,9 @@ export default function remove(this: any, object: any, givenKey: any, eventOptio
       'change',
       'beforechange',
       'bind',
-      'unbind'
+      'unbind',
+      '_bind',
+      '_unbind'
     ];
 
     // remove all events

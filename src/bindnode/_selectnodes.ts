@@ -71,6 +71,8 @@ export default function selectNodes(object: AnyObject, givenSelector: string): N
             if (subSelector.indexOf('>') === 0) {
               // selecting children
               forEach(boundNodes as Element[], (node) => {
+                // a text or attribute node (bound by parseBindings) has no children
+                if (!node.setAttribute) return;
                 node.setAttribute(randomAttr, randomAttr);
                 const selected = node.querySelectorAll(`[${randomAttr}="${randomAttr}"] ${subSelector}`);
                 result = uniqueNodes(result, selected);
@@ -79,6 +81,7 @@ export default function selectNodes(object: AnyObject, givenSelector: string): N
             } else {
               // if native selector doesn't contain children selector
               forEach(boundNodes as Element[], (node) => {
+                if (!node.querySelectorAll) return;
                 const selected = node.querySelectorAll(subSelector);
                 result = uniqueNodes(result, selected);
               });

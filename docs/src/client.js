@@ -1,4 +1,4 @@
-// The page's behavior, written with Matreshka itself: the view mode, Advanced mode, the theme, the menu filter, and old
+// The page's behavior, written with Matreshka itself: the view mode, the importance levels, the theme, the menu filter, and old
 // `#!` links. It runs after the bundle (/matreshka.min.js) has defined the global `Matreshka`.
 (() => {
   const { bindNode, calc, on, binders } = Matreshka;
@@ -73,12 +73,13 @@
       binders.attr('aria-pressed', (level) => String(level === Number(button.dataset.level))),
       now
     );
+    // only the reader's choice is kept: a link that opens a hidden member raises the level for this visit
     button.addEventListener('click', () => {
       state.level = Number(button.dataset.level);
+      store.set('mk-level', String(state.level));
     });
   }
   on(state, 'change:level', () => {
-    store.set('mk-level', String(state.level));
     // a lower level that hides the open section moves to the nearest section still shown, the one before it first
     const index = sections.findIndex((section) => section.id === state.current);
     const shown = (section) => Number(section.dataset.importance) <= state.level;
@@ -100,6 +101,14 @@
     debounceCalc: false
   });
   bindNode(state, 'dark', root, binders.className('dark'), now);
+  // the browser's bar follows the page's look, not only the system's
+  bindNode(
+    state,
+    'dark',
+    'meta[name="theme-color"]',
+    binders.attr('content', (dark) => (dark ? '#0a0a0a' : '#ffffff')),
+    now
+  );
   bindNode(state, 'theme', themeButton, binders.attr('data-theme'), now);
   bindNode(
     state,
@@ -139,9 +148,13 @@
   // the menu filter; a search shows every level, and opening a hidden member shows its level
   bindNode(state, 'query', search);
   bindNode(state, 'query', '.mk-nav', binders.className('mk-searching', true), now);
+  const matches = (link) =>
+    state.query
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .every((word) => link.textContent.toLowerCase().includes(word));
   on(state, 'change:query', () => {
-    const words = state.query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    const matches = (link) => words.every((word) => link.textContent.toLowerCase().includes(word));
     for (const link of menuLinks) link.parentElement.hidden = !matches(link);
     // a heading stays while one of its members matches, so a method and its static twin stay apart
     for (const heading of document.querySelectorAll('.mk-nav-sub')) {
@@ -158,7 +171,8 @@
   search.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') state.query = '';
     if (event.key !== 'Enter') return;
-    const first = allLinks.find((link) => !link.closest('[hidden]'));
+    // a group stays shown for its members, so its header is the first link only when it matches too
+    const first = allLinks.find((link) => !link.closest('[hidden]') && matches(link));
     if (first) {
       go(first.getAttribute('href'));
       search.blur();

@@ -17,11 +17,21 @@ export default function defineProp(object: AnyObject, key: string, noAccessor?: 
   }
 
   if (!def.props[key]) {
+    const descriptor = noAccessor ? undefined : Object.getOwnPropertyDescriptor(object, key);
+
+    if (descriptor && !descriptor.configurable) {
+      throw matreshkaError('common:not_configurable', { key });
+    }
+
     const propDef: PropDef = {
       value: object[key],
       mediator: null,
       bindings: null
     };
+    // an own setter keeps running and gets each new value, and its getter gives the value; a getter alone is replaced
+    if (descriptor?.set) {
+      propDef.accessor = { get: descriptor.get, set: descriptor.set };
+    }
     def.props[key] = propDef;
     let getter: (() => any) | undefined;
     let setter: (() => any) | undefined;
@@ -39,7 +49,8 @@ export default function defineProp(object: AnyObject, key: string, noAccessor?: 
         configurable: true,
         enumerable: !isReserved,
         get() {
-          return getter ? getter() : propDef.value;
+          if (getter) return getter();
+          return propDef.accessor?.get ? propDef.accessor.get.call(object) : propDef.value;
         },
         set(v: any) {
           return setter

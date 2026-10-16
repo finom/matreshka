@@ -36,8 +36,8 @@ export default function createCalcHandler({
       silentHTML,
       ...sourceEventOptions
     } = changeEvent;
-    // a deep source hears skipCalc here; a plain one is skipped by set
-    if (changeEvent.skipCalc) {
+    // a deep source hears skipCalc here; a plain one is skipped by set; a removed target is not written back
+    if (changeEvent.skipCalc || !def.props[target]) {
       return;
     }
 

@@ -109,12 +109,12 @@ for(let item of matreshkaObject) {
 
 - [`addDataKeys`](/api/matreshka-object/add-data-keys/) – Adds given property names to a list of property names which are responsible for data
 - [`each`](/api/matreshka-object/each/) – Iterates properties which are responsible for data through ``callback`` function
-- [`entries`](/api/matreshka-object/entries/) _(Advanced)_ – Returns an array of ``[key, value]`` pairs of properties which are responsible for data
+- [`entries`](/api/matreshka-object/entries/) – Returns an array of ``[key, value]`` pairs of properties which are responsible for data
 - [`isDataKey`](/api/matreshka-object/is-data-key/) – Checks if given string a name of data property
-- [`isMatreshkaObject`](/api/matreshka-object/is-matreshka-object/) _(Advanced)_ – The ``isMatreshkaObject`` property always equals ``true`` for instances of [`Matreshka.Object`](/api/matreshka-object/) class
+- [`isMatreshkaObject`](/api/matreshka-object/is-matreshka-object/) – The ``isMatreshkaObject`` property always equals ``true`` for instances of [`Matreshka.Object`](/api/matreshka-object/) class
 - [`keyOf`](/api/matreshka-object/key-of/) – Searches for specified property value among others which are responsible for data and returns one key if this value has been found (very similar to ``Array.prototype.indexOf`` function)
 - [`keys`](/api/matreshka-object/keys/) – Returns an array of property names which are responsible for data
 - [`removeDataKeys`](/api/matreshka-object/remove-data-keys/) – Deletes given property names from a list of property names which are responsible for data (but does not delete the properties)
 - [`setData`](/api/matreshka-object/set-data/) – Sets a property and adds property name to a list of property names which are responsible for data
 - [`toJSON`](/api/matreshka-object/to-json/) – Converts an instance and its internal properties into an ordinary object
-- [`values`](/api/matreshka-object/values/) _(Advanced)_ – Returns an array of property values which are responsible for data
+- [`values`](/api/matreshka-object/values/) – Returns an array of property values which are responsible for data

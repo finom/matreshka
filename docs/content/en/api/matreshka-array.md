@@ -167,15 +167,15 @@ const MyClass = Matreshka.Class({
 - [`METHOD`](/api/matreshka-array/method/) – Any method from ``Array.prototype``
 - [`METHOD_`](/api/matreshka-array/method-silent/) – Any method from ``Array.prototype`` with the possibility of passing event object
 - [`Model`](/api/matreshka-array/model/) – The property defines a class of items which will be inserted to a collection
-- [`isMatreshkaArray`](/api/matreshka-array/is-matreshka-array/) _(Advanced)_ – The ``isMatreshkaArray`` property always equals ``true`` for instances of [`Matreshka.Array`](/api/matreshka-array/) class
+- [`isMatreshkaArray`](/api/matreshka-array/is-matreshka-array/) – The ``isMatreshkaArray`` property always equals ``true`` for instances of [`Matreshka.Array`](/api/matreshka-array/) class
 - [`itemRenderer`](/api/matreshka-array/item-renderer/) – HTML string, a selector or a function which is responsible for rendering DOM nodes of an array on a page
 - [`mediateItem`](/api/matreshka-array/mediate-item/) – Transforms an item value
 - [`onItemRender`](/api/matreshka-array/on-item-render/) – A function which is called before ``"render"`` event
 - [`orderBy`](/api/matreshka-array/order-by/) – Sorts by properties of array items
 - [`pull`](/api/matreshka-array/pull/) – Removes an item with specified index from an array or an item itself
 - [`recreate`](/api/matreshka-array/recreate/) – Recreates the [`Matreshka.Array`](/api/matreshka-array/) instance
-- [`renderIfPossible`](/api/matreshka-array/render-if-possible/) _(Advanced)_ – The ``renderIfPossible`` property cancels the array rendering if it equals ``false``
-- [`rerender`](/api/matreshka-array/rerender/) _(Advanced)_ – Rerenders DOM nodes of items which are included into an instance
+- [`renderIfPossible`](/api/matreshka-array/render-if-possible/) – The ``renderIfPossible`` property cancels the array rendering if it equals ``false``
+- [`rerender`](/api/matreshka-array/rerender/) – Rerenders DOM nodes of items which are included into an instance
 - [`restore`](/api/matreshka-array/restore/) – Restores [`Matreshka.Array`](/api/matreshka-array/) instance from existing HTML nodes on a page.
 - [`toJSON`](/api/matreshka-array/to-json/) – Converts [`Matreshka.Array`](/api/matreshka-array/) instance into native array
 - [`trackBy`](/api/matreshka-array/track-by/) – ``trackBy`` property indicates a key of unique IDs for collection items

@@ -108,12 +108,12 @@ for(let item of matreshkaObject) {
 
 - [`addDataKeys`](/ru/api/matreshka-object/add-data-keys/) – Добавляет заданные имена свойств в список имен свойств, отвечающих за данные
 - [`each`](/ru/api/matreshka-object/each/) – Перебирает свойства, отвечающие за данные
-- [`entries`](/ru/api/matreshka-object/entries/) _(Для продвинутых)_ – Возвращает массив пар имен и значений свойств, отвечающих за данные
+- [`entries`](/ru/api/matreshka-object/entries/) – Возвращает массив пар имен и значений свойств, отвечающих за данные
 - [`isDataKey`](/ru/api/matreshka-object/is-data-key/) – Проверяет, входит ли строка в список ключей, отвечающих за данные
-- [`isMatreshkaObject`](/ru/api/matreshka-object/is-matreshka-object/) _(Для продвинутых)_ – Свойство ``isMatreshkaObject`` всегда равно ``true`` для экземпляров [`Matreshka.Object`](/ru/api/matreshka-object/).
+- [`isMatreshkaObject`](/ru/api/matreshka-object/is-matreshka-object/) – Свойство ``isMatreshkaObject`` всегда равно ``true`` для экземпляров [`Matreshka.Object`](/ru/api/matreshka-object/).
 - [`keyOf`](/ru/api/matreshka-object/key-of/) – Ищет заданное значение свойства среди свойств, отвечающих за данные, и возвращает имя первого совпавшего свойства, если такое значение найдено
 - [`keys`](/ru/api/matreshka-object/keys/) – Возвращает массив имен свойств, отвечающих за данные
 - [`removeDataKeys`](/ru/api/matreshka-object/remove-data-keys/) – Удаляет заданные имена свойств из списка имен свойств, отвечающих за данные (но не удаляет само свойство)
 - [`setData`](/ru/api/matreshka-object/set-data/) – Устанавливает значение свойству и добавляет его имя в список имен, отвечающих за данные
 - [`toJSON`](/ru/api/matreshka-object/to-json/) – Конвертирует экземпляр [`Matreshka.Object`](/ru/api/matreshka-object/) в обычный объект
-- [`values`](/ru/api/matreshka-object/values/) _(Для продвинутых)_ – Возвращает массив значений свойств, отвечающих за данные
+- [`values`](/ru/api/matreshka-object/values/) – Возвращает массив значений свойств, отвечающих за данные

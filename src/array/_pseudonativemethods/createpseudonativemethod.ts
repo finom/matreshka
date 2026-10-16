@@ -50,10 +50,23 @@ export default function createPseudoNativeMethod(name: string, hasOptions = fals
       return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
         return apply(arrayPrototype[name], this, arguments);
       };
+    case 'at':
+    case 'findLast':
+    case 'findLastIndex':
     case 'reduce':
     case 'reduceRight':
       return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
         return apply(arrayPrototype[name], this, arguments);
+      };
+    // the methods that copy return a Matreshka.Array, as map and filter do
+    case 'flat':
+    case 'flatMap':
+    case 'toSorted':
+    case 'toReversed':
+    case 'toSpliced':
+    case 'with':
+      return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
+        return toMatreshkaArray(apply(arrayPrototype[name], this, arguments));
       };
     case 'sort':
     case 'reverse':

@@ -1,5 +1,6 @@
 import type { EventEntry } from '../types.js';
 import type { DomEventData } from './types.js';
+import isSameCallback from '../_helpers/issamecallback.js';
 
 // returns "_bind:KEY" events added by addDomListener which match given DOM event data
 // selector, callback and context are compared only when they're given (or always if exact is true)
@@ -24,7 +25,9 @@ export default function findDomListeners(
       const selectorMatches = exact
         ? (domEvent.selector || null) === (selector || null)
         : !selector || selector === domEvent.selector;
-      const callbackMatches = exact ? argCallback === eventCallback : !argCallback || argCallback === eventCallback;
+      const callbackMatches = exact
+        ? argCallback === eventCallback
+        : !callback || isSameCallback(callback, domEvent.callback);
       const contextMatches = exact ? domEvent.context === context : !context || context === domEvent.context;
 
       if (selectorMatches && callbackMatches && contextMatches) {

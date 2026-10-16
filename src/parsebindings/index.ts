@@ -107,8 +107,10 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
       continue;
     }
 
-    for (let j = 0; j < childNodes.length; j++) {
-      const childNode = childNodes[j];
+    // a copy: processTextNode inserts the bound text nodes, and a value holding "{{y}}" must stay text
+    const children = Array.from(childNodes);
+    for (let j = 0; j < children.length; j++) {
+      const childNode = children[j];
       const { nodeType, textContent } = childNode;
 
       if (nodeType === ELEMENT_NODE) {

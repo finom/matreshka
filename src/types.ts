@@ -55,6 +55,8 @@ export interface PropDef {
   value: any;
   mediator: Mediator | null;
   bindings: Binding[] | null;
+  // the property's own getter and setter, kept when Matreshka defines its accessor
+  accessor?: { get?: () => any; set?: (value: any) => void };
   [field: string]: any;
 }
 

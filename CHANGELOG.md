@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - The router and the form parser are part of the package: `import { initRouter, Router } from 'matreshka/router'` and `import { parseForm } from 'matreshka/parse-form'`. The script-tag bundle has them as `Matreshka.initRouter`, `Matreshka.Router` and `Matreshka.parseForm`.
 - The binders that came from the `common-binders` package are part of Matreshka (`Matreshka.binders`, `import { binders } from 'matreshka'`).
 - `"sideEffects": false` in `package.json`, so a bundler drops the parts an app doesn't import.
+- `Matreshka.Array` has `at`, `findLast`, `findLastIndex`, `flat`, `flatMap`, `toSorted`, `toReversed`, `toSpliced` and `with`; its iterators are iterable, and a native `concat` spreads it.
 
 ### Changed
 
@@ -30,6 +31,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `Matreshka.Class`: a class without its own constructor calls the parent constructor with the same arguments, and a constructor written as a method (`constructor() {}`) or an ES class works.
 - `copyWithin` on a rendered array throws, like `fill`, instead of leaving the DOM out of sync.
 - `new Matreshka.Array(n)` throws a `RangeError` for an invalid length, like `new Array(n)`.
+- A property that can't be redefined (of a frozen or sealed object, or an array's `length`) throws an error that names it when it is bound, listened to or used as a `calc` source.
+- `sort` with a comparator that is not a function throws a `TypeError`, like the native one.
 
 ### Removed
 
@@ -57,6 +60,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - DOM events (`click::x`) reach a node bound with `silent: true` and leave a node unbound with `silent: true`, so items an array renders silently get their DOM events.
 - A delegated DOM event's selector may contain commas inside `:is()`, `:not()` and attribute values (`click::x([data-k="1,2"])`).
 - Delegated listeners (`a.b@change:c`) keep working when a branch is replaced by a copy that shares the next object (`obj.a = { ...obj.a }`).
+- `once` removes only its own listener, not the same function added with `on`.
+- `off` cancels a pending `onDebounce` call, and `off(null, callback)` removes that callback from every event.
+- Delegated DOM events work on `document` and for events that don't bubble (`mouseenter`, `mouseleave`, `load`, `scroll` and others).
+- A delegated DOM event's selector may hold a space before a pseudo-class with parentheses, or `@` in an attribute value.
+- A trailing space in event names adds no listener with an empty name.
+- `remove` takes off the DOM listeners of the key, and `remove` of a `calc` target stops the calculation.
 
 #### Bindings
 
@@ -79,6 +88,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Custom binders can be added to `Matreshka.binders` (`Matreshka.binders.myBinder = …`), and its type allows them.
 - Input typed into a node before a debounced write from code lands is kept: the older write is dropped.
 - A deep binding (`a.b.c`) keeps working when a branch is replaced by a copy that shares the next object, and `remove('a')` removes the deep bindings under `a`.
+- Unbinding a node whose binder has no `setValue` keeps the bindings of the key's other nodes.
+- A value set again inside a change handler: deep bindings and delegated listeners follow the value it ends with.
+- A bound value that holds `{{…}}` is not parsed as a binding by a later `parseBindings`.
+- `unbindNode` of a deep key without a node keeps the bindings made on the target directly; `unbindNode(null)` removes bindings made with `exactKey` to a dotted key; `unbindNode({ key: null })` unbinds the key.
+- `binders.style()` clears a camel-cased property on `undefined`.
+- `trigger` and `selectAll` with a selector skip the text and attribute nodes bound by `parseBindings`.
+- A property's own setter keeps running after the property becomes reactive: it gets each new value, and the property's getter gives the value the events and bindings see.
+- The radio binder checks the radio whose value equals a number, as the select binder does.
 
 #### Data
 
@@ -95,6 +112,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Instances made by `Matreshka.Class` no longer list `constructor` in `for...in`.
 - `Matreshka.Class` keeps getters and setters of the prototype as accessors (before, a getter ran once at `Class()` and its value was copied), and instances no longer list `extends` in `for...in`.
 - A key named `__proto__` in data passed to `setData`, `Matreshka.Object` or a tracked array item no longer writes onto `Object.prototype`.
+- `setData` of the value a key already holds makes it a data key with its `*@` listeners and fires `set` and `modify`; with `replaceData` and `silent` it fires no `remove` or `modify`.
+- `new Matreshka.Object(instance)` and `setData(instance)` take only the instance's data keys.
 
 #### Matreshka.Array
 
@@ -116,6 +135,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - A `splice` that puts back an item it removes keeps the item's node instead of throwing.
 - `orderBy` sorts items without the key, and `null` items, after the others (before them with `desc`), as lodash does.
 - `indexOf`, `lastIndexOf` and `includes` take the same arguments as the array methods (`lastIndexOf(x, undefined)`).
+- `recreate` takes an array-like on a non-empty array, and reports a dropped duplicate as removed.
+- `copyWithin` takes `*@` listeners off the overwritten items; `fill` over an empty range fires no `modify`; `push_()`, `unshift_()` and `splice_()` with no items no longer throw.
+- Rerendering also releases the bindings of parsed attributes (`title="{{a}}!"`) and their calculations.
 
 #### Router
 
@@ -127,11 +149,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Subscribing a shorter route no longer drops the deeper parts of the URL.
 - `router.parts` no longer holds `undefined` entries, and three or more slashes in a row are treated like one.
 - Opening a hash route that differs from the router's path only by its trailing slash no longer adds a history entry.
+- `0` is a route value, not an empty part.
 
 #### Form parser
 
 - When the form isn't found, `parseForm` returns `null` and binds nothing; before, it bound every field of the document.
 - A wrong first argument throws `parseForm`'s own `TypeError`.
 - `parseForm` binds every field of a form, including `<input type="image">` and fields tied to it with the `form` attribute.
+- A file input bound to an object that already has a value no longer throws.
 
 [Unreleased]: https://github.com/finom/matreshka/compare/v2.4.0...HEAD

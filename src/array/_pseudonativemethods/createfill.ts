@@ -18,6 +18,11 @@ export default function createFill(
     const added: any[] = [];
     const removed: any[] = [];
 
+    // an empty range changes nothing, so nothing is reported
+    if (from >= to) {
+      return this;
+    }
+
     for (let i = from; i < to; i++) {
       const item = useMediator ? itemMediator(value, i) : value;
 

@@ -41,7 +41,7 @@ createServer((request, response) => {
   if (!file.startsWith(OUT)) file = OUT;
   if (existsSync(file) && statSync(file).isDirectory()) file = path.join(file, 'index.html');
   const found = existsSync(file);
-  const type = TYPES[path.extname(found ? file : '.html')] ?? 'application/octet-stream';
+  const type = TYPES[found ? path.extname(file) : '.html'] ?? 'application/octet-stream';
   // gzip text, as GitHub Pages does
   const gzip = /text|json|xml|svg/.test(type) && /gzip/.test(request.headers['accept-encoding'] ?? '');
   response.writeHead(found ? 200 : 404, {

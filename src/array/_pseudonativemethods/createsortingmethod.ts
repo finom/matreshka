@@ -11,6 +11,11 @@ export default function createSortingMethod(
   return function pseudoNativeMethod(this: MatreshkaArrayInstance, sortCallback?: any): MatreshkaArrayInstance {
     syncFields(this);
 
+    // as the native sort; sort_ may take its options object in that place
+    if (name === 'sort' && !hasOptions && sortCallback !== undefined && typeof sortCallback !== 'function') {
+      throw new TypeError('The comparison function must be either a function or undefined');
+    }
+
     if (this.length < 2) return this;
 
     const givenEventOptions = hasOptions ? arguments[arguments.length - 1] : null;

@@ -1,7 +1,7 @@
 ---
 title: "Matreshka.Array#METHOD"
 sidebarTitle: "METHOD"
-description: "Matreshka.Array#METHOD: Будь-який метод iз Array.prototype"
+description: "Matreshka.Array#METHOD: Будь-який метод із Array.prototype"
 importance: 1
 ---
 
@@ -13,7 +13,7 @@ importance: 1
 Matreshka.Array#METHOD()
 ```
 
-Будь-який метод iз ``Array.prototype``
+Будь-який метод із ``Array.prototype``
 
 [`Matreshka.Array`](/ua/api/matreshka-array/) включає в себе всі методи, що входять в нативний JavaScript масив:
 

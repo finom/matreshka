@@ -24,6 +24,8 @@ const instanceMembers: AnyObject = assign(
     toJSON,
     length: 0,
     isMatreshkaArray: true,
+    // a native concat spreads it as it spreads an array
+    [Symbol.isConcatSpreadable]: true,
     [Symbol.iterator]: iterator
   },
   pseudoNativeMethods

@@ -64,6 +64,13 @@ export default function set(this: any, object: any, key: any, value?: any, event
     newValue = value;
   }
 
+  // an own setter runs first, and an own getter then gives the value the events and bindings see
+  const { accessor } = propDef;
+  if (accessor?.set) {
+    accessor.set.call(object, newValue);
+    if (accessor.get) newValue = accessor.get.call(object);
+  }
+
   const isChanged = !is(newValue, previousValue);
 
   // add to eventOptions object some useful properties
@@ -130,11 +137,16 @@ export default function set(this: any, object: any, key: any, value?: any, event
     }
   }
 
+  // a change handler may have set the key again: delegated listeners and deep bindings go to the value it holds now
+  const branchEventOptions = is(propDef.value, newValue)
+    ? extendedEventOptions
+    : { ...extendedEventOptions, value: propDef.value };
+
   // trigger common delegated events logic
   if (isChanged) {
     const changeDelegatedKeyEventName = `_change:delegated:${key}`;
     if (events[changeDelegatedKeyEventName]) {
-      triggerOne(object, changeDelegatedKeyEventName, extendedEventOptions);
+      triggerOne(object, changeDelegatedKeyEventName, branchEventOptions);
     }
   }
 
@@ -142,7 +154,7 @@ export default function set(this: any, object: any, key: any, value?: any, event
   if (isChanged || force) {
     const changeTreeEventName = `_change:tree:${key}`;
     if (events[changeTreeEventName]) {
-      triggerOne(object, changeTreeEventName, extendedEventOptions);
+      triggerOne(object, changeTreeEventName, branchEventOptions);
     }
   }
 

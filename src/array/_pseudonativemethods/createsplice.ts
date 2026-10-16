@@ -15,7 +15,7 @@ export default function createSplice(
   return function pseudoNativeMethod(this: MatreshkaArrayInstance): MatreshkaArrayInstance {
     const { itemMediator }: ArrayDef = syncFields(this);
     const functionArguments = arguments;
-    const argsLength = functionArguments.length - +hasOptions;
+    const argsLength = Math.max(functionArguments.length - +hasOptions, 0);
     const args: any[] = Array(argsLength);
     const givenEventOptions = hasOptions ? functionArguments[functionArguments.length - 1] : null;
     const useMediator = typeof itemMediator === 'function' && !givenEventOptions?.skipItemMediator;

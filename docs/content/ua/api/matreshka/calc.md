@@ -236,7 +236,7 @@ this.on('change: a', () => {
 	// кожен раз коли властивості b, c чи d змінюються
 
     // a is changed to ... 15, 33, 60
-	console.log (`a is changed to $ {this.a}`);
+	console.log(`a is changed to ${this.a}`);
 });
 
 this.b = 10;
@@ -252,7 +252,7 @@ console.log(this.a); // 60
 ```js
 this.on('change:a', () => {
 	// Обробник буде викликаний один раз через невеликий проміжок часу
-	console.log(`a is changed to $ {this.a}`); // a is changed to 6
+	console.log(`a is changed to ${this.a}`); // a is changed to 6
 });
 
 this.b = 1;

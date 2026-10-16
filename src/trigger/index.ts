@@ -2,7 +2,7 @@ import domEventReg from '../on/_domeventregexp.js';
 import checkObjectType from '../_helpers/checkobjecttype.js';
 import matreshkaError from '../_helpers/matreshkaerror.js';
 import forEach from '../_helpers/foreach.js';
-import splitBySpaceReg from '../on/_splitbyspaceregexp.js';
+import splitNames from '../on/_splitnames.js';
 import defs from '../_core/defs.js';
 import triggerOne from './_triggerone.js';
 import triggerDomEvent from './_triggerdomevent.js';
@@ -27,7 +27,7 @@ export default function trigger(this: any, ...args: any[]): any {
 
   // allow to use strings only as event name
   if (typeof givenNames === 'string') {
-    names = givenNames.split(splitBySpaceReg);
+    names = splitNames(givenNames);
   } else {
     throw matreshkaError('trigger:names_type', { names: givenNames });
   }

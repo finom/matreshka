@@ -3,6 +3,7 @@ import type { BindNodeOptions } from '../../bindnode/types.js';
 import getBindingKey from './_getbindingkey.js';
 import bindNode from '../../bindnode/index.js';
 import lookForBinder from '../../lookforbinder.js';
+import defs from '../../_core/defs.js';
 
 // a binder for instance of Attr
 const attributeBinder: Binder = {
@@ -40,13 +41,26 @@ export default function processAttribute({ node, attribute, object, eventOptions
     defaultBinder = lookForBinder(node);
   }
 
+  // a template other than "{{x}}" is a hidden calc of its own, removed with its binding
+  const removeCalc = defs.get(object)?.props[key]?.removeCalc;
+  const ownBinder = (binder: Binder): Binder =>
+    removeCalc
+      ? {
+          ...binder,
+          destroy(this: any, bindingOptions: any) {
+            binder.destroy?.call(this, bindingOptions);
+            removeCalc();
+          }
+        }
+      : binder;
+
   if (defaultBinder) {
     // if deault binder is found then this is default HTML5 form element
     // remove the attribute and use found binder
     node.removeAttribute(name);
-    bindNode(object, key, node, defaultBinder, eventOptions);
+    bindNode(object, key, node, ownBinder(defaultBinder), eventOptions);
   } else {
     // simply bind an attribute
-    bindNode(object, key, attribute, attributeBinder, eventOptions);
+    bindNode(object, key, attribute, ownBinder(attributeBinder), eventOptions);
   }
 }

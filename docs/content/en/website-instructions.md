@@ -15,7 +15,7 @@ After you've learned the most important API parts you can hardily start doing fa
 If you already know the quick-start basics, you can look at less important (but still important) methods and properties of the framework.
 
 ### <span class="mk-circles" data-level="3" aria-hidden="true"><i></i><i></i><i></i></span> The third level - other methods and properties
-If you want to know everything about Matreshka.js, choose <span class="mk-circles" data-level="3" aria-hidden="true"><i></i><i></i><i></i></span> on the switch in the menu.
+We've hidden rarely used parts (Matreshka.js API is really rich). If you want to know everything about Matreshka.js, choose <span class="mk-circles" data-level="3" aria-hidden="true"><i></i><i></i><i></i></span> on the switch in the menu.
 
 **Warning**. If you open a link to a method or a property of the third level of importance, the third level is turned on automatically.
 

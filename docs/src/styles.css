@@ -10,7 +10,7 @@
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(0.52 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
@@ -187,11 +187,20 @@
   @apply mx-auto flex w-full max-w-[90rem];
 }
 .mk-nav {
-  @apply fixed top-16 bottom-0 left-0 z-30 w-72 -translate-x-full overflow-y-auto border-r bg-background px-3 py-4 text-sm transition-transform lg:sticky lg:h-[calc(100dvh-4rem)] lg:translate-x-0;
+  @apply invisible fixed top-16 bottom-0 left-0 z-30 w-72 -translate-x-full overflow-y-auto border-r bg-background px-3 py-4 text-sm lg:visible lg:sticky lg:h-[calc(100dvh-4rem)] lg:translate-x-0;
   overscroll-behavior: contain;
+  /* hidden once it has slid out; shown at once, so "/" can focus the filter in it */
+  transition:
+    translate 150ms ease,
+    visibility 0s 150ms;
+}
+/* the open drawer holds the page still; the closed one takes no focus */
+.mk-nav-open {
+  @apply max-lg:overflow-hidden;
 }
 .mk-nav-open .mk-nav {
-  @apply translate-x-0 shadow-lg;
+  @apply visible translate-x-0 shadow-lg;
+  transition: translate 150ms ease;
 }
 .mk-backdrop {
   @apply pointer-events-none fixed inset-0 top-16 z-20 bg-black/40 opacity-0 transition-opacity lg:hidden;
@@ -260,7 +269,7 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
 .mk-nav summary a {
   @apply -mx-2 -my-1 flex-1 rounded-md px-2 py-1;
 }
-.mk-nav summary a[aria-current] {
+.mk-nav summary:has(a[aria-current]) {
   @apply bg-accent;
 }
 .mk-nav details:not([open]) summary::after {

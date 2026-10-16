@@ -1,4 +1,5 @@
 import type { EventEntry, EventHandler } from '../../types.js';
+import isSameCallback from '../../_helpers/issamecallback.js';
 
 // what identifies a delegated listener
 export interface Delegation {
@@ -28,5 +29,7 @@ export default function matchesDelegation(
     return argCallback === eventCallback && delegatedData.context === context;
   }
 
-  return (!argCallback || argCallback === eventCallback) && (!context || context === delegatedData.context);
+  return (
+    (!callback || isSameCallback(callback, delegatedData.callback)) && (!context || context === delegatedData.context)
+  );
 }

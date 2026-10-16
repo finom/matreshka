@@ -80,6 +80,9 @@ app.x = 'Hello World!';
 6. [Таблица пользователей](/examples/matreshka-array/) на `Matreshka.Array`. ([Руководство](https://github.com/finom/matreshka/tree/main/examples/matreshka-array), на английском)
 7. [Демо matreshka/router](/examples/router/#!/foo/bar/baz/) – свойства, связанные с частями URL. ([Код](https://github.com/finom/matreshka/tree/main/examples/router))
 8. [Демо matreshka/parse-form](/examples/parse-form/) – поля формы, связанные со свойствами по именам. ([Код](https://github.com/finom/matreshka/tree/main/examples/parse-form))
+9. [Форма регистрации](/examples/signup-form/) – форма, отрисованная на сервере: email проверяется при вводе, полоска показывает надёжность пароля. ([Код](https://github.com/finom/matreshka/tree/main/examples/signup-form))
+10. [Таблица товаров](/examples/product-table/) – поиск, сортировка и фильтр по строкам, которые отрисовывает `Matreshka.Array`. ([Код](https://github.com/finom/matreshka/tree/main/examples/product-table))
+11. [Виджет цены](/examples/price-widget/) – виджет на чужой странице, который `bindSandbox` держит внутри его корня. ([Код](https://github.com/finom/matreshka/tree/main/examples/price-widget))
 
 ## Руководства
 

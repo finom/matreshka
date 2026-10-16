@@ -19,7 +19,7 @@ export default function style(property: string, mappingFn?: (value: any) => any)
       const val = typeof mappingFn === 'function' ? mappingFn(value) : value;
 
       if (!isDashed) {
-        (this.style as any)[property] = val;
+        (this.style as any)[property] = val ?? '';
       } else if (val === null || val === undefined || val === '') {
         this.style.removeProperty(property);
       } else {

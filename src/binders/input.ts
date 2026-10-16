@@ -22,7 +22,8 @@ export default function input(type?: string): Binder {
           return this.checked ? this.value : previousValue;
         },
         setValue(this: HTMLInputElement, value: any) {
-          this.checked = typeof value !== 'undefined' && this.value === value;
+          // a number checks the radio with the same text, as the select binder does
+          this.checked = value !== undefined && value !== null && this.value === String(value);
         }
       };
     case 'submit':
@@ -34,8 +35,16 @@ export default function input(type?: string): Binder {
       on = null;
       break;
     case 'file':
-      on = 'change';
-      break;
+      // a browser refuses any value of a file input but an empty one, so the object can only clear it
+      return {
+        on: 'change',
+        getValue(this: HTMLInputElement) {
+          return this.value;
+        },
+        setValue(this: HTMLInputElement, value: any) {
+          if (value === null || value === undefined || value === '') this.value = '';
+        }
+      };
 
     /*
             case 'text':

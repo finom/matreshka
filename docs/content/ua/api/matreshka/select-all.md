@@ -1,7 +1,7 @@
 ---
 title: "Matreshka#selectAll"
 sidebarTitle: "selectAll"
-description: "Matreshka#selectAll: Повертає єлементі з пісочниці, відповідні селектору"
+description: "Matreshka#selectAll: Повертає елементи з пісочниці, відповідні селектору"
 importance: 2
 ---
 
@@ -13,7 +13,7 @@ importance: 2
 Matreshka#selectAll(selector) → $nodes
 ```
 
-Повертає єлементі з пісочниці, відповідні селектору
+Повертає елементи з пісочниці, відповідні селектору
 
 Синонім: `Matreshka#$`
 
@@ -27,7 +27,7 @@ Matreshka#selectAll(selector) → $nodes
 
 | Ім'я | Тип | Опис |
 | --- | --- | --- |
-| `selector` | [`string`](/ua/api/types/string/) | Cелектор |
+| `selector` | [`string`](/ua/api/types/string/) | Селектор |
 
 ## Приклади
 

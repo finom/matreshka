@@ -15,7 +15,8 @@ interface ListenerItem {
 export type DomHandler = (this: any, evt: any) => void;
 
 const listeners = new WeakMap<EventTarget, ListenerItem[]>();
-const nonBubblingReg = /^(focus|blur)$/;
+const nonBubblingReg =
+  /^(focus|blur|mouseenter|mouseleave|pointerenter|pointerleave|load|error|scroll|toggle|invalid)$/;
 const scopeAttr = `${Math.random().toString().replace('0.', 'x')}y`; // x12345y
 
 // the nodes of HTML; <template> parses rows, cells and options without wrapping them
@@ -68,6 +69,11 @@ function splitSelectorList(selector: string): string[] {
 
 // the delegated selector matches only inside the node the listener is on
 function matchesInside(node: Element, target: Element, selector: string): boolean {
+  // document, a fragment or window can't take the scope attribute; everything is inside them
+  if (!node.setAttribute) {
+    const found = target.closest?.(selector);
+    return Boolean(found && (!(node as Node).contains || (node as Node).contains(found)));
+  }
   const scoped = splitSelectorList(selector)
     .map((part) => `[${scopeAttr}] ${part},[${scopeAttr}] ${part} *`)
     .join(',');
@@ -93,7 +99,7 @@ export function listen(
   for (const name of names.split(/\s+/)) {
     if (list.some((item) => item.name === name && item.handler === handler && item.selector === selector)) continue;
 
-    // focus and blur don't bubble, so a delegated listener catches them at capture phase
+    // focus, blur, mouseenter and the like don't bubble, so a delegated listener catches them at capture phase
     const capture = Boolean(selector) && nonBubblingReg.test(name);
     const listener = selector
       ? function delegated(this: Element, evt: Event) {

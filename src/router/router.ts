@@ -5,6 +5,9 @@ import onDebounce from '../ondebounce.js';
 import set from '../set.js';
 import trigger from '../trigger/index.js';
 
+// a value that takes a place in the URL: 0 and false do, null, undefined and '' don't
+const isPart = (value: unknown): boolean => value !== null && value !== undefined && value !== '';
+
 // the router kinds: the URL hash (#!/a/b/) or the History API (/a/b/)
 export type RouterType = 'hash' | 'history';
 
@@ -83,7 +86,7 @@ class Router {
             const nonEmptyParts: string[] = [];
 
             for (let i = 0; i < parts.length; i++) {
-              if (parts[i]) {
+              if (isPart(parts[i])) {
                 nonEmptyParts.push(encodeURIComponent(parts[i]));
               } else {
                 break;
@@ -206,7 +209,7 @@ class Router {
       for (let i = 0; i < keys.length; i++) {
         const value = keys[i] === '*' ? this.parts[i] : obj[keys[i]];
 
-        if (value) {
+        if (isPart(value)) {
           values.push(value);
         } else {
           break;
@@ -217,9 +220,9 @@ class Router {
     });
 
     for (let i = 0; i < keys.length; i++) {
-      const value = keys[i] === '*' ? this.parts[i] : obj[keys[i]] || this.parts[i];
+      const value = keys[i] === '*' || !isPart(obj[keys[i]]) ? this.parts[i] : obj[keys[i]];
 
-      if (!value) {
+      if (!isPart(value)) {
         break;
       }
 
@@ -232,7 +235,7 @@ class Router {
     }
 
     for (let i = 0; i < keys.length; i++) {
-      if (!obj[keys[i]] && this.parts[i] && keys[i] !== '*') {
+      if (!isPart(obj[keys[i]]) && this.parts[i] && keys[i] !== '*') {
         set(obj, keys[i], this.parts[i], {
           routeSilent: true
         });
@@ -241,8 +244,10 @@ class Router {
 
     on(this, 'pathchange', () => {
       for (let i = 0; i < keys.length; i++) {
-        if (keys[i] !== '*') {
-          set(obj, keys[i], this.parts[i] || null, {
+        // a value the URL already shows keeps its type (0 stays a number)
+        const part = this.parts[i];
+        if (keys[i] !== '*' && !(isPart(obj[keys[i]]) && isPart(part) && String(obj[keys[i]]) === String(part))) {
+          set(obj, keys[i], isPart(part) ? part : null, {
             routeSilent: true
           });
         }

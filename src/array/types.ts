@@ -113,6 +113,18 @@ export interface MatreshkaArrayInstance<Item = any> extends Matreshka {
   some(predicate: Predicate<Item, this>, thisArg?: any): boolean;
   find(predicate: Predicate<Item, this>, thisArg?: any): Item | undefined;
   findIndex(predicate: Predicate<Item, this>, thisArg?: any): number;
+  findLast(predicate: Predicate<Item, this>, thisArg?: any): Item | undefined;
+  findLastIndex(predicate: Predicate<Item, this>, thisArg?: any): number;
+  at(index: number): Item | undefined;
+  flat<Depth extends number = 1>(depth?: Depth): MatreshkaArrayInstance<FlatArray<Item[], Depth>>;
+  flatMap<Result>(
+    callback: (item: Item, index: number, array: this) => Result | readonly Result[],
+    thisArg?: any
+  ): MatreshkaArrayInstance<Result>;
+  toSorted(compareFn?: (a: Item, b: Item) => number): MatreshkaArrayInstance<Item>;
+  toReversed(): MatreshkaArrayInstance<Item>;
+  toSpliced(start: number, deleteCount?: number, ...items: Item[]): MatreshkaArrayInstance<Item>;
+  with(index: number, value: Item): MatreshkaArrayInstance<Item>;
   reduce(callback: Reducer<Item, this, Item>): Item;
   reduce<Result>(callback: Reducer<Item, this, Result>, initialValue: Result): Result;
   reduceRight(callback: Reducer<Item, this, Item>): Item;
@@ -125,7 +137,7 @@ export interface MatreshkaArrayInstance<Item = any> extends Matreshka {
   keys(): number[];
   values(): Item[];
   entries(): [number, Item][];
-  [Symbol.iterator](): Iterator<Item>;
+  [Symbol.iterator](): IterableIterator<Item>;
 
   // removes an item by index or by value; returns it, or null when nothing is removed
   pull(toRemove: number | Item, eventOptions?: ArrayMethodOptions): Item | null;

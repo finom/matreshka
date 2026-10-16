@@ -118,7 +118,9 @@ export default function unbindNode(this: any, object: any, key?: any, node?: any
 
   if (key && typeof key === 'object') {
     forOwn(key as KeyNodeMap, (keyObjValue: any, keyObjKey) => {
-      if (keyObjValue.constructor === Object && 'node' in keyObjValue) {
+      if (!keyObjValue) {
+        unbindNode(object, keyObjKey, null, node);
+      } else if (keyObjValue.constructor === Object && 'node' in keyObjValue) {
         // this.unbindNode({ key: { node: $(), binder } ) }, { silent: true });
         unbindNode(object, keyObjKey, keyObjValue.node, node);
       } else if (
@@ -152,8 +154,9 @@ export default function unbindNode(this: any, object: any, key?: any, node?: any
   // allow to pass null or undefined as key
   // if passed then remove bindings of all keys for given object
   if (key === null || typeof key === 'undefined') {
+    // a prop's key is exact: "a.b" made with exactKey is a key with a dot, not a path
     forOwn(props, (_, propsKey) => {
-      unbindNode(object, propsKey, null, eventOptions);
+      unbindNode(object, propsKey, null, { ...eventOptions, exactKey: true });
     });
 
     const objectDeepBindings = deepBindings.get(object);
@@ -185,10 +188,17 @@ export default function unbindNode(this: any, object: any, key?: any, node?: any
         }
       }
 
+      // without a node, only the nodes of this deep binding: a binding made on the target directly stays
+      const ownNodes =
+        $nodes ??
+        (deepBindings.get(object) ?? [])
+          .filter((deepBinding) => deepBinding.key === key)
+          .flatMap((deepBinding) => toArray(deepBinding.$nodes));
+
       removeDeepBindings(object, key, $nodes);
 
-      if (target && typeof target === 'object') {
-        unbindNode(target, deepPath[deepPathLength - 1], $nodes, eventOptions);
+      if (target && typeof target === 'object' && ownNodes.length) {
+        unbindNode(target, deepPath[deepPathLength - 1], ownNodes, eventOptions);
       }
 
       return object;

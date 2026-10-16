@@ -1,6 +1,6 @@
 import type { AnyObject, EventEntry, EventHandler, ObjectDef } from '../types.js';
 import type { DelegatedData, EventHandlerMap, EventNames } from '../on/types.js';
-import splitBySpaceReg from '../on/_splitbyspaceregexp.js';
+import splitNames, { splitDelegated } from '../on/_splitnames.js';
 import checkObjectType from '../_helpers/checkobjecttype.js';
 import forOwn from '../_helpers/forown.js';
 import forEach from '../_helpers/foreach.js';
@@ -37,6 +37,18 @@ function getDelegationTargets(object: AnyObject, def: ObjectDef, name: string): 
 
 // removes listeners added by on/once/onDebounce and keeps the ones the framework adds (bindings, calc etc)
 // every event list is split in one pass, so removing many listeners stays linear
+// the names on() was given for the object's own plain and DOM events
+function userEventNames(def: ObjectDef | undefined): string[] {
+  const names = new Set<string>();
+  if (def) {
+    forOwn(def.events, (events, name) => {
+      if (name[0] !== '_') names.add(name);
+      else if (name.startsWith('_bind:')) forEach(events, ({ info }) => info.domEvent && names.add(info.domEvent.name));
+    });
+  }
+  return [...names];
+}
+
 function removeUserListeners(object: AnyObject, def: ObjectDef): void {
   const { events: allEvents, props } = def;
   const removed: RemoveEventData[] = [];
@@ -82,6 +94,13 @@ function removeUserListeners(object: AnyObject, def: ObjectDef): void {
   forEach(removed, (removeEventData) => {
     triggerOne(object, `removeevent:${removeEventData.name}`, removeEventData);
     triggerOne(object, 'removeevent', removeEventData);
+  });
+
+  forEach(retained, ({ events, retain }) => {
+    // a pending onDebounce call doesn't fire after its listener is gone
+    forEach(events, (event) => {
+      if (!retain.includes(event)) (event.callback as { cancel?: () => void }).cancel?.();
+    });
   });
 
   forEach(retained, ({ name, events, length, retain }) => {
@@ -147,12 +166,13 @@ export default function off(this: any, object: any, givenNames?: any, callback?:
 
   // TODO: Array of names passed to off method is non-documented feature
   // split by spaces
-  const names: string[] = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
+  // no names with a callback or a context: every plain and DOM event of the object
+  const names: string[] = isNamesVarArray ? givenNames : givenNames ? splitNames(givenNames) : userEventNames(def);
 
   forEach(names, (name) => {
-    const delegatedEventParts = name.split('@');
-    if (delegatedEventParts.length > 1) {
-      const [path, delegatedName] = delegatedEventParts;
+    const delegated = splitDelegated(name);
+    if (delegated) {
+      const [path, delegatedName] = delegated;
       undelegateListener(object, path, delegatedName, callback, context);
     } else {
       removeListener(object, name, callback, context);

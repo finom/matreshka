@@ -38,8 +38,10 @@ export default function removeBinding({ object, key, eventOptions, binding }: Re
     );
   }
 
-  // remove object event listener
-  removeListener(object, `_change:bindings:${key}`, objectHandler);
+  // remove object event listener; a binder without setValue has none, and no handler would mean "all of them"
+  if (objectHandler) {
+    removeListener(object, `_change:bindings:${key}`, objectHandler);
+  }
 
   // if binder.destroy is given call it
   if (destroy) {

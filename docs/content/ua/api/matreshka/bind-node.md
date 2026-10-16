@@ -161,7 +161,7 @@ this.myKey2 = 999;
 Matreshka.binders.uiSlider = uiSlider;
 // ...
 this.bindNode('myKey1', '.my-slider1', Matreshka.binders.uiSlider(0, 100));
-this.bindNode('myKey2', '.my-slider2', Matreshka.binders.uiSlider(1 1000));
+this.bindNode('myKey2', '.my-slider2', Matreshka.binders.uiSlider(1, 1000));
 ```
 
 [`Matreshka.defaultBinders`](/ua/api/matreshka-static/default-binders/) з коробки містить підтримку **всіх без винятку** HTML елементів форм: ``select`` (включаючи ``multiple``), ``textarea``, ``output``, ``input`` (в тому числі і всі типи із специфікації HTML5: ``text``, ``checkbox``, ``radio``, ``range``, ``number``, ``date``, ``search``, ``time``, ``datetime``, ``datetime-local``, ``color`` та інших). Це означає, що для стандартних елементів вказувати Байндер не обов'язково.
@@ -249,7 +249,7 @@ this.bindNode('x', node, binder, { foo: 'bar' });
 
 ```js
 this.a = { b: { c: 'foo' } };
-this.bindNode ('a.b.c', node);
+this.bindNode('a.b.c', node);
 
 this.a.b.c = 'bar'; // Оновить елемент значенням bar
 

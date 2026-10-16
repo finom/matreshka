@@ -6,9 +6,11 @@ import toArray from '../../_helpers/toarray.js';
 import deepBindings from '../../bindnode/_deepbindings.js';
 import type { AnyObject, EventOptions } from '../../types.js';
 
-// window and other non-Node targets can't be inside a rendered node
-const isInside = (boundNode: any, node: Node): boolean =>
-  !!boundNode && typeof boundNode.nodeType === 'number' && (boundNode === node || node.contains(boundNode));
+// window and other non-Node targets can't be inside a rendered node; an attribute is where its element is
+const isInside = (boundNode: any, node: Node): boolean => {
+  const target = boundNode?.ownerElement ?? boundNode;
+  return !!target && typeof target.nodeType === 'number' && (target === node || node.contains(target));
+};
 
 // removes every binding of an item to a rendered node or to a node inside it
 export default function releaseNode(item: AnyObject, node: Node, eventOptions?: EventOptions): void {

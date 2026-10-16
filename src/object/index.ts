@@ -42,9 +42,12 @@ interface MatreshkaObject<Data extends object = Record<string, any>> extends Mat
 }
 
 // Matreshka.Object inherits the statics Matreshka has when it's created, so not Object, Array and toMatreshka
+// NoInfer for TypeScript before 5.4: a type the compiler doesn't infer a type argument from
+type NotInferred<T> = [T][T extends any ? 0 : never];
+
 export interface MatreshkaObjectConstructor extends MatreshkaStatics {
   // Data comes from the type argument only, so new MatreshkaObject({ a: 1 }) takes any data keys later
-  new <Data extends object = Record<string, any>>(data?: NoInfer<Partial<Data>>): MatreshkaObject<Data>;
+  new <Data extends object = Record<string, any>>(data?: NotInferred<Partial<Data>>): MatreshkaObject<Data>;
   readonly prototype: MatreshkaObject;
 }
 

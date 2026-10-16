@@ -1,6 +1,6 @@
 import type { EventHandler } from '../types.js';
 import type { EventHandlerMap, EventNames } from './types.js';
-import splitBySpaceReg from './_splitbyspaceregexp.js';
+import splitNames, { splitDelegated } from './_splitnames.js';
 import checkObjectType from '../_helpers/checkobjecttype.js';
 import matreshkaError from '../_helpers/matreshkaerror.js';
 import forOwn from '../_helpers/forown.js';
@@ -72,7 +72,7 @@ export default function on(
 
   // split by spaces
   // TODO: Array of names passed to on method is non-documented feature
-  const names: string[] = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
+  const names: string[] = isNamesVarArray ? givenNames : splitNames(givenNames);
 
   // flip triggerOnInit and context when triggerOnInit is not boolean
   if (typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined') {
@@ -82,11 +82,11 @@ export default function on(
   forEach(names, (name) => {
     // "user" tells off() with no args which listeners to remove (it keeps the framework's own)
     const info = { user: true };
-    const delegatedEventParts = name.split('@');
+    const delegated = splitDelegated(name);
 
-    if (delegatedEventParts.length > 1) {
+    if (delegated) {
       // if @ exists in event name then this is delegated event
-      const [path, delegatedName] = delegatedEventParts;
+      const [path, delegatedName] = delegated;
       delegateListener(object, path, delegatedName, callback, context || object, info);
     } else {
       // if not, this is simple event

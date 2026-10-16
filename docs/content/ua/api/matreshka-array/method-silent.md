@@ -1,7 +1,7 @@
 ---
 title: "Matreshka.Array#METHOD_"
 sidebarTitle: "METHOD_"
-description: "Matreshka.Array#METHOD_: Будь-який метод iз Array.prototype з можливістю передати об'єкт події"
+description: "Matreshka.Array#METHOD_: Будь-який метод із Array.prototype з можливістю передати об'єкт події"
 importance: 1
 ---
 
@@ -13,7 +13,7 @@ importance: 1
 Matreshka.Array#METHOD_()
 ```
 
-Будь-який метод iз ``Array.prototype`` з можливістю передати об'єкт події
+Будь-який метод із ``Array.prototype`` з можливістю передати об'єкт події
 
 Ознайомившись з [`Matreshka.Array#METHOD`](/ua/api/matreshka-array/method/) стає зрозуміло, що методи не підтримують передачу об'єкта події, так як в точності повторюють синтаксис і кількість аргументів методів вбудованого ``Array``. Синтаксис ``МЕТОД_`` дозволяє передати в обробник події якісь дані або встановити службові прапори, що відповідають за поведінку масиву після виклику методу.
 

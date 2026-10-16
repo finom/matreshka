@@ -20,6 +20,9 @@ const errors: Record<string, (data: any) => string> = {
   'common:use_magic_props': () =>
     '"sandbox" key (for all objects) and "container" key (for Matreshka.Array instances)' +
     ' are reserved for service use and cannot be used as usual properties',
+  'common:not_configurable': ({ key }) =>
+    `"${key}" cannot be made reactive: the property is not configurable` +
+    " (a frozen or sealed object, or a built-in property such as an array's length)",
 
   'binding:node_missing': ({ key, node }) => {
     const selectorInfo = typeof node === 'string' ? ` (given selector is "${node}")` : '';

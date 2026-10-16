@@ -14,7 +14,8 @@ const methods: Record<string, ((this: MatreshkaArrayInstance, ...args: any[]) =>
 };
 
 `push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight
-forEach join indexOf lastIndexOf copyWithin fill includes find findIndex`
+forEach join indexOf lastIndexOf copyWithin fill includes find findIndex at findLast findLastIndex
+flat flatMap toSorted toReversed toSpliced with`
   .split(splitBySpaceReg)
   .forEach((name) => {
     methods[name] = createPseudoNativeMethod(name);
