@@ -11,6 +11,8 @@ export const UI = {
     start: 'Start',
     api: 'API',
     info: 'Info',
+    levelsLabel: 'Levels',
+    levelsHelp: 'What are the levels?',
     levels: ['The most important stuff', 'Recommended to learn', 'Other methods and properties'],
     kinds: {
       methods: 'Methods',
@@ -51,6 +53,8 @@ export const UI = {
     start: 'Старт',
     api: 'API',
     info: 'Інформація',
+    levelsLabel: 'Рівні',
+    levelsHelp: 'Що таке рівні?',
     levels: ['Найважливіше', 'Рекомендується вивчити', 'Інші методи і властивості'],
     kinds: {
       methods: 'Методи',
@@ -91,6 +95,8 @@ export const UI = {
     start: 'Старт',
     api: 'API',
     info: 'Информация',
+    levelsLabel: 'Уровни',
+    levelsHelp: 'Что такое уровни?',
     levels: ['Самое важное', 'Рекомендуется изучить', 'Остальные методы и свойства'],
     kinds: {
       methods: 'Методы',

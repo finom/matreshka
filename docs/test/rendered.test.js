@@ -92,9 +92,19 @@ describe.each(rendered)('the $code page', ({ code, prefix, sections, html, ids, 
     expect(html.match(/<button type="button" data-level="[123]"/g)).toHaveLength(3);
   });
 
+  // a level that hides every member of a menu group hides the group, so no empty group shows
+  it('hides a menu group exactly when the level hides all its members', () => {
+    const groups = Array.from(html.matchAll(/<details open data-group="[^"]+" data-importance="(\d)">([\s\S]*?)<\/details>/g));
+    expect(groups.length).toBe(Object.keys(UI[code].groups).length);
+    for (const [, groupLevel, body] of groups) {
+      const levels = Array.from(body.matchAll(/<li data-importance="(\d)"><a/g), ([, level]) => Number(level));
+      for (const level of [1, 2, 3]) expect(Number(groupLevel) <= level).toBe(levels.some((l) => l <= level));
+    }
+  });
+
   // As on the old site: a class's members under Methods, Properties, Static Methods and Static Props.
   it("lists a class's members under the old menu's headings", () => {
-    const group = /<details open data-group="matreshka">([\s\S]*?)<\/details>/.exec(html)[1];
+    const group = /<details open data-group="matreshka"[^>]*>([\s\S]*?)<\/details>/.exec(html)[1];
     const headings = Array.from(group.matchAll(/<li class="mk-nav-sub"[^>]*>([^<]+)<\/li>/g), ([, text]) => text);
     expect(headings).toEqual(Object.values(UI[code].kinds));
     const staticPart = group.slice(group.indexOf(UI[code].kinds.static_methods));

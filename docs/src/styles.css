@@ -253,10 +253,13 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
   @apply mt-px;
 }
 .mk-levels {
-  @apply flex items-center gap-2 px-2 py-1;
+  @apply grid gap-1.5 px-2 py-1;
 }
-.mk-levels > a {
-  @apply text-xs text-muted-foreground hover:text-foreground;
+.mk-levels-head {
+  @apply flex items-center justify-between text-xs text-muted-foreground;
+}
+.mk-levels-head a {
+  @apply inline-flex size-5 items-center justify-center rounded-full border text-xs hover:bg-accent hover:text-accent-foreground;
 }
 .mk-segmented {
   @apply grid grid-cols-3 gap-1 rounded-lg bg-muted p-1;
@@ -294,6 +297,9 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
 }
 .mk-nav.mk-searching li[data-importance] {
   display: list-item;
+}
+.mk-nav.mk-searching details[data-importance] {
+  display: block;
 }
 .mk-one .mk-section:not(.mk-current),
 .mk-one .mk-footer {

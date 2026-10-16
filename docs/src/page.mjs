@@ -47,7 +47,9 @@ function menu(sections, ui, lang) {
   const groups = Object.keys(ui.groups)
     .map((dir) => {
       const list = sections.filter(({ group }) => group === dir);
-      return `<details open data-group="${dir}"><summary>${ui.groups[dir]}</summary><ul>${items(list)}</ul></details>`;
+      // a group takes the lowest level of its members, so a level that hides them all hides the group too
+      const level = Math.min(...list.map(({ importance }) => importance));
+      return `<details open data-group="${dir}" data-importance="${level}"><summary>${ui.groups[dir]}</summary><ul>${items(list)}</ul></details>`;
     })
     .join('');
   const others = LANGS.filter(({ code }) => code !== lang)
@@ -64,12 +66,12 @@ function menu(sections, ui, lang) {
 <p class="mk-nav-heading">${ui.start}</p>
 <ul>${start.map(link).join('')}</ul>
 <p class="mk-nav-heading">${ui.api}</p>
-<div class="mk-levels"><div class="mk-segmented" role="group" aria-label="${ui.api}">${[1, 2, 3]
+<div class="mk-levels"><div class="mk-levels-head"><span>${ui.levelsLabel}</span><a href="#website-instructions" title="${ui.levelsHelp}" aria-label="${ui.levelsHelp}">?</a></div><div class="mk-segmented" role="group" aria-label="${ui.levelsLabel}">${[1, 2, 3]
     .map(
       (level) =>
         `<button type="button" data-level="${level}" title="${ui.levels[level - 1]}" aria-label="${ui.levels[level - 1]}">${circles(level)}</button>`
     )
-    .join('')}</div><a href="#website-instructions">(?)</a></div>
+    .join('')}</div></div>
 ${groups}
 <p class="mk-nav-heading">${ui.info}</p>
 <ul>${info.map(link).join('')}</ul>
