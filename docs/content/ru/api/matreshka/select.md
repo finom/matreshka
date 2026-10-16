@@ -35,5 +35,5 @@ this.select('.my-element');
 // то же самое, что и
 this.nodes.sandbox.querySelector('.my-element');
 // и то же самое, что и
-document.querySelector('.app .my-element');
+$('.app').find('.my-element')[0];
 ```

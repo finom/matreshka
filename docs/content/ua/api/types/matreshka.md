@@ -2,6 +2,7 @@
 title: "matreshka"
 sidebarTitle: "matreshka"
 description: "matreshka: Екземпляр класу Matreshka. Matreshka.js довідник API"
+importance: 2
 ---
 
 # matreshka

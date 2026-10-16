@@ -1,7 +1,7 @@
 ---
 title: "Matreshka#$nodes"
 sidebarTitle: "$nodes"
-description: "Matreshka#$nodes: Об’єкт, у якому для кожної властивості зберігається масив прив’язаних до неї елементів — для швидкого доступу."
+description: "Matreshka#$nodes: Об'єкт містить колекції (jQuery, Zepto, інстанси вбудованої мікро-бібліотеки, успадкованої від Array.prototype) прив'язаних елементів для…"
 importance: 3
 ---
 
@@ -13,7 +13,7 @@ importance: 3
 Matreshka#$nodes: $nodes
 ```
 
-Об’єкт, у якому для кожної властивості зберігається масив прив’язаних до неї елементів — для швидкого доступу.
+Об'єкт містить колекції (jQuery, Zepto, інстанси вбудованої мікро-бібліотеки, успадкованої від ``Array.prototype``) прив'язаних елементів для швидкого доступу.
 
 ## Посилання
 
@@ -23,5 +23,5 @@ Matreshka#$nodes: $nodes
 
 ```js
 this.bindNode('myKey', '.my-node');
-this.$nodes.myKey; // масив з тими самими елементами, що й [...document.querySelectorAll('.my-node')]
+this.$nodes.myKey; // Те ж саме, що і $('.my-node')
 ```

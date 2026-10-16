@@ -1,23 +1,20 @@
 ---
-title: "Data binding for the HTML you already have | Matreshka.js"
+title: "A reactive JavaScript framework | Matreshka.js"
+description: "Matreshka.js is a simple JavaScript framework for single-page applications: two-way data binding, calculated properties and events on plain classes."
 sidebarTitle: "Home"
-description: "Matreshka.js binds plain JavaScript objects to the HTML already on the page: two-way binding, computed values, lists. One script tag, or npm with types."
 ---
 
 # Matreshka.js
-
-Type into the field: the property `x` is bound to both nodes.
 
 ```html
 <input class="in" type="text">
 <output class="out"></output>
 
-<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
 <script>
-const { bindNode } = Matreshka;
-const app = {};
-bindNode(app, 'x', '.in, .out');
-app.x = 'Data binding for the HTML you already have';
+const app = new Matreshka();
+app.bindNode('x', '.in, .out');
+app.x = 'A framework for single-page applications creation';
 </script>
 ```
 
@@ -25,20 +22,23 @@ app.x = 'Data binding for the HTML you already have';
 
 For pages whose HTML already exists: server-rendered apps, widgets, old code, a single HTML file. Add one `<script>` tag, bind object properties to nodes in JavaScript, keep the markup as it is. Since 2013; 3.0 is one package with ES modules and TypeScript types.
 
-Read the [introduction](/introduction/) or the [API reference](/api/matreshka/).
+## Features
+
+- Reactive API which allows to solve hard and confusing problems easily
+- High robustness of developed apps
+- The ability to refactor legacy applications without rewriting them from scratch
+- Only couple of hours is needed to master the framework because of an absence of complex concepts
+
+Read more in the [introduction](/introduction/), or go straight to the [API reference](/api/).
 
 ## Install
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
-```
 
 ```sh
 npm install matreshka
 ```
 
 ```js
-import { bindNode, calc, binders } from 'matreshka';
+import Matreshka from 'matreshka';
 ```
 
 For AI coding agents (Claude Code, Cursor, Codex and others), add the Matreshka skill:

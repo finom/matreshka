@@ -12,8 +12,9 @@ importance: 3
 **Импорт:**
 
 ```js
-import { binders } from 'matreshka';
-// binders.progress === Matreshka.binders.progress
+import progress from 'matreshka/binders/progress';
+// или
+import { progress } from 'matreshka/binders';
 ```
 
 ```js

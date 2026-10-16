@@ -12,24 +12,31 @@ importance: 1
 **Import:**
 
 ```js
-import { binders } from 'matreshka';
+import * as binders from 'matreshka/binders';
 ```
 
 A namespace for binders. Out of the box it contains general-purpose binders and can be extended by you so as not to make a mess of the global namespace.
 
 Take a little agreement into consideration: every property from the ``Matreshka.binders`` namespace must be made as a function which returns a binder (such functions usually called "binder creators").
 
-> This documentation writes the binders in full, as `Matreshka.binders.html()`. In your code, take the ones you need into variables:
+> At this documentation the properties from ``Matreshka.binders`` are used directly. But to make your code more readable it's recommended to assign them to a variable.
 
 ```js
-import { bindNode, binders } from 'matreshka';
+const html = Matreshka.binders.html;
 
-const { html, text, prop } = binders;
+// ...
+this.bindNode('x', node, html());
+```
+Or import them as CJS/ES2015 module:
+```js
+// import few binders per once
+import { html, text, prop } from 'matreshka/binders';
 
-bindNode(object, 'x', '.my-node', html());
+// import binders separately
+import html from 'matreshka/binders/html';
 ```
 
-`binders` is the same object as `Matreshka.binders`.
+The binders ship with the ``matreshka`` package.
 
 ## Links
 

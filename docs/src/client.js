@@ -27,7 +27,7 @@
 
   const state = {
     mode: root.classList.contains('mk-one') ? 'one' : 'all',
-    advanced: root.classList.contains('mk-advanced'),
+    level: [3, 2].find((level) => root.classList.contains(`mk-level-${level}`)) ?? 1,
     dark: root.classList.contains('dark'),
     navOpen: false,
     query: '',
@@ -50,13 +50,29 @@
     });
   }
   on(state, 'change:mode', () => store.set('mk-mode', state.mode));
-  on(state, 'change:one', () => document.getElementById(state.current).scrollIntoView());
+  on(state, 'change:one', () => document.getElementById(state.current).scrollIntoView({ behavior: 'instant' }));
 
-  // Advanced mode shows the third level of the API
-  bindNode(state, 'advanced', '#mk-advanced');
-  bindNode(state, 'advanced', root, binders.className('mk-advanced'), now);
-  on(state, 'change:advanced', () => {
-    store.set('mk-advanced', state.advanced ? '1' : '0');
+  // importance levels: the menu and the page show the levels up to the chosen one
+  const levelClass = {
+    setValue(level) {
+      for (const each of [1, 2, 3]) this.classList.toggle(`mk-level-${each}`, each === level);
+    }
+  };
+  bindNode(state, 'level', root, levelClass, now);
+  for (const button of document.querySelectorAll('.mk-segmented button')) {
+    bindNode(
+      state,
+      'level',
+      button,
+      binders.attr('aria-pressed', (level) => String(level === Number(button.dataset.level))),
+      now
+    );
+    button.addEventListener('click', () => {
+      state.level = Number(button.dataset.level);
+    });
+  }
+  on(state, 'change:level', () => {
+    store.set('mk-level', String(state.level));
     renderPager();
   });
 
@@ -80,7 +96,7 @@
     state.navOpen = false;
   });
 
-  // the menu filter; a search shows advanced members too, and opening one turns Advanced mode on
+  // the menu filter; a search shows every level, and opening a hidden member shows its level
   bindNode(state, 'query', search);
   bindNode(state, 'query', '.mk-nav', binders.className('mk-searching', true), now);
   on(state, 'change:query', () => {
@@ -130,7 +146,7 @@
   // previous and next among the sections the reader can see
   function renderPager() {
     const pager = document.getElementById('mk-pager');
-    const visible = sections.filter((section) => state.advanced || section.dataset.importance !== '3');
+    const visible = sections.filter((section) => Number(section.dataset.importance) <= state.level);
     const index = visible.findIndex((section) => section.id === state.current);
     pager.replaceChildren(
       ...[
@@ -151,7 +167,7 @@
   }
 
   // `#!Matreshka-calc` and other anchors of the old site, then the section a hash points into
-  function open(scroll) {
+  function open(scroll, smooth) {
     const raw = location.hash.slice(1);
     let id = raw;
     try {
@@ -165,13 +181,17 @@
     }
     const target = (id && document.getElementById(id)) || document.getElementById('home');
     const section = target.closest('.mk-section') ?? document.getElementById('home');
-    if (section.dataset.importance === '3') state.advanced = true;
+    state.level = Math.max(state.level, Number(section.dataset.importance));
     state.current = section.id;
     state.navOpen = false;
-    if (scroll) (state.one && target === section ? root : target).scrollIntoView();
+    // a link scrolls smoothly; a page load or a swapped section in One by one mode jumps
+    if (scroll)
+      (state.one && target === section ? root : target).scrollIntoView(
+        smooth && !state.one ? {} : { behavior: 'instant' }
+      );
   }
-  window.addEventListener('hashchange', () => open(true));
-  open(Boolean(location.hash));
+  window.addEventListener('hashchange', () => open(true, true));
+  open(Boolean(location.hash), false);
 
   // in Everything mode the menu follows the reading position
   let frame = 0;
@@ -182,7 +202,7 @@
       frame = requestAnimationFrame(() => {
         frame = 0;
         // the last section whose top has passed the header
-        const passed = sections.filter((section) => section.offsetHeight && section.getBoundingClientRect().top <= 96);
+        const passed = sections.filter((section) => section.offsetHeight && section.getBoundingClientRect().top <= 104);
         state.current = (passed.at(-1) ?? sections[0]).id;
       });
     },

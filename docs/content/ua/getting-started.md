@@ -1,118 +1,82 @@
 ---
-title: "З чого почати"
-description: "Як підключити Matreshka.js тегом script, ES-модулем з CDN або з npm, перші прив’язки на звичайному об’єкті та перехід з версії 2.x."
+title: "Як почати"
+description: "Встановлення Matreshka.js з npm або CDN, імпорт усього фреймворку чи окремих модулів і три рівні важливості в довіднику API."
 ---
 
-# З чого почати
+# Як почати
 
 ## Встановлення
-
-### Тег script
-
-Без збирання. Бандл оголошує одну глобальну змінну `Matreshka`, до якої входять роутер і парсер форм. Він розрахований на сучасні браузери.
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
-<script>
-  const { bindNode, calc, binders } = Matreshka;
-</script>
-```
-
-Цей самий файл є й на цьому сайті: [/matreshka.min.js](/matreshka.min.js).
-
-### ES-модуль з CDN
-
-```html
-<script type="module">
-  import Matreshka, { bindNode, calc } from 'https://cdn.jsdelivr.net/npm/matreshka@3/+esm';
-</script>
-```
-
-### npm
 
 ```sh
 npm install matreshka
 ```
 
 ```js
-import Matreshka, { bindNode, calc, on, mediate, binders, MatreshkaObject, MatreshkaArray } from 'matreshka';
+import Matreshka from 'matreshka';
+// або через CommonJS
+const Matreshka = require('matreshka');
 ```
 
-Кожна статична функція `Matreshka` доступна як іменований експорт; так само експортуються класи й `binders`. На кожній сторінці довідника API вказано потрібний імпорт. Пакет постачається лише у вигляді ES-модулів і містить типи TypeScript.
+Роутер і парсер форм — окремі пакети: [matreshka-router](https://github.com/finom/matreshka/tree/main/packages/router) зв’язує властивості з частинами URL, [matreshka-parse-form](https://github.com/finom/matreshka/tree/main/packages/parse-form) зв’язує іменовані поля форми з властивостями.
 
-У Node.js 22.12 і новіших його можна завантажити й через `require` — він поверне об’єкт експортів:
+`initRouter(object, '/a/b/')` синхронізує `object.a` і `object.b` з частинами `location.hash` після `#!` (`#!/foo/bar/`); в URL значення закодовані, у властивостях — декодовані. Щоб замість цього використовувати шлях через History API, передайте `'history'` третім аргументом. `parseForm(object, form)` повертає форму або `null`, якщо форму не знайдено.
 
-```js
-const { Matreshka, bindNode } = require('matreshka');
+```sh
+npm install matreshka-router matreshka-parse-form
 ```
 
-## Перший приклад
+### Тег script
+
+Без збирача підключіть браузерний бандл. Він визначає глобальну змінну `Matreshka` і її коротку назву `MK`. Бандли розраховані на сучасні браузери.
 
 ```html
-<input class="name">
-<p>Привіт, <span class="greeting"></span>!</p>
-
-<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
-<script>
-  const { bindNode, calc, binders } = Matreshka;
-  const page = {};
-
-  // page.name стежить за полем, а поле — за page.name
-  bindNode(page, 'name', '.name');
-
-  // page.greeting перераховується за кожної зміни page.name
-  calc(page, 'greeting', 'name', (name) => name || 'незнайомцю');
-
-  // span показує page.greeting як текст
-  bindNode(page, 'greeting', '.greeting', binders.text());
-</script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka-router@2/dist/matreshka-router.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/matreshka-parse-form@2/dist/matreshka-parse-form.min.js"></script>
 ```
 
-`page` — звичайний об’єкт. Введіть текст у поле або виконайте в консолі `page.name = 'Ганна'`: оновляться і поле, і привітання.
+Ці ж файли віддає і цей сайт: [/matreshka.min.js](/matreshka.min.js), [/matreshka-router.min.js](/matreshka-router.min.js) і [/matreshka-parse-form.min.js](/matreshka-parse-form.min.js). Роутер додає `Matreshka.initRouter` і `Matreshka.Router` до глобальної `Matreshka`, парсер форм — `Matreshka.parseForm`.
 
-Клас [`Matreshka`](/ua/api/matreshka/) має ті самі функції у вигляді методів. Та сама сторінка, написана класом:
+## Модулі
+
+Розмір результуючого JavaScript файлу можна скоротити за рахунок імпорту тільки необхідних частин фреймворка. Шлях до модуля вказаний на кожній сторінці довідника API.
+
+```js
+// кожну статичну властивість будь-якого об'єкта
+// або функції можна імпортувати в вигляді модуля
+import MatreshkaArray from 'matreshka/array';
+import bindNode from 'matreshka/bindnode';
+import { prop } from 'matreshka/binders';
+```
+
+У CommonJS ці модулі доступні через `require`:
+
+```js
+const bindNode = require('matreshka/bindnode');
+```
+
+Імпорт головного модуля підтягне весь фреймворк.
 
 ```js
 import Matreshka from 'matreshka';
-
-class Page extends Matreshka {
-  constructor() {
-    super();
-    this.bindNode('name', '.name');
-    this.calc('greeting', 'name', (name) => name || 'незнайомцю');
-    this.bindNode('greeting', '.greeting', Matreshka.binders.text());
-  }
-}
-
-const page = new Page();
 ```
 
-## Роутер і парсер форм
+> Модуль класу [`Matreshka`](/ua/api/matreshka/), без `binders`, `Array` і `Object`, знаходиться за адресою `'matreshka/matreshka'`.
 
-```js
-import { initRouter, Router } from 'matreshka/router';
-import { parseForm } from 'matreshka/parse-form';
-```
+## Рівні важливості
 
-У бандлі для тегу script вони доступні як `Matreshka.initRouter`, `Matreshka.Router` і `Matreshka.parseForm`.
+Документація розбита на три рівні важливості.
 
-`initRouter(object, '/a/b/')` синхронізує `object.a` і `object.b` з частинами `location.hash` після `#!` (`#!/foo/bar/`); в URL значення закодовані, у властивостях — розкодовані. Щоб працювати зі шляхом через History API, передайте третім аргументом `'history'`. `parseForm(object, form)` прив’язує поля форми до властивостей об’єкта за їхніми іменами й повертає форму або `null`, якщо форму не знайдено.
+### Перший рівень — найважливіше
 
-Перегляньте [демо роутера](/examples/router/#!/foo/bar/baz/) і [демо парсера форм](/examples/parse-form/).
+Вивчивши найважливіші властивості і методи, ви можете сміливо приступати до роботи. Почніть з [`Matreshka#bindNode`](/ua/api/matreshka/bind-node/), [`Matreshka#calc`](/ua/api/matreshka/calc/), [`Matreshka#on`](/ua/api/matreshka/on/), [`Matreshka.Object`](/ua/api/matreshka-object/) і [`Matreshka.Array`](/ua/api/matreshka-array/).
 
-## Перехід з 2.x
+### Другий рівень — рекомендується вивчити
 
-- **Один пакет.** Роутер і парсер форм тепер входять до нього (див. вище). Пакети `matreshka-router` і `matreshka-parse-form` більше не підтримуються.
-- **Іменовані експорти замість глибоких імпортів.** Глибоких шляхів із 2.x (`matreshka/bindnode`, `matreshka/array/from`, `matreshka/binders/html`) більше немає. Імпортуйте все з `'matreshka'`: `import { bindNode } from 'matreshka'`. Байндер тепер береться як `binders.html` з `import { binders } from 'matreshka'` або як `Matreshka.binders.html`.
-- **Лише ES-модулі** з типами TypeScript. `require('matreshka')` працює в Node.js 22.12 і новіших і повертає об’єкт експортів.
-- **Один бандл для тегу script**, до якого входять роутер і парсер форм. Глобального псевдоніма `MK` більше немає — використовуйте `Matreshka`.
-- **Без DOM-бібліотеки.** Метод із 2.x, який обирав DOM-бібліотеку, видалено, і Matreshka більше не звертається до глобальних jQuery чи Zepto. [`bindNode`](/ua/api/matreshka/bind-node/), як і раніше, приймає об’єкт jQuery або будь-який інший масивоподібний об’єкт з елементами.
-- **Звичайні масиви елементів.** [`$nodes`](/ua/api/matreshka/dollar-nodes/), [`selectAll`](/ua/api/matreshka/select-all/) і `$` повертають масиви.
-- **Лише `parserBrackets`.** Псевдонім із помилкою в назві видалено.
-- **Без запису назад у джерело.** Зміна, що прийшла з елемента, не записується назад у той самий елемент. Докладніше — в описі [`mediate`](/ua/api/matreshka/mediate/).
+Після того, як ви освоїли необхідні для швидкого старту можливості, можете ознайомитися з іншими, менш важливими (але все ще важливими) властивостями і методами фреймворку.
 
-## Що далі
+### Третій рівень — інші методи і властивості
 
-Почніть з [`bindNode`](/ua/api/matreshka/bind-node/), [`calc`](/ua/api/matreshka/calc/), [`on`](/ua/api/matreshka/on/), [`mediate`](/ua/api/matreshka/mediate/), [байндерів](/ua/api/binders/), [`Matreshka.Object`](/ua/api/matreshka-object/) і [`Matreshka.Array`](/ua/api/matreshka-array/). Рідко потрібні властивості й методи приховані, доки в меню не ввімкнено режим «Для досвідчених»; докладніше — у розділі [Як користуватися сайтом](/ua/website-instructions/).
+Методи і властивості, які використовуються відносно рідко, позначені «Для просунутих» і стоять останніми в кожному розділі меню. Читайте їх, коли захочете знати про фреймворк все, без винятку.
 
-Далі: [приклади](/ua/examples/).
+Далі: [Hello World та інші приклади](/ua/examples/).

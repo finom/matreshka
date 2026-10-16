@@ -25,5 +25,5 @@ Matreshka#nodes: node
 
 ```js
 this.bindNode('myKey', '.my-node');
-this.nodes.myKey; // те саме, що й document.querySelector('.my-node')
+this.nodes.myKey; // Те ж саме, що і $('.my-node')[0]
 ```

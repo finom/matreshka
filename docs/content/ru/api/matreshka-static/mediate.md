@@ -12,7 +12,7 @@ importance: 1
 **Импорт:**
 
 ```js
-import { mediate } from 'matreshka';
+import mediate from 'matreshka/mediate';
 ```
 
 ```js

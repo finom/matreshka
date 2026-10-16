@@ -25,5 +25,5 @@ Pay attention, every object property has got the first node of the bound ones to
 
 ```js
 this.bindNode('myKey', '.my-node');
-this.nodes.myKey; // the same as document.querySelector('.my-node')
+this.nodes.myKey; // the same as $('.my-node')[0]
 ```

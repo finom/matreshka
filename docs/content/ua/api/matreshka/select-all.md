@@ -1,7 +1,7 @@
 ---
 title: "Matreshka#selectAll"
 sidebarTitle: "selectAll"
-description: "Matreshka#selectAll: Повертає елементи з пісочниці, що відповідають селектору"
+description: "Matreshka#selectAll: Повертає єлементі з пісочниці, відповідні селектору"
 importance: 2
 ---
 
@@ -13,11 +13,9 @@ importance: 2
 Matreshka#selectAll(selector) → $nodes
 ```
 
-Повертає елементи з пісочниці, що відповідають селектору
+Повертає єлементі з пісочниці, відповідні селектору
 
 Синонім: `Matreshka#$`
-
-Повертає звичайний масив елементів; якщо нічого не знайдено, масив порожній.
 
 Після створення пісочниці методом [`Matreshka#bindNode`](/ua/api/matreshka/bind-node/), можна отримувати і використовувати елементи, що знаходяться в ній. Крім цього, метод підтримує кастомний селектор ``:bound(KEY)``.
 
@@ -39,7 +37,9 @@ nodes = this.selectAll('.my-element');
 // те ж саме, що і
 nodes = this.$('.my-element'); // $ - посилання на метод selectAll
 // те ж саме, що і
-nodes = [...document.querySelector('.app').querySelectorAll('.my-element')];
+nodes = this.$nodes.sandbox.find('.my-element');
+// те ж саме, що і
+nodes = $('.app').find('.my-element');
 ```
 
 **Селектор ``:bound(KEY)``**
@@ -48,5 +48,7 @@ nodes = [...document.querySelector('.app').querySelectorAll('.my-element')];
 this.bindNode('myKey', '.my-element');
 nodes = this.selectAll(':bound(myKey) .my-another-element');
 // те ж саме, що і
-nodes = [...document.querySelector('.my-element').querySelectorAll('.my-another-element')];
+nodes = this.$nodes.myKey.find('.my-another-element');
+// те ж саме, що і
+nodes = $('.my-element').find('.my-another-element');
 ```

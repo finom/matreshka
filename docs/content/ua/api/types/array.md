@@ -2,6 +2,7 @@
 title: "array"
 sidebarTitle: "array"
 description: "array: Масив. Matreshka.js довідник API"
+importance: 2
 ---
 
 # array

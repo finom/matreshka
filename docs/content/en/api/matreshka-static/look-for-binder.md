@@ -12,7 +12,7 @@ importance: 3
 **Import:**
 
 ```js
-import { lookForBinder } from 'matreshka';
+import lookForBinder from 'matreshka/lookforbinder';
 ```
 
 ```js

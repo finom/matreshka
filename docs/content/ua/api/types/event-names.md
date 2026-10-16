@@ -2,6 +2,7 @@
 title: "eventNames"
 sidebarTitle: "eventNames"
 description: "eventNames: Ім'я події або кілька імен, розділених пробілами."
+importance: 2
 ---
 
 # eventNames

@@ -12,24 +12,31 @@ importance: 1
 **Импорт:**
 
 ```js
-import { binders } from 'matreshka';
+import * as binders from 'matreshka/binders';
 ```
 
 Пространство имен для байндеров. Из коробки содержит байндеры общего назначения (для связывания атрибутов и пр.). Этот объект можно расширять собственными свойствами, чтоб не засорять глобальное пространство имен.
 
 Примите во внимание небольшое соглашение: каждое свойство из коллекции ``Matreshka.binders`` должно быть оформлено в виде функции (такие функции иногда называют "binder creator"), возвращающей байндер.
 
-> В этой документации байндеры записаны полностью, например `Matreshka.binders.html()`. В своём коде удобнее вынести нужные байндеры в переменные:
+> В этой документации свойства из ``Matreshka.binders`` используются напрямую, но для улучшения читаемости кода, рекомендуется выносить их в отдельные переменные.
 
 ```js
-import { bindNode, binders } from 'matreshka';
+const html = Matreshka.binders.html;
 
-const { html, text, prop } = binders;
+// ...
+this.bindNode('x', node, html());
+```
+Либо импортировать в качестве CJS модуля:
+```js
+// импорт сразу нескольких байндеров
+import { html, text, prop } from 'matreshka/binders';
 
-bindNode(object, 'x', '.my-node', html());
+// импорт байндеров по-отдельности
+import html from 'matreshka/binders/html';
 ```
 
-`binders` — тот же объект, что и `Matreshka.binders`.
+Биндеры входят в пакет ``matreshka``.
 
 ## Ссылки
 
@@ -53,7 +60,7 @@ this.bindNode('myKey', '.my-element',
 	Matreshka.binders.myCoolBinder('Hello', 'World'));
 ```
 
-## Свойства и методы
+## Члены класса
 
 - [`attr`](/ru/api/binders/attr/) – Возвращает байндер, меняющий атрибут DOM элемента на значение свойства объекта
 - [`className`](/ru/api/binders/class-name/) – Возвращает байндер, который переключает имя класса DOM элемента в зависимости от значения свойства объекта. Если значение свойства нестрого равно ``true``, имя класса добавляется, в противном случае - убирается. Логику можно изменить, передав ``false`` вторым аргументом, и, таким образом, имя класса будет добавляться, когда значение свойства нестрого равно ``false`` и наоборот.
@@ -61,11 +68,11 @@ this.bindNode('myKey', '.my-element',
 - [`display`](/ru/api/binders/display/) – Возвращает байндер для одностороннего связывания, меняющий видимость DOM элемента (используя ``style.display``), в зависимости от значения свойства объекта
 - [`existence`](/ru/api/binders/existence/) – Возвращает байндер для одностороннего связывания, переключающий наличие элемента в DOM дереве, в зависимости от значения свойства объекта
 - [`html`](/ru/api/binders/html/) – Возвращает байндер, меняющий ``innerHTML`` DOM элемента в зависимости от значения свойства объекта
-- [`input`](/ru/api/binders/input/) _(для опытных)_ – Возвращает байндер, связывающий свойство объекта с элементом ``input``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
-- [`output`](/ru/api/binders/output/) _(для опытных)_ – Возвращает байндер, связывающий свойство объекта с элементом ``output``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
-- [`progress`](/ru/api/binders/progress/) _(для опытных)_ – Возвращает байндер, связывающий свойство объекта с элементом ``progress``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+- [`input`](/ru/api/binders/input/) _(Для продвинутых)_ – Возвращает байндер, связывающий свойство объекта с элементом ``input``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+- [`output`](/ru/api/binders/output/) _(Для продвинутых)_ – Возвращает байндер, связывающий свойство объекта с элементом ``output``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+- [`progress`](/ru/api/binders/progress/) _(Для продвинутых)_ – Возвращает байндер, связывающий свойство объекта с элементом ``progress``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
 - [`prop`](/ru/api/binders/prop/) – Возвращает байндер, меняющий свойство DOM элемента на значение свойства объекта
-- [`select`](/ru/api/binders/select/) _(для опытных)_ – Возвращает байндер, связывающий свойство объекта с элементом ``select``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+- [`select`](/ru/api/binders/select/) _(Для продвинутых)_ – Возвращает байндер, связывающий свойство объекта с элементом ``select``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
 - [`style`](/ru/api/binders/style/) – Возвращает байндер, меняющий заданное свойство стиля DOM элемента в зависимости от значения свойства объекта.
 - [`text`](/ru/api/binders/text/) – Возвращает байндер, меняющий ``textContent`` (текстовое содержимое) DOM элемента в зависимости от значения свойства объекта.
-- [`textarea`](/ru/api/binders/textarea/) _(для опытных)_ – Возвращает байндер, связывающий свойство объекта с элементом ``textarea``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).
+- [`textarea`](/ru/api/binders/textarea/) _(Для продвинутых)_ – Возвращает байндер, связывающий свойство объекта с элементом ``textarea``. Напрямую байндер использовать не обязательно, так как он входит в список [`Matreshka.defaultBinders`](/ru/api/matreshka-static/default-binders/).

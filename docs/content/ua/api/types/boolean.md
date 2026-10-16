@@ -2,6 +2,7 @@
 title: "boolean"
 sidebarTitle: "boolean"
 description: "boolean: Логічний тип. Matreshka.js довідник API"
+importance: 2
 ---
 
 # boolean

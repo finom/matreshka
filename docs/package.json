@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "icons": "node scripts/icons.mjs",
+    "og": "node scripts/og.mjs",
     "build": "node scripts/build.mjs",
     "dev": "node scripts/dev.mjs"
   },

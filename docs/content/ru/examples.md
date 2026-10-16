@@ -1,35 +1,13 @@
 ---
 title: "Примеры"
-description: "Примеры в одном HTML-файле для страниц с серверным рендерингом, Hello World шаг за шагом и живые приложения на Matreshka.js: TodoMVC, TreeView и другие."
+description: "Hello World шаг за шагом и живые приложения на Matreshka.js: TodoMVC, TreeView, редактор Markdown, список контактов, руководства и демо плагинов."
 ---
 
 # Примеры
 
-## Примеры в одном HTML-файле
-
-Каждый пример — это один HTML-файл: разметка, данные и скрипт. Бандл подключается одним тегом `<script>`, сборка не нужна.
-
-::: examples
-::: example /examples/signup-form/ https://github.com/finom/matreshka/tree/main/examples/signup-form Форма регистрации
-
-Форма в том виде, в каком её отдал бы сервер, разметка не тронута: email проверяется прямо при вводе, полоска показывает надёжность пароля, а кнопка отправки неактивна, пока форма не заполнена правильно. Только обычные объекты, `bindNode` и `calc`.
-
-:::
-::: example /examples/product-table/ https://github.com/finom/matreshka/tree/main/examples/product-table Таблица товаров
-
-Таблица по данным JSON, встроенным в страницу: поиск, сортировка, фильтр «в наличии» и счётчики. Строки отрисовывает `Matreshka.Array`.
-
-:::
-::: example /examples/price-widget/ https://github.com/finom/matreshka/tree/main/examples/price-widget Виджет цены
-
-Калькулятор экономии, встроенный в чужую страницу. `bindSandbox` и селекторы `:sandbox` не дают ему выйти за пределы своего корня, а `mediate` превращает строки из полей в числа.
-
-:::
-:::
-
 ## Hello World
 
-Первое приложение из двух файлов:
+Написать первое приложение с помощью фреймворка Matreshka.js очень просто.
 
 **1\.** Создайте HTML файл со следующим содержимым
 
@@ -42,7 +20,7 @@ description: "Примеры в одном HTML-файле для страниц
 	<body>
 		<input type="text" class="my-input">
 		<div class="my-output"></div>
-		<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
 		<script src="js/app.js"></script>
 	</body>
 </html>
@@ -90,52 +68,18 @@ app.x = 'Hello World!';
 - [Метод `Matreshka#bindNode`](/ru/api/matreshka/bind-node/)
 - [Метод `Matreshka#on`](/ru/api/matreshka/on/)
 
-## Другие живые примеры
+## Живые примеры
 
 Каждый пример работает на этом сайте; его код лежит в [папке examples](https://github.com/finom/matreshka/tree/main/examples) репозитория.
 
-::: examples
-::: example /examples/todomvc/ https://github.com/finom/matreshka/tree/main/examples/todomvc TodoMVC
-
-Список дел. Есть [исходный код с аннотациями](/examples/todomvc/docs/todomvc/js/app.html).
-
-:::
-::: example /examples/treeview/ https://github.com/finom/matreshka/tree/main/examples/treeview TreeView
-
-Дерево элементов любой глубины вложенности.
-
-:::
-::: example /examples/markdown-editor/ https://github.com/finom/matreshka/tree/main/examples/markdown-editor Редактор Markdown
-
-Редактор Markdown в несколько строк кода: предпросмотр обновляется при вводе.
-
-:::
-::: example /examples/contact-list/ https://github.com/finom/matreshka/tree/main/examples/contact-list Список контактов
-
-Добавление, удаление, сортировка, поиск и редактирование контактов.
-
-:::
-::: example /examples/matreshka-object/ https://github.com/finom/matreshka/tree/main/examples/matreshka-object Форма входа
-
-Форма входа на `Matreshka.Object`. В папке с кодом есть пошаговое руководство (на английском).
-
-:::
-::: example /examples/matreshka-array/ https://github.com/finom/matreshka/tree/main/examples/matreshka-array Таблица пользователей
-
-Таблица пользователей на `Matreshka.Array`. В папке с кодом есть пошаговое руководство (на английском).
-
-:::
-::: example /examples/router/#!/foo/bar/baz/ https://github.com/finom/matreshka/tree/main/examples/router Демо роутера
-
-Свойства, привязанные к частям URL.
-
-:::
-::: example /examples/parse-form/ https://github.com/finom/matreshka/tree/main/examples/parse-form Демо парсера форм
-
-Поля формы, привязанные к свойствам по именам.
-
-:::
-:::
+1. [TodoMVC](/examples/todomvc/) – список дел. ([Исходный код с аннотациями](/examples/todomvc/docs/todomvc/js/app.html), [код](https://github.com/finom/matreshka/tree/main/examples/todomvc))
+2. [TreeView](/examples/treeview/) – древовидный список неограниченной вложенности. ([Код](https://github.com/finom/matreshka/tree/main/examples/treeview))
+3. [Markdown editor](/examples/markdown-editor/) – простейший редактор Markdown. ([Код](https://github.com/finom/matreshka/tree/main/examples/markdown-editor))
+4. [Contact List](/examples/contact-list/) – позволяет добавлять, удалять, сортировать, менять и искать контакты. ([Код](https://github.com/finom/matreshka/tree/main/examples/contact-list))
+5. [Форма входа](/examples/matreshka-object/) на `Matreshka.Object`. ([Руководство](https://github.com/finom/matreshka/tree/main/examples/matreshka-object), на английском)
+6. [Таблица пользователей](/examples/matreshka-array/) на `Matreshka.Array`. ([Руководство](https://github.com/finom/matreshka/tree/main/examples/matreshka-array), на английском)
+7. [Демо matreshka-router](/examples/router/#!/foo/bar/baz/) – свойства, связанные с частями URL. ([Код](https://github.com/finom/matreshka/tree/main/examples/router))
+8. [Демо matreshka-parse-form](/examples/parse-form/) – поля формы, связанные со свойствами по именам. ([Код](https://github.com/finom/matreshka/tree/main/examples/parse-form))
 
 ## Руководства
 

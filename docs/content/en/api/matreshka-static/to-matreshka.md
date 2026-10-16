@@ -12,7 +12,7 @@ importance: 3
 **Import:**
 
 ```js
-import { toMatreshka } from 'matreshka';
+import toMatreshka from 'matreshka/tomatreshka';
 ```
 
 ```js

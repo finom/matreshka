@@ -1,17 +1,19 @@
 ---
 title: "$nodes"
 sidebarTitle: "$nodes"
-description: "$nodes: Масив DOM-елементів. Там, де очікуються елементи, підійдуть і NodeList, об’єкт jQuery чи інший масивоподібний об’єкт."
+description: "$nodes: Колекція DOM вузлів. Наприклад, jQuery або NodeList."
+importance: 2
 ---
 
 # $nodes
 
 **Тип**
 
-Масив DOM-елементів. Там, де метод очікує елементи, він прийме й будь-який масивоподібний об’єкт: NodeList, об’єкт jQuery.
+Колекція DOM вузлів. Наприклад, jQuery або NodeList.
 
 ## Приклади
 
 ```js
-const $nodes = [...document.querySelectorAll('.foo')];
+let $nodes = $('.foo');
+$nodes = document.querySelectorAll('.bar');
 ```

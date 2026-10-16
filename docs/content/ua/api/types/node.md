@@ -2,6 +2,7 @@
 title: "node"
 sidebarTitle: "node"
 description: "node: DOM вузол. Matreshka.js довідник API"
+importance: 2
 ---
 
 # node

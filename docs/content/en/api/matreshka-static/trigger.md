@@ -12,7 +12,7 @@ importance: 3
 **Import:**
 
 ```js
-import { trigger } from 'matreshka';
+import trigger from 'matreshka/trigger';
 ```
 
 ```js

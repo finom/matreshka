@@ -17,17 +17,9 @@ Transforms property value on its changing
 
 This method is used for transforming property value on its changing. For example, you want the property value to be always either of a certain type or an integer value, or to be no less than zero and no more than a hundred etc.
 
-A value that comes from a bound node is converted too. The result goes to the property and to the other nodes bound to it, but isn't written back into the node it came from: clearing a field mediated with `Number` leaves the field empty, while the property becomes `0` and the other nodes show `0`. A mediator that upper-cases the value doesn't rewrite the field being typed in.
-
-```js
-this.bindNode('x', '.field, .copy');
-this.mediate('x', Number);
-// the user clears .field: .field stays empty, this.x is 0, .copy shows 0
-```
-
 > Note that the method has [static alternative](/api/matreshka-static/mediate/), which works just the same but accepts any target object as the first argument, shifting rest arguments to the right.
 ```js
-import { mediate } from 'matreshka';
+import mediate from 'matreshka/mediate';
 const object = {};
 mediate(object, key, mediator);
 // instead of this.mediate(key, mediator);

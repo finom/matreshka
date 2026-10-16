@@ -2,6 +2,7 @@
 title: "eventNames"
 sidebarTitle: "eventNames"
 description: "eventNames: Event name or space-delimited list of event names."
+importance: 2
 ---
 
 # eventNames

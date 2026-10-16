@@ -1,7 +1,7 @@
 ---
 title: "Matreshka#$nodes"
 sidebarTitle: "$nodes"
-description: "Matreshka#$nodes: An object with an array of the bound nodes for each property, for quick access."
+description: "Matreshka#$nodes: An object contains collections (jQuery, Zepto, built-in micro-library instance inherited from Array.prototype) of bound nodes for quick…"
 importance: 3
 ---
 
@@ -13,7 +13,7 @@ importance: 3
 Matreshka#$nodes: $nodes
 ```
 
-An object with an array of the bound nodes for each property, for quick access.
+An object contains collections (jQuery, Zepto, built-in micro-library instance inherited from ``Array.prototype``) of bound nodes for quick access.
 
 ## Links
 
@@ -23,5 +23,5 @@ An object with an array of the bound nodes for each property, for quick access.
 
 ```js
 this.bindNode('myKey', '.my-node');
-this.$nodes.myKey; // an array: the same nodes as [...document.querySelectorAll('.my-node')]
+this.$nodes.myKey; // the same as $('.my-node')
 ```

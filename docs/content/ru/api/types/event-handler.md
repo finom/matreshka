@@ -2,6 +2,7 @@
 title: "eventHandler"
 sidebarTitle: "eventHandler"
 description: "eventHandler: Функция-обработчик события. Принимает любые аргументы, переданные в Matreshka#trigger"
+importance: 2
 ---
 
 # eventHandler

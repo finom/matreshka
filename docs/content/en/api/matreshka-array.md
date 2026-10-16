@@ -12,7 +12,7 @@ importance: 1
 **Import:**
 
 ```js
-import { MatreshkaArray } from 'matreshka';
+import MatreshkaArray from 'matreshka/array';
 ```
 
 The ``Matreshka.Array`` serves as collection class in Matreshka framework. It is inherited from the [`Matreshka`](/api/matreshka/) class, obtaining all parent possibilities without exception. Besides, ``Matreshka.Array`` has all methods that ordinary array has.

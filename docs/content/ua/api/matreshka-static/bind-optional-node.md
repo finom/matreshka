@@ -12,7 +12,7 @@ importance: 3
 **Імпорт:**
 
 ```js
-import { bindOptionalNode } from 'matreshka';
+import bindOptionalNode from 'matreshka/bindoptionalnode';
 ```
 
 ```js

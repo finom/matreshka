@@ -75,12 +75,15 @@ describe.each(rendered)('the $code page', ({ code, prefix, sections, html, ids, 
     expect(JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/.exec(html)[1])['@graph']).toHaveLength(2);
   });
 
-  // Advanced sections are hidden only by the script, so a reader or a crawler without it gets all of them.
-  it('marks the advanced sections for the script, not by hiding them in the HTML', () => {
-    const advanced = sections.filter(({ importance }) => importance === 3);
-    expect(advanced.length).toBeGreaterThan(20);
-    for (const { id } of advanced) expect(html).toContain(`<article id="${id}" class="mk-section" data-importance="3"`);
+  // Levels are hidden only by the script, so a reader or a crawler without it gets every section.
+  it('marks each section with its level for the script, not by hiding it in the HTML', () => {
+    for (const level of [1, 2, 3]) {
+      const ids = sections.filter(({ importance }) => importance === level).map(({ id }) => id);
+      expect(ids.length, `level ${level}`).toBeGreaterThan(10);
+      for (const id of ids) expect(html).toContain(`<article id="${id}" class="mk-section" data-importance="${level}"`);
+    }
     expect(html).not.toMatch(/<article[^>]* hidden/);
+    expect(html.match(/<button type="button" data-level="[123]"/g)).toHaveLength(3);
   });
 });
 

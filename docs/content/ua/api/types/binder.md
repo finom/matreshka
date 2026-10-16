@@ -2,6 +2,7 @@
 title: "binder"
 sidebarTitle: "binder"
 description: "binder: binder (байндер, прів'язчик) містить всю інформацію про те, як синхронізувати значення властивості з прив'язаним до нього DOM елементом. Для всіх…"
+importance: 2
 ---
 
 # binder

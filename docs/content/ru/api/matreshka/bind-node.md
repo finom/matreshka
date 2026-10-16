@@ -19,7 +19,7 @@ Matreshka#bindNode(key, node, [binder], [eventOptions]) → object
 
 > Обратите внимание, что у метода есть [статичный аналог](/ru/api/matreshka-static/bind-node/), который работает в точности так же, но принимает любой целевой объект в качестве первого аргумента, cдвигая остальные аргументы вправо.
 ```js
-import { bindNode } from 'matreshka';
+import bindNode from 'matreshka/bindnode';
 const object = {};
 bindNode(object, key, node, binder, eventOptions);
 // вместо this.bindNode(key, node, binder, eventOptions);
@@ -61,8 +61,6 @@ this.bindNode('myKey', '.my-checkbox', {
 // устанавливает checked = true
 this.myKey = true;
 ```
-
-Изменение, пришедшее из элемента, не записывается обратно в этот же элемент. Новое значение попадает в свойство и в другие привязанные к нему элементы, а редактируемый элемент сохраняет то, что ввёл пользователь. Если [медиатор](/ru/api/matreshka/mediate/) превращает значение в число или переводит его в верхний регистр, поле сохраняет введённый текст, а свойство и остальные элементы получают преобразованное значение.
 
 Более сложный пример: связывание свойства объекта с виджетом jQuery UI
 ```html

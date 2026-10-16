@@ -2,6 +2,7 @@
 title: "matreshkaObject"
 sidebarTitle: "matreshkaObject"
 description: "matreshkaObject: Екземпляр класу Matreshka.Object"
+importance: 2
 ---
 
 # matreshkaObject

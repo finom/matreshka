@@ -2,6 +2,7 @@
 title: "*"
 sidebarTitle: "*"
 description: "*: Any type. Matreshka.js API reference"
+importance: 2
 ---
 
 # *

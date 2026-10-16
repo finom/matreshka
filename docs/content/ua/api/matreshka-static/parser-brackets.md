@@ -12,7 +12,7 @@ importance: 3
 **Імпорт:**
 
 ```js
-import { parserBrackets } from 'matreshka';
+import parserBrackets from 'matreshka/parserbrackets';
 ```
 
 ```js
@@ -23,7 +23,7 @@ Matreshka.parserBrackets: object
 
 Об'єкт ``parserBrackets`` дозволяє змінити стандартний синтаксис парсеру прив'язок. Він містить дві властивості: ``left`` (ліва дужка, за замовчуванням "\{\{") і ``right`` (права дужка, за замовчуванням "\}\}")
 
-Як дужки можна задати будь-які символи.
+Дужками можуть бути будь-які символи. Стара назва ``Matreshka.parserBrackers`` залишена як псевдонім того самого об'єкта.
 
 ## Приклади
 

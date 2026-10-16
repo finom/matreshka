@@ -17,8 +17,6 @@ Returns HTML nodes corresponding to a selector from a sandbox
 
 Synonym: `Matreshka#$`
 
-The result is a plain array of nodes, empty when nothing matches.
-
 After sandbox declaration using [`Matreshka#bindNode`](/api/matreshka/bind-node/) method, you can get its descendants. Besides, the method supports the ``:bound(KEY)`` selector.
 
 > The method has [static alternative](/api/matreshka-static/select-all/)
@@ -39,7 +37,9 @@ nodes = this.selectAll('.my-element');
 // the same as
 nodes = this.$('.my-element'); // $ is a short reference to selectAll
 // the same as
-nodes = [...document.querySelector('.app').querySelectorAll('.my-element')];
+nodes = this.$nodes.sandbox.find('.my-element');
+// the same as
+nodes = $('.app').find('.my-element');
 ```
 
 **The ``:bound(KEY)`` selector**
@@ -48,5 +48,7 @@ nodes = [...document.querySelector('.app').querySelectorAll('.my-element')];
 this.bindNode('myKey', '.my-element');
 nodes = this.selectAll(':bound(myKey) .my-another-element');
 // the same as
-nodes = [...document.querySelector('.my-element').querySelectorAll('.my-another-element')];
+nodes = this.$nodes.myKey.find('.my-another-element');
+// the same as
+nodes = $('.my-element').find('.my-another-element');
 ```

@@ -17,8 +17,6 @@ Matreshka#selectAll(selector) → $nodes
 
 Синоним: `Matreshka#$`
 
-Возвращает обычный массив элементов; если ничего не найдено, массив пустой.
-
 После создания песочницы методом [`Matreshka#bindNode`](/ru/api/matreshka/bind-node/), можно получать и использовать элементы, находящиеся в ней. Кроме этого, метод поддерживает  селектор ``:bound(KEY)``.
 
 > У метода есть [статичный аналог](/ru/api/matreshka-static/select-all/).
@@ -39,7 +37,9 @@ nodes = this.selectAll('.my-element');
 // то же самое, что и
 nodes = this.$('.my-element'); // $ - ссылка на метод selectAll
 // то же самое, что и
-nodes = [...document.querySelector('.app').querySelectorAll('.my-element')];
+nodes = this.$nodes.sandbox.find('.my-element');
+// и то же самое, что и
+nodes = $('.app').find('.my-element');
 ```
 
 **Селектор ``:bound(KEY)``**
@@ -48,5 +48,7 @@ nodes = [...document.querySelector('.app').querySelectorAll('.my-element')];
 this.bindNode('myKey', '.my-element');
 nodes = this.selectAll(':bound(myKey) .my-another-element');
 // то же самое, что и
-nodes = [...document.querySelector('.my-element').querySelectorAll('.my-another-element')];
+nodes = this.$nodes.myKey.find('.my-another-element');
+// и то же самое, что и
+nodes = $('.my-element').find('.my-another-element');
 ```

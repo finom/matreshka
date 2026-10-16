@@ -34,6 +34,6 @@ this.bindNode('sandbox', '.app');
 this.select('.my-element');
 // те ж саме, що і
 this.nodes.sandbox.querySelector('.my-element');
-// те саме, що й
-document.querySelector('.app .my-element');
+// те ж саме, що і
+$('.app').find('.my-element')[0];
 ```

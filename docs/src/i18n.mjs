@@ -1,11 +1,7 @@
 // The site's own words, per language. The sections carry the rest.
 export const UI = {
   en: {
-    title: 'Matreshka.js — Reactive data binding for the HTML you already have',
-    tagline: 'Reactive data binding for the HTML you already have',
-    description:
-      'Matreshka.js binds plain JavaScript objects to the HTML already on the page: two-way binding, computed values, lists. One script tag, or npm with types.',
-    demo: 'Data binding for the HTML you already have',
+    demo: 'A framework for single-page applications creation',
     getStarted: 'Get started',
     examples: 'Examples',
     everything: 'Everything',
@@ -15,10 +11,10 @@ export const UI = {
     start: 'Start',
     api: 'API reference',
     info: 'Info',
-    advanced: 'Advanced mode',
-    advancedHelp: 'What is this?',
-    advancedBadge: 'Advanced',
-    essential: 'Level 1: learn first',
+    levelsLabel: 'Levels',
+    levelsHelp: 'What are the levels?',
+    levels: ['Essential', 'Recommended', 'Advanced'],
+    levelButtons: ['Level 1 only', 'Levels 1 and 2', 'All three levels'],
     groups: {
       matreshka: 'Matreshka',
       'matreshka-static': 'Matreshka (static)',
@@ -43,11 +39,7 @@ export const UI = {
     home: 'Open the documentation'
   },
   ua: {
-    title: 'Matreshka.js — Реактивна прив’язка даних до готового HTML',
-    tagline: 'Реактивна прив’язка даних до готового HTML',
-    description:
-      'Matreshka.js прив’язує об’єкти JavaScript до HTML, який уже є на сторінці: двостороння прив’язка, обчислювані значення, списки. Тег script або npm.',
-    demo: 'Прив’язка даних до готового HTML',
+    demo: 'Простий фреймворк для створення односторінкових веб додатків',
     getStarted: 'З чого почати',
     examples: 'Приклади',
     everything: 'Усе одразу',
@@ -57,10 +49,10 @@ export const UI = {
     start: 'Початок',
     api: 'Довідник API',
     info: 'Інформація',
-    advanced: 'Для досвідчених',
-    advancedHelp: 'Що це?',
-    advancedBadge: 'Для досвідчених',
-    essential: 'Перший рівень: вивчіть насамперед',
+    levelsLabel: 'Рівні',
+    levelsHelp: 'Що таке рівні?',
+    levels: ['Основне', 'Рекомендоване', 'Для досвідчених'],
+    levelButtons: ['Лише перший рівень', 'Перший і другий рівні', 'Усі три рівні'],
     groups: {
       matreshka: 'Matreshka',
       'matreshka-static': 'Matreshka (статичні)',
@@ -85,11 +77,7 @@ export const UI = {
     home: 'Відкрити документацію'
   },
   ru: {
-    title: 'Matreshka.js — Реактивная привязка данных к готовому HTML',
-    tagline: 'Реактивная привязка данных к готовому HTML',
-    description:
-      'Matreshka.js привязывает объекты JavaScript к HTML, который уже есть на странице: двусторонняя привязка, вычисляемые значения, списки. Тег script или npm.',
-    demo: 'Привязка данных к готовому HTML',
+    demo: 'Простой фреймворк для создания одностраничных веб-приложений',
     getStarted: 'С чего начать',
     examples: 'Примеры',
     everything: 'Всё сразу',
@@ -99,10 +87,10 @@ export const UI = {
     start: 'Начало',
     api: 'Справочник API',
     info: 'Информация',
-    advanced: 'Для опытных',
-    advancedHelp: 'Что это?',
-    advancedBadge: 'Для опытных',
-    essential: 'Первый уровень: изучите в первую очередь',
+    levelsLabel: 'Уровни',
+    levelsHelp: 'Что такое уровни?',
+    levels: ['Основное', 'Рекомендуемое', 'Для опытных'],
+    levelButtons: ['Только первый уровень', 'Первый и второй уровни', 'Все три уровня'],
     groups: {
       matreshka: 'Matreshka',
       'matreshka-static': 'Matreshka (статические)',

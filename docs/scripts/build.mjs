@@ -8,7 +8,6 @@ import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } fr
 import path from 'node:path';
 import { compile, optimize } from '@tailwindcss/node';
 import { Scanner } from '@tailwindcss/oxide';
-import { UI } from '../src/i18n.mjs';
 import { notFound, page } from '../src/page.mjs';
 import { CONTENT, LANGS, linkTarget, SITE, sectionsOf } from '../src/site.mjs';
 
@@ -100,7 +99,6 @@ for (const { code: lang, prefix } of LANGS) {
   }
   write(`${prefix.slice(1)}/api/index.html`.replace(/^\//, ''), redirect(`${prefix}/#Matreshka`));
 
-  const ui = UI[lang];
   const home = sections[0];
   write(
     `${prefix.slice(1)}/llms-full.txt`.replace(/^\//, ''),
@@ -132,7 +130,7 @@ ${list(sections.filter(({ importance }) => importance === 3))}
 `
     );
   }
-  sitemap.push({ prefix, title: ui.title });
+  sitemap.push({ prefix });
 }
 
 write(

@@ -12,7 +12,7 @@ importance: 3
 **Import:**
 
 ```js
-import { parserBrackets } from 'matreshka';
+import parserBrackets from 'matreshka/parserbrackets';
 ```
 
 ```js
@@ -23,7 +23,7 @@ Contains brackets for [bindings parser](/api/matreshka/parse-bindings/)
 
 ``parserBrackets`` object allows to change default syntax of the parser. It contains two properties: ``left`` (left bracket, "\{\{" by default) and ``right`` (right bracket, "\}\}" by default)
 
-Any characters can be used as brackets.
+Any characters can be used as brackets. The old name ``Matreshka.parserBrackers`` is kept as an alias of the same object.
 
 ## Examples
 

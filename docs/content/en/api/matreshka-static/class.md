@@ -12,7 +12,7 @@ importance: 2
 **Import:**
 
 ```js
-import { Class } from 'matreshka';
+import Class from 'matreshka/class';
 ```
 
 ```js
@@ -48,7 +48,7 @@ const B = Matreshka.Class({
 });
 
 const C = Matreshka.Class({
-	// C is inherited from B
+	// С is inherited from B
 	extends: B,
 	method2() {
 		// calling the parent method

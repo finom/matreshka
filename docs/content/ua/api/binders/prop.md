@@ -12,8 +12,9 @@ importance: 2
 **Імпорт:**
 
 ```js
-import { binders } from 'matreshka';
-// binders.prop === Matreshka.binders.prop
+import prop from 'matreshka/binders/prop';
+// або
+import { prop } from 'matreshka/binders';
 ```
 
 ```js

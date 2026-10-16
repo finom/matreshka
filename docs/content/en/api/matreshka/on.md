@@ -19,7 +19,7 @@ The method adds an event handler for an instance of the ``Matreshka`` class. Ref
 
 > Note that the method has [static alternative](/api/matreshka-static/on/), which works just the same but accepts any target object as the first argument, shifting rest arguments to the right.
 ```js
-import { on } from 'matreshka';
+import on from 'matreshka/on';
 const object = {};
 on(object, names, callback, triggerOnInit, context);
 // instead of this.on(names, callback, triggerOnInit, context);

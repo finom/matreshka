@@ -2,6 +2,7 @@
 title: "matreshkaArray"
 sidebarTitle: "matreshkaArray"
 description: "matreshkaArray: Екземпляр класу Matreshka.Array"
+importance: 2
 ---
 
 # matreshkaArray

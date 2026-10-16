@@ -1,6 +1,6 @@
 ---
 title: "How to use this site"
-description: "How the Matreshka.js docs page works: everything on one page or one section at a time, the three levels of the API, Advanced mode, search, dark mode."
+description: "How the Matreshka.js docs page works: everything on one page or one section at a time, the three levels of the API and their switch, search, dark mode."
 ---
 
 # How to use this site
@@ -11,13 +11,13 @@ The documentation is one page per language. **Everything** shows every section: 
 
 ## Importance levels
 
-The API has three levels.
+The API has three levels. In the menu and next to each title, the circles show a member's level.
 
-- **Level 1, the essentials.** Marked with a dot in the menu. Learn these first: they are enough for a whole app.
-- **Level 2, recommended.** The rest of the everyday API.
-- **Level 3, advanced.** Hidden until you turn on **Advanced mode** in the menu. Most apps don't need them at first.
+- **One circle, essential.** Learn these first: they are enough for a whole app.
+- **Two circles, recommended.** The rest of the everyday API.
+- **Three circles, advanced.** Most apps don't need them at first.
 
-A link to an advanced member turns Advanced mode on by itself.
+The switch under "Levels" in the menu sets how much you see: level 1 only (the default), levels 1 and 2, or all three. A link to a member of a hidden level shows that level by itself.
 
 ## Search
 

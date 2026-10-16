@@ -12,7 +12,7 @@ importance: 1
 **Import:**
 
 ```js
-import { MatreshkaObject } from 'matreshka';
+import MatreshkaObject from 'matreshka/object';
 ```
 
 ``Matreshka.Object`` is a class which is responsible for key-value data. Its goal is to separate "service" properties from data that can be passed to a server or kept in a local storage. The class is inherited from the [`Matreshka`](/api/matreshka/) class and includes all its properties and methods.

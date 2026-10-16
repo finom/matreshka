@@ -42,10 +42,12 @@ describe('docs content', () => {
     }
   });
 
-  it('marks importance only with the levels the menu knows', () => {
-    for (const { file, md } of pages) {
+  // The level switch hides members by level; an API section without one would show at every level.
+  it('gives every API section a level the switch knows, and the guide pages none', () => {
+    for (const { file, name, md } of pages) {
       const level = /^importance: (.+)$/m.exec(md)?.[1];
-      if (level) expect(['1', '2', '3'], file).toContain(level);
+      if (name.startsWith('api/')) expect(['1', '2', '3'], file).toContain(level);
+      else expect(level, file).toBeUndefined();
     }
   });
 

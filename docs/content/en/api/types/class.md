@@ -2,6 +2,7 @@
 title: "class"
 sidebarTitle: "class"
 description: "class: A class made using ECMAScript 2015 syntax or returned by Matreshka.Class function"
+importance: 2
 ---
 
 # class

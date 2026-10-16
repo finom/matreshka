@@ -12,7 +12,7 @@ importance: 1
 **Импорт:**
 
 ```js
-import { MatreshkaArray } from 'matreshka';
+import MatreshkaArray from 'matreshka/array';
 ```
 
 Класс ``Matreshka.Array`` служит коллекцией во фреймворке Matreshka.js. Он наследуется от класса [`Matreshka`](/ru/api/matreshka/) и включает все его свойства и методы. Кроме этого, ``Matreshka.Array`` имеет все методы, которые есть у обычного массива, тем самым упрощая изучение его возможностей.
@@ -167,20 +167,20 @@ const MyClass = Matreshka.Class({
 });
 ```
 
-## Свойства и методы
+## Члены класса
 
 - [`METHOD`](/ru/api/matreshka-array/method/) – Любой метод из ``Array.prototype``
 - [`METHOD_`](/ru/api/matreshka-array/method-silent/) – Любой метод из ``Array.prototype`` с возможностью передать объект события
 - [`Model`](/ru/api/matreshka-array/model/) – Свойство определяет класс элементов, которые будет содержать коллекция
-- [`isMatreshkaArray`](/ru/api/matreshka-array/is-matreshka-array/) _(для опытных)_ – ``isMatreshkaArray`` всегда равен ``true`` для экземпляров [`Matreshka.Array`](/ru/api/matreshka-array/)
+- [`isMatreshkaArray`](/ru/api/matreshka-array/is-matreshka-array/) _(Для продвинутых)_ – ``isMatreshkaArray`` всегда равен ``true`` для экземпляров [`Matreshka.Array`](/ru/api/matreshka-array/)
 - [`itemRenderer`](/ru/api/matreshka-array/item-renderer/) – HTML строка, селектор или функция, отвечающая за отрисовку элементов массива на странице
 - [`mediateItem`](/ru/api/matreshka-array/mediate-item/) – Трансформирует значение элементов массива
 - [`onItemRender`](/ru/api/matreshka-array/on-item-render/) – Функция, которая запускается перед событием ``render``.
 - [`orderBy`](/ru/api/matreshka-array/order-by/) – Сортирует массив по значениям свойств объектов, которые в него входят
 - [`pull`](/ru/api/matreshka-array/pull/) – Удаляет элемент по индексу или по значению
 - [`recreate`](/ru/api/matreshka-array/recreate/) – Пересоздает экземпляр [`Matreshka.Array`](/ru/api/matreshka-array/)
-- [`renderIfPossible`](/ru/api/matreshka-array/render-if-possible/) _(для опытных)_ – Свойство ``renderIfPossible`` отменяет рендеринг массива если имеет значение ``false``
-- [`rerender`](/ru/api/matreshka-array/rerender/) _(для опытных)_ – Перерисовывает DOM узлы элементов, входящих в массив
+- [`renderIfPossible`](/ru/api/matreshka-array/render-if-possible/) _(Для продвинутых)_ – Свойство ``renderIfPossible`` отменяет рендеринг массива если имеет значение ``false``
+- [`rerender`](/ru/api/matreshka-array/rerender/) _(Для продвинутых)_ – Перерисовывает DOM узлы элементов, входящих в массив
 - [`restore`](/ru/api/matreshka-array/restore/) – Воссоздаёт [`Matreshka.Array`](/ru/api/matreshka-array/) из HTML узлов на странице.
 - [`toJSON`](/ru/api/matreshka-array/to-json/) – Конвертирует экземпляр [`Matreshka.Array`](/ru/api/matreshka-array/) в обычный массив
 - [`trackBy`](/ru/api/matreshka-array/track-by/) – Свойство ``trackBy`` указывает на имя свойства идентификатора объектов, входящих в массив

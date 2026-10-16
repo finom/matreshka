@@ -5,7 +5,7 @@ import { API, LANGS, oldAnchorsOf, REPO, SITE } from './site.mjs';
 const DISCORD = 'https://discord.com/invite/qdT8WEHUuP';
 const X = 'https://x.com/andrey_gubanov1';
 
-const icon = (paths, size = 18) =>
+const icon = (paths, size = 24) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 const ICONS = {
   menu: icon('<path d="M4 6h16M4 12h16M4 18h16"/>'),
@@ -15,20 +15,24 @@ const ICONS = {
   moon: icon('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>'),
   search: icon('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>', 16),
   github:
-    '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg>',
   discord:
-    '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.6 1.3a18.4 18.4 0 0 0-5.5 0L8.6 3a19.7 19.7 0 0 0-4.9 1.5A20.2 20.2 0 0 0 .1 18a19.9 19.9 0 0 0 6 3l1.3-2a12.9 12.9 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.8 19.8 0 0 0 6-3 20 20 0 0 0-3.6-13.6ZM8 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg>',
-  x: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.2 2.3h3.4l-7.4 8.4L23 21.7h-6.8l-5.3-7-6.1 7H1.4l7.9-9L.9 2.3h7l4.8 6.4 5.5-6.4Zm-1.2 17.4h1.9L7.1 4.2h-2l11.9 15.5Z"/></svg>'
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.6 1.3a18.4 18.4 0 0 0-5.5 0L8.6 3a19.7 19.7 0 0 0-4.9 1.5A20.2 20.2 0 0 0 .1 18a19.9 19.9 0 0 0 6 3l1.3-2a12.9 12.9 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.8 19.8 0 0 0 6-3 20 20 0 0 0-3.6-13.6ZM8 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg>',
+  x: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.2 2.3h3.4l-7.4 8.4L23 21.7h-6.8l-5.3-7-6.1 7H1.4l7.9-9L.9 2.3h7l4.8 6.4 5.5-6.4Zm-1.2 17.4h1.9L7.1 4.2h-2l11.9 15.5Z"/></svg>'
 };
 
-const iconLink = (href, label, svg) =>
-  `<a class="mk-icon-button" href="${href}" rel="noopener" aria-label="${label}" title="${label}">${svg}</a>`;
+const iconLink = (href, label, svg, extra = '') =>
+  `<a class="mk-icon-button${extra}" href="${href}" rel="noopener" aria-label="${label}" title="${label}">${svg}</a>`;
+
+// One, two or three small circles: a member's importance level.
+const circles = (level, label) =>
+  `<span class="mk-circles" data-level="${level}"${label ? ` title="${label}" aria-label="${label}" role="img"` : ' aria-hidden="true"'}>${'<i></i>'.repeat(level)}</span>`;
 
 function menu(sections, ui, lang) {
   const link = ({ id, menuTitle, title, importance, description }) =>
-    `<li><a href="#${id}" data-importance="${importance}" title="${escapeHtml(description ?? title)}">${
-      importance === 1 ? `<span class="mk-dot" aria-label="${ui.essential}"></span>` : ''
-    }<span>${escapeHtml(menuTitle)}</span></a></li>`;
+    `<li><a href="#${id}" data-importance="${importance}" title="${escapeHtml(description ?? title)}"><span>${escapeHtml(
+      menuTitle
+    )}</span>${importance ? circles(importance, ui.levels[importance - 1]) : ''}</a></li>`;
   const start = sections.filter(({ group }) => group === 'start');
   const info = sections.filter(({ group }) => group === 'info');
   const groups = API.map(({ dir }) => {
@@ -49,7 +53,14 @@ function menu(sections, ui, lang) {
 <p class="mk-nav-heading">${ui.start}</p>
 <ul>${start.map(link).join('')}</ul>
 <p class="mk-nav-heading">${ui.api}</p>
-<div class="mk-advanced-switch"><label><input type="checkbox" id="mk-advanced" role="switch"><span class="mk-switch" aria-hidden="true"></span>${ui.advanced}</label><a href="#website-instructions" title="${ui.advancedHelp}" aria-label="${ui.advancedHelp}">?</a></div>
+<div class="mk-levels"><div class="mk-levels-head"><span>${ui.levelsLabel}</span><a href="#website-instructions" title="${ui.levelsHelp}" aria-label="${ui.levelsHelp}">?</a></div><div class="mk-segmented" role="group" aria-label="${ui.levelsLabel}">${[
+    1, 2, 3
+  ]
+    .map(
+      (level) =>
+        `<button type="button" data-level="${level}" title="${ui.levelButtons[level - 1]}" aria-label="${ui.levelButtons[level - 1]}">${circles(level)}</button>`
+    )
+    .join('')}</div></div>
 ${groups}
 <p class="mk-nav-heading">${ui.info}</p>
 <ul>${info.map(link).join('')}</ul>
@@ -58,7 +69,7 @@ ${groups}
 }
 
 function homeExtras(html, ui) {
-  const hero = `<div class="mk-hero"><h1><img class="mk-light" src="/logo/matreshka-full-horizontal.svg" alt="Matreshka.js" width="420" height="120"><img class="mk-dark" src="/logo/matreshka-full-horizontal-dark.svg" alt="" width="420" height="120"></h1><p class="mk-tagline">${ui.tagline}</p></div>`;
+  const hero = `<div class="mk-hero"><h1><img class="mk-light" src="/logo/matreshka-full-horizontal.svg" alt="Matreshka.js" width="420" height="120"><img class="mk-dark" src="/logo/matreshka-full-horizontal-dark.svg" alt="" width="420" height="120"></h1></div>`;
   const demo = `<div class="mk-demo"><output class="out"></output><input class="in" type="text" aria-label="x" value="${escapeHtml(ui.demo)}"></div>`;
   const buttons = `<div class="mk-buttons"><a class="mk-button mk-button-primary mk-button-lg" href="#getting-started">${ui.getStarted}</a><a class="mk-button mk-button-outline mk-button-lg" href="${REPO}" rel="noopener">GitHub</a><a class="mk-button mk-button-outline mk-button-lg" href="#examples">${ui.examples}</a></div>`;
   return html
@@ -70,8 +81,12 @@ function homeExtras(html, ui) {
 function article(section, sections, ui, lang) {
   let html = renderSection(section, lang, sections);
   if (section.id === 'home') html = homeExtras(html, ui);
-  if (section.importance === 3) {
-    html = html.replace(/<\/h2>/, `</h2><p class="mk-badge">${ui.advancedBadge}</p>`);
+  if (section.importance) {
+    const name = ui.levels[section.importance - 1];
+    html = html.replace(
+      /<\/h2>/,
+      `</h2><p class="mk-badge" data-level="${section.importance}">${circles(section.importance)}${name}</p>`
+    );
   }
   return `<article id="${section.id}" class="mk-section" data-importance="${section.importance}" data-group="${section.group}">
 ${html}<p class="mk-edit"><a href="${sourceUrl(lang, section.file)}" rel="noopener">${ui.edit}</a></p>
@@ -113,21 +128,21 @@ export function page({ lang, sections, updated, assets }) {
     next: ui.next
   }).replace(/</g, '\\u003c');
   const year = updated.slice(0, 4);
-  const head = `(function(){var d=document.documentElement;d.classList.add('mk-js');try{var s=localStorage,t=s.getItem('mk-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))d.classList.add('dark');if(s.getItem('mk-advanced')==='1')d.classList.add('mk-advanced');if(s.getItem('mk-mode')==='one')d.classList.add('mk-one')}catch(e){}})()`;
+  const head = `(function(){var d=document.documentElement,l;d.classList.add('mk-js');try{var s=localStorage,t=s.getItem('mk-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))d.classList.add('dark');l=s.getItem('mk-level');if(s.getItem('mk-mode')==='one')d.classList.add('mk-one')}catch(e){}d.classList.add('mk-level-'+(l==='2'||l==='3'?l:'1'))})()`;
 
   return `<!doctype html>
 <html lang="${hreflang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${escapeHtml(ui.title)}</title>
+<title>${escapeHtml(home.title)}</title>
 <meta name="description" content="${escapeHtml(home.description)}">
 <link rel="canonical" href="${url}">
 ${LANGS.map((l) => `<link rel="alternate" hreflang="${l.hreflang}" href="${SITE}${l.prefix}/">`).join('\n')}
 <link rel="alternate" hreflang="x-default" href="${SITE}/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Matreshka.js">
-<meta property="og:title" content="${escapeHtml(ui.title)}">
+<meta property="og:title" content="${escapeHtml(home.title)}">
 <meta property="og:description" content="${escapeHtml(home.description)}">
 <meta property="og:url" content="${url}">
 <meta property="og:locale" content="${locale}">
@@ -153,9 +168,9 @@ ${LANGS.filter((l) => l.code !== lang)
 </head>
 <body>
 <a class="mk-skip" href="#main">${ui.skip}</a>
-<header class="mk-header">
+<header class="mk-header"><div class="mk-header-inner">
   <button type="button" class="mk-icon-button mk-menu-button" id="mk-menu" aria-label="${ui.menu}" aria-controls="mk-nav" aria-expanded="false">${ICONS.menu}</button>
-  <a class="mk-brand" href="#home"><img src="/logo/matreshka.svg" alt="" width="28" height="28">Matreshka.js</a>
+  <a class="mk-brand" href="#home"><img src="/logo/matreshka.svg" alt="" width="17" height="32"><b>Matreshka.js</b></a>
   <span class="mk-version">3.0</span>
   <div class="mk-header-end">
     <nav class="mk-langs" aria-label="${ui.languages}">${LANGS.map(
@@ -163,9 +178,10 @@ ${LANGS.filter((l) => l.code !== lang)
         `<a href="${l.prefix}/" hreflang="${l.hreflang}"${l.code === lang ? ' aria-current="page"' : ''}>${l.code.toUpperCase()}</a>`
     ).join('')}</nav>
     ${iconLink(REPO, 'GitHub', ICONS.github)}
-    ${iconLink(DISCORD, 'Discord', ICONS.discord)}
-    ${iconLink(X, 'X', ICONS.x)}
+    ${iconLink(DISCORD, 'Discord', ICONS.discord, ' mk-wide-only')}
+    ${iconLink(X, 'X', ICONS.x, ' mk-wide-only')}
     <button type="button" class="mk-icon-button" id="mk-theme" aria-label="${ui.theme}" title="${ui.theme}"><span class="mk-light">${ICONS.moon}</span><span class="mk-dark">${ICONS.sun}</span></button>
+  </div>
   </div>
 </header>
 <div class="mk-layout">

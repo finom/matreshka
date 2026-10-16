@@ -2,6 +2,7 @@
 title: "eventOptions"
 sidebarTitle: "eventOptions"
 description: "eventOptions: Объект события. Matreshka.js справочник API"
+importance: 2
 ---
 
 # eventOptions

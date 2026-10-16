@@ -2,6 +2,7 @@
 title: "function"
 sidebarTitle: "function"
 description: "function: Функція. Matreshka.js довідник API"
+importance: 2
 ---
 
 # function

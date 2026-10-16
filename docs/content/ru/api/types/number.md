@@ -2,6 +2,7 @@
 title: "number"
 sidebarTitle: "number"
 description: "number: Число. Matreshka.js справочник API"
+importance: 2
 ---
 
 # number

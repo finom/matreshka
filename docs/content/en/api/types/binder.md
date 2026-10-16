@@ -2,6 +2,7 @@
 title: "binder"
 sidebarTitle: "binder"
 description: "binder: binder contains all information about how to synchronize instance property value with DOM node state. Every member of a binder uses HTML node as its…"
+importance: 2
 ---
 
 # binder

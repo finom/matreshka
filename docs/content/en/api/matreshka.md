@@ -12,7 +12,7 @@ importance: 1
 **Import:**
 
 ```js
-import Matreshka from 'matreshka';
+import Matreshka from 'matreshka/matreshka';
 ```
 
 The class ``Matreshka`` is a core of the Matreshka.js framework which is inherited by [`Matreshka.Array`](/api/matreshka-array/), [`Matreshka.Object`](/api/matreshka-object/) (and every class of an application you create). It contains the main functionality of the framework: [mediators](/api/matreshka/mediate/), [dependencies](/api/matreshka/calc/), [two-way data binding](/api/matreshka/bind-node/), [an event engine](/api/matreshka/on/), etc.
@@ -67,7 +67,7 @@ const MyClass = Matreshka.Class({
 - [`instantiate`](/api/matreshka/instantiate/) – Creates fixed class instance
 - [`isMatreshka`](/api/matreshka/is-matreshka/) _(Advanced)_ – ``isMatreshka`` always equals ``true`` for instances of [`Matreshka`](/api/matreshka/)
 - [`mediate`](/api/matreshka/mediate/) – Transforms property value on its changing
-- [`$nodes`](/api/matreshka/dollar-nodes/) _(Advanced)_ – An object with an array of the bound nodes for each property, for quick access.
+- [`$nodes`](/api/matreshka/dollar-nodes/) _(Advanced)_ – An object contains collections (jQuery, Zepto, built-in micro-library instance inherited from ``Array.prototype``) of bound nodes for quick access.
 - [`nodes`](/api/matreshka/nodes/) _(Advanced)_ – The object contains bound elements in the form of separate DOM nodes for quick access
 - [`off`](/api/matreshka/off/) – Deletes an event handler
 - [`on`](/api/matreshka/on/) – Adds an event handler
@@ -84,17 +84,17 @@ const MyClass = Matreshka.Class({
 ## Static methods
 
 - [`Class`](/api/matreshka-static/class/) – An implementation of classes based on the prototype inheritance
-- [`bindNode`](/api/matreshka-static/bind-node/) – Binds a property of an object to HTML node, implementing two-way data binding
+- [`bindNode`](/api/matreshka-static/bind-node/) _(Advanced)_ – Binds a property of an object to HTML node, implementing two-way data binding
 - [`bindOptionalNode`](/api/matreshka-static/bind-optional-node/) _(Advanced)_ – Initializes two-way data binding but does not throws an exception if ``node`` argument is an empty array, ``undefined`` or non-existent
 - [`bindSandbox`](/api/matreshka-static/bind-sandbox/) _(Advanced)_ – Binds or re-binds sandbox node
-- [`calc`](/api/matreshka-static/calc/) – Creates a dependency of one property value on values of others
+- [`calc`](/api/matreshka-static/calc/) _(Advanced)_ – Creates a dependency of one property value on values of others
 - [`chain`](/api/matreshka-static/chain/) – Allows chained calls of universal methods
 - [`defaultBinders`](/api/matreshka-static/default-binders/) – An array of functions which return a corresponding binder
 - [`instantiate`](/api/matreshka-static/instantiate/) _(Advanced)_ – Creates fixed class instance
 - [`lookForBinder`](/api/matreshka-static/look-for-binder/) _(Advanced)_
-- [`mediate`](/api/matreshka-static/mediate/) – Transforms property value on its changing
+- [`mediate`](/api/matreshka-static/mediate/) _(Advanced)_ – Transforms property value on its changing
 - [`off`](/api/matreshka-static/off/) _(Advanced)_ – Deletes an event handler
-- [`on`](/api/matreshka-static/on/) – Adds an event handler
+- [`on`](/api/matreshka-static/on/) _(Advanced)_ – Adds an event handler
 - [`onDebounce`](/api/matreshka-static/on-debounce/) _(Advanced)_ – Adds an event handler which is called only once during a definite period of time
 - [`once`](/api/matreshka-static/once/) _(Advanced)_ – Adds event handler which can be called only once
 - [`parseBindings`](/api/matreshka-static/parse-bindings/) _(Advanced)_ – Parses DOM tree, declaring bindings with properties enclosed in double braces

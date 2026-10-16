@@ -1,13 +1,14 @@
 ---
 title: "FAQ"
-description: "How Matreshka.js works inside, why bound elements update a moment later, how to test, how to pre-render on a server and how to structure a big app."
+description: "How Matreshka.js works inside, how to pre-render an app on a server, what debounce is, how a big app is shaped and how to render one object in two lists."
 ---
 
 # FAQ
 
 ## How does Matreshka work?
+Matreshka uses accessors, setters in particular, for implementing the two-way data binding and catching the events of property changing.
 
-It turns a bound property into an accessor. The setter writes the value into the bound elements, and a DOM event handler writes the element's value back into the property. A simplified [`bindNode`](/api/matreshka/bind-node/) looks like this:
+As an example of how the two-way data binding works ([bindNode](/api/matreshka/bind-node/) function in particular), have a look at this code:
 
 ```js
 function bindNode(object, key, node, binder) {
@@ -17,7 +18,6 @@ function bindNode(object, key, node, binder) {
             return value;
         },
         set(v) {
-            value = v;
             binder.setValue.call(node, v);
         }
     });
@@ -27,36 +27,29 @@ function bindNode(object, key, node, binder) {
     });
 }
 ```
+As you see, it’s real easy (for simplicity, the function doesn’t support many-to-many binding).
 
-The real function also handles many elements per property, many properties per element, events and the cases above.
+## How to pre-render an application on a server
 
-## Why does a bound element update a moment later?
+For the app pre-rendering Matreshka.js can be used on Node.js (``window`` global object can be created via [jsdom](https://github.com/jsdom/jsdom)) or any template system you want on any server platform. The first case is fine for static HTML generation and the second for dynamic pages.
 
-Bindings are debounced. When a property changes several times in a row, its elements are updated once, after the current task ends; the same goes for input read from an element. This keeps a burst of changes from touching the DOM many times.
+The task of client-side is to restore application state from HTML. [`Matreshka#bindNode`](/api/matreshka/bind-node/) extracts element value and assigns it to a property and [`Matreshka.Array#restore`](/api/matreshka-array/restore/) restores a state of a collection.
 
-For code that has to see the DOM right away, such as a test, wait a tick (`await new Promise((r) => setTimeout(r))`) or turn the debounce off for that binding:
+## What is "debounce"
 
-```js
-bindNode(object, 'x', '.x', null, { debounceSetValue: false, debounceGetValue: false });
-```
+At this page you often can see the phrase "micropattern debounce". This is widely used pattern which enforces that a function not be called again until a certain amount of time has passed without it being called. More info can be found [there](https://davidwalsh.name/javascript-debounce-function).
 
-The flags and the delays are described on the [`bindNode`](/api/matreshka/bind-node/#flags-debouncegetvaluetrue-and-debouncesetvaluetrue) page. The pattern itself is explained [in this article](https://davidwalsh.name/javascript-debounce-function).
+## How should look like a big application?
 
-## How do I pre-render an application on a server?
+An application written with Matreshka.js usually represents one nested JavaScript object where every branch is [`Matreshka`](/api/matreshka/) instance. The new branches are created using [`Matreshka#instantiate`](/api/matreshka/instantiate/) which ensures the integrity of the application and allows to replace a state of the application using ordinary assignment.
 
-Any server template works: render the HTML as usual. On the client, [`bindNode`](/api/matreshka/bind-node/) reads the value of an element into a property that has no value yet, and [`Matreshka.Array#restore`](/api/matreshka-array/restore/) rebuilds a collection from the rendered elements. You can also run Matreshka itself on Node.js with [jsdom](https://github.com/jsdom/jsdom) to generate static HTML.
+## How to render one object at few collections
 
-## How is a big application structured?
+The first thing: you need to set ``bindRenderedAsSandbox`` as ``false`` for an item class. It turns off automatic sandbox initialization for rendered object (two sandboxes for one object aren't allowed).
 
-As one nested object where every branch is a [`Matreshka`](/api/matreshka/) instance. New branches are created with [`Matreshka#instantiate`](/api/matreshka/instantiate/), which keeps every branch an instance of its class and lets you replace a part of the state with a plain assignment.
+The second thing: when ``render`` event is fired, check where the object is rendered. Parent array can be get using ``parentArray`` property of the event object.
 
-## How do I render one object in two collections?
-
-First, set `bindRenderedAsSandbox` to `false` in the item class. It turns off the automatic sandbox of a rendered object: one object can't have two sandboxes.
-
-Then, when the object is rendered, check which collection rendered it. The `render` event (and the `onRender` method) gets the collection as `parentArray`.
-
-Example: a `User` class and two collections, `UsersA` and `UsersB`, whose [`itemRenderer`](/api/matreshka-array/item-renderer/) can differ. Both use `User` as their [`Model`](/api/matreshka-array/model/).
+Example. You have ``User`` class and two collections ``UsersA`` and ``UsersB`` (their [`Matreshka.Array#itemRenderer`](/api/matreshka-array/item-renderer/) can be different). For both collections ``User`` is a [model](/api/matreshka-array/model/).
 
 ```js
 class User extends Matreshka.Object {
@@ -66,21 +59,23 @@ class User extends Matreshka.Object {
         this.bindRenderedAsSandbox = false;
 
         setInterval(() => {
-            // when "name" changes, the elements in both collections change
+            // when "name" is changed
+            // both bound nodes also change
             this.name = Math.random();
         }, 5000);
     }
     onRender(evt) {
         const { parentArray, node } = evt;
 
-        if (parentArray instanceof UsersA) {
+        if(parentArray instanceof UsersA) {
             this.bindNode({
-                // a key for the rendered node, so the selectors below can start from it
+                // pseudo-sandbox creation for syntax sugar at selectors
+                // (not required)
                 nodeA: node,
                 name: ':bound(nodeA) .name',
                 email: ':bound(nodeA) .email',
             });
-        } else if (parentArray instanceof UsersB) {
+        } else if(parentArray instanceof UsersB) {
             this.bindNode({
                 nodeB: node,
                 name: ':bound(nodeB) .user-name',
@@ -90,4 +85,4 @@ class User extends Matreshka.Object {
 }
 ```
 
-The bindings can also live in the collection classes instead: a collection listens to the `render` event of the objects it inserts.
+Actually there are many ways to solve this problem. For example bindings can be declared at classes of the collections (an array will listen to ``render`` event of inserted objects)...

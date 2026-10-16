@@ -1,17 +1,19 @@
 ---
 title: "$nodes"
 sidebarTitle: "$nodes"
-description: "$nodes: An array of DOM nodes. Arguments that take nodes also accept a NodeList, a jQuery object or anything array-like."
+description: "$nodes: DOM nodes collection. For example, jQuery instance or NodeList."
+importance: 2
 ---
 
 # $nodes
 
 **Type**
 
-An array of DOM nodes. Where a method takes nodes, it also accepts anything array-like: a NodeList, a jQuery object.
+DOM nodes collection. For example, jQuery instance or NodeList.
 
 ## Examples
 
 ```js
-const $nodes = [...document.querySelectorAll('.foo')];
+let $nodes = $('.foo');
+$nodes = document.querySelectorAll('.bar');
 ```

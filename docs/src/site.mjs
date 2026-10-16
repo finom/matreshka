@@ -234,6 +234,8 @@ export function linkTarget(href, lang, sections) {
   if (!pathPart.startsWith('/') || pathPart.startsWith('//')) return null;
   const route = prefix && pathPart.startsWith(`${prefix}/`) ? pathPart.slice(prefix.length) : prefix ? null : pathPart;
   if (route === null) return null;
+  // the API index page is gone; its link opens the first class
+  if (route === '/api/') return '#Matreshka';
   const section = sections.find((item) => item.route === route);
   if (!section) return null;
   return `#${hash ? subId(section.id, hash) : section.id}`;

@@ -12,8 +12,9 @@ importance: 2
 **Импорт:**
 
 ```js
-import { binders } from 'matreshka';
-// binders.dataset === Matreshka.binders.dataset
+import dataset from 'matreshka/binders/dataset';
+// или
+import { dataset } from 'matreshka/binders';
 ```
 
 ```js

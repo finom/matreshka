@@ -19,7 +19,7 @@ Matreshka#calc(target, source, [handler=(v)=>v], [eventOptions])
 
 > Обратите внимание, что у метода есть [статичный аналог](/ru/api/matreshka-static/calc/), который работает в точности так же, но принимает любой объект в качестве первого аргумента, cдвигая остальные аргументы вправо.
 ```js
-import { calc } from 'matreshka';
+import calc from 'matreshka/calc';
 const object = {};
 calc(object, target, source, handler, eventOptions);
 // вместо this.calc(target, source, handler, eventOptions);

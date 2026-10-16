@@ -2,6 +2,7 @@
 title: "matreshkaArray"
 sidebarTitle: "matreshkaArray"
 description: "matreshkaArray: Matreshka.Array instance. Matreshka.js API reference"
+importance: 2
 ---
 
 # matreshkaArray

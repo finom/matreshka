@@ -1,35 +1,13 @@
 ---
 title: "Examples"
-description: "Single-file examples for server-rendered pages, then Hello World step by step and live apps built with Matreshka.js: TodoMVC, TreeView, a contact list."
+description: "Hello World step by step, then live apps built with Matreshka.js: TodoMVC, TreeView, a Markdown editor, a contact list, tutorials and the plugin demos."
 ---
 
 # Examples
 
-## Single-file examples
-
-Each is one HTML file: the markup, the data and a script that loads the bundle with one `<script>` tag, with no build.
-
-::: examples
-::: example /examples/signup-form/ https://github.com/finom/matreshka/tree/main/examples/signup-form Signup form
-
-A form as a server would render it, with the markup left as is: the email is checked as you type, a bar shows the password's strength, and the submit button stays disabled until the form is valid. Plain objects, `bindNode` and `calc`.
-
-:::
-::: example /examples/product-table/ https://github.com/finom/matreshka/tree/main/examples/product-table Product table
-
-A table rendered from JSON embedded in the page, with search, sorting, an in-stock filter and counts. A `Matreshka.Array` renders the rows.
-
-:::
-::: example /examples/price-widget/ https://github.com/finom/matreshka/tree/main/examples/price-widget Price widget
-
-A savings calculator placed on someone else's page. `bindSandbox` and `:sandbox` selectors keep it inside its own root, and `mediate` turns the fields' strings into numbers.
-
-:::
-:::
-
 ## Hello World
 
-A first application in two files:
+Writing your first application is very easy. You should:
 
 **1\.** Create an HTML file with the following content
 
@@ -42,7 +20,7 @@ A first application in two files:
 	<body>
 		<input type="text" class="my-input">
 		<div class="my-output"></div>
-		<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/matreshka@2/dist/matreshka.min.js"></script>
 		<script src="js/app.js"></script>
 	</body>
 </html>
@@ -83,7 +61,7 @@ Now you can open the developer's console (by pressing F12) and write:
 app.x = 'Hello World!';
 ```
 
-The field and the block show the new value, and the console logs the change. [Run it live](/examples/hello-world/).
+Cool, isn't it? You can work with such magical properties directly. [Run it live](/examples/hello-world/).
 
 ### Links
 
@@ -91,52 +69,18 @@ The field and the block show the new value, and the console logs the change. [Ru
 - [`Matreshka#bindNode` method](/api/matreshka/bind-node/)
 - [`Matreshka#on` method](/api/matreshka/on/)
 
-## More live examples
+## Live examples
 
 Each example runs on this site; its source code is in the [examples folder](https://github.com/finom/matreshka/tree/main/examples) of the repository.
 
-::: examples
-::: example /examples/todomvc/ https://github.com/finom/matreshka/tree/main/examples/todomvc TodoMVC
-
-A to-do list. Read the [annotated source](/examples/todomvc/docs/todomvc/js/app.html).
-
-:::
-::: example /examples/treeview/ https://github.com/finom/matreshka/tree/main/examples/treeview TreeView
-
-A tree of items nested to any depth. Each node renders its own children.
-
-:::
-::: example /examples/markdown-editor/ https://github.com/finom/matreshka/tree/main/examples/markdown-editor Markdown editor
-
-A Markdown editor in a few lines of code: the preview updates as you type.
-
-:::
-::: example /examples/contact-list/ https://github.com/finom/matreshka/tree/main/examples/contact-list Contact list
-
-Add, remove, sort, search and edit contacts.
-
-:::
-::: example /examples/matreshka-object/ https://github.com/finom/matreshka/tree/main/examples/matreshka-object Login form
-
-A login form built with `Matreshka.Object`. The source folder has a step-by-step tutorial.
-
-:::
-::: example /examples/matreshka-array/ https://github.com/finom/matreshka/tree/main/examples/matreshka-array Table of users
-
-A table of users built with `Matreshka.Array`. The source folder has a step-by-step tutorial.
-
-:::
-::: example /examples/router/#!/foo/bar/baz/ https://github.com/finom/matreshka/tree/main/examples/router Router demo
-
-Properties bound to parts of the URL.
-
-:::
-::: example /examples/parse-form/ https://github.com/finom/matreshka/tree/main/examples/parse-form Form parser demo
-
-Form fields bound to properties by their names.
-
-:::
-:::
+1. [TodoMVC](/examples/todomvc/) – a to-do list. ([Source code with annotations](/examples/todomvc/docs/todomvc/js/app.html), [source](https://github.com/finom/matreshka/tree/main/examples/todomvc))
+2. [TreeView](/examples/treeview/) of unlimited nesting depth. ([Source](https://github.com/finom/matreshka/tree/main/examples/treeview))
+3. [Markdown editor](/examples/markdown-editor/) made with few lines of code. ([Source](https://github.com/finom/matreshka/tree/main/examples/markdown-editor))
+4. [Contact List](/examples/contact-list/) – allows to add, remove, sort, search and change contacts. ([Source](https://github.com/finom/matreshka/tree/main/examples/contact-list))
+5. [A login form](/examples/matreshka-object/) made with `Matreshka.Object`. ([Tutorial](https://github.com/finom/matreshka/tree/main/examples/matreshka-object))
+6. [A table of users](/examples/matreshka-array/) made with `Matreshka.Array`. ([Tutorial](https://github.com/finom/matreshka/tree/main/examples/matreshka-array))
+7. [matreshka-router demo](/examples/router/#!/foo/bar/baz/) – properties bound to parts of the URL. ([Source](https://github.com/finom/matreshka/tree/main/examples/router))
+8. [matreshka-parse-form demo](/examples/parse-form/) – form fields bound to properties by their names. ([Source](https://github.com/finom/matreshka/tree/main/examples/parse-form))
 
 ## Tutorials
 
