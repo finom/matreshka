@@ -66,6 +66,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - A delegated DOM event's selector may hold a space before a pseudo-class with parentheses, or `@` in an attribute value.
 - A trailing space in event names adds no listener with an empty name.
 - `remove` takes off the DOM listeners of the key, and `remove` of a `calc` target stops the calculation.
+- `removeevent` fires after the listener is gone: a `removeevent:x` handler that calls `off('x')` no longer loops until the stack overflows, and a listener it adds to `x` stays.
 
 #### Bindings
 

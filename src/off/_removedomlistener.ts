@@ -1,5 +1,4 @@
-import type { AnyObject, EventEntry } from '../types.js';
-import defs from '../_core/defs.js';
+import type { AnyObject, EventEntry, ObjectDef } from '../types.js';
 import triggerOne from '../trigger/_triggerone.js';
 import { unlisten } from '../_dom/index.js';
 import forEach from '../_helpers/foreach.js';
@@ -25,18 +24,13 @@ function removeEvents(allEvents: Record<string, EventEntry[]>, name: string, eve
 // removes dom listener from nodes bound to given key
 export default function removeDomListener(
   object: AnyObject,
+  def: ObjectDef,
   key: string,
   eventName: string,
   selector?: string,
   callback?: EventEntry['callback'] | null,
   context?: any
 ): AnyObject {
-  const def = defs.get(object);
-
-  if (!def) {
-    return object;
-  }
-
   const { events: allEvents, props } = def;
   const bindEventName = `_bind:${key}`;
   const found = findDomListeners(allEvents[bindEventName], { eventName, selector, callback, context });

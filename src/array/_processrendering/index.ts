@@ -101,6 +101,5 @@ export default function processRendering({
       }
 
       break;
-    default:
   }
 }

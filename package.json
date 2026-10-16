@@ -29,6 +29,16 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "router": [
+        "./dist/router/index.d.ts"
+      ],
+      "parse-form": [
+        "./dist/parse-form/index.d.ts"
+      ]
+    }
+  },
       "default": "./dist/index.js"
     },
     "./router": {
@@ -43,6 +53,16 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "router": [
+        "./dist/router/index.d.ts"
+      ],
+      "parse-form": [
+        "./dist/parse-form/index.d.ts"
+      ]
+    }
+  },
   "unpkg": "./dist/matreshka.min.js",
   "jsdelivr": "./dist/matreshka.min.js",
   "sideEffects": false,

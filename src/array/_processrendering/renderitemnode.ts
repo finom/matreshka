@@ -23,7 +23,7 @@ function releaseStaleSandbox(
   const sandbox: Node | undefined = bindings?.[0].node;
 
   if (sandbox && renderedNodes.has(sandbox) && !(Object.values(renderedInArrays) as Node[]).includes(sandbox)) {
-    releaseNode(item, sandbox, eventOptions);
+    releaseNode(item, itemDef, sandbox, eventOptions);
   }
 }
 
@@ -93,7 +93,7 @@ export default function renderItemNode({
 
   if (forceRerender && renderedInArrays[selfId]) {
     // drop the bindings to the node which is going to be replaced
-    releaseNode(item, renderedInArrays[selfId], eventOptions);
+    releaseNode(item, itemDef, renderedInArrays[selfId], eventOptions);
   } else if (bindRenderedAsSandbox) {
     releaseStaleSandbox(item, itemDef, renderedInArrays, eventOptions);
   }

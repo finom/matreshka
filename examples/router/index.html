@@ -44,6 +44,10 @@
   </div>
   <script src="/matreshka.min.js"></script>
   <script>
+    // a reload of /examples/router/d/e/f/ comes here through the site's 404 page, with the path in the query
+    const path = new URLSearchParams(location.search).get('path');
+    if (path) history.replaceState(null, '', `/examples/router/${path}${location.hash}`);
+
     window.app = new class App extends Matreshka {
       constructor() {
         super()

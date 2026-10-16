@@ -1,4 +1,4 @@
-import type { AnyObject, EventHandler, PropDef } from '../types.js';
+import type { AnyObject, EventHandler } from '../types.js';
 import initMK from '../_core/init.js';
 import defineProp from '../_core/defineprop.js';
 import addListener from './_addlistener.js';
@@ -7,7 +7,8 @@ import createDomEventHandler from './_createdomeventhandler.js';
 import forEach from '../_helpers/foreach.js';
 import findDomListeners from './_finddomlisteners.js';
 
-type BindEvent = { node?: Node };
+// _bind:KEY and _unbind:KEY always carry the node
+type BindEvent = { node: Node };
 
 // returns an object with event handlers used at addDomListener
 function createBindingHandlers({
@@ -20,17 +21,11 @@ function createBindingHandlers({
   selector: string | undefined;
 }) {
   return {
-    bindHandler(evt: BindEvent = {}) {
-      const { node } = evt;
-      if (node) {
-        listen(node, eventName, selector, domEventHandler);
-      }
+    bindHandler({ node }: BindEvent) {
+      listen(node, eventName, selector, domEventHandler);
     },
-    unbindHandler(evt: BindEvent = {}) {
-      const { node } = evt;
-      if (node) {
-        unlisten(node, eventName, selector, domEventHandler);
-      }
+    unbindHandler({ node }: BindEvent) {
+      unlisten(node, eventName, selector, domEventHandler);
     }
   };
 }
@@ -48,8 +43,7 @@ export default function addDomListener(
   name?: string
 ): boolean {
   const def = initMK(object);
-  // the object has a definition now, so defineProp returns one
-  const propDef = defineProp(object, key) as PropDef;
+  const propDef = defineProp(object, key);
   const bindEventName = `_bind:${key}`;
   const domEventData = { eventName, selector, callback, context };
 

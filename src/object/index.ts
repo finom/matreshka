@@ -38,7 +38,7 @@ interface MatreshkaObject<Data extends object = Record<string, any>> extends Mat
   // with recursive (the default), values that have toJSON are converted too
   toJSON(recursive?: boolean): Data;
   each(callback: (this: any, value: Data[DataKey<Data>], key: DataKey<Data>, self: this) => void, thisArg?: any): this;
-  [Symbol.iterator](): Iterator<Data[DataKey<Data>]>;
+  [Symbol.iterator](): IterableIterator<Data[DataKey<Data>]>;
 }
 
 // Matreshka.Object inherits the statics Matreshka has when it's created, so not Object, Array and toMatreshka

@@ -58,8 +58,7 @@ export default function mediate(this: any, object: any, givenKeys: any, mediator
       throw matreshkaError('mediate:key_type', { key });
     }
 
-    // initMK above gave the object a definition, so defineProp returns one
-    const propDef = defineProp(object, key) as PropDef;
+    const propDef = defineProp(object, key);
 
     const propMediator = createMediator({
       object,

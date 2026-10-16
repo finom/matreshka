@@ -10,6 +10,49 @@ import type { MatreshkaArrayInstance } from '../types.js';
 
 type PseudoNativeMethod = (this: MatreshkaArrayInstance, ...args: any[]) => any;
 
+// the methods that change the array; each also has a `name_` twin that takes event options last
+export const changingMethodNames = [
+  'push',
+  'pop',
+  'unshift',
+  'shift',
+  'sort',
+  'reverse',
+  'splice',
+  'copyWithin',
+  'fill'
+] as const;
+
+// the methods that copy; they return a Matreshka.Array
+const copyingMethodNames = ['map', 'filter', 'slice', 'flat', 'flatMap', 'toSorted', 'toReversed', 'toSpliced', 'with'];
+
+export const methodNames = [
+  ...changingMethodNames,
+  'forEach',
+  'map',
+  'filter',
+  'slice',
+  'flat',
+  'flatMap',
+  'toSorted',
+  'toReversed',
+  'toSpliced',
+  'with',
+  'every',
+  'some',
+  'find',
+  'findIndex',
+  'findLast',
+  'findLastIndex',
+  'at',
+  'join',
+  'indexOf',
+  'lastIndexOf',
+  'includes',
+  'reduce',
+  'reduceRight'
+] as const;
+
 // the native methods are called on Matreshka.Array instances, which are array-like
 const arrayPrototype = Array.prototype as unknown as Record<
   string,
@@ -17,57 +60,11 @@ const arrayPrototype = Array.prototype as unknown as Record<
 >;
 
 // creates pseudo native method and returns it (push, push_, sort, sort_...)
-export default function createPseudoNativeMethod(name: string, hasOptions = false): PseudoNativeMethod | undefined {
+export default function createPseudoNativeMethod(
+  name: (typeof methodNames)[number],
+  hasOptions = false
+): PseudoNativeMethod {
   switch (name) {
-    case 'forEach':
-      return function pseudoNativeMethod(this: MatreshkaArrayInstance, callback: any, thisArg?: any) {
-        arrayPrototype[name].call(this, callback, thisArg);
-        // return this for nicer chain calls
-        return this;
-      };
-    case 'map':
-    case 'filter':
-    case 'slice':
-      // TODO: Improve readability of pseudoNativeMethod, arguments "a, b" look not good
-      return function pseudoNativeMethod(this: MatreshkaArrayInstance, a?: any, b?: any) {
-        return toMatreshkaArray(arrayPrototype[name].call(this, a, b));
-      };
-    case 'every':
-    case 'some':
-    case 'findIndex':
-    case 'find':
-      return function pseudoNativeMethod(this: MatreshkaArrayInstance, callback: any, thisArg?: any) {
-        return arrayPrototype[name].call(this, callback, thisArg);
-      };
-    case 'join':
-      return function pseudoNativeMethod(this: MatreshkaArrayInstance, separator = ',') {
-        return arrayPrototype[name].call(this, separator);
-      };
-    case 'indexOf':
-    case 'lastIndexOf':
-    case 'includes':
-      // the arguments as given: an explicit undefined fromIndex means 0 to lastIndexOf, not "from the end"
-      return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
-        return apply(arrayPrototype[name], this, arguments);
-      };
-    case 'at':
-    case 'findLast':
-    case 'findLastIndex':
-    case 'reduce':
-    case 'reduceRight':
-      return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
-        return apply(arrayPrototype[name], this, arguments);
-      };
-    // the methods that copy return a Matreshka.Array, as map and filter do
-    case 'flat':
-    case 'flatMap':
-    case 'toSorted':
-    case 'toReversed':
-    case 'toSpliced':
-    case 'with':
-      return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
-        return toMatreshkaArray(apply(arrayPrototype[name], this, arguments));
-      };
     case 'sort':
     case 'reverse':
       return createSortingMethod(name, hasOptions);
@@ -83,7 +80,21 @@ export default function createPseudoNativeMethod(name: string, hasOptions = fals
       return createCopyWithin(hasOptions);
     case 'fill':
       return createFill(hasOptions);
+    case 'forEach':
+      return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
+        apply(arrayPrototype.forEach, this, arguments);
+        // return this for nicer chain calls
+        return this;
+      };
     default:
-      return undefined;
+      if (copyingMethodNames.includes(name)) {
+        return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
+          return toMatreshkaArray(apply(arrayPrototype[name], this, arguments));
+        };
+      }
+      // the other methods read the array and get the arguments as given: lastIndexOf(x, undefined) searches from 0
+      return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
+        return apply(arrayPrototype[name], this, arguments);
+      };
   }
 }

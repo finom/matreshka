@@ -1,5 +1,5 @@
 import type { AnyObject, PropDef } from '../types.js';
-import defs from './defs.js';
+import initMK from './init.js';
 import set from '../set.js';
 import matreshkaError from '../_helpers/matreshkaerror.js';
 
@@ -8,13 +8,8 @@ function errorAccessor(): never {
 }
 
 // the function defines needed descriptor for given property
-export default function defineProp(object: AnyObject, key: string, noAccessor?: boolean): PropDef | null {
-  const def = defs.get(object);
-
-  // if no object definition do nothing
-  if (!def) {
-    return null;
-  }
+export default function defineProp(object: AnyObject, key: string, noAccessor?: boolean): PropDef {
+  const def = initMK(object);
 
   if (!def.props[key]) {
     const descriptor = noAccessor ? undefined : Object.getOwnPropertyDescriptor(object, key);

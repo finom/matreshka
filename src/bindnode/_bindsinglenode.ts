@@ -17,7 +17,7 @@ const spaceReg = /\s+/;
 // handles binding for single property & node
 // the function is used at bindNode
 interface SingleBindingData {
-  binder: Binder | null;
+  binder: Binder;
   key: string;
   $nodes: Node[];
   node: Node;
@@ -57,7 +57,6 @@ export default function bindSingleNode(
     node
   };
   let isUndefined = typeof propDef.value === 'undefined';
-  let binder: Binder | undefined;
   let objectHandler: Binding['objectHandler'];
   let nodeHandler: Binding['nodeHandler'];
   let syncNodeHandler: NodeHandler | undefined;
@@ -70,33 +69,11 @@ export default function bindSingleNode(
     throw matreshkaError('binding:magic_props_nodes_length');
   }
 
-  // get actual binder
-  if (givenBinder !== null) {
-    // by default binder passed to bindNode is extended by default binder
-    // useExactBinder turns this behavior off
-    if (useExactBinder) {
-      binder = givenBinder;
-    } else {
-      // getting default binder
-      const foundBinder = lookForBinder(node);
+  // the given binder extends the node's default binder, unless useExactBinder is on
+  const defaultBinder = useExactBinder ? null : lookForBinder(node);
+  const binder: Binder = defaultBinder ? assign(defaultBinder, givenBinder) : givenBinder;
 
-      // if default binder is found
-      if (foundBinder) {
-        // extend found binder by given binder
-        if (givenBinder) {
-          assign(foundBinder, givenBinder);
-        }
-
-        binder = foundBinder;
-      } else {
-        // default binder is not found
-        binder = givenBinder || {};
-      }
-    }
-  }
-
-  // a null binder throws here, as before
-  const { getValue, setValue, on, initialize } = binder as Binder;
+  const { getValue, setValue, on, initialize } = binder;
 
   // call binder.initialize
   if (initialize) {
@@ -110,7 +87,7 @@ export default function bindSingleNode(
       key,
       node,
       propDef,
-      binder: binder as Binder,
+      binder,
       bindingOptions
     });
 
@@ -153,7 +130,7 @@ export default function bindSingleNode(
     const syncObjectHandler = createObjectHandler({
       node,
       propDef,
-      binder: binder as Binder,
+      binder,
       bindingOptions,
       eventOptions
     });
@@ -184,7 +161,7 @@ export default function bindSingleNode(
   bindings.push({
     on,
     node,
-    binder: binder as Binder,
+    binder,
     objectHandler,
     nodeHandler,
     syncNodeHandler,

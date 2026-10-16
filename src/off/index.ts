@@ -35,20 +35,18 @@ function getDelegationTargets(object: AnyObject, def: ObjectDef, name: string): 
   return key === undefined ? null : [object[key]];
 }
 
-// removes listeners added by on/once/onDebounce and keeps the ones the framework adds (bindings, calc etc)
-// every event list is split in one pass, so removing many listeners stays linear
 // the names on() was given for the object's own plain and DOM events
-function userEventNames(def: ObjectDef | undefined): string[] {
+function userEventNames(def: ObjectDef): string[] {
   const names = new Set<string>();
-  if (def) {
-    forOwn(def.events, (events, name) => {
-      if (name[0] !== '_') names.add(name);
-      else if (name.startsWith('_bind:')) forEach(events, ({ info }) => info.domEvent && names.add(info.domEvent.name));
-    });
-  }
+  forOwn(def.events, (events, name) => {
+    if (name[0] !== '_') names.add(name);
+    else if (name.startsWith('_bind:')) forEach(events, ({ info }) => info.domEvent && names.add(info.domEvent.name));
+  });
   return [...names];
 }
 
+// removes listeners added by on/once/onDebounce and keeps the ones the framework adds (bindings, calc etc)
+// every event list is split in one pass, so removing many listeners stays linear
 function removeUserListeners(object: AnyObject, def: ObjectDef): void {
   const { events: allEvents, props } = def;
   const removed: RemoveEventData[] = [];
@@ -156,11 +154,13 @@ export default function off(this: any, object: any, givenNames?: any, callback?:
     return object;
   }
 
-  if (!givenNames && !callback && !context) {
-    if (def) {
-      removeUserListeners(object, def);
-    }
+  // an object without a definition has no listeners
+  if (!def) {
+    return object;
+  }
 
+  if (!givenNames && !callback && !context) {
+    removeUserListeners(object, def);
     return object;
   }
 

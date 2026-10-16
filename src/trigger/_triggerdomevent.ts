@@ -1,30 +1,16 @@
-import type { AnyObject } from '../types.js';
+import type { ObjectDef } from '../types.js';
 import triggerOneDOMEvent from './_triggeronedomevent.js';
-import defs from '../_core/defs.js';
 import forEach from '../_helpers/foreach.js';
 
 // triggers DOM event on bound nodes
 export default function triggerDOMEvent(
-  object: AnyObject,
+  def: ObjectDef,
   key: string,
   eventName: string,
   selector: string | undefined,
   triggerArgs: any[]
 ): void {
-  const def = defs.get(object);
-
-  if (!def) {
-    return;
-  }
-
-  const { props } = def;
-  const propDef = props[key];
-
-  if (!propDef) {
-    return;
-  }
-
-  const { bindings } = propDef;
+  const bindings = def.props[key]?.bindings;
 
   if (!bindings) {
     return;

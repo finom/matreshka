@@ -1,5 +1,4 @@
 import syncFields from '../_syncfields.js';
-import cheapRecreate from '../_cheaprecreate.js';
 import pureOrderBy from './_pureorderby.js';
 import reportModified from '../_reportmodified.js';
 import type { ArrayMethodOptions, MatreshkaArrayInstance } from '../types.js';
@@ -13,7 +12,11 @@ export default function orderBy(
 ): MatreshkaArrayInstance {
   syncFields(this);
   if (this.length > 1) {
-    cheapRecreate(this, pureOrderBy(this, keys, orders));
+    // the same items in another order, written in place with no events of their own
+    const ordered = pureOrderBy(this, keys, orders);
+    for (let i = 0; i < ordered.length; i++) {
+      this[i] = ordered[i];
+    }
 
     reportModified(this, {
       method: 'sort', // makes possible to listen "sort" event

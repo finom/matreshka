@@ -1,7 +1,7 @@
 // After `npm run build`: packs the package, installs the tarball into a temporary project and checks that the
 // entry points load and work there, the way a user loads them.
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -93,6 +93,28 @@ check(document.querySelector('input').value === '6', 'parseForm in a page');
   check(result === 'function function function function undefined x', `umd: ${result}`);
 }
 
+// the types, as a user's TypeScript file sees them with either module resolution a project uses today
+copyFileSync(path.resolve('test/types/consumer.ts'), path.join(project, 'consumer.ts'));
+for (const [module, moduleResolution] of [
+  ['nodenext', 'nodenext'],
+  ['esnext', 'bundler']
+]) {
+  const compilerOptions = {
+    strict: true,
+    module,
+    moduleResolution,
+    target: 'es2022',
+    lib: ['es2023', 'dom'],
+    noEmit: true
+  };
+  writeFileSync(path.join(project, 'tsconfig.json'), JSON.stringify({ compilerOptions, files: ['consumer.ts'] }));
+  try {
+    execFileSync(path.resolve('node_modules/.bin/tsc'), ['-p', project], { encoding: 'utf8' });
+  } catch (error) {
+    fail(`types with ${moduleResolution} resolution:\n${error.stdout}`);
+  }
+}
+
 console.log(
-  'check-dist: the packed tarball: ESM, require(esm), a DOM-free import, no deep paths and the script-tag bundle work'
+  'check-dist: the packed tarball: ESM, require(esm), a DOM-free import, no deep paths, the script-tag bundle and the types work'
 );

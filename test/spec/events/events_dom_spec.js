@@ -1,6 +1,7 @@
 import addDomListener from 'src/on/_adddomlistener';
 import removeDomListener from 'src/off/_removedomlistener';
 import triggerDOMEvent from 'src/trigger/_triggerdomevent';
+import defs from 'src/_core/defs';
 import bindNode from 'src/bindnode';
 import createSpy from '../../helpers/createspy';
 import simulateClick from '../../helpers/simulateclick';
@@ -42,7 +43,7 @@ describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', 
 
   it('removes with no selector', () => {
     addDomListener(obj, 'x', 'click', null, handler);
-    removeDomListener(obj, 'x', 'click');
+    removeDomListener(obj, defs.get(obj), 'x', 'click');
     bindNode(obj, 'x', '#child');
     simulateClick(childNode);
     expect(handler).not.toHaveBeenCalled();
@@ -58,7 +59,7 @@ describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', 
   it('adds using selector and removes with no selector', () => {
     bindNode(obj, 'x', '#child');
     addDomListener(obj, 'x', 'click', '.grandchild', handler);
-    removeDomListener(obj, 'x', 'click');
+    removeDomListener(obj, defs.get(obj), 'x', 'click');
     simulateClick(grandchildNode);
     expect(handler).not.toHaveBeenCalled();
   });
@@ -66,7 +67,7 @@ describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', 
   it('adds using selector then binds and removes with selector', () => {
     addDomListener(obj, 'x', 'click', '.grandchild', handler);
     bindNode(obj, 'x', '#child');
-    removeDomListener(obj, 'x', 'click');
+    removeDomListener(obj, defs.get(obj), 'x', 'click');
     simulateClick(grandchildNode);
     expect(handler).not.toHaveBeenCalled();
   });
@@ -75,7 +76,7 @@ describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', 
     const handler = createSpy((d1, d2) => expect(d1 + d2).toEqual(3));
     bindNode(obj, 'x', '#child');
     addDomListener(obj, 'x', 'click', null, handler);
-    triggerDOMEvent(obj, 'x', 'click', null, [1, 2]);
+    triggerDOMEvent(defs.get(obj), 'x', 'click', null, [1, 2]);
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
@@ -83,7 +84,7 @@ describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', 
     const handler = createSpy((d1, d2) => expect(d1 + d2).toEqual(3));
     bindNode(obj, 'x', '#child');
     addDomListener(obj, 'x', 'click', '.grandchild', handler);
-    triggerDOMEvent(obj, 'x', 'click', '.grandchild', [1, 2]);
+    triggerDOMEvent(defs.get(obj), 'x', 'click', '.grandchild', [1, 2]);
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
@@ -91,14 +92,14 @@ describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', 
     const handler = createSpy((d1, d2) => expect(d1 + d2).toEqual(3));
     bindNode(obj, 'x', '#child');
     addDomListener(obj, 'x', 'click', null, handler);
-    triggerDOMEvent(obj, 'x', 'click', '.grandchild', [1, 2]);
+    triggerDOMEvent(defs.get(obj), 'x', 'click', '.grandchild', [1, 2]);
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
   it('removes delegated', () => {
     bindNode(obj, 'x', '#child');
     addDomListener(obj, 'x', 'click', '.grandchild', handler);
-    removeDomListener(obj, 'x', 'click', '.grandchild');
+    removeDomListener(obj, defs.get(obj), 'x', 'click', '.grandchild');
     simulateClick(grandchildNode);
     expect(handler).not.toHaveBeenCalled();
   });
@@ -106,7 +107,7 @@ describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', 
   it('removes delegated and does not remove events from other nodes', () => {
     bindNode(obj, 'x', '#child');
     addDomListener(obj, 'x', 'click', '.grandchild', handler);
-    removeDomListener(obj, 'x', 'click', '.blah');
+    removeDomListener(obj, defs.get(obj), 'x', 'click', '.blah');
     simulateClick(grandchildNode);
     expect(handler).toHaveBeenCalledTimes(1);
   });

@@ -1,4 +1,4 @@
-import type { PropDef, Binder } from '../types.js';
+import type { Binder } from '../types.js';
 import type {
   BindingItem,
   BindNodeOptions,
@@ -117,7 +117,7 @@ export default function bindNode(this: any, object: any, key?: any, node?: any, 
     forOwn(key as KeyNodeMap, (keyObjValue: any, keyObjKey) => {
       // binder means eventOptions
       if (temporaryOptionalFlag) {
-        eventOptions = binder ? { ...binder, optional: true } : { optional: true };
+        eventOptions = { ...binder, optional: true };
       } else {
         eventOptions = binder;
       }
@@ -194,8 +194,7 @@ export default function bindNode(this: any, object: any, key?: any, node?: any, 
     }
   }
 
-  // initMK above made the definition, so the property definition exists
-  const propDef = defineProp(object, key) as PropDef;
+  const propDef = defineProp(object, key);
 
   if (object.isMatreshka) {
     // if an object is Matreshka instance then extend "$nodes" and "nodes" objects

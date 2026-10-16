@@ -10,26 +10,12 @@ export interface Debounced<F extends (...args: any[]) => any> {
   cancel(): void;
 }
 
-export default function debounce<F extends (...args: any[]) => any>(
-  func: F,
-  givenDelay?: number | object,
-  thisArg?: any
-): Debounced<F> {
+export default function debounce<F extends (...args: any[]) => any>(func: F, delay = 0): Debounced<F> {
   let timeout: ReturnType<typeof setTimeout> | undefined;
-  let delay: number;
-  if (typeof givenDelay !== 'number') {
-    thisArg = givenDelay;
-    delay = 0;
-  } else {
-    delay = givenDelay || 0;
-  }
 
   function debounced(this: any, ...args: any[]) {
-    const callContext = thisArg || this;
-
     clearTimeout(timeout);
-
-    timeout = setTimeout(() => apply(func, callContext, args), delay);
+    timeout = setTimeout(() => apply(func, this, args), delay);
   }
 
   // drops a pending call

@@ -2,6 +2,7 @@
 import type { AnyObject, EventOptions, ObjectDef } from '../types.js';
 import type Matreshka from '../matreshka/index.js';
 import type { MatreshkaStatics } from '../matreshka/index.js';
+import type MatreshkaObject from '../object/index.js';
 
 // converts a value to an array item, called with the array as `this`
 export type ItemMediator<Item = any> = (value: any, index: number) => Item;
@@ -11,6 +12,9 @@ export type ItemMediatorCallback<Item = any> = (
   index: number,
   array: MatreshkaArrayInstance<Item>
 ) => Item;
+
+// what an adding method takes: an item, or the data of a Matreshka.Object item, which the array's Model turns into one
+export type ItemInput<Item> = Item | (Item extends MatreshkaObject<infer Data> ? Partial<Data> : never);
 
 // a class an array converts its items to; it gets the item data, the array and the index
 export type ModelConstructor = new (data: any, parentArray: MatreshkaArrayInstance, index: number) => any;
@@ -72,10 +76,10 @@ export interface MatreshkaArrayInstance<Item = any> extends Matreshka {
   onItemRender?(item: Item, eventOptions: ItemEventOptions): void;
 
   // mutating methods fire events and render; the "_" ones take event options as the last argument
-  push(...items: Item[]): number;
-  push_(...args: [...items: Item[], eventOptions: ArrayMethodOptions]): number;
-  unshift(...items: Item[]): number;
-  unshift_(...args: [...items: Item[], eventOptions: ArrayMethodOptions]): number;
+  push(...items: ItemInput<Item>[]): number;
+  push_(...args: [...items: ItemInput<Item>[], eventOptions: ArrayMethodOptions]): number;
+  unshift(...items: ItemInput<Item>[]): number;
+  unshift_(...args: [...items: ItemInput<Item>[], eventOptions: ArrayMethodOptions]): number;
   pop(): Item | undefined;
   pop_(eventOptions?: ArrayMethodOptions): Item | undefined;
   shift(): Item | undefined;
@@ -85,15 +89,15 @@ export interface MatreshkaArrayInstance<Item = any> extends Matreshka {
   sort_(eventOptions: ArrayMethodOptions): this;
   reverse(): this;
   reverse_(eventOptions?: ArrayMethodOptions): this;
-  splice(start: number, deleteCount?: number, ...items: Item[]): MatreshkaArrayInstance<Item>;
+  splice(start: number, deleteCount?: number, ...items: ItemInput<Item>[]): MatreshkaArrayInstance<Item>;
   splice_(start: number, eventOptions: ArrayMethodOptions): MatreshkaArrayInstance<Item>;
   splice_(
-    ...args: [start: number, deleteCount: number, ...items: Item[], eventOptions: ArrayMethodOptions]
+    ...args: [start: number, deleteCount: number, ...items: ItemInput<Item>[], eventOptions: ArrayMethodOptions]
   ): MatreshkaArrayInstance<Item>;
-  fill(value: Item, start?: number, end?: number): this;
-  fill_(value: Item, eventOptions: ArrayMethodOptions): this;
-  fill_(value: Item, start: number, eventOptions: ArrayMethodOptions): this;
-  fill_(value: Item, start: number, end: number, eventOptions: ArrayMethodOptions): this;
+  fill(value: ItemInput<Item>, start?: number, end?: number): this;
+  fill_(value: ItemInput<Item>, eventOptions: ArrayMethodOptions): this;
+  fill_(value: ItemInput<Item>, start: number, eventOptions: ArrayMethodOptions): this;
+  fill_(value: ItemInput<Item>, start: number, end: number, eventOptions: ArrayMethodOptions): this;
   copyWithin(target: number, start?: number, end?: number): this;
   copyWithin_(target: number, eventOptions: ArrayMethodOptions): this;
   copyWithin_(target: number, start: number, eventOptions: ArrayMethodOptions): this;
@@ -141,7 +145,7 @@ export interface MatreshkaArrayInstance<Item = any> extends Matreshka {
 
   // removes an item by index or by value; returns it, or null when nothing is removed
   pull(toRemove: number | Item, eventOptions?: ArrayMethodOptions): Item | null;
-  recreate(newItems?: ArrayLike<Item> | null, eventOptions?: ArrayMethodOptions): this;
+  recreate(newItems?: ArrayLike<ItemInput<Item>> | null, eventOptions?: ArrayMethodOptions): this;
   // builds items from nodes found by the selector, or from the container's children
   restore(selector?: string | null, eventOptions?: ArrayMethodOptions): this;
   rerender(eventOptions?: ArrayMethodOptions): this;
@@ -158,7 +162,7 @@ export interface MatreshkaArrayInstance<Item = any> extends Matreshka {
 export interface MatreshkaArrayConstructor extends MatreshkaStatics {
   // a single number is the length, as for native Array
   new <Item = any>(length: number): MatreshkaArrayInstance<Item>;
-  new <Item = any>(...items: Item[]): MatreshkaArrayInstance<Item>;
+  new <Item = any>(...items: ItemInput<Item>[]): MatreshkaArrayInstance<Item>;
   readonly prototype: MatreshkaArrayInstance;
   from<Item = any>(arrayLike: ArrayLike<Item> | Iterable<Item>): MatreshkaArrayInstance<Item>;
   from<Source, Item>(

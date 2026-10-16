@@ -15,5 +15,7 @@
     "noEmit": true,
     "types": ["vitest/globals"]
   },
-  "include": ["src", "test"]
+  "include": ["src", "test"],
+  // a user's file, checked against the packed tarball by check-dist
+  "exclude": ["test/types"]
 }

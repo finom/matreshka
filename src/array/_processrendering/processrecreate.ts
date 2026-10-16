@@ -63,15 +63,8 @@ export default function processRecreate({ self, selfDef, eventOptions, container
         });
 
         if (node) {
-          // itemDef is defined at renderItemNode if not defined before
-          // reload this variable
+          // renderItemNode gave the item a definition; a second place of the item finds its node above and throws
           itemDef = itemDef || (defs.get(item) as ArrayDef);
-
-          if (itemDef.id in alreadyRenderedMap) {
-            // if newly added item is rendered twice throw an error
-            throw matreshkaError('array:add_render_twice');
-          }
-
           alreadyRenderedMap[itemDef.id] = true;
 
           container.appendChild(node);

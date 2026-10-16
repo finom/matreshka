@@ -258,6 +258,7 @@ ${articles}
 }
 
 // The 404 page GitHub Pages serves for any missing path, in English with links to all three languages.
+// the router demo's History API paths (/examples/router/d/e/f/) are no files: the 404 page opens the demo with the path
 export function notFound({ assets }) {
   const ui = UI.en;
   return `<!doctype html>
@@ -267,6 +268,7 @@ export function notFound({ assets }) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${ui.notFound} | Matreshka.js</title>
 <meta name="robots" content="noindex">
+<script>var p=location.pathname;if(p.indexOf('/examples/router/')===0&&p.length>17)location.replace('/examples/router/?path='+encodeURIComponent(p.slice(17))+location.hash)</script>
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="stylesheet" href="/${assets.css}">
 <script>(function(){try{if(localStorage.getItem('mk-theme')==='dark'||(!localStorage.getItem('mk-theme')&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}})()</script>

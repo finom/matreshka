@@ -8,47 +8,32 @@ function compareValues(a: any, b: any): number {
   return a > b ? 1 : a < b ? -1 : 0;
 }
 
-// the function orders by given order data any array-like object
+// returns the items of an array-like ordered by given keys, as lodash's orderBy
 export default function pureOrderBy(
   arr: ArrayLike<any>,
   givenKeys?: string | string[] | null,
   orders?: string | string[] | null
 ): any[] {
-  if ('length' in arr && typeof arr === 'object') {
-    const defaultOrder = 'asc';
-    let commonOrder: string | undefined;
+  const result = Array.from(arr);
 
-    if (!Array.isArray(orders)) {
-      commonOrder = orders || defaultOrder;
-    }
-
-    const { length } = arr;
-    const result: any[] = Array(length);
-
-    for (let i = 0; i < length; i++) {
-      result[i] = arr[i];
-    }
-
-    if (!givenKeys) {
-      return result;
-    }
-
-    const keys = Array.isArray(givenKeys) ? givenKeys : [givenKeys];
-
-    return result.sort((a, b) => {
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        const direction = (commonOrder || (orders as string[])[i]) === 'desc' ? -1 : 1;
-        const compared = compareValues(a?.[key], b?.[key]);
-
-        if (compared) {
-          return compared * direction;
-        }
-      }
-
-      return 0;
-    });
+  if (!givenKeys) {
+    return result;
   }
 
-  return [];
+  const keys = Array.isArray(givenKeys) ? givenKeys : [givenKeys];
+  const commonOrder = Array.isArray(orders) ? undefined : orders || 'asc';
+
+  return result.sort((a, b) => {
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const direction = (commonOrder || (orders as string[])[i]) === 'desc' ? -1 : 1;
+      const compared = compareValues(a?.[key], b?.[key]);
+
+      if (compared) {
+        return compared * direction;
+      }
+    }
+
+    return 0;
+  });
 }

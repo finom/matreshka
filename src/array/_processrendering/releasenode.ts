@@ -1,10 +1,9 @@
-import defs from '../../_core/defs.js';
 import unbindNode from '../../unbindnode/index.js';
 import forOwn from '../../_helpers/forown.js';
 import forEach from '../../_helpers/foreach.js';
 import toArray from '../../_helpers/toarray.js';
 import deepBindings from '../../bindnode/_deepbindings.js';
-import type { AnyObject, EventOptions } from '../../types.js';
+import type { AnyObject, EventOptions, ObjectDef } from '../../types.js';
 
 // window and other non-Node targets can't be inside a rendered node; an attribute is where its element is
 const isInside = (boundNode: any, node: Node): boolean => {
@@ -13,13 +12,12 @@ const isInside = (boundNode: any, node: Node): boolean => {
 };
 
 // removes every binding of an item to a rendered node or to a node inside it
-export default function releaseNode(item: AnyObject, node: Node, eventOptions?: EventOptions): void {
-  const itemDef = defs.get(item);
-
-  if (!itemDef) {
-    return;
-  }
-
+export default function releaseNode(
+  item: AnyObject,
+  itemDef: ObjectDef,
+  node: Node,
+  eventOptions?: EventOptions
+): void {
   // deep bindings ("a.b") live at the end of their path; unbindNode finds them by the dotted key
   const toRelease: { key: string; boundNode: Node; options: EventOptions | undefined }[] = [];
 
