@@ -8,31 +8,10 @@ export default function initMK(object: AnyObject): ObjectDef {
   let def = defs.get(object);
   if (!def) {
     def = {
-      // a property name of "events" object is an event name
-      // and a value is an array of event handlers
-      events: {
-        /* example: {
-                    callback: function,
-                    ctx: object,
-                    context: object2,
-                    name: "example",
-                    info: { ...extra data for an event... }
-                } */
-      },
-      // "props" contains special information about properties (getters, setters etc)
-      props: {
-        /* example: {
-                    value: object[key],
-                    mediator: null,
-                    bindings: [{
-                        node,
-                        binder,
-                        nodeHandler,
-                        objectHandler,
-                        ...other required info
-                    }]
-                } */
-      },
+      // event name -> handlers; property name -> getters, setters, bindings. Null prototypes, so a key
+      // named `__proto__` or `toString` is a key like any other
+      events: Object.create(null),
+      props: Object.create(null),
       id: objectId
     };
 

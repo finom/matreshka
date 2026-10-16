@@ -29,7 +29,8 @@ export default function updateTracked({
       }
     }
   } else {
-    const trackMap: Record<PropertyKey, any> = {};
+    // a Map, so an id named `constructor` or `__proto__` is an id like any other; ids compare as strings, as keys did
+    const trackMap = new Map<string, any>();
 
     // fill trackMap object where keys are values of trackBy and values are corresponding items
     for (let i = 0; i < oldLength; i++) {
@@ -37,7 +38,7 @@ export default function updateTracked({
 
       if (item && typeof item === 'object') {
         if (trackBy in item) {
-          trackMap[item[trackBy]] = item;
+          trackMap.set(String(item[trackBy]), item);
         }
       }
     }
@@ -46,9 +47,10 @@ export default function updateTracked({
       const newItem = givenNewItems[i];
 
       if (newItem && typeof newItem === 'object') {
-        if (newItem[trackBy] in trackMap) {
+        const tracked = trackMap.get(String(newItem[trackBy]));
+        if (tracked) {
           // if an item exists at trackMap then update it
-          newItems[i] = updateObject(trackMap[newItem[trackBy]], newItem);
+          newItems[i] = updateObject(tracked, newItem);
         } else {
           // if not then use new value as is
           newItems[i] = newItem;

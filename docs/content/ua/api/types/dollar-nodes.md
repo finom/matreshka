@@ -1,7 +1,7 @@
 ---
 title: "$nodes"
 sidebarTitle: "$nodes"
-description: "$nodes: Колекція DOM вузлів. Наприклад, jQuery або NodeList."
+description: "$nodes: Колекція DOM вузлів. Наприклад, масив вузлів, NodeList або jQuery."
 importance: 2
 ---
 
@@ -9,7 +9,7 @@ importance: 2
 
 **Тип**
 
-Колекція DOM вузлів. Наприклад, jQuery або NodeList.
+Колекція DOM вузлів. Наприклад, масив вузлів, NodeList або jQuery.
 
 ## Приклади
 

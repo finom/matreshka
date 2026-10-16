@@ -15,17 +15,13 @@ importance: 2
 import { binders } from 'matreshka';
 
 const { dataset } = binders;
-// or
-import { binders } from 'matreshka';
-
-const { dataset } = binders;
 ```
 
 ```js
 Matreshka.binders.dataset(property, [mappingFn]) → binder
 ```
 
-Returns a binder which changes given [dataset](https://developer.mozilla.org/ru/docs/Web/API/HTMLElement/dataset) property of bound DOM node depending on an object property value.
+Returns a binder which changes given [dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) property of bound DOM node depending on an object property value.
 
 The property value can be transformed using ``mappingFn`` argument.
 

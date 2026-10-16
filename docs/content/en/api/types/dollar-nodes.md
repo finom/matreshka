@@ -1,7 +1,7 @@
 ---
 title: "$nodes"
 sidebarTitle: "$nodes"
-description: "$nodes: DOM nodes collection. For example, jQuery instance or NodeList."
+description: "$nodes: DOM nodes collection. For example, an array of nodes, a NodeList or a jQuery instance."
 importance: 2
 ---
 
@@ -9,7 +9,7 @@ importance: 2
 
 **Type**
 
-DOM nodes collection. For example, jQuery instance or NodeList.
+DOM nodes collection. For example, an array of nodes, a NodeList or a jQuery instance.
 
 ## Examples
 

@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Named exports: `import { bindNode, calc, MatreshkaObject, MatreshkaArray } from 'matreshka'`, next to the default `Matreshka`.
 - The router and the form parser are part of the package: `import { initRouter, Router } from 'matreshka/router'` and `import { parseForm } from 'matreshka/parse-form'`. The script-tag bundle has them as `Matreshka.initRouter`, `Matreshka.Router` and `Matreshka.parseForm`.
 - The binders that came from the `common-binders` package are part of Matreshka (`Matreshka.binders`, `import { binders } from 'matreshka'`).
+- `"sideEffects": false` in `package.json`, so a bundler drops the parts an app doesn't import.
 
 ### Changed
 
@@ -53,6 +54,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `off()` with no arguments stays fast with many listeners.
 - Delegated and `*@` listeners keep working on a child that another data key, property or array slot still holds after one of them is replaced or removed.
 - A function added both as a listener and as a delegated listener (`*@foo`) on the same object stays until both are removed.
+- DOM events (`click::x`) reach a node bound with `silent: true` and leave a node unbound with `silent: true`, so items an array renders silently get their DOM events.
+- A delegated DOM event's selector may contain commas inside `:is()`, `:not()` and attribute values (`click::x([data-k="1,2"])`).
+- Delegated listeners (`a.b@change:c`) keep working when a branch is replaced by a copy that shares the next object (`obj.a = { ...obj.a }`).
 
 #### Bindings
 
@@ -72,18 +76,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `binders.style()` works with dashed and custom property names; `null`, `undefined` or `''` removes the property.
 - `selectAll(':sandbox, .foo')` on an object without bindings still returns the `.foo` nodes.
 - A binder's `setValue` and `getValue` get the current value in `options.value`, not the value at bind time.
+- Custom binders can be added to `Matreshka.binders` (`Matreshka.binders.myBinder = …`), and its type allows them.
 - Input typed into a node before a debounced write from code lands is kept: the older write is dropped.
+- A deep binding (`a.b.c`) keeps working when a branch is replaced by a copy that shares the next object, and `remove('a')` removes the deep bindings under `a`.
 
 #### Data
 
 - `calc` with a deep source (`a.b.c`) no longer throws when a middle object becomes `null`, and calculated properties on different objects no longer block each other.
 - `skipMediator`, `force`, `forceHTML` and `silentHTML` on a source no longer apply to the calculated target.
 - With `promiseCalc`, the latest calculation wins over slower earlier ones, and a rejection reports the original error.
+- A synchronous `calc` that two others depend on (a diamond: `b` from `a`, `c` and `d` from `b`, `e` from `c` and `d`) recalculates the end with both new values.
+- `skipCalc` and `force` on a deep source (`a.b.c`) work as on a plain one, and a deep source keeps working when a branch is replaced by a copy.
 - `remove` returns the object, as documented, and takes delegated listeners and deep `calc` dependencies off the removed value.
+- `remove` fires `delete` and `delete:KEY` for a property Matreshka doesn't track yet.
 - `toMatreshka` treats only arrays as arrays (a plain object with a `length` property becomes a `Matreshka.Object`) and copies only the data keys of a `Matreshka.Object`.
 - Assigning a `Matreshka.Object` instance to an instantiated property copies only its data keys; assigning `{}` clears it.
 - `Matreshka.Object`: `remove(key, { silent: true })` also removes the data key; keys named like `toString` work as data keys; `addDataKeys` and `removeDataKeys` move `*@` listeners; `removeDataKeys` fires `remove` before `modify`; `off('change')` no longer breaks its `set`, `modify` and `remove` events.
 - Instances made by `Matreshka.Class` no longer list `constructor` in `for...in`.
+- `Matreshka.Class` keeps getters and setters of the prototype as accessors (before, a getter ran once at `Class()` and its value was copied), and instances no longer list `extends` in `for...in`.
+- A key named `__proto__` in data passed to `setData`, `Matreshka.Object` or a tracked array item no longer writes onto `Object.prototype`.
 
 #### Matreshka.Array
 
@@ -100,6 +111,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `splice` puts new nodes in the right place when the last added value appears again later in the array.
 - Removing an item hidden by the `existence` binder also removes its placeholder comment.
 - `recreate()` with the same items in another order moves their nodes into the new order.
+- `recreate(null)` empties the array, and `null` assigned to a property instantiated as a `Matreshka.Array` clears it.
+- `trackBy` works with ids named like `Object.prototype` members, and a `Model` instance passed as new data no longer adds `nodes` and `$nodes` as data keys of the tracked item.
+- A `splice` that puts back an item it removes keeps the item's node instead of throwing.
+- `orderBy` sorts items without the key, and `null` items, after the others (before them with `desc`), as lodash does.
+- `indexOf`, `lastIndexOf` and `includes` take the same arguments as the array methods (`lastIndexOf(x, undefined)`).
 
 #### Router
 
@@ -110,6 +126,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - A plain anchor such as `#top` is no longer read as a route.
 - Subscribing a shorter route no longer drops the deeper parts of the URL.
 - `router.parts` no longer holds `undefined` entries, and three or more slashes in a row are treated like one.
+- Opening a hash route that differs from the router's path only by its trailing slash no longer adds a history entry.
 
 #### Form parser
 

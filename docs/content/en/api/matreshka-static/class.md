@@ -62,7 +62,7 @@ const D = Matreshka.Class({
 	extends: C,
 	method3() {
 		// calling the parent method
-		C.prototype.method2.call(this, arguments);
+		C.prototype.method3.apply(this, arguments);
 	}
 });
 ```

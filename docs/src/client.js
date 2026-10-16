@@ -73,6 +73,15 @@
   }
   on(state, 'change:level', () => {
     store.set('mk-level', String(state.level));
+    // a lower level that hides the open section moves to the nearest section still shown, the one before it first
+    const index = sections.findIndex((section) => section.id === state.current);
+    const shown = (section) => Number(section.dataset.importance) <= state.level;
+    if (index !== -1 && !shown(sections[index])) {
+      const nearest = sections.slice(0, index).findLast(shown) ?? sections.slice(index + 1).find(shown);
+      history.replaceState(null, '', `#${nearest.id}`);
+      state.current = nearest.id;
+      if (state.one) root.scrollIntoView({ behavior: 'instant' });
+    }
     renderPager();
   });
 
@@ -121,7 +130,7 @@
     if (event.key !== 'Enter') return;
     const first = menuLinks.find((link) => !link.parentElement.hidden);
     if (first) {
-      location.hash = first.getAttribute('href');
+      go(first.getAttribute('href'));
       search.blur();
     }
   });
@@ -129,8 +138,13 @@
     const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName ?? '');
     if (event.key === '/' && !typing && !event.metaKey && !event.ctrlKey) {
       event.preventDefault();
-      state.navOpen = true;
+      // the menu is a drawer only on small screens; elsewhere it is always there
+      if (getComputedStyle(document.getElementById('mk-nav')).position === 'fixed') state.navOpen = true;
       search.focus();
+    }
+    if (event.key === 'Escape' && state.navOpen) {
+      state.navOpen = false;
+      document.getElementById('mk-menu').focus();
     }
   });
 
@@ -166,7 +180,7 @@
         link.href = `#${section.id}`;
         link.className = className;
         small.textContent = label;
-        const title = document.querySelector(`.mk-nav a[href="#${CSS.escape(section.id)}"] span:last-child`);
+        const title = document.querySelector(`.mk-nav a[href="#${CSS.escape(section.id)}"] span:first-child`);
         link.append(small, title?.textContent ?? section.id);
         return link;
       })
@@ -186,6 +200,8 @@
       id = data.old[key] ?? data.old[key.replace('#', '-')] ?? 'home';
       history.replaceState(null, '', `#${id}`);
     }
+    // an anchor the section doesn't have (from an old page's link) opens the section
+    if (id.includes('--') && !document.getElementById(id)) id = id.slice(0, id.indexOf('--'));
     const target = (id && document.getElementById(id)) || document.getElementById('home');
     const section = target.closest('.mk-section') ?? document.getElementById('home');
     state.level = Math.max(state.level, Number(section.dataset.importance));
@@ -198,6 +214,25 @@
       );
   }
   window.addEventListener('hashchange', () => open(true, true));
+  // a link to the section already open fires no hashchange, so it opens it here
+  function go(hash) {
+    if (location.hash === hash) open(true, true);
+    else location.hash = hash;
+  }
+  for (const link of menuLinks) {
+    link.addEventListener('click', (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button) return;
+      event.preventDefault();
+      go(link.getAttribute('href'));
+    });
+  }
+  // the skip link moves the focus to the content and leaves the address and the open section as they are
+  const main = document.getElementById('main');
+  main.tabIndex = -1;
+  document.querySelector('.mk-skip').addEventListener('click', (event) => {
+    event.preventDefault();
+    main.focus({ preventScroll: true });
+  });
   open(Boolean(location.hash), false);
 
   // in Everything mode the menu follows the reading position

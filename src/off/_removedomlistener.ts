@@ -38,7 +38,7 @@ export default function removeDomListener(
   }
 
   const { events: allEvents, props } = def;
-  const bindEventName = `bind:${key}`;
+  const bindEventName = `_bind:${key}`;
   const found = findDomListeners(allEvents[bindEventName], { eventName, selector, callback, context });
 
   if (!found.length) {
@@ -48,7 +48,7 @@ export default function removeDomListener(
   const bindings = props[key]?.bindings;
 
   removeEvents(allEvents, bindEventName, found);
-  removeEvents(allEvents, `unbind:${key}`, found);
+  removeEvents(allEvents, `_unbind:${key}`, found);
 
   forEach(found, (event) => {
     const { domEvent } = event.info;

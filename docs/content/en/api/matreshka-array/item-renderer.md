@@ -223,7 +223,7 @@ To improve the readability of code there is a virtual method called [`Matreshka.
 class MyModel extends Matreshka.Object {
 	constructor(data) {
 		super(data);
-	},
+	}
 	onRender(evt) {
 		this.bindNode('isChecked', ':sandbox .my-checkbox');
 		this.bindNode('text', ':sandbox .text',
@@ -236,7 +236,7 @@ class MyArray extends Matreshka.Array {
 	itemRenderer = '...';
 	constructor() {
 		//...
-	},
+	}
 	onItemRender(item, evt) {
 		//...
 	}
@@ -250,9 +250,9 @@ If you have a look at the examples of using [`Matreshka.Array`](/api/matreshka-a
 
 ```js
 class MyArray extends Matreshka.Array {
-	itemRenderer: `<label>
+	itemRenderer = `<label>
 		<input type="checkbox" checked="{{isChecked}}">{{text}}
-	</label>`
+	</label>`;
 	// ...
 }
 
@@ -329,11 +329,11 @@ It's not obligatory to fill an array with only ``Matreshka`` instances, you can 
 ```js
 class MyArray extends Matreshka.Array {
 	// Model is not given
-	itemRenderer: ...
+	itemRenderer = ...;
 	onItemRender(item) {
 		Matreshka.bindNode(item, 'x', ':sandbox .some-node');
 	}
-})
+}
 ```
 
 One more little example: the rendering of a simple list:

@@ -15,10 +15,6 @@ importance: 3
 import { binders } from 'matreshka';
 
 const { select } = binders;
-// або
-import { binders } from 'matreshka';
-
-const { select } = binders;
 ```
 
 ```js

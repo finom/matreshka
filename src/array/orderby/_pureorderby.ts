@@ -1,3 +1,13 @@
+// as lodash's orderBy: values first, then null, then undefined (a missing key or a null item); desc flips it all
+const rank = (value: any): number => (value === undefined ? 2 : value === null ? 1 : 0);
+function compareValues(a: any, b: any): number {
+  const ranks = rank(a) - rank(b);
+  if (ranks || rank(a)) {
+    return ranks;
+  }
+  return a > b ? 1 : a < b ? -1 : 0;
+}
+
 // the function orders by given order data any array-like object
 export default function pureOrderBy(
   arr: ArrayLike<any>,
@@ -26,17 +36,13 @@ export default function pureOrderBy(
     const keys = Array.isArray(givenKeys) ? givenKeys : [givenKeys];
 
     return result.sort((a, b) => {
-      if (a && b) {
-        for (let i = 0; i < keys.length; i++) {
-          const key = keys[i];
-          const order = (commonOrder || (orders as string[])[i]) !== 'desc' ? -1 : 1;
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const direction = (commonOrder || (orders as string[])[i]) === 'desc' ? -1 : 1;
+        const compared = compareValues(a?.[key], b?.[key]);
 
-          if (a[key] > b[key]) {
-            return -order;
-          }
-          if (a[key] < b[key]) {
-            return order;
-          }
+        if (compared) {
+          return compared * direction;
         }
       }
 

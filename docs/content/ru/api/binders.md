@@ -33,11 +33,6 @@ this.bindNode('x', node, html());
 import { binders } from 'matreshka';
 
 const { html, text, prop } = binders;
-
-// импорт байндеров по-отдельности
-import { binders } from 'matreshka';
-
-const { html } = binders;
 ```
 
 Биндеры входят в пакет ``matreshka``.
@@ -64,11 +59,11 @@ this.bindNode('myKey', '.my-element',
 	Matreshka.binders.myCoolBinder('Hello', 'World'));
 ```
 
-## Члены класса
+## Байндеры
 
 - [`attr`](/ru/api/binders/attr/) – Возвращает байндер, меняющий атрибут DOM элемента на значение свойства объекта
 - [`className`](/ru/api/binders/class-name/) – Возвращает байндер, который переключает имя класса DOM элемента в зависимости от значения свойства объекта. Если значение свойства нестрого равно ``true``, имя класса добавляется, в противном случае - убирается. Логику можно изменить, передав ``false`` вторым аргументом, и, таким образом, имя класса будет добавляться, когда значение свойства нестрого равно ``false`` и наоборот.
-- [`dataset`](/ru/api/binders/dataset/) – Возвращает байндер, меняющий заданное свойство объекта [dataset](https://developer.mozilla.org/ru/docs/Web/API/HTMLElement/dataset) DOM элемента в зависимости от значения свойства объекта.
+- [`dataset`](/ru/api/binders/dataset/) – Возвращает байндер, меняющий заданное свойство объекта [dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) DOM элемента в зависимости от значения свойства объекта.
 - [`display`](/ru/api/binders/display/) – Возвращает байндер для одностороннего связывания, меняющий видимость DOM элемента (используя ``style.display``), в зависимости от значения свойства объекта
 - [`existence`](/ru/api/binders/existence/) – Возвращает байндер для одностороннего связывания, переключающий наличие элемента в DOM дереве, в зависимости от значения свойства объекта
 - [`html`](/ru/api/binders/html/) – Возвращает байндер, меняющий ``innerHTML`` DOM элемента в зависимости от значения свойства объекта

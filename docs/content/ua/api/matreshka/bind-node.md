@@ -119,7 +119,7 @@ const checkboxBinder = () => {
 
 // Метод unshift додає функцію
 // у початок масиву Matreshka.defaultBinders
-Matreshka.defaultBinders.unshift(node ​​=> {
+Matreshka.defaultBinders.unshift(node => {
 	// Перевіряємо, чи це чекбокс
 	if (node.tagName === 'INPUT' && node.type === 'checkbox') {
 		// Якщо перевірка пройдена, повертаємо новий байндер
@@ -432,7 +432,7 @@ this.bindNode([{
 	}
 }, {
 	key: 'b',
-	node: document.querySelectorAll('.bar')
+	node: document.querySelectorAll('.bar'),
 	event: {
 		foo: 'bar'
 	}

@@ -130,19 +130,23 @@ export default function set(this: any, object: any, key: any, value?: any, event
     }
   }
 
+  // trigger common delegated events logic
   if (isChanged) {
-    // trigger common delegated events logic
     const changeDelegatedKeyEventName = `_change:delegated:${key}`;
     if (events[changeDelegatedKeyEventName]) {
       triggerOne(object, changeDelegatedKeyEventName, extendedEventOptions);
     }
+  }
 
-    // trigger tree change events logic
+  // trigger tree change events logic: deep calc sources ("a.b.c") take force and skipCalc as plain ones do
+  if (isChanged || force) {
     const changeTreeEventName = `_change:tree:${key}`;
     if (events[changeTreeEventName]) {
       triggerOne(object, changeTreeEventName, extendedEventOptions);
     }
+  }
 
+  if (isChanged) {
     // trigger other internal change events
     const changeCommonEventName = `_change:common:${key}`;
     if (events[changeCommonEventName]) {

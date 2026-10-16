@@ -15,10 +15,6 @@ importance: 2
 import { binders } from 'matreshka';
 
 const { prop } = binders;
-// або
-import { binders } from 'matreshka';
-
-const { prop } = binders;
 ```
 
 ```js
@@ -54,7 +50,7 @@ this.disabled = false;
 **Використання ``mappingFn``**
 
 ```js
-this.bindNode('myProp', '.my-node'
+this.bindNode('myProp', '.my-node',
     Matreshka.binders.prop('foo', value => `Hello, ${value}`));
 
 this.myProp = 'World'; // властивість елемента foo має значення "Hello, World"

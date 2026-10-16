@@ -10,11 +10,12 @@ export default function changeHandler(
   { previousValue, value }: { previousValue?: any; value?: any },
   { path, name, callback, context, info }: DelegatedData = triggerOne.latestEvent.info.delegatedData
 ): void {
-  if (value && typeof value === 'object') {
-    delegateListener(value, path, name, callback, context, info);
-  }
-
+  // the old branch goes first: a branch the new value shares with it keeps the listener
   if (previousValue && typeof previousValue === 'object') {
     undelegateListener(previousValue, path, name, callback, context, info);
+  }
+
+  if (value && typeof value === 'object') {
+    delegateListener(value, path, name, callback, context, info);
   }
 }

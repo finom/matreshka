@@ -143,8 +143,15 @@ class Router {
 
         window.addEventListener('hashchange', () => handleHashChange(this));
 
+        const segments = (path: string) => path.split('/').filter(Boolean).join('/');
         onDebounce(this, 'change:hashPath', (evt) => {
-          if (!evt?.hashEvent) {
+          if (evt?.hashEvent) {
+            return;
+          }
+          // the same route in another spelling (#!/foo for #!/foo/) is rewritten in place, with no history entry
+          if (location.hash.startsWith('#!') && segments(location.hash.slice(2)) === segments(this.path)) {
+            history.replaceState(history.state, '', this.hashPath || `${location.pathname}${location.search}`);
+          } else {
             location.hash = this.hashPath;
           }
         });

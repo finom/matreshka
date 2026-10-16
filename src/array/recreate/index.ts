@@ -6,9 +6,11 @@ import type { ArrayMethodOptions, MatreshkaArrayInstance } from '../types.js';
 // recreates an array
 export default function recreate(
   this: MatreshkaArrayInstance,
-  givenNewItems: ArrayLike<any> = [],
+  newItemsOrNull: ArrayLike<any> | null = [],
   eventOptions: ArrayMethodOptions = {}
 ): MatreshkaArrayInstance {
+  // null empties the array, as undefined does
+  const givenNewItems = newItemsOrNull ?? [];
   const def = syncFields(this);
   const { itemMediator } = def;
   const newLength = givenNewItems.length;

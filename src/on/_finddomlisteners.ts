@@ -1,7 +1,7 @@
 import type { EventEntry } from '../types.js';
 import type { DomEventData } from './types.js';
 
-// returns "bind:KEY" events added by addDomListener which match given DOM event data
+// returns "_bind:KEY" events added by addDomListener which match given DOM event data
 // selector, callback and context are compared only when they're given (or always if exact is true)
 export default function findDomListeners(
   events: EventEntry[] | undefined,

@@ -202,3 +202,9 @@ const upperBinder: PublicBinder = {
 const syncOptions: PublicBindNodeOptions = { debounceSetValue: false };
 expectTypeOf(upperBinder).toMatchTypeOf<PublicBinder>();
 expectTypeOf(syncOptions).toMatchTypeOf<PublicBindNodeOptions>();
+
+// a host adds its own binder, as the docs show, and the built-in ones keep their signatures
+binders.uiSlider = () => ({ on: 'change' });
+DefaultMatreshka.binders.myCoolBinder = () => ({});
+expectTypeOf(binders.html).toEqualTypeOf<typeof import('../src/binders/html.js').default>();
+expectTypeOf(DefaultMatreshka.binders.uiSlider).toBeFunction();

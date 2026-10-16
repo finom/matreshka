@@ -79,6 +79,7 @@ Native array methods (`push`, `splice`, `sort`, …) update the DOM. `recreate(n
 ## Behavior to rely on (3.0)
 
 - Updates to the DOM are debounced by default (one task later). In tests, wait a tick, or pass `{ debounceSetValue: false, debounceGetValue: false }` as options.
+- `calc` computes the target at once, then recomputes one task after a source changes. In tests, wait a tick, or pass `{ debounceCalc: false }` as its options.
 - A change that came from an element is not written back to that element: with `mediate(obj, 'x', Number)`, clearing the field leaves it empty while `obj.x` becomes `0`.
 - `$nodes`, `selectAll` return plain arrays. Inputs may be a selector, an element, a NodeList, a jQuery object or any array-like.
 - A radio bound by `bindNode` holds the `value` of the checked radio, not a boolean; a checkbox holds a boolean.

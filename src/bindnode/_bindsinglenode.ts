@@ -193,14 +193,17 @@ export default function bindSingleNode(
     bindingOptions
   });
 
+  const extendedEventOptions = {
+    key,
+    node,
+    ...eventOptions
+  };
+
+  // DOM listeners ("click::x") follow the node even when the binding is silent
+  triggerOne(object, `_bind:${key}`, extendedEventOptions);
+
   // fire events
   if (!silent) {
-    const extendedEventOptions = {
-      key,
-      node,
-      ...eventOptions
-    };
-
     triggerOne(object, `bind:${key}`, extendedEventOptions);
     triggerOne(object, 'bind', extendedEventOptions);
   }

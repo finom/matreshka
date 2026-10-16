@@ -56,11 +56,13 @@ const assets = { css: `${hashed('style', css)}.css`, js: `${hashed('site', clien
 write(assets.css, css);
 write(assets.js, client);
 
-// A page that sends an old route to its section; search engines treat the instant refresh as a redirect.
+// A page that sends an old route to its section; search engines treat the instant refresh as a redirect. The script
+// keeps the old page's anchor: /api/matreshka/bind-node/#variation-2 opens #Matreshka-bindNode--variation-2.
 const redirect = (target) => {
   targets.push(target);
   return `<!doctype html>
 <html><head><meta charset="utf-8"><link rel="canonical" href="${SITE}${target.split('#')[0]}">
+<script>location.replace(${JSON.stringify(target)} + (location.hash ? '--' + location.hash.slice(1) : ''))</script>
 <meta http-equiv="refresh" content="0; url=${target}"><title>Matreshka.js</title></head>
 <body><a href="${target}">${SITE}${target}</a></body></html>
 `;

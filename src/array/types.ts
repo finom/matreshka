@@ -129,7 +129,7 @@ export interface MatreshkaArrayInstance<Item = any> extends Matreshka {
 
   // removes an item by index or by value; returns it, or null when nothing is removed
   pull(toRemove: number | Item, eventOptions?: ArrayMethodOptions): Item | null;
-  recreate(newItems?: ArrayLike<Item>, eventOptions?: ArrayMethodOptions): this;
+  recreate(newItems?: ArrayLike<Item> | null, eventOptions?: ArrayMethodOptions): this;
   // builds items from nodes found by the selector, or from the container's children
   restore(selector?: string | null, eventOptions?: ArrayMethodOptions): this;
   rerender(eventOptions?: ArrayMethodOptions): this;

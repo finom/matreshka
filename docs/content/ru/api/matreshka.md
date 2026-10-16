@@ -58,7 +58,7 @@ const MyClass = Matreshka.Class({
 });
 ```
 
-## Члены класса
+## Методы и свойства
 
 - [`bindNode`](/ru/api/matreshka/bind-node/) – Связывает свойство объекта с HTML элементом
 - [`bindOptionalNode`](/ru/api/matreshka/bind-optional-node/) – Работает в точности так же, как и [`Matreshka#bindNode`](/ru/api/matreshka/bind-node/) но не бросает исключение, если аргумент ``node`` - пустой массив, ``undefined`` или не существует
@@ -67,7 +67,7 @@ const MyClass = Matreshka.Class({
 - [`instantiate`](/ru/api/matreshka/instantiate/) – Создаёт фиксированный экземпляр класса
 - [`isMatreshka`](/ru/api/matreshka/is-matreshka/) _(Для продвинутых)_ – ``isMatreshka`` всегда равен ``true`` для экземпляров [`Matreshka`](/ru/api/matreshka/)
 - [`mediate`](/ru/api/matreshka/mediate/) – Трансформирует значение свойства при его изменении
-- [`$nodes`](/ru/api/matreshka/dollar-nodes/) _(Для продвинутых)_ – Объект содержит коллекции (jQuery, Zepto, инстанс встроенной микро-библиотеки, унаследованной от ``Array.prototype``) привязанных элементов для быстрого доступа.
+- [`$nodes`](/ru/api/matreshka/dollar-nodes/) _(Для продвинутых)_ – Объект содержит массивы привязанных элементов для быстрого доступа.
 - [`nodes`](/ru/api/matreshka/nodes/) _(Для продвинутых)_ – Объект содержит привязанные элементы для быстрого доступа, в виде отдельных DOM узлов.
 - [`off`](/ru/api/matreshka/off/) – Удаляет обработчик события
 - [`on`](/ru/api/matreshka/on/) – Добавляет обработчик события

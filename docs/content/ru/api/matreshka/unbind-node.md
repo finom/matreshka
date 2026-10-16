@@ -64,7 +64,7 @@ Matreshka#unbindNode(bindings, [eventOptions]) → matreshka
 
 ```js
 this.unbindNode({
-	foo: '.aaa'
+	foo: '.aaa',
 	bar: {
 		node: '.bbb'
 	},
@@ -108,7 +108,7 @@ const temporaryBindings = [{
 	}
 }, {
 	key: 'b',
-	node: document.querySelectorAll('.bar')
+	node: document.querySelectorAll('.bar'),
 	event: {
 		foo: 'bar'
 	}

@@ -105,7 +105,7 @@ class MyArray extends Matreshka.Array {
 __Селектор__
 ```js
 class MyArray extends Matreshka.Array {
-	itemRenderer: function() {
+	itemRenderer() {
 		return '#my-template';
 	}
 }
@@ -229,7 +229,7 @@ class MyArray extends Matreshka.Array {
 	itemRenderer = '...';
 	constructor() {
 		//...
-	},
+	}
 	onItemRender(item, evt) {
 		//...
 	}
@@ -243,9 +243,9 @@ const app = new MyArray();
 
 ```js
 class MyArray extends Matreshka.Array {
-	itemRenderer: `<label>
+	itemRenderer = `<label>
 		<input type="checkbox" checked="{{isChecked}}">{{text}}
-	</label>`
+	</label>`;
 	// ...
 }
 
@@ -317,11 +317,11 @@ class MyArray extends Matreshka.Array {
 ```js
 class MyArray extends Matreshka.Array {
 	// Model не определена
-	itemRenderer: ...
+	itemRenderer = ...;
 	onItemRender(item) {
 		Matreshka.bindNode(item, 'x', ':sandbox .some-node');
 	}
-})
+}
 ```
 
 Еще небольшой пример: рендеринг простого списка.

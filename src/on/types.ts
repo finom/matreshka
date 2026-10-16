@@ -16,7 +16,7 @@ export interface DelegatedData {
   object: AnyObject;
 }
 
-// a DOM listener ("click::x(.y)") kept in the info of bind:KEY and unbind:KEY events
+// a DOM listener ("click::x(.y)") kept in the info of _bind:KEY and _unbind:KEY events
 export interface DomEventData {
   eventName: string;
   selector?: string;

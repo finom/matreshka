@@ -37,8 +37,6 @@ nodes = this.selectAll('.my-element');
 // the same as
 nodes = this.$('.my-element'); // $ is a short reference to selectAll
 // the same as
-nodes = this.$nodes.sandbox.find('.my-element');
-// the same as
 nodes = $('.app').find('.my-element');
 ```
 
@@ -47,8 +45,6 @@ nodes = $('.app').find('.my-element');
 ```js
 this.bindNode('myKey', '.my-element');
 nodes = this.selectAll(':bound(myKey) .my-another-element');
-// the same as
-nodes = this.$nodes.myKey.find('.my-another-element');
 // the same as
 nodes = $('.my-element').find('.my-another-element');
 ```

@@ -4,8 +4,6 @@
     "noEmit": false,
     "allowJs": false,
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "rootDir": "src",
     "outDir": "dist",
     "types": []

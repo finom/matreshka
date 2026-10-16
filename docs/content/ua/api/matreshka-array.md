@@ -65,7 +65,7 @@ this.push(1, 2, 3);
 ```js
 // Обробник запуститься тричі,
 // так як в масив додали три нові елементи
-this.on('addone', evt {
+this.on('addone', evt => {
 	console.log(evt.addedItem); // 1 ... 2 ... 3
 });
 
@@ -166,7 +166,7 @@ const MyClass = Matreshka.Class({
 });
 ```
 
-## Члени класу
+## Методи і властивості
 
 - [`METHOD`](/ua/api/matreshka-array/method/) – Будь-який метод iз ``Array.prototype``
 - [`METHOD_`](/ua/api/matreshka-array/method-silent/) – Будь-який метод iз ``Array.prototype`` з можливістю передати об'єкт події

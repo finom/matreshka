@@ -36,19 +36,24 @@ export default function createCalcHandler({
       silentHTML,
       ...sourceEventOptions
     } = changeEvent;
+    // a deep source hears skipCalc here; a plain one is skipped by set
+    if (changeEvent.skipCalc) {
+      return;
+    }
+
     const protectKey = `${def.id}:${target}`;
     const { promiseCalc } = eventOptions;
-    const setEventOptions = {
-      protector,
-      ...eventOptions,
-      ...sourceEventOptions
-    };
 
+    // a calc already on this path is a cycle; a target reached by two paths (a diamond) runs on each
     if (protectKey in protector) {
       return;
     }
 
-    protector[protectKey] = true;
+    const setEventOptions = {
+      protector: { ...protector, [protectKey]: true },
+      ...eventOptions,
+      ...sourceEventOptions
+    };
 
     forEach(allSources, ({ sourceObject, sourceKey, isDelegated }) => {
       const value = isDelegated ? deepFind(sourceObject, sourceKey) : sourceObject[sourceKey];

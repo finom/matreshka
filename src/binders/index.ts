@@ -12,9 +12,10 @@ import output from './output.js';
 import textarea from './textarea.js';
 import select from './select.js';
 import progress from './progress.js';
+import type { Binder } from '../types.js';
 
 // a plain object, not the module namespace, so Matreshka.binders.myBinder = … adds a binder
-const binders = {
+const builtIn = {
   html,
   display,
   className,
@@ -30,6 +31,10 @@ const binders = {
   dataset,
   existence
 };
+
+// the built-in binders, and room for the host's own
+export type Binders = typeof builtIn & Record<string, (...args: any[]) => Binder>;
+const binders: Binders = builtIn;
 
 export default binders;
 

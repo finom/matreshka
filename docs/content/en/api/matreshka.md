@@ -58,7 +58,7 @@ const MyClass = Matreshka.Class({
 });
 ```
 
-## Members
+## Methods and properties
 
 - [`bindNode`](/api/matreshka/bind-node/) – Binds a property of an object to HTML node, implementing two-way data binding
 - [`bindOptionalNode`](/api/matreshka/bind-optional-node/) – Works just the same as [`Matreshka#bindNode`](/api/matreshka/bind-node/) but it does not throw an exception if the ``node`` argument is an empty array, ``undefined`` or non-existent.
@@ -67,7 +67,7 @@ const MyClass = Matreshka.Class({
 - [`instantiate`](/api/matreshka/instantiate/) – Creates fixed class instance
 - [`isMatreshka`](/api/matreshka/is-matreshka/) _(Advanced)_ – ``isMatreshka`` always equals ``true`` for instances of [`Matreshka`](/api/matreshka/)
 - [`mediate`](/api/matreshka/mediate/) – Transforms property value on its changing
-- [`$nodes`](/api/matreshka/dollar-nodes/) _(Advanced)_ – An object contains collections (jQuery, Zepto, built-in micro-library instance inherited from ``Array.prototype``) of bound nodes for quick access.
+- [`$nodes`](/api/matreshka/dollar-nodes/) _(Advanced)_ – An object contains arrays of bound nodes for quick access.
 - [`nodes`](/api/matreshka/nodes/) _(Advanced)_ – The object contains bound elements in the form of separate DOM nodes for quick access
 - [`off`](/api/matreshka/off/) – Deletes an event handler
 - [`on`](/api/matreshka/on/) – Adds an event handler

@@ -15,17 +15,13 @@ importance: 2
 import { binders } from 'matreshka';
 
 const { dataset } = binders;
-// або
-import { binders } from 'matreshka';
-
-const { dataset } = binders;
 ```
 
 ```js
 Matreshka.binders.dataset(property, [mappingFn]) → binder
 ```
 
-Повертає байндер, який змінює властивість [dataset](https://developer.mozilla.org/ru/docs/Web/API/HTMLElement/dataset) DOM элемента в залежності від значення властивості об'єкта.
+Повертає байндер, який змінює властивість [dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) DOM элемента в залежності від значення властивості об'єкта.
 
 Значення властивості можна перетворити за допомогою переданої функції ``mappingFn``.
 

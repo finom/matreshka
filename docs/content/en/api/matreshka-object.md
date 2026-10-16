@@ -105,7 +105,7 @@ for(let item of matreshkaObject) {
 }
 ```
 
-## Members
+## Methods and properties
 
 - [`addDataKeys`](/api/matreshka-object/add-data-keys/) – Adds given property names to a list of property names which are responsible for data
 - [`each`](/api/matreshka-object/each/) – Iterates properties which are responsible for data through ``callback`` function

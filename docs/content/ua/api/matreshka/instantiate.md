@@ -81,10 +81,10 @@ class MyClass extends Matreshka {
 	}
 }
 
-const MyParentClass etends Matreshka {
-    constructor() {
-        this.instantiate('x', MyClass);
-    }
+class MyParentClass extends Matreshka {
+	constructor() {
+		super().instantiate('x', MyClass);
+	}
 }
 ```
 

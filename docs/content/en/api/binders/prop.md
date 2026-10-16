@@ -15,10 +15,6 @@ importance: 2
 import { binders } from 'matreshka';
 
 const { prop } = binders;
-// or
-import { binders } from 'matreshka';
-
-const { prop } = binders;
 ```
 
 ```js
@@ -54,7 +50,7 @@ this.disabled = false;
 **The usage of mapping function**
 
 ```js
-this.bindNode('myProp', '.my-node'
+this.bindNode('myProp', '.my-node',
     Matreshka.binders.prop('foo', value => `Hello, ${value}`));
 
 // foo property of the element now has value "Hello, World"

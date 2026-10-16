@@ -50,7 +50,7 @@ export default function addDomListener(
   const def = initMK(object);
   // the object has a definition now, so defineProp returns one
   const propDef = defineProp(object, key) as PropDef;
-  const bindEventName = `bind:${key}`;
+  const bindEventName = `_bind:${key}`;
   const domEventData = { eventName, selector, callback, context };
 
   if (findDomListeners(def.events[bindEventName], domEventData, true).length) {
@@ -82,7 +82,7 @@ export default function addDomListener(
   };
 
   addListener(object, bindEventName, bindHandler, context, domInfo);
-  addListener(object, `unbind:${key}`, unbindHandler, context, domInfo);
+  addListener(object, `_unbind:${key}`, unbindHandler, context, domInfo);
 
   const { bindings } = propDef;
   if (bindings) {

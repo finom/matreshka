@@ -434,7 +434,7 @@ this.bindNode([{
 	}
 }, {
 	key: 'b',
-	node: document.querySelectorAll('.bar')
+	node: document.querySelectorAll('.bar'),
 	event: {
 		foo: 'bar'
 	}

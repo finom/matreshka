@@ -5,10 +5,11 @@ import type { ArrayDef, RenderingArgs } from '../types.js';
 // this function removes DOM nodes of removed items
 // called on splice, pull, pop and shift
 export default function processRemove({ selfDef, eventOptions }: RenderingArgs): void {
-  const { removed } = eventOptions;
+  const { removed, added } = eventOptions;
   const { id: selfId } = selfDef;
   forEach(removed, (item) => {
-    if (item && typeof item === 'object') {
+    // a splice that puts an item back keeps its node
+    if (item && typeof item === 'object' && !added?.includes(item)) {
       const itemDef: ArrayDef | undefined = defs.get(item);
       if (itemDef) {
         const { renderedInArrays } = itemDef;

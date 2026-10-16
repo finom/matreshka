@@ -40,7 +40,7 @@ class Todo extends Matreshka.Object {
             // * Bind the element ``label`` whose ``innerHTML`` will be synchronized with the value of the ``"title"`` property ([binders.html](https://matreshka.js.org/#Matreshka.binders.html))
             .bindNode('visible', ':sandbox', binders.display())
             .bindNode('completed', ':sandbox', binders.className('completed'))
-            .bindNode('editing', ':sandbox', binders.className('editing'))
+            .bindNode('editing', ':sandbox', binders.className('editing'), { debounceSetValue: false })
             .bindNode('title', ':sandbox label', binders.html())
             // Add the event handler of the mouse double click (``"dblclick"``) to the element bound to the ``"title"`` property (``label`` tag).
             // When the handler fires, we change the instance mode to the editing and assign the value ``true`` to the ``"editing"`` property. This action adds the ``"edit"`` class to the sandbox element (see bindings above).

@@ -1,7 +1,7 @@
 ---
 title: "Matreshka"
 asIndexPage: true
-description: "Matreshka: Клас Matreshka - це ядро ​​фреймворка Matreshka.js, від якого успадковуються Matreshka.Array, Matreshka.Object і кожен клас створюваного додатка…"
+description: "Matreshka: Клас Matreshka - це ядро фреймворка Matreshka.js, від якого успадковуються Matreshka.Array, Matreshka.Object і кожен клас створюваного додатка…"
 importance: 1
 ---
 
@@ -15,7 +15,7 @@ importance: 1
 import Matreshka from 'matreshka';
 ```
 
-Клас `` Matreshka`` - це ядро ​​фреймворка Matreshka.js, від якого успадковуються [`Matreshka.Array`](/ua/api/matreshka-array/), [`Matreshka.Object`](/ua/api/matreshka-object/) і кожен клас створюваного додатка. Він містить основний функціонал фреймворка: [медіатори](/ua/api/matreshka/mediate/), [залежності](/ua/api/matreshka/calc/), [прив'язки до DOM](/ua/api/matreshka/bind-node/), [механізм подій](/ua/api/matreshka/on/) тощо.
+Клас `` Matreshka`` - це ядро фреймворка Matreshka.js, від якого успадковуються [`Matreshka.Array`](/ua/api/matreshka-array/), [`Matreshka.Object`](/ua/api/matreshka-object/) і кожен клас створюваного додатка. Він містить основний функціонал фреймворка: [медіатори](/ua/api/matreshka/mediate/), [залежності](/ua/api/matreshka/calc/), [прив'язки до DOM](/ua/api/matreshka/bind-node/), [механізм подій](/ua/api/matreshka/on/) тощо.
 
 Як правило, цей клас, (як і [`Matreshka.Array`](/ua/api/matreshka-array/) і [`Matreshka.Object`](/ua/api/matreshka-object/)), не використовуються безпосередньо. Замість цього, від нього успадковуються класи, створювані розробником.
 
@@ -58,7 +58,7 @@ const MyClass = Matreshka.Class({
 });
 ```
 
-## Члени класу
+## Методи і властивості
 
 - [`bindNode`](/ua/api/matreshka/bind-node/) – Пов'язує властивість об'єкта з HTML елементом
 - [`bindOptionalNode`](/ua/api/matreshka/bind-optional-node/) – Працює в точності так само, як і [`Matreshka#bindNode`](/ua/api/matreshka/bind-node/) але не кидає виняток, якщо аргумент ``node`` - порожній масив, ``undefined`` або не існує
@@ -67,7 +67,7 @@ const MyClass = Matreshka.Class({
 - [`instantiate`](/ua/api/matreshka/instantiate/) – Створює фіксований екземпляр класу
 - [`isMatreshka`](/ua/api/matreshka/is-matreshka/) _(Для просунутих)_ – ``isMatreshka`` завжди дорівнює ``true`` для экземплярів [`Matreshka`](/ua/api/matreshka/)
 - [`mediate`](/ua/api/matreshka/mediate/) – Трансформує значення властивості при його зміні
-- [`$nodes`](/ua/api/matreshka/dollar-nodes/) _(Для просунутих)_ – Об'єкт містить колекції (jQuery, Zepto, інстанси вбудованої мікро-бібліотеки, успадкованої від ``Array.prototype``) прив'язаних елементів для швидкого доступу.
+- [`$nodes`](/ua/api/matreshka/dollar-nodes/) _(Для просунутих)_ – Об'єкт містить масиви прив'язаних елементів для швидкого доступу.
 - [`nodes`](/ua/api/matreshka/nodes/) _(Для просунутих)_ – Об'єкт містить прив'язані елементи для швидкого доступу, у вигляді окремих DOM вузлів.
 - [`off`](/ua/api/matreshka/off/) – Видаляє обробник події
 - [`on`](/ua/api/matreshka/on/) – Додає обробник події

@@ -163,11 +163,11 @@ this.b = { c: { d: 1 } };
 const someObject = { e: { f: { g: 2 } } };
 
 this.calc('a', [{
-	object: this
+	object: this,
 	key: 'b.c.d'
 }, {
-	object: someObject
-	key; 'e.f.g'
+	object: someObject,
+	key: 'e.f.g'
 }], (d, g) => d + g);
 
 console.log(this.a); // 3

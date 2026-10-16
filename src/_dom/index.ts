@@ -42,10 +42,33 @@ export function uniqueNodes(...lists: ArrayLike<Node>[]): Node[] {
   return [...new Set(lists.flatMap((list) => Array.from(list)))];
 }
 
+// the parts of a selector list, split at the commas outside brackets, parentheses and quotes
+function splitSelectorList(selector: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let quote = '';
+  let start = 0;
+  for (let i = 0; i < selector.length; i++) {
+    const char = selector[i];
+    if (quote) {
+      if (char === '\\') i++;
+      else if (char === quote) quote = '';
+    } else if (char === '"' || char === "'") quote = char;
+    else if (char === '\\') i++;
+    else if (char === '(' || char === '[') depth++;
+    else if (char === ')' || char === ']') depth--;
+    else if (char === ',' && depth === 0) {
+      parts.push(selector.slice(start, i));
+      start = i + 1;
+    }
+  }
+  parts.push(selector.slice(start));
+  return parts;
+}
+
 // the delegated selector matches only inside the node the listener is on
 function matchesInside(node: Element, target: Element, selector: string): boolean {
-  const scoped = selector
-    .split(',')
+  const scoped = splitSelectorList(selector)
     .map((part) => `[${scopeAttr}] ${part},[${scopeAttr}] ${part} *`)
     .join(',');
   node.setAttribute(scopeAttr, '');

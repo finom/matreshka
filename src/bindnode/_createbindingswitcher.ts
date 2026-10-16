@@ -39,6 +39,11 @@ export default function createBindingSwitcher({
       previousValue, // previous value of a branch
       restPath // path starting currently changed branch (passed by addTreeListener)
     } = changeEvent;
+    // a forced set of a branch to the same object leaves the binding where it is
+    if (restPath && value === previousValue) {
+      return;
+    }
+
     let target: any; // an object to call bindNode
     let previousTarget: any; // an object to call unbindNode
 
@@ -73,14 +78,14 @@ export default function createBindingSwitcher({
       }
     }
 
+    // remove binding for previously used object; first, so a target both share keeps its binding
+    if (previousTarget && typeof previousTarget === 'object') {
+      unbindNode(previousTarget, lastDeepPathItem, $nodes);
+    }
+
     // add binding for new target
     if (target && typeof target === 'object') {
       bindNode(target, lastDeepPathItem, $nodes, binder, eventOptions);
-    }
-
-    // remove binding for previously used object
-    if (previousTarget && typeof previousTarget === 'object') {
-      unbindNode(previousTarget, lastDeepPathItem, $nodes);
     }
   };
 }

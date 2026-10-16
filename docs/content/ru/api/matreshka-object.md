@@ -104,7 +104,7 @@ for(let item of matreshkaObject) {
 }
 ```
 
-## Члены класса
+## Методы и свойства
 
 - [`addDataKeys`](/ru/api/matreshka-object/add-data-keys/) – Добавляет заданные имена свойств в список имен свойств, отвечающих за данные
 - [`each`](/ru/api/matreshka-object/each/) – Перебирает свойства, отвечающие за данные

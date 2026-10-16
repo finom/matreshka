@@ -35,6 +35,11 @@ describe.each(rendered)('the $code page', ({ code, prefix, sections, html, ids, 
     }
   });
 
+  // a heading with inline HTML (the level circles) takes its id from its text only
+  it('builds heading ids from text, not from inline HTML', () => {
+    expect(idList.filter((id) => /span-class|aria-hidden/.test(id))).toEqual([]);
+  });
+
   it('points every in-page link at an id on the page', () => {
     for (const [, id] of html.matchAll(/href="#([^"]*)"/g)) expect(ids.has(id), `#${id}`).toBe(true);
   });

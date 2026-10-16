@@ -52,7 +52,7 @@ export default function removeListener(
     }
 
     // restore default value of "events"
-    def.events = {};
+    def.events = Object.create(null);
   } else if (events) {
     // if events with given name are found
     forEach(events, (event) => {

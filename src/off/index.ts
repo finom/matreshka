@@ -59,10 +59,10 @@ function removeUserListeners(object: AnyObject, def: ObjectDef): void {
           undelegations.push({ targets, delegatedData: info.delegatedData });
         }
       } else if (info.domEvent) {
-        // bind:KEY and unbind:KEY share one domEvent, so it's handled once
-        if (name.startsWith('bind:')) {
+        // _bind:KEY and _unbind:KEY share one domEvent, so it's handled once
+        if (name.startsWith('_bind:')) {
           const { domEvent } = info;
-          const bindings = props[name.slice(5)]?.bindings;
+          const bindings = props[name.slice(6)]?.bindings;
           if (bindings) {
             forEach(bindings, ({ node }) =>
               unlisten(node, domEvent.eventName, domEvent.selector, domEvent.domEventHandler)

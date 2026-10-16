@@ -46,14 +46,9 @@ export default function createPseudoNativeMethod(name: string, hasOptions = fals
     case 'indexOf':
     case 'lastIndexOf':
     case 'includes':
-      return function pseudoNativeMethod(this: MatreshkaArrayInstance, searchElement: any, fromIndex?: number) {
-        const originalMethod = arrayPrototype[name];
-
-        if (typeof fromIndex === 'undefined') {
-          return originalMethod.call(this, searchElement);
-        }
-
-        return originalMethod.call(this, searchElement, fromIndex);
+      // the arguments as given: an explicit undefined fromIndex means 0 to lastIndexOf, not "from the end"
+      return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
+        return apply(arrayPrototype[name], this, arguments);
       };
     case 'reduce':
     case 'reduceRight':

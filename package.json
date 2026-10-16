@@ -45,6 +45,7 @@
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/matreshka.min.js",
   "jsdelivr": "./dist/matreshka.min.js",
+  "sideEffects": false,
   "files": [
     "dist",
     "CHANGELOG.md"

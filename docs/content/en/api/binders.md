@@ -33,11 +33,6 @@ Or import them as CJS/ES2015 module:
 import { binders } from 'matreshka';
 
 const { html, text, prop } = binders;
-
-// import binders separately
-import { binders } from 'matreshka';
-
-const { html } = binders;
 ```
 
 The binders ship with the ``matreshka`` package.
@@ -64,11 +59,11 @@ this.bindNode('myKey', '.my-element',
 	Matreshka.binders.myCoolBinder('Hello', 'World'));
 ```
 
-## Members
+## Binders
 
 - [`attr`](/api/binders/attr/) – Returns a binder which changes an attribute of DOM node depending on an object property value
 - [`className`](/api/binders/class-name/) – Returns a binder which switches over DOM node class name depending on an object property value. If property value equals ``true`` non-strictly, a class name is added, otherwise - it's removed. The logic can be changed by passing ``false`` as the second argument and in this way, a class name will be added  when a property value equals ``false`` non-strictly and vice versa.
-- [`dataset`](/api/binders/dataset/) – Returns a binder which changes given [dataset](https://developer.mozilla.org/ru/docs/Web/API/HTMLElement/dataset) property of bound DOM node depending on an object property value.
+- [`dataset`](/api/binders/dataset/) – Returns a binder which changes given [dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) property of bound DOM node depending on an object property value.
 - [`display`](/api/binders/display/) – Returns a binder which controls a visibility of DOM node (using ``style.display``) depending on an object property value
 - [`existence`](/api/binders/existence/) – Returns a binder which controls an existence of DOM node at DOM tree depending on an object property value
 - [`html`](/api/binders/html/) – Returns a binder which changes ``innerHTML`` of bound DOM node depending on an object property value

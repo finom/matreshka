@@ -71,7 +71,9 @@ export function renderSection(section, lang, sections) {
     token.tag = tag;
     tokens.find((item, j) => j > i && item.type === 'heading_close').tag = tag;
     if (level === 1) return `<${tag} class="mk-title"><a href="#${section.id}">`;
-    let hash = explicit?.[1] ?? slug(inline.children.map((child) => child.content).join(''));
+    // the heading's text only: inline HTML such as the level circles is not part of the id
+    const text = inline.children.filter(({ type }) => type !== 'html_inline').map((child) => child.content);
+    let hash = explicit?.[1] ?? slug(text.join('').trim());
     const count = seen.get(hash) ?? 0;
     seen.set(hash, count + 1);
     if (count) hash = `${hash}-${count}`;

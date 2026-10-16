@@ -119,8 +119,18 @@
   @apply inline-flex size-9 items-center justify-center rounded-md text-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 outline-none;
 }
 
+.mk-main:focus {
+  outline: none;
+}
 .mk-skip {
-  @apply sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:shadow;
+  @apply sr-only focus:not-sr-only focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:shadow;
+}
+/* fixed even while hidden, so focusing it doesn't scroll the page to its place at the top */
+.mk-skip,
+.mk-skip:focus {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
 }
 
 /* header: Nextra's navbar sizes; tighter on a phone so it fits 320px */
@@ -306,9 +316,6 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
 }
 .mk-section:last-of-type {
   @apply border-b-0;
-}
-.mk-section [id] {
-  scroll-margin-top: 5rem;
 }
 .mk-section > h2.mk-title {
   @apply mt-0 text-3xl font-semibold tracking-tight;

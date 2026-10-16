@@ -46,14 +46,17 @@ export default function removeBinding({ object, key, eventOptions, binding }: Re
     destroy.call(node, bindingOptions);
   }
 
+  const extendedEventOptions = {
+    key,
+    node,
+    ...eventOptions
+  };
+
+  // DOM listeners ("click::x") leave the node even when the unbinding is silent
+  triggerOne(object, `_unbind:${key}`, extendedEventOptions);
+
   // fire events
   if (!silent) {
-    const extendedEventOptions = {
-      key,
-      node,
-      ...eventOptions
-    };
-
     triggerOne(object, `unbind:${key}`, extendedEventOptions);
     triggerOne(object, 'unbind', extendedEventOptions);
   }

@@ -11,7 +11,7 @@
     <h4>Matreshka.js router</h4>
     <p>
       The first row is bound to <code>location.hash</code> (<code>#!/a/b/c/</code>), the second one to the path through
-      the History API (<code>/d/e/f/</code>). Type into a field and watch the address bar, or use the back button.
+      the History API (<code>/examples/router/d/e/f/</code>). Type into a field and watch the address bar, or use the back button.
     </p>
     <div class="row">
       <div class="one-third column">
@@ -57,7 +57,8 @@
           }, {}, { getValueOnBind: false });
 
         Matreshka.initRouter(this, '/a/b/c/');
-        Matreshka.initRouter(this, '/d/e/f/', 'history');
+        // the first two parts are the demo's own path, /examples/router/; * keeps them as they are
+        Matreshka.initRouter(this, '/*/*/d/e/f/', 'history');
       }
     };
   </script>

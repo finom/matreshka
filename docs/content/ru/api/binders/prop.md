@@ -15,10 +15,6 @@ importance: 2
 import { binders } from 'matreshka';
 
 const { prop } = binders;
-// или
-import { binders } from 'matreshka';
-
-const { prop } = binders;
 ```
 
 ```js
@@ -54,7 +50,7 @@ this.disabled = false;
 **Использование отображающей функции**
 
 ```js
-this.bindNode('myProp', '.my-node'
+this.bindNode('myProp', '.my-node',
     Matreshka.binders.prop('foo', value => `Hello, ${value}`));
 
 this.myProp = 'World'; // свойство елемента foo имеет значение "Hello, World"

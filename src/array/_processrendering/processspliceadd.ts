@@ -27,6 +27,17 @@ export default function processSpliceAdd({ self, selfDef, eventOptions, containe
 
   forEach(added, (item) => {
     if (item && typeof item === 'object') {
+      // an item the same splice removes keeps its node, which only moves
+      const kept = eventOptions.removed?.includes(item) && getAlreadyRendered({ item, selfDef });
+      if (kept) {
+        if (nextNode) {
+          container.insertBefore(kept, nextNode);
+        } else {
+          container.appendChild(kept);
+        }
+        return;
+      }
+
       // throw an error if node of an item is alread rendered
       checkAlreadyRendered({
         item,

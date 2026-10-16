@@ -10,7 +10,8 @@ export default function updateObject(instance: AnyObject, data: any): AnyObject 
     instance.recreate(data);
   } else if (instance.isMatreshkaObject) {
     // QUESTION: Is it OK to just extend but not replace instance data?
-    instance.setData(data);
+    // an instance as data gives its data keys only, not its own `nodes` and `$nodes`
+    instance.setData(data?.isMatreshkaObject ? Object.fromEntries(data.entries()) : data);
   } else {
     forOwn(data, (value, key) => {
       instance[key] = value;

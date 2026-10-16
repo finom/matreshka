@@ -3,6 +3,7 @@ import unbindNode from './unbindnode/index.js';
 import triggerOne from './trigger/_triggerone.js';
 import removeListener from './off/_removelistener.js';
 import defs from './_core/defs.js';
+import deepBindings from './bindnode/_deepbindings.js';
 import checkObjectType from './_helpers/checkobjecttype.js';
 import matreshkaError from './_helpers/matreshkaerror.js';
 import forEach from './_helpers/foreach.js';
@@ -37,16 +38,26 @@ export default function remove(this: any, object: any, givenKey: any, eventOptio
     const props = def?.props;
     const propDef = props?.[key];
 
-    // if no object definition then simply delete the property
+    // a property Matreshka doesn't track is simply deleted, and still announced
     if (!propDef) {
+      const existed = Object.hasOwn(object, key);
+      const value = object[key];
       delete object[key];
+      if (def && existed && !silent) {
+        const extendedEventOptions = { key, value, ...eventOptions };
+        triggerOne(object, 'delete', extendedEventOptions);
+        triggerOne(object, `delete:${key}`, extendedEventOptions);
+      }
       continue;
     }
 
     const { value } = propDef;
 
-    // remove all bindings
+    // remove all bindings, deep ones under the key ("a.b" for "a") too
     unbindNode(object, key);
+    forEach(deepBindings.get(object)?.filter(({ deepPath }) => deepPath[0] === key) ?? [], (deepBinding) =>
+      unbindNode(object, deepBinding.key)
+    );
 
     // undelegate delegated and tree listeners (a.b@event, calc on "a.b") from the removed value
     // (unless another property still holds it: delegated listeners on one object are shared)

@@ -9,7 +9,7 @@ import type { BindingItem, BindNodeOptions, KeyNodeMap, NodeInput } from '../bin
 import type { CalcDefinition, CalcEventOptions, CalcHandler, CalcSource } from '../calc/types.js';
 import type { InstantiatedClass, InstantiateUpdateFunction } from '../instantiate.js';
 import type * as universalMethods from './_universalmethods.js';
-import type * as bindersModule from '../binders/index.js';
+import type { Binders } from '../binders/index.js';
 import type defaultBinders from '../defaultbinders.js';
 import type lookForBinder from '../lookforbinder.js';
 import type parserBrackets from '../parserbrackets.js';
@@ -128,7 +128,7 @@ export interface MatreshkaStatics {
   mediate: typeof universalMethods.mediate;
 
   Class: typeof Class;
-  binders: typeof bindersModule;
+  binders: Binders;
   defaultBinders: typeof defaultBinders;
   lookForBinder: typeof lookForBinder;
   parserBrackets: typeof parserBrackets;

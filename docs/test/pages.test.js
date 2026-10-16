@@ -76,6 +76,16 @@ describe('docs content', () => {
       }
     }
   });
+  // the binder pages once showed the same import twice, which redeclares `binders`
+  it('shows no code block that imports the same name twice', () => {
+    for (const { file, md } of pages) {
+      for (const [, code] of md.matchAll(/^```js\n([\s\S]*?)^```/gm)) {
+        const lines = code.split('\n').filter((line) => /^import /.test(line));
+        expect(new Set(lines).size, `${file}: ${lines.join(' | ')}`).toBe(lines.length);
+      }
+    }
+  });
+
   // 3.0 has three entry points and named exports; the 2.x pages imported deep paths (`matreshka/bindnode`).
   it('imports only what the package exports', () => {
     const root = path.join(import.meta.dirname, '..', '..');

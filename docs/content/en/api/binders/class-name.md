@@ -15,10 +15,6 @@ importance: 2
 import { binders } from 'matreshka';
 
 const { className } = binders;
-// or
-import { binders } from 'matreshka';
-
-const { className } = binders;
 ```
 
 ```js

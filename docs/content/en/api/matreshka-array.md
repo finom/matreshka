@@ -162,7 +162,7 @@ const MyClass = Matreshka.Class({
 });
 ```
 
-## Members
+## Methods and properties
 
 - [`METHOD`](/api/matreshka-array/method/) – Any method from ``Array.prototype``
 - [`METHOD_`](/api/matreshka-array/method-silent/) – Any method from ``Array.prototype`` with the possibility of passing event object

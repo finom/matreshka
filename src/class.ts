@@ -1,6 +1,5 @@
 import forEach from './_helpers/foreach.js';
 import forOwn from './_helpers/forown.js';
-import assign from './_helpers/assign.js';
 
 // static methods and properties of classes will be hidden under Symbol('staticNames')
 const staticNamesProperty = Symbol('staticNames');
@@ -97,18 +96,15 @@ const Class = function Class(this: any, prototype: ClassPrototype, staticProps?:
   const proto = Object.create(Parent ? Parent.prototype : {});
   const parentStaticNames = Parent ? Parent[staticNamesProperty] : undefined;
 
-  assign(proto, prototype);
+  // descriptors, so getters and setters stay accessors; "extends" is an option, not a member
+  const { constructor: _constructor, extends: _extends, ...members } = Object.getOwnPropertyDescriptors(prototype);
+  Object.defineProperties(proto, members);
   // non-enumerable, as in ES classes
   Object.defineProperty(proto, 'constructor', {
     value: Constructor,
     writable: true,
     configurable: true,
     enumerable: false
-  });
-
-  // allow to pass symbols as prototype properties
-  forEach(getOwnPropertySymbols(prototype), (symbol) => {
-    proto[symbol] = prototype[symbol];
   });
 
   // inherit staric properties of a parent
