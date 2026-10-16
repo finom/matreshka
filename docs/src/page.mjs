@@ -35,6 +35,7 @@ function menu(sections, ui, lang) {
     )}</span>${importance ? circles(importance, ui.levels[importance - 1]) : ''}</a></li>`;
   const start = sections.filter(({ group }) => group === 'start');
   const info = sections.filter(({ group }) => group === 'info');
+  const help = escapeHtml(sections.find(({ id }) => id === 'website-instructions').menuTitle);
   // a class's members under the old menu's headings; a heading takes the lowest level of its members
   const items = (list) =>
     list
@@ -49,7 +50,11 @@ function menu(sections, ui, lang) {
       const list = sections.filter(({ group }) => group === dir);
       // a group takes the lowest level of its members, so a level that hides them all hides the group too
       const level = Math.min(...list.map(({ importance }) => importance));
-      return `<details open data-group="${dir}" data-importance="${level}"><summary>${ui.groups[dir]}</summary><ul>${items(list)}</ul></details>`;
+      // a group's own page opens from its header instead of repeating the name as the first item
+      const [first, ...rest] = list;
+      const own = first.menuTitle === ui.groups[dir];
+      const summary = own ? `<a href="#${first.id}"><span>${ui.groups[dir]}</span></a>` : ui.groups[dir];
+      return `<details open data-group="${dir}" data-importance="${level}"><summary>${summary}</summary><ul>${items(own ? rest : list)}</ul></details>`;
     })
     .join('');
   const others = LANGS.filter(({ code }) => code !== lang)
@@ -66,7 +71,7 @@ function menu(sections, ui, lang) {
 <p class="mk-nav-heading">${ui.start}</p>
 <ul>${start.map(link).join('')}</ul>
 <p class="mk-nav-heading">${ui.api}</p>
-<div class="mk-levels"><div class="mk-levels-head"><a href="#website-instructions" title="${ui.levelsHelp}" aria-label="${ui.levelsHelp}">?</a></div><div class="mk-segmented" role="group" aria-label="${ui.api}">${[
+<div class="mk-levels"><div class="mk-levels-head"><span>${ui.levelsLabel}</span><a href="#website-instructions" title="${help}" aria-label="${help}">?</a></div><div class="mk-segmented" role="group" aria-label="${ui.levelsLabel}">${[
     1, 2, 3
   ]
     .map(

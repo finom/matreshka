@@ -31,7 +31,10 @@ describe.each(rendered)('the $code page', ({ code, prefix, sections, html, ids, 
   it('has a section for every file and a menu link to each', () => {
     for (const { id, importance } of sections) {
       expect(ids.has(id), id).toBe(true);
-      expect(html, id).toContain(`<li data-importance="${importance}"><a href="#${id}"`);
+      // a member is an item; a group's own page opens from the group header
+      const item = html.includes(`<li data-importance="${importance}"><a href="#${id}"`);
+      const header = html.includes(`<summary><a href="#${id}">`);
+      expect(item || header, id).toBe(true);
     }
   });
 
@@ -100,7 +103,17 @@ describe.each(rendered)('the $code page', ({ code, prefix, sections, html, ids, 
     expect(groups.length).toBe(Object.keys(UI[code].groups).length);
     for (const [, groupLevel, body] of groups) {
       const levels = Array.from(body.matchAll(/<li data-importance="(\d)"><a/g), ([, level]) => Number(level));
+      const header = /^<summary><a href="#([^"]+)">/.exec(body);
+      if (header) levels.push(sections.find(({ id }) => id === header[1]).importance);
       for (const level of [1, 2, 3]) expect(Number(groupLevel) <= level).toBe(levels.some((l) => l <= level));
+    }
+  });
+
+  it('names a group once: its own page opens from the header, not from a first item of the same name', () => {
+    for (const [, name, body] of html.matchAll(
+      /<summary>(?:<a [^>]*><span>)?([^<]+)[\s\S]*?<\/summary><ul>([\s\S]*?)<\/ul>/g
+    )) {
+      expect(body, name).not.toContain(`<span>${name}</span>`);
     }
   });
 

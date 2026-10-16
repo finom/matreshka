@@ -6,6 +6,8 @@
   const data = JSON.parse(document.getElementById('mk-data').textContent);
   const sections = Array.from(document.querySelectorAll('.mk-section'));
   const menuLinks = Array.from(document.querySelectorAll('.mk-nav li a[href^="#"]'));
+  // the menu's items and the group headers that open a group's own page, in page order
+  const allLinks = Array.from(document.querySelectorAll('.mk-nav li a[href^="#"], .mk-nav summary a'));
   const search = document.getElementById('mk-search');
   // the class bindings write at once: a link to a hidden section shows it before the page scrolls to it
   const now = { debounceSetValue: false };
@@ -110,10 +112,8 @@
   bindNode(state, 'query', '.mk-nav', binders.className('mk-searching', true), now);
   on(state, 'change:query', () => {
     const words = state.query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    for (const link of menuLinks) {
-      const text = link.textContent.toLowerCase();
-      link.parentElement.hidden = !words.every((word) => text.includes(word));
-    }
+    const matches = (link) => words.every((word) => link.textContent.toLowerCase().includes(word));
+    for (const link of menuLinks) link.parentElement.hidden = !matches(link);
     // a heading stays while one of its members matches, so a method and its static twin stay apart
     for (const heading of document.querySelectorAll('.mk-nav-sub')) {
       let next = heading.nextElementSibling;
@@ -122,13 +122,14 @@
       heading.hidden = empty;
     }
     for (const group of document.querySelectorAll('.mk-nav details, .mk-nav ul')) {
-      group.hidden = !group.querySelector('li:not([hidden], .mk-nav-sub)');
+      const header = group.querySelector(':scope > summary a');
+      group.hidden = !group.querySelector('li:not([hidden], .mk-nav-sub)') && !(header && matches(header));
     }
   });
   search.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') state.query = '';
     if (event.key !== 'Enter') return;
-    const first = menuLinks.find((link) => !link.parentElement.hidden);
+    const first = allLinks.find((link) => !link.closest('[hidden]'));
     if (first) {
       go(first.getAttribute('href'));
       search.blur();
@@ -151,7 +152,7 @@
   // the open section: marked in the menu, the only one shown in One by one mode
   on(state, 'change:current', () => {
     for (const section of sections) section.classList.toggle('mk-current', section.id === state.current);
-    for (const link of menuLinks) {
+    for (const link of allLinks) {
       if (link.getAttribute('href') === `#${state.current}`) {
         link.setAttribute('aria-current', 'true');
         // keep it in the menu's view without scrolling the page
@@ -219,7 +220,7 @@
     if (location.hash === hash) open(true, true);
     else location.hash = hash;
   }
-  for (const link of menuLinks) {
+  for (const link of allLinks) {
     link.addEventListener('click', (event) => {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.button) return;
       event.preventDefault();
