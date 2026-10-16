@@ -1,0 +1,107 @@
+---
+title: "Matreshka#set"
+sidebarTitle: "set"
+description: "Matreshka#set: Sets a property value allowing to pass event options object as the third argument"
+importance: 1
+---
+
+# Matreshka#set
+
+**Method**
+
+```js
+Matreshka#set(key, value, [eventOptions])
+```
+
+Sets a property value allowing to pass event options object as the third argument
+
+The list of the supported flags:
++ ``silent`` -  do not call the ``change`` and ``change:KEY`` events
++ ``silentHTML`` - do not change states of bound HTML nodes
++ ``force`` - call the ``change`` and ``change:KEY`` events even though the property value has not been changed
++ ``forceHTML`` - change a state of bound element even though the property value has not been changed. This option is usable if the bound element has been rendered after the binding (for example, some ``option`` tags have been added to ``select`` tag)
++ ``skipMediator`` - prevents the property transformation by a mediator (see [`Matreshka#mediate`](/api/matreshka/mediate/))
++ ``skipCalc`` - prevents the work of dependencies created with [`Matreshka#calc`](/api/matreshka/calc/)
+
+> The method has [static alternative](/api/matreshka-static/set/).
+
+**Fires:** `change`, `change:KEY`, `beforechange`, `beforechange:KEY`
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `key` | [`string`](/api/types/string/) | A key |
+| `value` | [`*`](/api/types/any/) | A value |
+| `eventOptions` (optional) | [`eventOptions`](/api/types/event-options/) | Event options |
+
+## Examples
+
+```js
+this.on('change:myKey', evt => {
+	alert(evt.value);
+});
+
+// the same as this['myKey'] = 3
+// or this.myKey = 3
+// alerts 3
+this.set('myKey', 3);
+```
+
+**Using ``eventOptions``**
+
+```js
+this.on('change:myKey', evt => {
+	alert(evt.value);
+});
+
+// handler isn't called
+this.set('myKey', 4, {
+	silent: true
+});
+```
+
+**Passing custom data to a handler**
+
+```js
+this.on('change:myKey', evt => {
+	alert(evt.myCustomFlag);
+});
+
+// alerts 42
+this.set('myKey', 4, {
+	myCustomFlag: 42
+});
+```
+
+## Alternative "key-value" syntax of the Matreshka#set method [#variation-2]
+
+```js
+Matreshka#set(keyValuePairs, [eventOptions])
+```
+
+### Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `keyValuePairs` | [`object`](/api/types/object/) | An object containing key-value pairs |
+| `eventOptions` (optional) | [`eventOptions`](/api/types/event-options/) | An event object |
+
+### Examples
+
+```js
+this.set({
+	myKey1: 1,
+	myKey2: 2
+});
+```
+
+**Passing  ``eventOptions`` as second argument**
+
+```js
+this.set({
+	myKey: 3
+}, {
+	myFlag: 'foo'
+});
+```

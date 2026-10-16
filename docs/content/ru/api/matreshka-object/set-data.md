@@ -1,0 +1,117 @@
+---
+title: "Matreshka.Object#setData"
+sidebarTitle: "setData"
+description: "Matreshka.Object#setData: Устанавливает значение свойству и добавляет его имя в список имен, отвечающих за данные"
+importance: 1
+---
+
+# Matreshka.Object#setData
+
+**Метод**
+
+```js
+Matreshka.Object#setData(key, value, [eventOptions]) → matreshkaObject
+```
+
+Устанавливает значение свойству и добавляет его имя в список имен, отвечающих за данные
+
+Синоним: `Matreshka.Object#jset`
+
+Этот метод делает две вещи:
+
+1. Устанавливает заданное значение заданному свойству.
+
+2. Добавляет ключ свойства в список данных, что делает свойство доступным для использования в методах [`Matreshka.Object#each`](/ru/api/matreshka-object/each/), [`Matreshka.Object#keys`](/ru/api/matreshka-object/keys/), [`Matreshka.Object#toJSON`](/ru/api/matreshka-object/to-json/)).
+
+> Если передать флаг ``replaceData``, установленный как ``true`` объект события, то остальные свойства будут удалены из списка свойств, отвечающих за данные.
+
+В остальном, метод работает так же, как и [`Matreshka#set`](/ru/api/matreshka/set/).
+
+**Возвращает:** [`matreshkaObject`](/ru/api/types/matreshka-object/) – self
+
+**Генерирует события:** `change`, `change:KEY`, `modify`, `set`
+
+## Аргументы
+
+| Имя | Тип | Описание |
+| --- | --- | --- |
+| `key` | [`string`](/ru/api/types/string/) | Ключ |
+| `value` | [`*`](/ru/api/types/any/) | Значение |
+| `eventOptions` (необязательный) | [`eventOptions`](/ru/api/types/event-options/) | Объект события |
+
+## Ссылки
+
+- [`Matreshka#set`](/ru/api/matreshka/set/)
+
+## Примеры
+
+```js
+this.setData('a', 1).setData('b', 2);
+
+// присваиваем свойству 'c' тройку,
+// но не добавляем ключ 'c' в список ключей, отвечающих за данные
+this.set('c', 3);
+
+this.each((value, key) => {
+	console.log(key, value);
+});
+
+// выводит 'a' 1 и 'b' 2
+
+console.log(this.keys()); // выводит ['a', 'b']
+
+console.log(this.toJSON()); // выводит { a: 1, b: 2 }
+```
+
+**После использования  метода ``setData`` со свойством можно работать, как с обычным свойством**
+
+```js
+this.setData('a', 1).setData('b', 2);
+this.set('a', 3);
+this.b = 4;
+```
+
+**Использование альтернативного имени метода: ``jset``**
+
+```js
+this.jset('a', 1);
+```
+
+## Альтернативный синтаксис метода Matreshka.Object#setData, который принимает объект ключ-значение для установки нескольких свойств сразу [#variation-2]
+
+```js
+Matreshka.Object#setData(keyValuePairs, evtOpts) → matreshkaObject
+```
+
+**Возвращает:** [`matreshkaObject`](/ru/api/types/matreshka-object/) – self
+
+### Аргументы
+
+| Имя | Тип | Описание |
+| --- | --- | --- |
+| `keyValuePairs` | [`object`](/ru/api/types/object/) | Объект ключ-значение |
+| `evtOpts` | [`eventOptions`](/ru/api/types/event-options/) | Объект события |
+
+### Примеры
+
+```js
+this.setData({
+	a: 1,
+	b: 2
+});
+```
+
+**Если передать флаг ``replaceData``, установленный как ``true`` в объект события, то свойства, которые не входят в переданный объект, будут удалены из списка свойств, отвечающих за данные**
+
+```js
+this
+	.addDataKeys(['a', 'b', 'c'])
+	.setData({
+		a: 1,
+		b: 2
+	}, {
+		replaceData: true
+	});
+
+console.log(this.keys()); // ['a', 'b']
+```

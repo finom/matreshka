@@ -1,0 +1,30 @@
+---
+title: "Matreshka.Object#isDataKey"
+sidebarTitle: "isDataKey"
+description: "Matreshka.Object#isDataKey: Перевіряє, чи входить строка до списку імен властивостей, що відповідають за дані"
+importance: 2
+---
+
+# Matreshka.Object#isDataKey
+
+**Метод**
+
+```js
+Matreshka.Object#isDataKey(key) → boolean
+```
+
+Перевіряє, чи входить строка до списку імен властивостей, що відповідають за дані
+
+**Повертає:** [`boolean`](/ua/api/types/boolean/) – результат перевірки
+
+## Аргументи
+
+| Ім'я | Тип | Опис |
+| --- | --- | --- |
+| `key` | [`string`](/ua/api/types/string/) |  |
+
+## Приклади
+
+```js
+console.log(this.isDataKey('a'));
+```

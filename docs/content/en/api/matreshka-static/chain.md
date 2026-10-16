@@ -1,0 +1,49 @@
+---
+title: "Matreshka.chain"
+sidebarTitle: "chain"
+description: "Matreshka.chain: Allows chained calls of universal methods"
+importance: 2
+---
+
+# Matreshka.chain
+
+**Method** · Since 2.0
+
+**Import:**
+
+```js
+import { chain } from 'matreshka';
+```
+
+```js
+Matreshka.chain(object) → object
+```
+
+Allows chained calls of universal methods
+
+The function accepts any object and returns an instance of externally inaccessible class which adopts universal methods allowing them to be called in a chain to change given object.
+
+> Universal method is a method which exist at [`Matreshka`](/api/matreshka/) prototype and have a static alternative (e. g. [`Matreshka#bindNode`](/api/matreshka/bind-node/) and [`Matreshka.bindNode`](/api/matreshka-static/bind-node/))
+
+**Returns:** [`object`](/api/types/object/) – An instance of the class which adopts universal methods
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `object` | [`object`](/api/types/object/) \| [`function`](/api/types/function/) | An object |
+
+## Examples
+
+```js
+const object = {};
+Matreshka.chain(object)
+    .calc('a', 'b', b => b * 2)
+    .set('b', 3)
+    .bindNode('c', '.node');
+
+// the same as
+// Matreshka.calc(object, 'a', 'b', b => b * 2)
+// Matreshka.set(object, 'b', 3)
+// Matreshka.bindNode(object, 'c', '.node');
+```

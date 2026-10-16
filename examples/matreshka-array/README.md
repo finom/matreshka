@@ -2,7 +2,7 @@
 
 ![](assets/table-screenshot.png)
 
-This example explains a purpose of [Matreshka.Array](https://matreshka.js.org/api/matreshka-array/). Before reading you need to be familiar with ``Matreshka.Object``. A short tutorial about the usage of ``Matreshka.Object``  [lives there](https://github.com/finom/matreshka/tree/main/examples/matreshka-object).
+This example explains a purpose of [Matreshka.Array](https://matreshka.js.org/#Matreshka.Array). Before reading you need to be familiar with ``Matreshka.Object``. A short tutorial about the usage of ``Matreshka.Object``  [lives there](https://github.com/finom/matreshka/tree/main/examples/matreshka-object).
 
 Let’s say the task is to display a list of some people as a table. So as not to make the example more complicated, let’s place the prepared data into ``data`` variable.
 
@@ -90,7 +90,7 @@ While creating the instance class:
 
 - ``sandbox`` property is bound to ``.users`` element creating a sandbox (class boundary effect on HTML).
 - ``container`` property is bound to ``:sandbox tbody`` element determining HTML node where the rendered array items will be inserted into.
-- Add the passed data to the array with the help of [recreate](https://matreshka.js.org/api/matreshka-array/recreate/) method.
+- Add the passed data to the array with the help of [recreate](https://matreshka.js.org/#Matreshka.Array-recreate) method.
 
 That's good enough. But we're going to use all the awesomeness of ECMAScript 2015 and we're going to use ``super`` call to fill the collection with passed data.
 
@@ -105,7 +105,7 @@ constructor(data) {
 - Add new items to the collecton via ``super`` call (which does the same as ``Matreshka.Array.apply(this, data)`` would do).
 - ``sandbox`` property is bound to ``.users`` element creating a sandbox.
 - ``container`` property is bound to ``:sandbox tbody`` element.
-- Call [rerender](https://matreshka.js.org/api/matreshka-array/rerender/) method to render the collection (since we've bound ``container`` later than added new items).
+- Call [rerender](https://matreshka.js.org/#Matreshka.Array-rerender) method to render the collection (since we've bound ``container`` later than added new items).
 
 Now declare a "model". ``User`` class is inherited from the familiar ``Matreshka.Object``.
 
@@ -115,7 +115,7 @@ class User extends Matreshka.Object {
 }
 ```
 
-Set in the data passed to the constructor with the help of [setData](https://matreshka.js.org/api/matreshka-object/set-data/) method or, as we always do, set the data via ``super`` call.
+Set in the data passed to the constructor with the help of [setData](https://matreshka.js.org/#Matreshka.Object-setData) method or, as we always do, set the data via ``super`` call.
 
 ```js
 super(data);
@@ -133,7 +133,7 @@ this.on('render', () => {
 });
 ```
 
-There is also an option to listen for ``"render"`` event via creating a special virtual method for a model called ``onRender`` (check out [the doc](https://matreshka.js.org/api/matreshka-array/on-item-render/)) but for demonstrational purposes let's simply use [on method](https://matreshka.js.org/api/matreshka/on/) call.
+There is also an option to listen for ``"render"`` event via creating a special virtual method for a model called ``onRender`` (check out [the doc](https://matreshka.js.org/#Matreshka.Array-onItemRender)) but for demonstrational purposes let's simply use [on method](https://matreshka.js.org/#Matreshka-on) call.
 
 In the end, create the instance of ``Users`` class, having passed the data as an argument.
 
@@ -168,7 +168,7 @@ users[1].email = "mail@example.com";
 
 As you see, you don’t have to watch changes in the collection manually, the framework catches data changes and alters DOM by itself. It’s incredibly convenient.
 
-Remember, ``Matreshka.Array`` supports its own set of events. You can catch any change in the collection: adding, deleting, re-sorting of elements with the help of [on method](https://matreshka.js.org/api/matreshka/on/).
+Remember, ``Matreshka.Array`` supports its own set of events. You can catch any change in the collection: adding, deleting, re-sorting of elements with the help of [on method](https://matreshka.js.org/#Matreshka-on).
 
 ```js
 users.on("addone", evt => {
@@ -183,7 +183,7 @@ users.push({
 
 -------------------------------
 
-As it's said at [the documentation for itemRenderer](https://matreshka.js.org/api/matreshka-array/item-renderer/) you're able to define the item renderer on ``Model`` class level. This is the answer on a frequently asked question "why should I declare a renderer on the collection level". Instead of using ``itemRenderer`` you can define ``renderer`` property for the ``Model`` class.
+As it's said at [the documentation for itemRenderer](https://matreshka.js.org/#Matreshka.Array-itemRenderer) you're able to define the item renderer on ``Model`` class level. This is the answer on a frequently asked question "why should I declare a renderer on the collection level". Instead of using ``itemRenderer`` you can define ``renderer`` property for the ``Model`` class.
 
 ```js
 class User extends Matreshka.Object {
@@ -220,7 +220,7 @@ class Users extends Matreshka.Array {
 }
 ```
 
-Also you can use [a bindings parser](https://matreshka.js.org/api/matreshka/parse-bindings/) which is turned on by default at ``Matreshka.Array`` class and declare the item renderer inside the class and don't define any templates at HTML code.
+Also you can use [a bindings parser](https://matreshka.js.org/#Matreshka-parseBindings) which is turned on by default at ``Matreshka.Array`` class and declare the item renderer inside the class and don't define any templates at HTML code.
 
 ```js
 class Users extends Matreshka.Array {

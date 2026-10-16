@@ -1,0 +1,105 @@
+---
+title: "Matreshka#on"
+sidebarTitle: "on"
+description: "Matreshka#on: Добавляет обработчик события. Matreshka.js справочник API"
+importance: 1
+---
+
+# Matreshka#on
+
+**Метод** · Начиная с версии 1.1
+
+```js
+Matreshka#on(names, callback, [triggerOnInit=false], [context]) → object
+```
+
+Добавляет обработчик события
+
+Метод [`Matreshka#on`](/ru/api/matreshka/on/) добавляет обработчик события для экземпляра класса ``Matreshka``. Полный список возможных событий с описанием см. здесь: [`eventNames`](/ru/api/types/event-names/).
+
+> Обратите внимание, что у метода есть [статичный аналог](/ru/api/matreshka-static/on/), который работает в точности так же, но принимает любой объект в качестве первого аргумента, cдвигая остальные аргументы вправо.
+```js
+import { on } from 'matreshka';
+const object = {};
+on(object, names, callback, triggerOnInit, context);
+// вместо this.on(names, callback, triggerOnInit, context);
+```
+
+Повторное добавление того же обработчика с тем же контекстом для того же события ничего не меняет. Для DOM событий (``click::x``) действует то же правило.
+
+**Возвращает:** [`object`](/ru/api/types/object/) – self
+
+**Генерирует события:** `addevent`, `addevent:NAME`
+
+## Аргументы
+
+| Имя | По умолчанию | Тип | Описание |
+| --- | --- | --- | --- |
+| `names` |  | [`eventNames`](/ru/api/types/event-names/) | Имя события или несколько имен, разделенных пробелом  (например, ``"change:x ajaxcomplete change:y"``) |
+| `callback` |  | [`eventHandler`](/ru/api/types/event-handler/) | Функция, которая вызывается по событию |
+| `triggerOnInit` (необязательный) | `false` | [`boolean`](/ru/api/types/boolean/) | Если аргумент ``triggerOnInit`` равен ``true``, то обработчик будет вызван немедленно после инициализации. |
+| `context` (необязательный) |  | [`object`](/ru/api/types/object/) | Контекст обработчика. Другими словами, ``this`` при вызове ``callback`` |
+
+## Ссылки
+
+- [`Matreshka#onDebounce`](/ru/api/matreshka/on-debounce/)
+- [`Matreshka#once`](/ru/api/matreshka/once/)
+- [`Matreshka#off`](/ru/api/matreshka/off/)
+- [`Matreshka#trigger`](/ru/api/matreshka/trigger/)
+
+## Примеры
+
+```js
+this.on('foo', () => {
+	alert('Custom Event is fired');
+});
+
+this.trigger('foo');
+```
+
+**Передача контекста**
+
+```js
+this.on('foo', function() {
+	alert(this.a); // 5
+}, { a: 5 });
+
+this.trigger('foo', 'Hello world');
+```
+
+**Вызов обработчика сразу после инициализации**
+
+```js
+//Выводит на экран "bar" сиюсекундно и ждет события "foo"
+this.on('foo', () => {
+	alert('bar');
+}, true);
+```
+
+## Альтернативный синтаксис: пары "событие-обработчик" [#variation-2]
+
+```js
+Matreshka#on(evtnameHandlerObject, [triggerOnInit=false], [context]) → object
+```
+
+В метод [`Matreshka#on`](/ru/api/matreshka/on/) можно передать объект с парами событие-обработчик, чтобы избежать многократного вызова метода и сократить код.
+
+**Возвращает:** [`object`](/ru/api/types/object/) – self
+
+### Аргументы
+
+| Имя | По умолчанию | Тип | Описание |
+| --- | --- | --- | --- |
+| `evtnameHandlerObject` |  | [`object`](/ru/api/types/object/) | Объект с событиями |
+| `triggerOnInit` (необязательный) | `false` | [`boolean`](/ru/api/types/boolean/) | Если аргумент ``triggerOnInit`` равен ``true``, то обработчики будут вызван немедленно после инициализации |
+| `context` (необязательный) |  | [`object`](/ru/api/types/object/) | Контекст обработчика |
+
+### Примеры
+
+```js
+this.on({
+	'custom': evt => ...,
+	'click::x': evt => ...,
+	'change:y': evt => ...,
+});
+```

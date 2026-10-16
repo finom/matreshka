@@ -1,0 +1,39 @@
+---
+title: "Matreshka.binders.input"
+sidebarTitle: "input"
+description: "Matreshka.binders.input: Returns a binder which binds an object property to an input element value. It is not obligatory to use the binder directly because it…"
+importance: 3
+---
+
+# Matreshka.binders.input
+
+**Method** · Since 0.3
+
+**Import:**
+
+```js
+import { binders } from 'matreshka';
+// binders.input === Matreshka.binders.input
+```
+
+```js
+Matreshka.binders.input([type]) → binder
+```
+
+Returns a binder which binds an object property to an ``input`` element value. It is not obligatory to use the binder directly because it is included in the [`Matreshka.defaultBinders`](/api/matreshka-static/default-binders/) list.
+
+For text-like inputs, ``undefined`` and ``null`` show as an empty string. For a ``radio`` input, a checked radio sets the property to its ``value``; an unchecked radio doesn't change the property.
+
+**Returns:** [`binder`](/api/types/binder/)
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `type` (optional) | [`string`](/api/types/string/) | Input type |
+
+## Examples
+
+```js
+this.bindNode('myKey', '.my-input', Matreshka.binders.input('range'));
+```

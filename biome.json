@@ -8,10 +8,8 @@
       "*.mjs",
       "*.ts",
       "docs/**/*.{js,jsx,ts,tsx,mjs}",
-      "!docs/.next",
       "!docs/out",
-      "!docs/public",
-      "!**/next-env.d.ts"
+      "!docs/public"
     ]
   },
   "formatter": {

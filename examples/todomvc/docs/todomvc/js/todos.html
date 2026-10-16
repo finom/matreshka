@@ -70,7 +70,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p><a href="https://matreshka.js.org/api/matreshka-array/model/">Model</a> defines the class of items which will be included into the collection. In this case, the items of the collection will be instances of the <a href="todo.html">Todo</a> class.</p>
+              <p><a href="https://matreshka.js.org/#Matreshka.Array-Model">Model</a> defines the class of items which will be included into the collection. In this case, the items of the collection will be instances of the <a href="todo.html">Todo</a> class.</p>
 
             </div>
             
@@ -87,7 +87,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Defining the <a href="https://matreshka.js.org/api/matreshka-array/item-renderer/">itemRenderer</a> property, you create a renderer for every added item of the array (see HTML code).</p>
+              <p>Defining the <a href="https://matreshka.js.org/#Matreshka.Array-itemRenderer">itemRenderer</a> property, you create a renderer for every added item of the array (see HTML code).</p>
 
             </div>
             
@@ -123,7 +123,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>The <code>&quot;bindings&quot;</code> method adds data bindings between the properties of the class instance and DOM nodes. The <code>&quot;events&quot;</code> method, as you may guess, adds the event handlers. These names of the methods are not special; they group different actions for the code purity. After their launching, take the data out of the local storage and restore the todo items from it using <a href="https://matreshka.js.org/api/matreshka-array/recreate/">recreate</a> method. After all we initialize <a href="https://github.com/finom/matreshka/tree/main/packages/router">a router</a>.</p>
+              <p>The <code>&quot;bindings&quot;</code> method adds data bindings between the properties of the class instance and DOM nodes. The <code>&quot;events&quot;</code> method, as you may guess, adds the event handlers. These names of the methods are not special; they group different actions for the code purity. After their launching, take the data out of the local storage and restore the todo items from it using <a href="https://matreshka.js.org/#Matreshka.Array-recreate">recreate</a> method. After all we initialize <a href="https://github.com/finom/matreshka/tree/main/packages/router">a router</a>.</p>
 
             </div>
             
@@ -185,7 +185,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>The next call of <a href="https://matreshka.js.org/api/matreshka/bind-node/">bindNode</a> makes the visibility of HTML nodes dependable on the values of corresponding properties (if the value passes a non-strict test for equality <code>true</code>, the element will be shown, otherwise - hidden).</p>
+              <p>The next call of <a href="https://matreshka.js.org/#Matreshka-bindNode">bindNode</a> makes the visibility of HTML nodes dependable on the values of corresponding properties (if the value passes a non-strict test for equality <code>true</code>, the element will be shown, otherwise - hidden).</p>
 
             </div>
             
@@ -250,7 +250,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Add an event handler to the changing of the <code>&quot;JSON&quot;</code> property which keeps the representation of the todo list as JSON string. In order to access a hard drive as rare as possible (because it works slower than RAM), the <a href="https://matreshka.js.org/api/matreshka/on-debounce/">onDebounce</a> method is used, it prevents a multiple invocation of a handler over a period of time.</p>
+              <p>Add an event handler to the changing of the <code>&quot;JSON&quot;</code> property which keeps the representation of the todo list as JSON string. In order to access a hard drive as rare as possible (because it works slower than RAM), the <a href="https://matreshka.js.org/#Matreshka-onDebounce">onDebounce</a> method is used, it prevents a multiple invocation of a handler over a period of time.</p>
 
             </div>
             
@@ -317,7 +317,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>A mouse click on the <code>&#39;#clear-completed&#39;</code> node deletes all the performed items using the <a href="https://matreshka.js.org/api/matreshka-array/pull/">pull</a> method.</p>
+              <p>A mouse click on the <code>&#39;#clear-completed&#39;</code> node deletes all the performed items using the <a href="https://matreshka.js.org/#Matreshka.Array-pull">pull</a> method.</p>
 
             </div>
             
@@ -376,7 +376,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>The next strings control how the visibility of the items from the todo list is controlled by <code>location.hash</code> (or the <code>&quot;state&quot;</code> property). This part can be implemented in several ways. The way of adding dependencies of one property on the others using the <a href="https://matreshka.js.org/api/matreshka/calc/">calc</a> method has been chosen here. What happens here? We listen to the <code>&quot;addone&quot;</code> event which fires when a new item is added to the todo list. The event handler receives the object (<code>evt</code>) as an argument containing the <code>&quot;addedItem&quot;</code> property which is the added item. We add the dependency of the <code>&quot;visible&quot;</code> property for the added item on <code>todos.state</code> and on the own <code>&quot;completed&quot;</code> property.</p>
+              <p>The next strings control how the visibility of the items from the todo list is controlled by <code>location.hash</code> (or the <code>&quot;state&quot;</code> property). This part can be implemented in several ways. The way of adding dependencies of one property on the others using the <a href="https://matreshka.js.org/#Matreshka-calc">calc</a> method has been chosen here. What happens here? We listen to the <code>&quot;addone&quot;</code> event which fires when a new item is added to the todo list. The event handler receives the object (<code>evt</code>) as an argument containing the <code>&quot;addedItem&quot;</code> property which is the added item. We add the dependency of the <code>&quot;visible&quot;</code> property for the added item on <code>todos.state</code> and on the own <code>&quot;completed&quot;</code> property.</p>
 
             </div>
             

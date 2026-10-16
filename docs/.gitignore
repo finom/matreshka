@@ -1,9 +1,3 @@
-.next/
 out/
-next-env.d.ts
-# copied by scripts/copy-static.mjs
-public/matreshka*.js
-public/matreshka*.js.map
-public/examples/
-public/_pagefind/
+# written by scripts/coverage-badge.mjs in CI
 public/badges/

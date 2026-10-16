@@ -1,10 +1,10 @@
 // **todos.js** - is the largest file in this app which contains most of logic. In bigger projects it is better to divide applications into smaller parts.
 class Todos extends Matreshka.Array {
-    // [Model](https://matreshka.js.org/api/matreshka-array/model/) defines the class of items which will be included into the collection. In this case, the items of the collection will be instances of the [Todo](todo.html) class.
+    // [Model](https://matreshka.js.org/#Matreshka.Array-Model) defines the class of items which will be included into the collection. In this case, the items of the collection will be instances of the [Todo](todo.html) class.
     get Model() {
         return Todo;
     }
-    // Defining the [itemRenderer](https://matreshka.js.org/api/matreshka-array/item-renderer/) property, you create a renderer for every added item of the array (see HTML code).
+    // Defining the [itemRenderer](https://matreshka.js.org/#Matreshka.Array-itemRenderer) property, you create a renderer for every added item of the array (see HTML code).
     get itemRenderer() {
         return '#todo_item_template';
     }
@@ -14,7 +14,7 @@ class Todos extends Matreshka.Array {
         this
             // Add the dependency of the ``"leftLength"`` property on ``"length"`` and ``"completedLength"`` ones, and use their difference as a value. The application listens to the changes in these properties calculating ``“leftLength"`` on every their changing.
             .calc('leftLength', ['length', 'completedLength'], (length, completedLength) => length - completedLength)
-            // The ``"bindings"`` method adds data bindings between the properties of the class instance and DOM nodes. The ``"events"`` method, as you may guess, adds the event handlers. These names of the methods are not special; they group different actions for the code purity. After their launching, take the data out of the local storage and restore the todo items from it using [recreate](https://matreshka.js.org/api/matreshka-array/recreate/) method. After all we initialize [a router](https://github.com/finom/matreshka/tree/main/packages/router).
+            // The ``"bindings"`` method adds data bindings between the properties of the class instance and DOM nodes. The ``"events"`` method, as you may guess, adds the event handlers. These names of the methods are not special; they group different actions for the code purity. After their launching, take the data out of the local storage and restore the todo items from it using [recreate](https://matreshka.js.org/#Matreshka.Array-recreate) method. After all we initialize [a router](https://github.com/finom/matreshka/tree/main/packages/router).
 
             .bindings()
             .events()
@@ -37,7 +37,7 @@ class Todos extends Matreshka.Array {
                 allCompleted: ':sandbox .toggle-all',
                 clearCompleted: ':sandbox .clear-completed'
             })
-            // The next call of [bindNode](https://matreshka.js.org/api/matreshka/bind-node/) makes the visibility of HTML nodes dependable on the values of corresponding properties (if the value passes a non-strict test for equality ``true``, the element will be shown, otherwise - hidden).
+            // The next call of [bindNode](https://matreshka.js.org/#Matreshka-bindNode) makes the visibility of HTML nodes dependable on the values of corresponding properties (if the value passes a non-strict test for equality ``true``, the element will be shown, otherwise - hidden).
             .bindNode({
                 completedLength: ':bound(clearCompleted)',
                 length: ':bound(main), :bound(footer)'
@@ -63,7 +63,7 @@ class Todos extends Matreshka.Array {
 
     events() {
         return this
-            // Add an event handler to the changing of the ``"JSON"`` property which keeps the representation of the todo list as JSON string. In order to access a hard drive as rare as possible (because it works slower than RAM), the [onDebounce](https://matreshka.js.org/api/matreshka/on-debounce/) method is used, it prevents a multiple invocation of a handler over a period of time.
+            // Add an event handler to the changing of the ``"JSON"`` property which keeps the representation of the todo list as JSON string. In order to access a hard drive as rare as possible (because it works slower than RAM), the [onDebounce](https://matreshka.js.org/#Matreshka-onDebounce) method is used, it prevents a multiple invocation of a handler over a period of time.
             .onDebounce('change:JSON', (evt) => {
                 localStorage['todos-matreshka'] = evt.value;
             })
@@ -91,7 +91,7 @@ class Todos extends Matreshka.Array {
 
                 this.completedLength = evt.value ? this.length : 0;
             })
-            // A mouse click on the ``'#clear-completed'`` node deletes all the performed items using the [pull](https://matreshka.js.org/api/matreshka-array/pull/) method.
+            // A mouse click on the ``'#clear-completed'`` node deletes all the performed items using the [pull](https://matreshka.js.org/#Matreshka.Array-pull) method.
             .on('click::clearCompleted', () => {
                 for (let i = 0; i < this.length; i++) {
                     if (this[i].completed) {
@@ -111,7 +111,7 @@ class Todos extends Matreshka.Array {
             .on('modify *@change:completed change:allCompleted', () => {
                 this.JSON = JSON.stringify(this);
             })
-            // The next strings control how the visibility of the items from the todo list is controlled by ``location.hash`` (or the ``"state"`` property). This part can be implemented in several ways. The way of adding dependencies of one property on the others using the [calc](https://matreshka.js.org/api/matreshka/calc/) method has been chosen here. What happens here? We listen to the ``"addone"`` event which fires when a new item is added to the todo list. The event handler receives the object (``evt``) as an argument containing the ``"addedItem"`` property which is the added item. We add the dependency of the ``"visible"`` property for the added item on ``todos.state`` and on the own ``"completed"`` property.
+            // The next strings control how the visibility of the items from the todo list is controlled by ``location.hash`` (or the ``"state"`` property). This part can be implemented in several ways. The way of adding dependencies of one property on the others using the [calc](https://matreshka.js.org/#Matreshka-calc) method has been chosen here. What happens here? We listen to the ``"addone"`` event which fires when a new item is added to the todo list. The event handler receives the object (``evt``) as an argument containing the ``"addedItem"`` property which is the added item. We add the dependency of the ``"visible"`` property for the added item on ``todos.state`` and on the own ``"completed"`` property.
             .on('addone', (evt) => {
                 const todo = evt.addedItem;
 

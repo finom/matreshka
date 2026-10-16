@@ -1,0 +1,95 @@
+import { describe, expect, it } from 'vitest';
+import oldAnchors from '../src/old-anchors.json' with { type: 'json' };
+import { page } from '../src/page.mjs';
+import { LANGS, oldAnchorsOf, sectionsOf } from '../src/site.mjs';
+
+// The `@oldlink` aliases of the old JSDoc files: the names members had before they were renamed.
+const OLDLINKS = [
+  'Matreshka-linkProps',
+  'Matreshka-linkProps(2)',
+  'Matreshka.linkProps',
+  'Matreshka.setClassFor',
+  'Matreshka.to',
+  'Matreshka.parserBrackers'
+];
+
+const assets = { css: 'style.css', js: 'site.js' };
+const rendered = LANGS.map(({ code, prefix }) => {
+  const sections = sectionsOf(code);
+  const html = page({ lang: code, sections, updated: '2026-10-16', assets });
+  const ids = Array.from(html.matchAll(/ id="([^"]+)"/g), ([, id]) => id);
+  return { code, prefix, sections, html, ids: new Set(ids), idList: ids };
+});
+
+describe.each(rendered)('the $code page', ({ code, prefix, sections, html, ids, idList }) => {
+  it('has one h1 and ids that repeat nowhere', () => {
+    expect(html.match(/<h1[\s>]/g)?.length).toBe(1);
+    expect(idList.length).toBe(ids.size);
+  });
+
+  it('has a section for every file and a menu link to each', () => {
+    for (const { id } of sections) {
+      expect(ids.has(id), id).toBe(true);
+      expect(html, id).toContain(`<li><a href="#${id}"`);
+    }
+  });
+
+  it('points every in-page link at an id on the page', () => {
+    for (const [, id] of html.matchAll(/href="#([^"]*)"/g)) expect(ids.has(id), `#${id}`).toBe(true);
+  });
+
+  // A route the sections had as pages of their own would now be a redirect; links go to the anchor instead.
+  it('links to no old page route', () => {
+    const internal = Array.from(html.matchAll(/href="(\/[^"]*)"/g), ([, href]) => href).filter(
+      (href) =>
+        !/^\/((ua|ru)\/)?$/.test(href) && !/^\/(examples\/|logo\/|[^/]+\.(js|css|svg|png|ico|webmanifest)$)/.test(href)
+    );
+    expect(internal).toEqual([]);
+  });
+
+  it('opens every old #! anchor, @oldlink and guide page on a section', () => {
+    const map = oldAnchorsOf(code, sections);
+    for (const anchor of [
+      ...Object.keys(oldAnchors[code]),
+      ...OLDLINKS,
+      'home',
+      'introduction',
+      'getting-started',
+      'examples',
+      'faq'
+    ]) {
+      expect(ids.has(map[anchor]), `#!${anchor} → ${map[anchor]}`).toBe(true);
+    }
+  });
+
+  it('names its language, canonical URL and the other languages for search engines', () => {
+    const { hreflang } = LANGS.find((lang) => lang.code === code);
+    expect(html).toContain(`<html lang="${hreflang}">`);
+    expect(html).toContain(`<link rel="canonical" href="https://matreshka.js.org${prefix}/">`);
+    for (const lang of LANGS) {
+      expect(html).toContain(
+        `<link rel="alternate" hreflang="${lang.hreflang}" href="https://matreshka.js.org${lang.prefix}/">`
+      );
+    }
+    expect(html).toContain(`<meta property="og:image" content="https://matreshka.js.org/og/${code}.png">`);
+    expect(JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/.exec(html)[1])['@graph']).toHaveLength(2);
+  });
+
+  // Advanced sections are hidden only by the script, so a reader or a crawler without it gets all of them.
+  it('marks the advanced sections for the script, not by hiding them in the HTML', () => {
+    const advanced = sections.filter(({ importance }) => importance === 3);
+    expect(advanced.length).toBeGreaterThan(20);
+    for (const { id } of advanced) expect(html).toContain(`<article id="${id}" class="mk-section" data-importance="3"`);
+    expect(html).not.toMatch(/<article[^>]* hidden/);
+  });
+});
+
+it('maps the same old anchors in every language', () => {
+  expect(Object.keys(oldAnchors.ua).sort()).toEqual(Object.keys(oldAnchors.ru).sort());
+  expect(Object.keys(oldAnchors.en).sort()).toEqual(Object.keys(oldAnchors.ru).sort());
+});
+
+it('gives each language the same section ids', () => {
+  const [en, ...others] = rendered.map(({ sections }) => sections.map(({ id }) => id));
+  for (const ids of others) expect(ids).toEqual(en);
+});

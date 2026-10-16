@@ -1,0 +1,41 @@
+---
+title: "Matreshka.on"
+sidebarTitle: "on"
+description: "Matreshka.on: Добавляет обработчик события. Matreshka.js справочник API"
+importance: 1
+---
+
+# Matreshka.on
+
+**Метод** · Начиная с версии 1.1
+
+**Импорт:**
+
+```js
+import { on } from 'matreshka';
+```
+
+```js
+Matreshka.on() → object
+```
+
+Добавляет обработчик события
+
+Этот статичный метод работает так же, как и [`Matreshka#on`](/ru/api/matreshka/on/) и все его вариации, но принимает в качестве первого аргумента любой JavaScript объект.
+
+**Возвращает:** [`object`](/ru/api/types/object/) – Первый аргумент
+
+## Ссылки
+
+- [`Matreshka#on`](/ru/api/matreshka/on/)
+
+## Примеры
+
+```js
+const object = {};
+Matreshka.on(object, 'foo', evt => {
+	alert(evt.hello);
+});
+
+Matreshka.trigger(object, 'foo', { hello: 'World' });
+```

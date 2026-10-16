@@ -1,0 +1,44 @@
+---
+title: "Matreshka#remove"
+sidebarTitle: "remove"
+description: "Matreshka#remove: Deletes a property. Matreshka.js API reference"
+importance: 3
+---
+
+# Matreshka#remove
+
+**Method**
+
+```js
+Matreshka#remove(key, [eventOptions]) → object
+```
+
+Deletes a property
+
+> The method has [static alternative](/api/matreshka-static/remove/)
+
+**Returns:** [`object`](/api/types/object/) – self
+
+**Fires:** `delete`, `delete:KEY`
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `key` | [`string`](/api/types/string/) | A property name or an array of names to remove |
+| `eventOptions` (optional) | [`eventOptions`](/api/types/event-options/) | An event options |
+
+## Examples
+
+```js
+this.remove('myKey');
+this.remove(['myKey1', 'myKey2']);
+```
+
+**Using  ``eventOptions``**
+
+```js
+this.remove('myKey', {
+	silent: true
+});
+```

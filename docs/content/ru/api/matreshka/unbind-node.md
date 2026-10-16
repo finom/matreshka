@@ -1,0 +1,129 @@
+---
+title: "Matreshka#unbindNode"
+sidebarTitle: "unbindNode"
+description: "Matreshka#unbindNode: Разрывает связь между свойством и HTML элементом"
+importance: 2
+---
+
+# Matreshka#unbindNode
+
+**Метод**
+
+```js
+Matreshka#unbindNode(key, [node], [eventOptions]) → matreshka
+```
+
+Разрывает связь между свойством и HTML элементом
+
+Используя этот метод, можно удалить недавно добавленную, но уже не нужную связь между свойством и элементом.
+
+Ключ с точками — это путь к вложенному свойству, как и в [`Matreshka#bindNode`](/ru/api/matreshka/bind-node/); с опцией события ``exactKey: true`` он используется как есть. ``null`` вместо ключа удаляет также привязки вложенных свойств (``"a.b"``).
+
+**Возвращает:** [`matreshka`](/ru/api/types/matreshka/) – self
+
+**Генерирует события:** `unbind`, `unbind:KEY`
+
+## Аргументы
+
+| Имя | Тип | Описание |
+| --- | --- | --- |
+| `key` | [`string`](/ru/api/types/string/) \| [`null`](/ru/api/types/null/) | Ключ или список ключей, разделенных пробелами. Если вместо ключа передать null, удалятся все привязки для данного экземпляра |
+| `node` (необязательный) | [`string`](/ru/api/types/string/) \| [`node`](/ru/api/types/node/) \| [`$nodes`](/ru/api/types/dollar-nodes/) | HTML элемент, с которым свойство больше не хочет иметь дела |
+| `eventOptions` (необязательный) | [`eventOptions`](/ru/api/types/event-options/) | Объект события, в который можно передать какие-нибудь данные для обработчика или ключ ``"silent"``, который отключает генерацию событий ``"unbind"`` и ``"unbind:KEY"`` |
+
+## Примеры
+
+```js
+this.bindNode('myKey', '.my-element');
+
+// меняет значение свойства и состояние HTML элемента
+this.myKey = true;
+
+this.unbindNode('myKey', '.my-element');
+
+// теперь меняется только значение свойства
+this.myKey = false;
+```
+
+## Альтернативный синтаксис unbindNode, позволяющий передать объект с байндингами. См. Matreshka#bindNode(2) [#variation-2]
+
+```js
+Matreshka#unbindNode(bindings, [eventOptions]) → matreshka
+```
+
+**Возвращает:** [`matreshka`](/ru/api/types/matreshka/) – self
+
+### Аргументы
+
+| Имя | Тип | Описание |
+| --- | --- | --- |
+| `bindings` | [`object`](/ru/api/types/object/) | (см. пример) |
+| `eventOptions` (необязательный) | [`eventOptions`](/ru/api/types/event-options/) | (см. выше) |
+
+### Примеры
+
+```js
+this.unbindNode({
+	foo: '.aaa'
+	bar: {
+		node: '.bbb'
+	},
+	baz: [{
+		node: '.ccc'
+	}, {
+		node: '.ddd'
+	}]
+});
+```
+
+## Альтернативный синтаксис, позволяющий удалить неограниченное количество байндингов одним вызовом метода. [#variation-3]
+
+```js
+Matreshka#unbindNode(batch, [eventOptions])
+```
+
+Вариация метода позволяет передать масссив объектов, содержащих информацию об одном байндинге каждый. Элемент массива должен содержать следующие свойства:
+- ``key`` - имя свойства
+- ``node`` - элемент, для которого был объявле байндинг с ``key`` (не обязательно)
+
+Эта вариация метода удобна тем, что её синтаксис совпадает с одной из вариаций метода [`Matreshka#bindNode`](/ru/api/matreshka/bind-node/), позволяя присвоить  байндинги переменной для быстрого удаления.
+
+### Аргументы
+
+| Имя | Тип | Описание |
+| --- | --- | --- |
+| `batch` | [`array`](/ru/api/types/array/) | Массив байндингов |
+| `eventOptions` (необязательный) | [`eventOptions`](/ru/api/types/event-options/) | (см. выше) |
+
+### Примеры
+
+```js
+const temporaryBindings = [{
+	key: 'a',
+	node: '.my-node',
+	binder: {
+		setValue(v) {
+			doSomething(v);
+		}
+	}
+}, {
+	key: 'b',
+	node: document.querySelectorAll('.bar')
+	event: {
+		foo: 'bar'
+	}
+}, {
+	key: 'c.d.e',
+	node: jQuery('.baz'),
+	binder: Matreshka.binders.html(),
+	event: {
+		silent: true,
+		exactKey: true
+	}
+}]
+
+this.bindNode(temporaryBindings);
+
+// больше не нужны эти привязки
+this.unbindNode(temporaryBindings);
+```

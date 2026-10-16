@@ -1,0 +1,49 @@
+---
+title: "Matreshka.Array#METHOD_"
+sidebarTitle: "METHOD_"
+description: "Matreshka.Array#METHOD_: Any method from Array.prototype with the possibility of passing event object"
+importance: 1
+---
+
+# Matreshka.Array#METHOD_
+
+**Method**
+
+```js
+Matreshka.Array#METHOD_()
+```
+
+Any method from ``Array.prototype`` with the possibility of passing event object
+
+Having found out more about [`Matreshka.Array#METHOD`](/api/matreshka-array/method/), it becomes clear that the methods do not support an event object passing as they exactly duplicate the syntax and the number of arguments of the built-in ``Array``. The ``METHOD_`` syntax allows to pass some data to event handlers.
+
+The list of available flags:
+- ``silent`` - disables event triggering
+- ``dontRender`` - disables [rendering](/api/matreshka-array/item-renderer/)
+- ``skipItemMediator`` - disables [mediators](/api/matreshka-array/mediate-item/) and [models](/api/matreshka-array/model/)
+
+## Links
+
+- [`Matreshka.Array#METHOD`](/api/matreshka-array/method/)
+
+## Examples
+
+```js
+this.push_(1, 2, 3, {
+    silent: true
+});
+
+this.pop_({
+    silent: true
+});
+```
+
+```js
+this.on('modify', evt => {
+	alert(evt.flag); // 42
+});
+
+this.push_(1, 2, 3, {
+	flag: 42
+});
+```

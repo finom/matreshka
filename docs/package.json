@@ -7,29 +7,15 @@
   "type": "module",
   "scripts": {
     "icons": "node scripts/icons.mjs",
-    "predev": "node scripts/copy-static.mjs",
-    "dev": "next dev",
-    "prebuild": "node scripts/copy-static.mjs",
-    "build": "next build",
-    "postbuild": "node scripts/postbuild.mjs"
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/dev.mjs"
   },
   "devDependencies": {
-    "@fontsource/inter": "^5.3.0",
-    "pagefind": "^1.5.2",
+    "@tailwindcss/node": "^4.3.3",
+    "@tailwindcss/oxide": "^4.3.3",
+    "markdown-it": "^15.0.2",
     "sharp": "^0.35.5",
-    "zod": "4.6.7"
-  },
-  "dependencies": {
-    "@radix-ui/react-slot": "^1.4.0",
-    "@tailwindcss/postcss": "^4.3.3",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "next": "^16.4.0",
-    "nextra": "^4.6.1",
-    "nextra-theme-docs": "^4.6.1",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
-    "tailwind-merge": "^3.7.0",
+    "shiki": "^3.23.0",
     "tailwindcss": "^4.3.3"
   }
 }

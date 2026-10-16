@@ -1,0 +1,38 @@
+---
+title: "Matreshka.Object#addDataKeys"
+sidebarTitle: "addDataKeys"
+description: "Matreshka.Object#addDataKeys: Adds given property names to a list of property names which are responsible for data"
+importance: 1
+---
+
+# Matreshka.Object#addDataKeys
+
+**Method**
+
+```js
+Matreshka.Object#addDataKeys(keys) → matreshkaObject
+```
+
+Adds given property names to a list of property names which are responsible for data
+
+This method is used when you need to declare keys which are responsible for data but values of corresponding properties are not known yet.
+
+**Returns:** [`matreshkaObject`](/api/types/matreshka-object/) – self
+
+**Fires:** `set`, `modify`
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `keys` | [`string`](/api/types/string/) \| [`array`](/api/types/array/) | An array of property names or a list of args |
+
+## Examples
+
+```js
+this.addDataKeys(['a', 'b']);
+```
+
+```js
+this.addDataKeys('a', 'b');
+```

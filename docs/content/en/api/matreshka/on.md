@@ -1,0 +1,105 @@
+---
+title: "Matreshka#on"
+sidebarTitle: "on"
+description: "Matreshka#on: Adds an event handler. Matreshka.js API reference"
+importance: 1
+---
+
+# Matreshka#on
+
+**Method** · Since 1.1
+
+```js
+Matreshka#on(names, callback, [triggerOnInit=false], [context]) → object
+```
+
+Adds an event handler
+
+The method adds an event handler for an instance of the ``Matreshka`` class. Refer to the complete list of possible events with the description here: [`eventNames`](/api/types/event-names/).
+
+> Note that the method has [static alternative](/api/matreshka-static/on/), which works just the same but accepts any target object as the first argument, shifting rest arguments to the right.
+```js
+import { on } from 'matreshka';
+const object = {};
+on(object, names, callback, triggerOnInit, context);
+// instead of this.on(names, callback, triggerOnInit, context);
+```
+
+Adding the same handler with the same context for the same event again has no effect. DOM events (``click::x``) follow the same rule.
+
+**Returns:** [`object`](/api/types/object/) – self
+
+**Fires:** `addevent`, `addevent:NAME`
+
+## Arguments
+
+| Name | Default | Type | Details |
+| --- | --- | --- | --- |
+| `names` |  | [`eventNames`](/api/types/event-names/) | An event name or some names which are separated by a space (for example, ``"change:x ajaxcomplete change:y"``) |
+| `callback` |  | [`eventHandler`](/api/types/event-handler/) | A function which is caused by the event |
+| `triggerOnInit` (optional) | `false` | [`boolean`](/api/types/boolean/) | If ``triggerOnInit`` argument equals ``true``, the handler will be called immediately after event initialization. |
+| `context` (optional) |  | [`object`](/api/types/object/) | A context of the handler. In other words, ``this`` when called ``callback`` |
+
+## Links
+
+- [`Matreshka#onDebounce`](/api/matreshka/on-debounce/)
+- [`Matreshka#once`](/api/matreshka/once/)
+- [`Matreshka#off`](/api/matreshka/off/)
+- [`Matreshka#trigger`](/api/matreshka/trigger/)
+
+## Examples
+
+```js
+this.on('foo', () => {
+	alert('Custom Event is fired');
+});
+
+this.trigger('foo');
+```
+
+**Passing a context**
+
+```js
+this.on('foo', function() {
+	alert(this.a); // 5
+}, { a: 5 });
+
+this.trigger('foo', 'Hello world');
+```
+
+**Calling a handler immediately after event initialization**
+
+```js
+// Displays "bar" at once and waits for a firing of "foo" event
+this.on('foo', () => {
+	alert('bar');
+}, true);
+```
+
+## Alternative syntax: "eventname-handler" pairs [#variation-2]
+
+```js
+Matreshka#on(evtnameHandlerObject, [triggerOnInit=false], [context]) → object
+```
+
+In the [`Matreshka#on`](/api/matreshka/on/) method the object with the key-element pairs can be passed to avoid multiple invocation of the method and reduce your code.
+
+**Returns:** [`object`](/api/types/object/) – self
+
+### Arguments
+
+| Name | Default | Type | Details |
+| --- | --- | --- | --- |
+| `evtnameHandlerObject` |  | [`object`](/api/types/object/) | An object where keys are event names and values are event handlers |
+| `triggerOnInit` (optional) | `false` | [`boolean`](/api/types/boolean/) | If ``triggerOnInit`` argument  equals ``true``, all handlers will be called immediately after event initialization. |
+| `context` (optional) |  | [`object`](/api/types/object/) | A context of the handler |
+
+### Examples
+
+```js
+this.on({
+	'custom': evt => ...,
+	'click::x': evt => ...,
+	'change:y': evt => ...,
+});
+```

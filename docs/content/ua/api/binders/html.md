@@ -1,0 +1,53 @@
+---
+title: "Matreshka.binders.html"
+sidebarTitle: "html"
+description: "Matreshka.binders.html: Повертає байндер, який змінює innerHTML DOM елемента в залежності від значення властивості об'єкта"
+importance: 2
+---
+
+# Matreshka.binders.html
+
+**Метод** · Починаючи з версії 0.1
+
+**Імпорт:**
+
+```js
+import { binders } from 'matreshka';
+// binders.html === Matreshka.binders.html
+```
+
+```js
+Matreshka.binders.html([mappingFn]) → binder
+```
+
+Повертає байндер, який змінює ``innerHTML`` DOM елемента в залежності від значення властивості об'єкта
+
+Значення властивості можна перетворити за допомогою переданої функції ``mappingFn``.
+
+``undefined`` і ``null`` показуються як порожній рядок.
+
+**Повертає:** [`binder`](/ua/api/types/binder/)
+
+## Аргументи
+
+| Ім'я | Тип | Опис |
+| --- | --- | --- |
+| `mappingFn` (необов'язковий) | [`function`](/ua/api/types/function/) | Відображаюча функція |
+
+## Приклади
+
+```js
+this.bindNode('myKey', '.my-element', Matreshka.binders.html());
+// встановить innerHTML элемента як "<div>foo</div>"
+this.myKey = '<div>foo</div>';
+```
+
+**Використання ``mappingFn``**
+
+```js
+this.bindNode('myKey', '.my-element',
+    Matreshka.binders.html(value => `Hello, ${value}`));
+
+// встановить innerHTML элемента як "Hello, <div>foo</div>"
+this.myKey = '<div>foo</div>';
+```

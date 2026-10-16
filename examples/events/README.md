@@ -5,7 +5,7 @@ The article explains events in Matreshka.js framework. They can be called a hear
 ## Basics
 ### Custom events
 
-Let’s start with the simplest thing. In Matreshka.js events can be added with the help of [on](https://matreshka.js.org/api/matreshka/on/) method.
+Let’s start with the simplest thing. In Matreshka.js events can be added with the help of [on](https://matreshka.js.org/#Matreshka-on) method.
 
 ```js
 const handler = () => {
@@ -20,20 +20,20 @@ Where the list of events separated by spaces can be passed to.
 this.on('someevent1 someevent2', handler);
 ```
 
-Static [Matreshka.on](https://matreshka.js.org/api/matreshka-static/on/) method is used to declare an event handler for a custom object (which is or is not ``Matreshka`` instance) (the difference is only that the target object is the first argument but not ``this``).
+Static [Matreshka.on](https://matreshka.js.org/#Matreshka.on) method is used to declare an event handler for a custom object (which is or is not ``Matreshka`` instance) (the difference is only that the target object is the first argument but not ``this``).
 
 ```js
 const object = {};
 Matreshka.on(object, 'someevent', handler);
 ```
 
-Events can be fired with [trigger](https://matreshka.js.org/api/matreshka/trigger/) method.
+Events can be fired with [trigger](https://matreshka.js.org/#Matreshka-trigger) method.
 
 ```js
 this.trigger('someevent');
 ```
 
-Use the [static alternative of the method](https://matreshka.js.org/api/matreshka-static/trigger/) for custom objects.
+Use the [static alternative of the method](https://matreshka.js.org/#Matreshka.trigger) for custom objects.
 
 ```js
 Matreshka.trigger(object, 'someevent');
@@ -59,9 +59,9 @@ Matreshka.trigger(object, 'someevent', 1, 2, 3);
 
 You can notice Backbone syntax here. That’s right: the first lines of Matreshka.js code were being written under the impression of Backbone (even the code has originally been borrowed from it, though it has undergone substantial transformation later).
 
-Hereafter, in this post, I will show alternative methods which use ``this`` key-word (except the examples of delegated events). Just remember that [on](https://matreshka.js.org/api/matreshka-static/on/), [once](https://matreshka.js.org/api/matreshka-static/once/), [onDebounce](https://matreshka.js.org/api/matreshka-static/on-debounce/), [trigger](https://matreshka.js.org/api/matreshka-static/trigger/), [set](https://matreshka.js.org/api/matreshka-static/set/), [bindNode](https://matreshka.js.org/api/matreshka-static/bind-node/) and other methods of Matreshka.js have got static alternatives which accept a custom target object as the first argument.
+Hereafter, in this post, I will show alternative methods which use ``this`` key-word (except the examples of delegated events). Just remember that [on](https://matreshka.js.org/#Matreshka.on), [once](https://matreshka.js.org/#Matreshka.once), [onDebounce](https://matreshka.js.org/#Matreshka.onDebounce), [trigger](https://matreshka.js.org/#Matreshka.trigger), [set](https://matreshka.js.org/#Matreshka.set), [bindNode](https://matreshka.js.org/#Matreshka.bindNode) and other methods of Matreshka.js have got static alternatives which accept a custom target object as the first argument.
 
-Besides ``on`` method, there are two more: [once](https://matreshka.js.org/api/matreshka-static/once/) and [onDebounce](https://matreshka.js.org/api/matreshka-static/on-debounce/). The first one adds a handler that can be called only once.
+Besides ``on`` method, there are two more: [once](https://matreshka.js.org/#Matreshka.once) and [onDebounce](https://matreshka.js.org/#Matreshka.onDebounce). The first one adds a handler that can be called only once.
 
 ```js
 this.once('someevent', () => {
@@ -101,7 +101,7 @@ this.on('change:x', () => {
 this.x = 42;
 ```
 
-In case you want to pass some data to the event handler or change a property value without calling ``"change:KEY"`` event, instead of a usual assignment use [Matreshka#set](https://matreshka.js.org/api/matreshka/set/) method (or static [Matreshka.set](https://matreshka.js.org/api/matreshka-static/set/) method) which accepts three arguments: a key, a value and an object with data or special flags.
+In case you want to pass some data to the event handler or change a property value without calling ``"change:KEY"`` event, instead of a usual assignment use [Matreshka#set](https://matreshka.js.org/#Matreshka-set) method (or static [Matreshka.set](https://matreshka.js.org/#Matreshka.set) method) which accepts three arguments: a key, a value and an object with data or special flags.
 
 ```js
 this.on('change:x', evt => {
@@ -117,7 +117,7 @@ You can change a property without calling an event handler in this way:
 this.set('x', 9000, { silent: true });
 ```
 
-``set`` method supports some more flags, the description of which would make us go beyond the topic of the article, so I refer you to the [documentation of the method](https://matreshka.js.org/api/matreshka/set/).
+``set`` method supports some more flags, the description of which would make us go beyond the topic of the article, so I refer you to the [documentation of the method](https://matreshka.js.org/#Matreshka-set).
 
 ### Events which are being fired before a property changing
 
@@ -144,7 +144,7 @@ this.set('x', 9000, { silent: true });
 
 ### Events of a property removing
 
-On removing properties with [remove](https://matreshka.js.org/api/matreshka/remove/) method, ``"delete:KEY"`` and ``delete`` events are fired.
+On removing properties with [remove](https://matreshka.js.org/#Matreshka-remove) method, ``"delete:KEY"`` and ``delete`` events are fired.
 
 ```js
 this.on('delete:x', () => {
@@ -189,7 +189,7 @@ this.on('removeevent', handler);
 this.on('removeevent:someevent', handler);
 ```
 
-One of the ways of its application can be the use of Matreshka.js and the event engine of the third-party library together. Let’s say, you want to place all handlers for the class only in one [on](https://matreshka.js.org/api/matreshka/on/#variation-2) call, having made the code more readable and compact. With the help of ``addevent`` you catch all the following event initializations, and in the handler you check an event name against some conditions and initialize an event using API of the third-party library. In the example below there’s a code from a project which uses Fabric.js. ``"addevent"`` handler checks an event name for the presence of ``"fabric:"`` prefix and if checking is passed, it adds the corresponding handler to the canvas with the help of Fabric API.
+One of the ways of its application can be the use of Matreshka.js and the event engine of the third-party library together. Let’s say, you want to place all handlers for the class only in one [on](https://matreshka.js.org/#Matreshka-on--variation-2) call, having made the code more readable and compact. With the help of ``addevent`` you catch all the following event initializations, and in the handler you check an event name against some conditions and initialize an event using API of the third-party library. In the example below there’s a code from a project which uses Fabric.js. ``"addevent"`` handler checks an event name for the presence of ``"fabric:"`` prefix and if checking is passed, it adds the corresponding handler to the canvas with the help of Fabric API.
 
 ```js
 this.canvas = new fabric.Canvas(node);
@@ -243,7 +243,7 @@ The handler will be called again.
 
 ### Example 2
 
-What if our object is a collection inherited from [Matreshka.Array](https://matreshka.js.org/api/matreshka-array/) or [Matreshka.Object](https://matreshka.js.org/api/matreshka-object/) (``Matreshka.Object`` is a collection of a key-value type)? We don’t know beforehand in which item of the collection an event will be fired (in the first or in the tenth one). That’s why, instead of a property name for these classes we can use an asterisk ``*`` meaning that an event handler must be called only when an event is fired upon one of the elements included into the collection.
+What if our object is a collection inherited from [Matreshka.Array](https://matreshka.js.org/#Matreshka.Array) or [Matreshka.Object](https://matreshka.js.org/#Matreshka.Object) (``Matreshka.Object`` is a collection of a key-value type)? We don’t know beforehand in which item of the collection an event will be fired (in the first or in the tenth one). That’s why, instead of a property name for these classes we can use an asterisk ``*`` meaning that an event handler must be called only when an event is fired upon one of the elements included into the collection.
 
 ```js
 this.on('*@someevent', handler);
@@ -337,7 +337,7 @@ this.bindNode('x', '.my-node');
 Matreshka.bindNode(object, 'x', '.my-node');
 ```
 
-[More detailed information about bindNode method](https://matreshka.js.org/api/matreshka/bind-node/).
+[More detailed information about bindNode method](https://matreshka.js.org/#Matreshka-bindNode).
 
 Before or after the declaration of the binding you can create a handler that listens to DOM events of the bound element. The syntax is as follows: ``"DOM_EVENT::KEY"``, where ``DOM_EVENT`` is DOM or jQuery event (if jQuery is used), and ``KEY`` is a key of a bound property. ``DOM_EVENT`` and ``KEY`` are separated by a double colon.
 
@@ -416,7 +416,7 @@ In this easy way you can listen to all data changing instead of a manual propert
 
 ## Events of Matreshka.Array class
 
-[Matreshka.Array](https://matreshka.js.org/api/matreshka-array/) includes lots of useful events which give an opportunity to find out what has happened in the collection: an item insertion, an item removing, resorting, which method has been called...
+[Matreshka.Array](https://matreshka.js.org/#Matreshka.Array) includes lots of useful events which give an opportunity to find out what has happened in the collection: an item insertion, an item removing, resorting, which method has been called...
 
 Let me remind you that ``Matreshka.Array`` is a class which is responsible for the implementation of collections in Matreshka.js framework. The class completely duplicates the methods of built-in [Array.prototype](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype), and a programmer doesn’t have to think which method to call in order to add or remove something. The information you should know about ``Matreshka.Array`` events:
 
@@ -439,4 +439,4 @@ this.on('addone', function(evt) {
 this.push(1, 2, 3);
 ```
 
-In order not to copy the whole documentation here, please refer to [Matreshka.Array documentation](https://matreshka.js.org/api/matreshka-array/) on your own.
+In order not to copy the whole documentation here, please refer to [Matreshka.Array documentation](https://matreshka.js.org/#Matreshka.Array) on your own.

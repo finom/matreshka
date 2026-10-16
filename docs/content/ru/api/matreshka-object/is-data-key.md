@@ -1,0 +1,30 @@
+---
+title: "Matreshka.Object#isDataKey"
+sidebarTitle: "isDataKey"
+description: "Matreshka.Object#isDataKey: Проверяет, входит ли строка в список ключей, отвечающих за данные"
+importance: 2
+---
+
+# Matreshka.Object#isDataKey
+
+**Метод**
+
+```js
+Matreshka.Object#isDataKey(key) → boolean
+```
+
+Проверяет, входит ли строка в список ключей, отвечающих за данные
+
+**Возвращает:** [`boolean`](/ru/api/types/boolean/) – результат проверки
+
+## Аргументы
+
+| Имя | Тип | Описание |
+| --- | --- | --- |
+| `key` | [`string`](/ru/api/types/string/) |  |
+
+## Примеры
+
+```js
+console.log(this.isDataKey('a'));
+```

@@ -1,0 +1,39 @@
+---
+title: "Matreshka.mediate"
+sidebarTitle: "mediate"
+description: "Matreshka.mediate: Трансформує значення властивості при його зміні"
+importance: 1
+---
+
+# Matreshka.mediate
+
+**Метод** · Починаючи з версії 1.1
+
+**Імпорт:**
+
+```js
+import { mediate } from 'matreshka';
+```
+
+```js
+Matreshka.mediate() → object
+```
+
+Трансформує значення властивості при його зміні
+
+Цей статичний метод працює так само, як і [`Matreshka#mediate`](/ua/api/matreshka/mediate/) та всі його варіації, але приймає в якості першого аргументу будь-який JavaScript об'єкт.
+
+**Повертає:** [`object`](/ua/api/types/object/) – Перший аргумент
+
+## Посилання
+
+- [`Matreshka#mediate`](/ua/api/matreshka/mediate/)
+
+## Приклади
+
+```js
+const object = {};
+Matreshka.mediate(object, 'x', String);
+object.x = 42;
+alert(typeof object.x); // string
+```

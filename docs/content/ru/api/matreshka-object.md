@@ -1,0 +1,119 @@
+---
+title: "Matreshka.Object"
+asIndexPage: true
+description: "Matreshka.Object: Matreshka.Object - класс, который отвечает за данные вида ключ-значение. Его задачей является отделение служебных свойств от данных, которые…"
+importance: 1
+---
+
+# Matreshka.Object
+
+**Класс** · extends `Matreshka`
+
+**Импорт:**
+
+```js
+import { MatreshkaObject } from 'matreshka';
+```
+
+``Matreshka.Object`` - класс, который отвечает за данные вида ключ-значение. Его задачей является отделение служебных свойств от данных, которые можно передать на сервер или сохранить в локальном хранилище. Класс наследуется от класса [`Matreshka`](/ru/api/matreshka/) и включает все его свойства и методы.
+
+Представьте себе, что вы создаёте класс, включающий свойства ``"a"``, ``"b"`` и ``"c"``. Допустим ``"a"`` и ``"b"`` - свойства которые должны быть отправлены на сервер, а свойство ``"c"`` лишь отвечает за некоторое состояние приложения (например, содержит сумму ``"a"`` и ``"b"``). Свойство ``"c"`` не нужно серверу. Поэтому нам нужно отделить **свойства отвечающие за данные** от свойств, которые таковыми не являются.
+
+Для того, чтоб отделить такие свойства от остальных, можно воспользоваться методом [`Matreshka.Object#addDataKeys`](/ru/api/matreshka-object/add-data-keys/).
+```js
+this.addDataKeys(['a', 'b']);
+
+this.a = 1;
+this.b = 2;
+this.c = 3;
+```
+
+Если вы заранее не знаете, какие свойства являются данными, можно всегда использовать метод [`Matreshka.Object#setData`](/ru/api/matreshka-object/set-data/), который не только объявляет свойства, отвечающие за данные, но и сразу устанавливает значения.
+```js
+this.setData({
+	a: 1,
+	b: 2
+});
+
+this.c = 3;
+```
+
+После того, как приложение получило информацию о том, что является данными, экземпляр [`Matreshka.Object`](/ru/api/matreshka-object/) можно сконвертировать в обычный объект методом [`Matreshka.Object#toJSON`](/ru/api/matreshka-object/to-json/) и передать на сервер или сохранить в локальной БД (например, в ``localStorage``).
+```js
+// вернет объект { a: 1, b: 2 }
+this.toJSON();
+```
+
+#### События
+
+При добавлении и изменении свойств, отвечающих за данные генерируется события ``set`` и ``modify``, при удалении - ``remove`` и ``modify``. Т. е. любые изменения данных можно слушать с помощью ``modify``.
+```js
+this.on('modify', () => {
+	alert('Object is modified');
+});
+```
+
+## Аргументы
+
+| Имя | Тип | Описание |
+| --- | --- | --- |
+| `data` (необязательный) | [`object`](/ru/api/types/object/) | Данные, входящие в новый экземпляр |
+
+## Примеры
+
+**Создание экземпляра с двумя свойствами-данными**
+
+```js
+// то же самое, что и new Matreshka.Object().setData({ a: 1, b: 2 });
+new Matreshka.Object({ a: 1, b: 2 });
+```
+
+**Наследование**
+
+```js
+class MyClass extends Matreshka.Object {
+	constructor(data) {
+		super(data).sayHello();
+	}
+	sayHello() {
+		alert("Hello World!");
+	}
+}
+```
+
+**Наследование при помощи функции [`Matreshka.Class`](/ru/api/matreshka-static/class/)**
+
+```js
+const MyClass = Matreshka.Class({
+	extends: Matreshka.Object,
+	constructor(data) {
+		this.setData(data).sayHello();
+	},
+	sayHello() {
+		alert("Hello World!");
+	}
+});
+```
+
+**Перебор данных, используя цикл for..of**
+
+```js
+const matreshkaObject = new Matreshka.Object({ a: 1, b: 2 });
+for(let item of matreshkaObject) {
+	console.log(item); // 1 .. 2
+}
+```
+
+## Свойства и методы
+
+- [`addDataKeys`](/ru/api/matreshka-object/add-data-keys/) – Добавляет заданные имена свойств в список имен свойств, отвечающих за данные
+- [`each`](/ru/api/matreshka-object/each/) – Перебирает свойства, отвечающие за данные
+- [`entries`](/ru/api/matreshka-object/entries/) _(для опытных)_ – Возвращает массив пар имен и значений свойств, отвечающих за данные
+- [`isDataKey`](/ru/api/matreshka-object/is-data-key/) – Проверяет, входит ли строка в список ключей, отвечающих за данные
+- [`isMatreshkaObject`](/ru/api/matreshka-object/is-matreshka-object/) _(для опытных)_ – Свойство ``isMatreshkaObject`` всегда равно ``true`` для экземпляров [`Matreshka.Object`](/ru/api/matreshka-object/).
+- [`keyOf`](/ru/api/matreshka-object/key-of/) – Ищет заданное значение свойства среди свойств, отвечающих за данные, и возвращает имя первого совпавшего свойства, если такое значение найдено
+- [`keys`](/ru/api/matreshka-object/keys/) – Возвращает массив имен свойств, отвечающих за данные
+- [`removeDataKeys`](/ru/api/matreshka-object/remove-data-keys/) – Удаляет заданные имена свойств из списка имен свойств, отвечающих за данные (но не удаляет само свойство)
+- [`setData`](/ru/api/matreshka-object/set-data/) – Устанавливает значение свойству и добавляет его имя в список имен, отвечающих за данные
+- [`toJSON`](/ru/api/matreshka-object/to-json/) – Конвертирует экземпляр [`Matreshka.Object`](/ru/api/matreshka-object/) в обычный объект
+- [`values`](/ru/api/matreshka-object/values/) _(для опытных)_ – Возвращает массив значений свойств, отвечающих за данные

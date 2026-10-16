@@ -1,0 +1,52 @@
+---
+title: "Matreshka#selectAll"
+sidebarTitle: "selectAll"
+description: "Matreshka#selectAll: Возвращает элементы из песочницы, соответствующие селектору"
+importance: 2
+---
+
+# Matreshka#selectAll
+
+**Метод**
+
+```js
+Matreshka#selectAll(selector) → $nodes
+```
+
+Возвращает элементы из песочницы, соответствующие селектору
+
+Синоним: `Matreshka#$`
+
+Возвращает обычный массив элементов; если ничего не найдено, массив пустой.
+
+После создания песочницы методом [`Matreshka#bindNode`](/ru/api/matreshka/bind-node/), можно получать и использовать элементы, находящиеся в ней. Кроме этого, метод поддерживает  селектор ``:bound(KEY)``.
+
+> У метода есть [статичный аналог](/ru/api/matreshka-static/select-all/).
+
+**Возвращает:** [`$nodes`](/ru/api/types/dollar-nodes/)
+
+## Аргументы
+
+| Имя | Тип | Описание |
+| --- | --- | --- |
+| `selector` | [`string`](/ru/api/types/string/) | Cелектор |
+
+## Примеры
+
+```js
+this.bindNode('sandbox', '.app');
+nodes = this.selectAll('.my-element');
+// то же самое, что и
+nodes = this.$('.my-element'); // $ - ссылка на метод selectAll
+// то же самое, что и
+nodes = [...document.querySelector('.app').querySelectorAll('.my-element')];
+```
+
+**Селектор ``:bound(KEY)``**
+
+```js
+this.bindNode('myKey', '.my-element');
+nodes = this.selectAll(':bound(myKey) .my-another-element');
+// то же самое, что и
+nodes = [...document.querySelector('.my-element').querySelectorAll('.my-another-element')];
+```

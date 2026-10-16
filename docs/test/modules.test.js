@@ -29,12 +29,12 @@ function exportsOf(file) {
   return names;
 }
 
-// `import { calc } from 'matreshka'` on a page names an entry point the package has and a name it exports.
+// `import { calc } from 'matreshka'` in a section names an entry point the package has and a name it exports.
 it('imports only entry points and names that exist', () => {
   const exported = Object.fromEntries(Object.entries(ENTRIES).map(([entry, file]) => [entry, exportsOf(file)]));
   let count = 0;
-  for (const { file, mdx } of pages) {
-    for (const [, clause, entry] of mdx.matchAll(/import ([^;'`]*?) from '(matreshka(?:\/[^']*)?)'/g)) {
+  for (const { file, md } of pages) {
+    for (const [, clause, entry] of md.matchAll(/import ([^;'`]*?) from '(matreshka(?:\/[^']*)?)'/g)) {
       expect(Object.keys(ENTRIES), `${file}: ${entry}`).toContain(entry);
       const named = /\{([^}]*)\}/.exec(clause)?.[1] ?? '';
       for (const name of named
@@ -51,7 +51,7 @@ it('imports only entry points and names that exist', () => {
 
 // 2.x had a module per function (`matreshka/bindnode`); 3.0 has these three entry points only.
 it('names no 2.x deep import path in an import', () => {
-  for (const { file, mdx } of pages) {
-    expect(mdx, file).not.toMatch(/from 'matreshka\/(?!router'|parse-form')/);
+  for (const { file, md } of pages) {
+    expect(md, file).not.toMatch(/from 'matreshka\/(?!router'|parse-form')/);
   }
 });

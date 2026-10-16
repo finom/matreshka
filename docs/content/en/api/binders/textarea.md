@@ -1,0 +1,31 @@
+---
+title: "Matreshka.binders.textarea"
+sidebarTitle: "textarea"
+description: "Matreshka.binders.textarea: Returns a binder which binds an object property to a textarea element value. It is not obligatory to use the binder directly…"
+importance: 3
+---
+
+# Matreshka.binders.textarea
+
+**Method** · Since 0.3
+
+**Import:**
+
+```js
+import { binders } from 'matreshka';
+// binders.textarea === Matreshka.binders.textarea
+```
+
+```js
+Matreshka.binders.textarea() → binder
+```
+
+Returns a binder which binds an object property to a ``textarea`` element value. It is not obligatory to use the binder directly because it is included in the [`Matreshka.defaultBinders`](/api/matreshka-static/default-binders/) list.
+
+**Returns:** [`binder`](/api/types/binder/)
+
+## Examples
+
+```js
+this.bindNode('myKey', '.my-textarea', Matreshka.binders.textarea());
+```

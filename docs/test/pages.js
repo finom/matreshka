@@ -1,24 +1,21 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { frontMatterOf } from '../src/site.mjs';
 
 export const DOCS = path.join(import.meta.dirname, '..');
-export const APP = path.join(DOCS, 'src/app');
-export const PREFIXES = { en: '', ua: '/ua', ru: '/ru' };
+export const CONTENT = path.join(DOCS, 'content');
+export const LANG_CODES = ['en', 'ua', 'ru'];
 
-// Every MDX page: its file, route, language, front matter and text.
-export const pages = readdirSync(APP, { recursive: true, encoding: 'utf8' })
-  .filter((file) => file.endsWith('page.mdx'))
-  .map((file) => {
-    const mdx = readFileSync(path.join(APP, file), 'utf8');
-    const dir = file.replace(/\([^)]*\)\/?/g, '').replace(/\/?page\.mdx$/, '');
-    const route = dir ? `/${dir}/` : '/';
-    const lang = Object.entries(PREFIXES).find(([, prefix]) => prefix && route.startsWith(`${prefix}/`))?.[0] ?? 'en';
-    const frontMatter = /^---\n([\s\S]*?)\n---\n/.exec(mdx)?.[1] ?? '';
-    const field = (name) => JSON.parse(new RegExp(`^${name}: (.+)$`, 'm').exec(frontMatter)?.[1] ?? '""');
-    return { file, route, lang, mdx, title: field('title'), description: field('description') };
-  });
-
-export const routes = new Set(pages.map(({ route }) => route));
+// Every Markdown file: its path under content/<lang>/, language, front matter and text.
+export const pages = LANG_CODES.flatMap((lang) =>
+  readdirSync(path.join(CONTENT, lang), { recursive: true, encoding: 'utf8' })
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => {
+      const md = readFileSync(path.join(CONTENT, lang, file), 'utf8');
+      const { title = '', description = '' } = frontMatterOf(md);
+      return { file: `${lang}/${file}`, name: file.replace(/\.md$/, ''), lang, md, title, description };
+    })
+);
 
 // The text outside code fences.
-export const prose = (mdx) => mdx.replace(/^(`{3,})[\s\S]*?^\1[ \t]*$/gm, '');
+export const prose = (md) => md.replace(/^(`{3,})[\s\S]*?^\1[ \t]*$/gm, '');

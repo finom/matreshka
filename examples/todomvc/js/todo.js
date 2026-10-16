@@ -1,9 +1,9 @@
-// **todo.js** contains the ``Todo`` class, which is inherited from the [Matreshka.Object](https://matreshka.js.org/api/matreshka-object/) class and used as a ([Model](https://matreshka.js.org/api/matreshka-array/model/)) for the main class ([Todos](todos.html)).
+// **todo.js** contains the ``Todo`` class, which is inherited from the [Matreshka.Object](https://matreshka.js.org/#Matreshka.Object) class and used as a ([Model](https://matreshka.js.org/#Matreshka.Array-Model)) for the main class ([Todos](todos.html)).
 class Todo extends Matreshka.Object {
     constructor(data, parent) {
         super();
         this
-            // Assign the default values and add the keys ``"title"`` and ``"completed"`` to the list of the keys which are responsible for the data (see [setData](https://matreshka.js.org/api/matreshka-object/set-data/)).
+            // Assign the default values and add the keys ``"title"`` and ``"completed"`` to the list of the keys which are responsible for the data (see [setData](https://matreshka.js.org/#Matreshka.Object-setData)).
             // The ``"title"`` property by default is an empty string.
             // The ``"completed"`` property by default is ``false``.
             .setData({
@@ -20,11 +20,11 @@ class Todo extends Matreshka.Object {
             });
     }
 
-    // Wait for the ``"render"`` event using the [onRender](https://matreshka.js.org/api/matreshka-array/on-item-render/) virtual method. The event fires when the element corresponding to the instance of the class is rendered.
+    // Wait for the ``"render"`` event using the [onRender](https://matreshka.js.org/#Matreshka.Array-onItemRender) virtual method. The event fires when the element corresponding to the instance of the class is rendered.
     onRender() {
         const { binders } = Matreshka;
         this
-        // The binding of the elements that do not require the assignment of the binder (binder). The [defaultBinders](https://matreshka.js.org/api/matreshka-static/default-binders/) are used here if it is possible.
+        // The binding of the elements that do not require the assignment of the binder (binder). The [defaultBinders](https://matreshka.js.org/#Matreshka.defaultBinders) are used here if it is possible.
         // * The ``"completed"`` property is bound to the checkbox with ``toggle`` class
         // * The ``"edit"`` property is bound to the field (``input type=text``) with ``edit`` class
         // * The ``"destroy"`` property is bound to the element with ``destroy`` class which does not have a default binder. It means that the element is simply associated with the property without synchronizing with its value.
@@ -34,10 +34,10 @@ class Todo extends Matreshka.Object {
                 destroy: ':sandbox .destroy'
             })
             // These bindings use the third argument as a binder.
-            // * The visibility of the sandbox element will depend on the value of the ``"visible"`` property ([binders.display](https://matreshka.js.org/api/binders/display/))
-            // * The presence of the ``"completed"`` class in the sandbox element will depend on the value of the ``"completed"`` property ([binders.className](https://matreshka.js.org/api/binders/class-name/))
+            // * The visibility of the sandbox element will depend on the value of the ``"visible"`` property ([binders.display](https://matreshka.js.org/#Matreshka.binders.display))
+            // * The presence of the ``"completed"`` class in the sandbox element will depend on the value of the ``"completed"`` property ([binders.className](https://matreshka.js.org/#Matreshka.binders.className))
             // * The presence of the ``"editing"`` class in the sandbox element will depend on the value of the ``"editing"`` property
-            // * Bind the element ``label`` whose ``innerHTML`` will be synchronized with the value of the ``"title"`` property ([binders.html](https://matreshka.js.org/api/binders/html/))
+            // * Bind the element ``label`` whose ``innerHTML`` will be synchronized with the value of the ``"title"`` property ([binders.html](https://matreshka.js.org/#Matreshka.binders.html))
             .bindNode('visible', ':sandbox', binders.display())
             .bindNode('completed', ':sandbox', binders.className('completed'))
             .bindNode('editing', ':sandbox', binders.className('editing'))
@@ -68,7 +68,7 @@ class Todo extends Matreshka.Object {
                     }
                 }
             })
-            // If we click on the element that is responsible for the item deletion, we delete this item from the ``Todos`` instance using the [pull](https://matreshka.js.org/api/matreshka-array/pull/) method.
+            // If we click on the element that is responsible for the item deletion, we delete this item from the ``Todos`` instance using the [pull](https://matreshka.js.org/#Matreshka.Array-pull) method.
             .on('click::destroy', () => {
                 this.parent.pull(this);
             });

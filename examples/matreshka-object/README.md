@@ -2,13 +2,13 @@
 
 ![](assets/login-form-screenshot.png)
 
-This example explains a purpose of [Matreshka.Object](https://matreshka.js.org/api/matreshka-object/). We're going to implement a simple login form with two text fields: login and password and two checkboxes: "show password" and "remember me". There’s also one button: "sign in". Let’s say that the validation of the form is passed and "sign in" button is enabled when the login length is not less than 4 characters and the password length  is not less than  5 characters.
+This example explains a purpose of [Matreshka.Object](https://matreshka.js.org/#Matreshka.Object). We're going to implement a simple login form with two text fields: login and password and two checkboxes: "show password" and "remember me". There’s also one button: "sign in". Let’s say that the validation of the form is passed and "sign in" button is enabled when the login length is not less than 4 characters and the password length  is not less than  5 characters.
 
 [**Demo**](https://matreshka.js.org/examples/matreshka-object/)
 
 A little theory: ``Matreshka.Object`` creates objects of a key-value type. In each class instance **properties which are responsible for data** (the ones that will be passed to a server, for example) can be separated from other properties (the ones that the server doesn’t need but define the application behavior). In this case, login, password and "remember me" are the data which we send to the server, but the property that defines if the form is valid is not passed.
 
-You can find more detailed information about this class [in the documentation](https://matreshka.js.org/api/matreshka-object/).
+You can find more detailed information about this class [in the documentation](https://matreshka.js.org/#Matreshka.Object).
 
 So, let’s create a class which is inherited from ``Matreshka.Object``.
 
@@ -34,7 +34,7 @@ this.setData({
 })
 ```
 
-[setData](https://matreshka.js.org/api/matreshka-object/set-data/) method does not only sets values but it also declares properties which are responsible for the data. That is "userName", "password" and "rememberMe" must be passed to the server (in this example we will just print JSON on the screen).
+[setData](https://matreshka.js.org/#Matreshka.Object-setData) method does not only sets values but it also declares properties which are responsible for the data. That is "userName", "password" and "rememberMe" must be passed to the server (in this example we will just print JSON on the screen).
 
 Since Matreshka.js recommends to use all the awesomeness of ECMAScript 2015 and since ``Matreshka.Object`` constructor calls ``setData`` internally, we're going to put the default data to a single ``super`` call (which does the same as ``Matreshka.Object.call(this, { ... })`` would do) to make our code look nicer. The following code makes the same as the previous one.
 
@@ -56,11 +56,11 @@ Let’s declare "isValid" property which depends on "userName" and "password" pr
 })
 ```
 
-"isValid" will equal ``true``, if the length of a user’s name is not less than four characters and the length of a password — five. [calc](https://matreshka.js.org/api/matreshka/calc/) method is another cool feature of the framework. Some properties can depend on other ones which depend on the third ones and the third ones can totally depend on the properties of some other object. Meanwhile, you are protected from the iterative references. The method stops a cycle if there are dangerous dependencies.
+"isValid" will equal ``true``, if the length of a user’s name is not less than four characters and the length of a password — five. [calc](https://matreshka.js.org/#Matreshka-calc) method is another cool feature of the framework. Some properties can depend on other ones which depend on the third ones and the third ones can totally depend on the properties of some other object. Meanwhile, you are protected from the iterative references. The method stops a cycle if there are dangerous dependencies.
 
 Now let’s bind the object properties to the elements on the page. First, declare a ``"sandbox"``. The “sandbox” is necessary for restricting the instance influence by one element on the page and avoiding collisions with other objects (for example, if there are two elements with the same class on the page). Next bind the other elements.
 
-[bindNode](https://matreshka.js.org/api/matreshka/bind-node/) method is responsible for two way data binding.
+[bindNode](https://matreshka.js.org/#Matreshka-bindNode) method is responsible for two way data binding.
 
 ```js
 // alternative syntax of the method allows to pass a key-element
@@ -87,14 +87,14 @@ Then bind the button which is responsible for the form submission to ``"isValid"
 })
 ```
 
-Instead of the above notation, you can use a shorter one using built-in [className binder](https://matreshka.js.org/api/binders/class-name/):
+Instead of the above notation, you can use a shorter one using built-in [className binder](https://matreshka.js.org/#Matreshka.binders.className):
 
 ```js
 .bindNode('isValid', ':sandbox .submit',
     Matreshka.binders.className('disabled', false))
 ```
 
-See the documentation for [binders](https://matreshka.js.org/api/binders/) object.
+See the documentation for [binders](https://matreshka.js.org/#Matreshka.binders) object.
 
 Bind the password field to the ``"showPassword"`` property and change the input type depending on the property value (``:bound(KEY)`` is the last non-standard selector).
 

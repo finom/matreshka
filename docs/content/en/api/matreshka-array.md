@@ -1,0 +1,183 @@
+---
+title: "Matreshka.Array"
+asIndexPage: true
+description: "Matreshka.Array: The Matreshka.Array serves as collection class in Matreshka framework. It is inherited from the Matreshka class, obtaining all parent…"
+importance: 1
+---
+
+# Matreshka.Array
+
+**Class** · extends `Matreshka`
+
+**Import:**
+
+```js
+import { MatreshkaArray } from 'matreshka';
+```
+
+The ``Matreshka.Array`` serves as collection class in Matreshka framework. It is inherited from the [`Matreshka`](/api/matreshka/) class, obtaining all parent possibilities without exception. Besides, ``Matreshka.Array`` has all methods that ordinary array has.
+
+#### All the methods which have been adopted from the built-in Array work like their originals
+A programmer familiar to the methods of native ``Array`` can understand immediately by means of which method adds (``push``, ``unshift``, ``splice``), deletes (``pop``, ``shift``, ``splice``), sorts (``sort``, ``reverse``) items etc.
+
+For the reason that methods work the same as original ones (with a few exceptions), they are not presented in this documentation separately but they are gathered in the [`Matreshka.Array#METHOD`](/api/matreshka-array/method/) section.
+```js
+this.push(1, 2, 3);
+this.pop();
+```
+
+#### All methods adopted from built-in ``Array`` which modify an array can be called with an event object passing
+
+The ``method_`` syntax is used for this, where underscore at the end of a method name means that the last argument is an event object. Such methods are not given in this documentation because it is necessary to remember their syntax only. See [`Matreshka.Array#METHOD_`](/api/matreshka-array/method-silent/).
+```js
+this.push_(1, 2, 3, {
+	silent: true
+});
+
+this.pop_({
+	foo: 'bar'
+});
+```
+
+#### A developer has an opportunity of catching any data modification
+
+__While using a methods adopted from built-in ``Array``, events with corresponding name are fired.__ Calling the ``push`` method, the ``push`` event  is fired, calling the ``shift`` method, the ``shift`` event is fired,  calling the ``sort`` method, the ``sort`` event is fired, and so on.
+```js
+this.on('push', evt => {
+	console.log('push is called');
+});
+
+this.push(1, 2, 3);
+```
+
+__While adding items, ``add`` and ``addone`` events are fired.__ The first one is fired once on adding (for example, you have added few items using ``push`` and the event has been fired only once), the second one is fired once on every added item. On the ``add`` event triggering, an array of added items is passed to an event object as ``added`` property and on the ``addone`` triggering, each particular added item is passed to it as ``addedItem`` property.
+```js
+this.on('add', evt => {
+	console.log(evt.added); // [1,2,3]
+});
+
+this.push(1, 2, 3);
+```
+```js
+// the handler will be called three times,
+// as three new item have been added to the array
+this.on('addone', evt => {
+	console.log(evt.addedItem); // 1 ... 2 ... 3
+});
+
+this.push(1, 2, 3);
+```
+
+__On removing items the same logic is observed__: ``remove`` triggers once even though several items have been removed (removed items are contained in the ``removed`` property) and the ``removeone`` event triggers for each removed item individually (removed item is contained in the ``removedItem`` property).
+
+```js
+this.push(1, 2, 3, 4, 5);
+
+this.on('remove', evt => {
+	console.log(evt.removed); // [2, 3, 4]
+});
+
+this.splice(1, 3);
+```
+```js
+this.push(1, 2, 3, 4, 5);
+
+// the handler will be called three times,
+// as three items have been removed from the array
+this.on('removeone', evt => {
+	console.log(evt.removedItem); // 2 ... 3 ... 4
+});
+
+this.splice(1, 3);
+```
+__On every modification of an array the ``modify`` event is fired__, allowing to catch all changes in the array (adding, removing, re-sorting).
+```js
+this.on('modify', evt => {
+	console.log(evt.added);
+	console.log(evt.removed);
+});
+```
+
+__``length`` is an ordinary property which can be bound to HTML node__  or you can listen changes using the ``change:length`` event name.
+
+> For example, on adding three items using the ``push`` method with three arguments, the following events: ``push``, ``add``, ``addone`` (three times), ``modify``, ``change:length`` are fired.
+
+#### Model
+The [`Matreshka.Array#Model`](/api/matreshka-array/model/) property specifies a class of items that an array contains. It is recommended to inherit ``Model`` from the [`Matreshka.Object`](/api/matreshka-object/) class or the [`Matreshka.Array`](/api/matreshka-array/) one (in case if it is necessary to get a collection of collections) in order to get the opportunity of converting an array into an ordinary one recursively by using the [`Matreshka.Array#toJSON`](/api/matreshka-array/to-json/) method.
+
+#### Automatic rendering
+``Matreshka.Array`` can render HTML nodes on a page automatically in any modifications of an array. The [`Matreshka.Array#itemRenderer`](/api/matreshka-array/item-renderer/) property is used for that. You do not have to worry about rebuilding the HTML tree, ``Matreshka.Array`` does it for you. For detailed information read the documentation of [`Matreshka.Array#itemRenderer`](/api/matreshka-array/item-renderer/).
+
+## Links
+
+- [`Matreshka.Array#itemRenderer`](/api/matreshka-array/item-renderer/)
+- [`Matreshka.Array#Model`](/api/matreshka-array/model/)
+
+## Examples
+
+**An instance creation**
+
+```js
+new Matreshka.Array();
+```
+
+**An instance creation with length specifying**
+
+```js
+new Matreshka.Array(42);
+```
+
+Like the native ``Array``, a single number that is not a valid length (negative, fractional or ``NaN``) throws a ``RangeError``.
+
+**Items passing on creation**
+
+```js
+new Matreshka.Array('Hi', {a: 'b'});
+```
+
+**The inheritance**
+
+```js
+class MyClass extends Matreshka.Array {
+	constructor(items) {
+		super(...items).sayHello();
+	}
+	sayHello() {
+		alert("Hello World!");
+	}
+}
+```
+
+**The inheritance using [`Matreshka.Class`](/api/matreshka-static/class/) function**
+
+```js
+const MyClass = Matreshka.Class({
+	extends: Matreshka.Array,
+	constructor(items) {
+		this.recreate(items).sayHello();
+	},
+	sayHello() {
+		alert("Hello World!");
+	}
+});
+```
+
+## Members
+
+- [`METHOD`](/api/matreshka-array/method/) – Any method from ``Array.prototype``
+- [`METHOD_`](/api/matreshka-array/method-silent/) – Any method from ``Array.prototype`` with the possibility of passing event object
+- [`Model`](/api/matreshka-array/model/) – The property defines a class of items which will be inserted to a collection
+- [`isMatreshkaArray`](/api/matreshka-array/is-matreshka-array/) _(Advanced)_ – The ``isMatreshkaArray`` property always equals ``true`` for instances of [`Matreshka.Array`](/api/matreshka-array/) class
+- [`itemRenderer`](/api/matreshka-array/item-renderer/) – HTML string, a selector or a function which is responsible for rendering DOM nodes of an array on a page
+- [`mediateItem`](/api/matreshka-array/mediate-item/) – Transforms an item value
+- [`onItemRender`](/api/matreshka-array/on-item-render/) – A function which is called before ``"render"`` event
+- [`orderBy`](/api/matreshka-array/order-by/) – Sorts by properties of array items
+- [`pull`](/api/matreshka-array/pull/) – Removes an item with specified index from an array or an item itself
+- [`recreate`](/api/matreshka-array/recreate/) – Recreates the [`Matreshka.Array`](/api/matreshka-array/) instance
+- [`renderIfPossible`](/api/matreshka-array/render-if-possible/) _(Advanced)_ – The ``renderIfPossible`` property cancels the array rendering if it equals ``false``
+- [`rerender`](/api/matreshka-array/rerender/) _(Advanced)_ – Rerenders DOM nodes of items which are included into an instance
+- [`restore`](/api/matreshka-array/restore/) – Restores [`Matreshka.Array`](/api/matreshka-array/) instance from existing HTML nodes on a page.
+- [`toJSON`](/api/matreshka-array/to-json/) – Converts [`Matreshka.Array`](/api/matreshka-array/) instance into native array
+- [`trackBy`](/api/matreshka-array/track-by/) – ``trackBy`` property indicates a key of unique IDs for collection items
+- [`from`](/api/matreshka-array/from/) – The function creates a new [`Matreshka.Array`](/api/matreshka-array/) instance from array-like or iterable object
+- [`of`](/api/matreshka-array/of/) – The function creates a new [`Matreshka.Array`](/api/matreshka-array/) instance with a variable number of arguments, regardless of number or type of the arguments

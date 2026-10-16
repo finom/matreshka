@@ -69,7 +69,7 @@ npx skills add finom/matreshka
 ## Resources
 
 - [Documentation](https://matreshka.js.org), in [English](https://matreshka.js.org), [Ukrainian](https://matreshka.js.org/ua/) and [Russian](https://matreshka.js.org/ru/)
-- [Examples](https://matreshka.js.org/examples/): a signup form, a product table, a widget on someone else's page, TodoMVC and more
+- [Examples](https://matreshka.js.org/#examples): a signup form, a product table, a widget on someone else's page, TodoMVC and more
 - [Changelog](https://github.com/finom/matreshka/blob/main/CHANGELOG.md)
 - [Contributing](https://github.com/finom/matreshka/blob/main/CONTRIBUTING.md)
 

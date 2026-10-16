@@ -1,0 +1,24 @@
+---
+title: "Matreshka.Object#keys"
+sidebarTitle: "keys"
+description: "Matreshka.Object#keys: Возвращает массив имен свойств, отвечающих за данные"
+importance: 2
+---
+
+# Matreshka.Object#keys
+
+**Метод**
+
+```js
+Matreshka.Object#keys() → array
+```
+
+Возвращает массив имен свойств, отвечающих за данные
+
+**Возвращает:** [`array`](/ru/api/types/array/) – keys
+
+## Примеры
+
+```js
+const keys = this.keys();
+```

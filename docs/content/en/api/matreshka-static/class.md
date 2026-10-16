@@ -1,0 +1,84 @@
+---
+title: "Matreshka.Class"
+sidebarTitle: "Class"
+description: "Matreshka.Class: An implementation of classes based on the prototype inheritance"
+importance: 2
+---
+
+# Matreshka.Class
+
+**Method**
+
+**Import:**
+
+```js
+import { Class } from 'matreshka';
+```
+
+```js
+Matreshka.Class(prototype, [statics]) → class
+```
+
+An implementation of classes based on the prototype inheritance
+
+The ``Class`` function allows to use the classic OOP when ECMAScript 2015 classes cannot be used somehow.
+
+If ``prototype`` has no own ``constructor`` property, the class calls the parent constructor with the same arguments, like an ECMAScript 2015 class without a constructor. An ECMAScript 2015 class can be passed as ``constructor``: it runs on instantiation, but the methods declared in its body are not inherited; put them in ``prototype``.
+
+**Returns:** [`class`](/api/types/class/) – class (a class constructor to be exact)
+
+## Arguments
+
+| Name | Type | Details |
+| --- | --- | --- |
+| `prototype` | [`object`](/api/types/object/) | Methods and properties |
+| `statics` (optional) | [`object`](/api/types/object/) | Static methods and properties |
+
+## Examples
+
+```js
+const A = Matreshka.Class({
+	method1() { ... }
+});
+
+const B = Matreshka.Class({
+	// B is inherited from A
+	extends: A,
+	method2() { ... }
+});
+
+const C = Matreshka.Class({
+	// C is inherited from B
+	extends: B,
+	method2() {
+		// calling the parent method
+		B.prototype.method2.apply(this, arguments);
+	},
+	method3(a, b) { ... }
+});
+
+const D = Matreshka.Class({
+	// D is inherited from C
+	extends: C,
+	method3() {
+		// calling the parent method
+		C.prototype.method2.call(this, arguments);
+	}
+});
+```
+
+**Passing an object with static methods and properties**
+
+```js
+const MyClass = Matreshka.Class({
+	method() { ... }
+}, {
+	staticProp: 'foo',
+	staticMethod() {
+		return 'bar';
+	}
+});
+
+alert(MyClass.staticProp); // foo
+alert(MyClass.staticMethod()); // bar
+```

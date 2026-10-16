@@ -77,18 +77,5 @@
     "rollup": "^4.64.6",
     "typescript": "^7.0.2",
     "vitest": "^5.0.3"
-  },
-  "overrides": {
-    "nextra": {
-      "zod": "4.3.6"
-    },
-    "nextra-theme-docs": {
-      "zod": "4.3.6"
-    },
-    "@xmldom/xmldom": "^0.9.12",
-    "katex": "^0.18.11",
-    "@shikijs/twoslash": {
-      "typescript": "6.0.3"
-    }
   }
 }

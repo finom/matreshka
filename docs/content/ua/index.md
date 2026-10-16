@@ -1,0 +1,50 @@
+---
+title: "Прив’язка даних до готового HTML | Matreshka.js"
+sidebarTitle: "Головна"
+description: "Matreshka.js прив’язує об’єкти JavaScript до HTML, який уже є на сторінці: двостороння прив’язка, обчислювані значення, списки. Тег script або npm."
+---
+
+# Matreshka.js
+
+Введіть текст у поле: властивість `x` прив’язана до обох елементів.
+
+```html
+<input class="in" type="text">
+<output class="out"></output>
+
+<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
+<script>
+const { bindNode } = Matreshka;
+const app = {};
+bindNode(app, 'x', '.in, .out');
+app.x = 'Прив’язка даних до готового HTML';
+</script>
+```
+
+## Навіщо Matreshka
+
+Для сторінок, у яких HTML уже готовий: серверний рендеринг, віджети, старі проєкти, сторінка з одного HTML-файлу. Підключіть один тег `<script>` і прив’яжіть властивості об’єкта до елементів просто в JavaScript — розмітку змінювати не потрібно. Проєкт розвивається з 2013 року; версія 3.0 — це один пакет з ES-модулями та типами TypeScript.
+
+Докладніше — у [вступі](/ua/introduction/) та в [довіднику API](/ua/api/matreshka/).
+
+## Встановлення
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
+```
+
+```sh
+npm install matreshka
+```
+
+```js
+import { bindNode, calc, binders } from 'matreshka';
+```
+
+Для ШІ-агентів, що пишуть код (Claude Code, Cursor, Codex та інших), додайте скіл Matreshka:
+
+```sh
+npx skills add finom/matreshka
+```
+
+Документація також доступна [англійською](/) і [російською](/ru/).

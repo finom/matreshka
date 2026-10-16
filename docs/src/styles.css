@@ -1,0 +1,499 @@
+@import 'tailwindcss';
+@source './';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* shadcn/ui tokens (neutral) */
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --brand: oklch(0.55 0.15 140);
+  --link: oklch(0.5 0.17 250);
+  --advanced: oklch(0.5 0.2 320);
+  color-scheme: light;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --brand: oklch(0.78 0.17 135);
+  --link: oklch(0.75 0.13 250);
+  --advanced: oklch(0.75 0.15 320);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-link: var(--link);
+  --color-advanced: var(--advanced);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-padding-top: 4.5rem;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+/* the light and the dark copy of an image or icon */
+.dark .mk-light,
+.mk-dark {
+  display: none;
+}
+.dark .mk-dark {
+  display: inline;
+}
+
+/* shadcn Button */
+.mk-button {
+  @apply inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap no-underline transition-all outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50;
+}
+.mk-button-primary {
+  @apply bg-primary text-primary-foreground shadow-xs hover:bg-primary/90;
+}
+.mk-button-outline {
+  @apply border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50;
+}
+.mk-button-sm {
+  @apply h-8 gap-1.5 rounded-md px-3;
+}
+.mk-button-lg {
+  @apply h-10 rounded-md px-6;
+}
+.mk-icon-button {
+  @apply inline-flex size-9 items-center justify-center rounded-md text-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 outline-none;
+}
+
+.mk-skip {
+  @apply sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:shadow;
+}
+
+/* header */
+.mk-header {
+  @apply sticky top-0 z-40 flex h-14 items-center gap-2 border-b bg-background/90 px-3 backdrop-blur supports-[backdrop-filter]:bg-background/70 sm:px-4;
+}
+.mk-menu-button {
+  @apply lg:hidden;
+}
+.mk-brand {
+  @apply flex items-center gap-2 text-base font-semibold tracking-tight;
+}
+.mk-brand img {
+  @apply h-7 w-auto;
+}
+.mk-version {
+  @apply hidden rounded-md border px-1.5 py-0.5 text-xs font-medium text-muted-foreground sm:inline;
+}
+.mk-header-end {
+  @apply ml-auto flex items-center gap-0.5;
+}
+.mk-langs {
+  @apply mr-1 hidden items-center gap-0.5 sm:flex;
+}
+.mk-langs a {
+  @apply rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground;
+}
+.mk-langs a[aria-current] {
+  @apply bg-secondary text-foreground;
+}
+
+/* layout */
+.mk-layout {
+  @apply mx-auto flex w-full max-w-[90rem];
+}
+.mk-nav {
+  @apply fixed top-14 bottom-0 left-0 z-30 w-72 -translate-x-full overflow-y-auto border-r bg-background px-3 py-4 text-sm transition-transform lg:sticky lg:h-[calc(100dvh-3.5rem)] lg:translate-x-0;
+  overscroll-behavior: contain;
+}
+.mk-nav-open .mk-nav {
+  @apply translate-x-0 shadow-lg;
+}
+.mk-backdrop {
+  @apply pointer-events-none fixed inset-0 top-14 z-20 bg-black/40 opacity-0 transition-opacity lg:hidden;
+}
+.mk-nav-open .mk-backdrop {
+  @apply pointer-events-auto opacity-100;
+}
+.mk-main {
+  @apply min-w-0 flex-1 px-4 py-8 sm:px-8 lg:px-12;
+}
+.mk-main > * {
+  @apply mx-auto max-w-3xl;
+}
+
+/* menu */
+.mk-mode {
+  @apply mb-3 grid grid-cols-2 gap-1 rounded-lg bg-muted p-1;
+}
+.mk-mode button {
+  @apply rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors;
+}
+html:not(.mk-one) .mk-mode [data-mode='all'],
+.mk-one .mk-mode [data-mode='one'] {
+  @apply bg-background text-foreground shadow-sm dark:bg-input/40;
+}
+.mk-search {
+  @apply mb-2 flex h-9 items-center gap-2 rounded-md border bg-transparent px-2.5 text-muted-foreground shadow-xs focus-within:ring-[3px] focus-within:ring-ring/50 dark:bg-input/30;
+}
+.mk-search input {
+  @apply min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground;
+}
+.mk-search input::-webkit-search-cancel-button {
+  display: none;
+}
+.mk-search kbd {
+  @apply rounded border bg-muted px-1.5 font-mono text-[0.7rem];
+}
+.mk-nav-heading {
+  @apply mt-5 mb-1 px-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase;
+}
+.mk-nav ul {
+  @apply grid gap-px;
+}
+.mk-nav li a {
+  @apply flex items-center gap-2 rounded-md px-2 py-1 text-foreground/80 hover:bg-accent hover:text-accent-foreground;
+}
+.mk-nav li a[aria-current] {
+  @apply bg-accent font-medium text-foreground;
+}
+.mk-nav li a[data-importance='3'] {
+  @apply text-muted-foreground;
+}
+.mk-dot {
+  @apply size-1.5 shrink-0 rounded-full bg-brand;
+}
+.mk-nav li a:not(:has(.mk-dot)) {
+  @apply pl-[1.375rem];
+}
+.mk-nav details {
+  @apply mt-1;
+}
+.mk-nav summary {
+  @apply flex cursor-pointer list-none items-center justify-between rounded-md px-2 py-1 font-medium hover:bg-accent;
+}
+.mk-nav summary::-webkit-details-marker {
+  display: none;
+}
+.mk-nav summary::after {
+  content: '';
+  @apply size-2 rotate-45 border-r-[1.5px] border-b-[1.5px] border-muted-foreground transition-transform;
+}
+.mk-nav details:not([open]) summary::after {
+  @apply -rotate-45;
+}
+.mk-nav details ul {
+  @apply mt-px;
+}
+.mk-advanced-switch {
+  @apply flex items-center justify-between px-2 py-1;
+}
+.mk-advanced-switch label {
+  @apply flex cursor-pointer items-center gap-2;
+}
+.mk-advanced-switch input {
+  @apply sr-only;
+}
+.mk-switch {
+  @apply relative inline-flex h-[1.15rem] w-8 shrink-0 rounded-full bg-input transition-colors dark:bg-input/80;
+}
+.mk-switch::after {
+  content: '';
+  @apply absolute top-px left-px size-4 rounded-full bg-background shadow-sm transition-transform dark:bg-foreground;
+}
+.mk-advanced .mk-switch {
+  @apply bg-primary;
+}
+.mk-advanced .mk-switch::after {
+  @apply translate-x-[calc(100%-2px)] dark:bg-primary-foreground;
+}
+.mk-advanced-switch input:focus-visible + .mk-switch {
+  @apply ring-[3px] ring-ring/50;
+}
+.mk-advanced-switch a {
+  @apply inline-flex size-5 items-center justify-center rounded-full border text-xs text-muted-foreground hover:bg-accent;
+}
+.mk-updated {
+  @apply mt-6 px-2 text-xs text-muted-foreground;
+}
+
+/* hidden by script state; without JavaScript every section shows */
+.mk-js:not(.mk-advanced) [data-importance='3'] {
+  display: none;
+}
+.mk-js:not(.mk-advanced) .mk-searching li a[data-importance='3'] {
+  display: flex;
+}
+.mk-one .mk-section:not(.mk-current),
+.mk-one .mk-footer {
+  display: none;
+}
+.mk-searching :is(.mk-nav-heading, .mk-advanced-switch, .mk-nav-langs) {
+  display: none;
+}
+.mk-nav li[hidden],
+.mk-nav [hidden] {
+  display: none !important;
+}
+
+/* sections */
+.mk-section {
+  @apply border-b pt-6 pb-10;
+}
+.mk-one .mk-section {
+  @apply border-b-0 pt-0;
+}
+.mk-section:last-of-type {
+  @apply border-b-0;
+}
+.mk-section [id] {
+  scroll-margin-top: 4.5rem;
+}
+.mk-section > h2.mk-title {
+  @apply mt-0 text-3xl font-semibold tracking-tight;
+}
+.mk-section > h2.mk-title a {
+  @apply text-foreground no-underline;
+}
+.mk-badge {
+  @apply mt-2 inline-flex rounded-full border border-advanced/50 px-2.5 py-0.5 text-xs font-medium text-advanced;
+}
+.mk-edit {
+  @apply mt-8 text-sm;
+}
+.mk-edit a {
+  @apply text-muted-foreground no-underline hover:text-foreground hover:underline;
+}
+.mk-pager {
+  @apply hidden;
+}
+.mk-one .mk-pager {
+  @apply mt-6 grid grid-cols-2 gap-4 border-t pt-6;
+}
+.mk-pager a {
+  @apply flex flex-col gap-0.5 rounded-lg border p-3 text-sm font-medium hover:bg-accent;
+}
+.mk-pager a small {
+  @apply text-xs font-normal text-muted-foreground;
+}
+.mk-pager .mk-next {
+  @apply col-start-2 items-end text-right;
+}
+.mk-footer {
+  @apply mt-12 border-t pt-6 pb-10 text-sm text-muted-foreground;
+}
+.mk-footer a {
+  @apply hover:text-foreground hover:underline;
+}
+
+/* text inside a section */
+.mk-section {
+  @apply leading-7;
+}
+.mk-section :where(p, ul, ol, blockquote, .mk-code, .mk-table) {
+  @apply my-4;
+}
+.mk-section :where(h2) {
+  @apply mt-10 mb-3 text-2xl font-semibold tracking-tight;
+}
+.mk-section :where(h3) {
+  @apply mt-8 mb-2 text-xl font-semibold tracking-tight;
+}
+.mk-section :where(h4, h5, h6) {
+  @apply mt-6 mb-2 text-base font-semibold;
+}
+.mk-section :where(h2, h3, h4, h5, h6) .mk-anchor {
+  @apply text-foreground no-underline;
+}
+.mk-section :where(h2, h3, h4, h5, h6) .mk-anchor:hover::after {
+  content: ' #';
+  @apply text-muted-foreground;
+}
+.mk-section :where(p, li, td) a {
+  @apply font-medium text-link underline-offset-4 hover:underline;
+}
+.mk-section :where(ul) {
+  @apply list-disc pl-6;
+}
+.mk-section :where(ol) {
+  @apply list-decimal pl-6;
+}
+.mk-section :where(li) {
+  @apply my-1;
+}
+.mk-section :where(blockquote) {
+  @apply rounded-r-md border-l-4 border-brand/60 bg-muted/60 px-4 py-1 text-foreground/90;
+}
+.mk-section :where(blockquote) > :where(p) {
+  @apply my-2;
+}
+.mk-section :where(:not(pre) > code) {
+  @apply rounded-md bg-muted px-[0.35em] py-[0.15em] font-mono text-[0.875em];
+}
+.mk-section :where(strong) {
+  @apply font-semibold;
+}
+.mk-section :where(hr) {
+  @apply my-8;
+}
+.mk-table {
+  @apply overflow-x-auto rounded-lg border;
+}
+.mk-table table {
+  @apply w-full border-collapse text-sm;
+}
+.mk-table th {
+  @apply bg-muted/60 px-3 py-2 text-left font-medium;
+}
+.mk-table td {
+  @apply border-t px-3 py-2 align-top;
+}
+
+/* code: Shiki writes both themes, the dark one as variables */
+.mk-code {
+  @apply relative;
+}
+.mk-code pre {
+  @apply overflow-x-auto rounded-lg border px-4 py-3 font-mono text-[0.8125rem] leading-6;
+}
+.shiki {
+  background: #fff;
+  color: #24292e;
+}
+.dark .shiki {
+  background: #24292e;
+  color: #e1e4e8;
+}
+.mk-copy {
+  @apply absolute top-2 right-2 inline-flex size-7 items-center justify-center rounded-md border bg-background/80 text-muted-foreground opacity-0 transition-opacity hover:text-foreground focus-visible:opacity-100;
+}
+.mk-copy::before {
+  content: '';
+  @apply size-3.5;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+.mk-copy.mk-copied::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+.mk-code:hover .mk-copy {
+  @apply opacity-100;
+}
+@media (hover: none) {
+  .mk-copy {
+    @apply opacity-100;
+  }
+}
+html:not(.mk-js) .mk-copy {
+  display: none;
+}
+
+/* home */
+.mk-hero {
+  @apply mt-4 mb-6 flex flex-col items-center gap-3 text-center;
+}
+.mk-hero h1 {
+  @apply m-0;
+}
+.mk-hero img {
+  @apply h-auto max-w-full;
+}
+.mk-tagline {
+  @apply text-lg text-muted-foreground sm:text-xl;
+}
+.mk-demo {
+  @apply my-6 grid gap-3 rounded-xl border bg-card p-5 shadow-xs;
+}
+.mk-demo output {
+  @apply min-h-8 text-xl font-semibold;
+}
+.mk-demo input {
+  @apply h-9 w-full rounded-md border border-input bg-transparent px-3 text-base shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:bg-input/30;
+}
+.mk-buttons {
+  @apply my-6 flex flex-wrap justify-center gap-3;
+}
+
+/* examples */
+.mk-examples {
+  @apply my-6 grid gap-4 sm:grid-cols-2;
+}
+.mk-example {
+  @apply flex flex-col gap-3 rounded-xl border bg-card p-4 shadow-xs;
+}
+.mk-example h4 {
+  @apply m-0 text-base font-semibold;
+}
+.mk-example h4 a {
+  @apply text-foreground no-underline hover:underline;
+}
+.mk-example-text {
+  @apply flex-1 text-sm leading-6;
+}
+.mk-example-text > :where(p) {
+  @apply my-0;
+}
+.mk-example-buttons {
+  @apply flex flex-wrap gap-2;
+}
+
+/* 404 */
+.mk-not-found {
+  @apply mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-3 px-4 text-center;
+}
+.mk-not-found h1 {
+  @apply text-2xl font-semibold;
+}
+.mk-not-found .mk-buttons {
+  @apply my-2;
+}

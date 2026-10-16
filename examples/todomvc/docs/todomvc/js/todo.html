@@ -55,7 +55,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p><strong>todo.js</strong> contains the <code>Todo</code> class, which is inherited from the <a href="https://matreshka.js.org/api/matreshka-object/">Matreshka.Object</a> class and used as a (<a href="https://matreshka.js.org/api/matreshka-array/model/">Model</a>) for the main class (<a href="todos.html">Todos</a>).</p>
+              <p><strong>todo.js</strong> contains the <code>Todo</code> class, which is inherited from the <a href="https://matreshka.js.org/#Matreshka.Object">Matreshka.Object</a> class and used as a (<a href="https://matreshka.js.org/#Matreshka.Array-Model">Model</a>) for the main class (<a href="todos.html">Todos</a>).</p>
 
             </div>
             
@@ -73,7 +73,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Assign the default values and add the keys <code>&quot;title&quot;</code> and <code>&quot;completed&quot;</code> to the list of the keys which are responsible for the data (see <a href="https://matreshka.js.org/api/matreshka-object/set-data/">setData</a>).
+              <p>Assign the default values and add the keys <code>&quot;title&quot;</code> and <code>&quot;completed&quot;</code> to the list of the keys which are responsible for the data (see <a href="https://matreshka.js.org/#Matreshka.Object-setData">setData</a>).
 The <code>&quot;title&quot;</code> property by default is an empty string.
 The <code>&quot;completed&quot;</code> property by default is <code>false</code>.</p>
 
@@ -128,7 +128,7 @@ We’re saving a reference to <code>Todos</code> instance in <code>&quot;parent&
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Wait for the <code>&quot;render&quot;</code> event using the <a href="https://matreshka.js.org/api/matreshka-array/on-item-render/">onRender</a> virtual method. The event fires when the element corresponding to the instance of the class is rendered.</p>
+              <p>Wait for the <code>&quot;render&quot;</code> event using the <a href="https://matreshka.js.org/#Matreshka.Array-onItemRender">onRender</a> virtual method. The event fires when the element corresponding to the instance of the class is rendered.</p>
 
             </div>
             
@@ -145,7 +145,7 @@ We’re saving a reference to <code>Todos</code> instance in <code>&quot;parent&
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>The binding of the elements that do not require the assignment of the binder (binder). The <a href="https://matreshka.js.org/api/matreshka-static/default-binders/">defaultBinders</a> are used here if it is possible.</p>
+              <p>The binding of the elements that do not require the assignment of the binder (binder). The <a href="https://matreshka.js.org/#Matreshka.defaultBinders">defaultBinders</a> are used here if it is possible.</p>
 <ul>
 <li>The <code>&quot;completed&quot;</code> property is bound to the checkbox with <code>toggle</code> class</li>
 <li>The <code>&quot;edit&quot;</code> property is bound to the field (<code>input type=text</code>) with <code>edit</code> class</li>
@@ -171,10 +171,10 @@ We’re saving a reference to <code>Todos</code> instance in <code>&quot;parent&
               </div>
               <p>These bindings use the third argument as a binder.</p>
 <ul>
-<li>The visibility of the sandbox element will depend on the value of the <code>&quot;visible&quot;</code> property (<a href="https://matreshka.js.org/api/binders/display/">binders.display</a>)</li>
-<li>The presence of the <code>&quot;completed&quot;</code> class in the sandbox element will depend on the value of the <code>&quot;completed&quot;</code> property (<a href="https://matreshka.js.org/api/binders/class-name/">binders.className</a>)</li>
+<li>The visibility of the sandbox element will depend on the value of the <code>&quot;visible&quot;</code> property (<a href="https://matreshka.js.org/#Matreshka.binders.display">binders.display</a>)</li>
+<li>The presence of the <code>&quot;completed&quot;</code> class in the sandbox element will depend on the value of the <code>&quot;completed&quot;</code> property (<a href="https://matreshka.js.org/#Matreshka.binders.className">binders.className</a>)</li>
 <li>The presence of the <code>&quot;editing&quot;</code> class in the sandbox element will depend on the value of the <code>&quot;editing&quot;</code> property</li>
-<li>Bind the element <code>label</code> whose <code>innerHTML</code> will be synchronized with the value of the <code>&quot;title&quot;</code> property (<a href="https://matreshka.js.org/api/binders/html/">binders.html</a>)</li>
+<li>Bind the element <code>label</code> whose <code>innerHTML</code> will be synchronized with the value of the <code>&quot;title&quot;</code> property (<a href="https://matreshka.js.org/#Matreshka.binders.html">binders.html</a>)</li>
 </ul>
 
             </div>
@@ -245,7 +245,7 @@ If the <code>Enter</code> key is pressed, delete unnecessary spaces from the <co
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>If we click on the element that is responsible for the item deletion, we delete this item from the <code>Todos</code> instance using the <a href="https://matreshka.js.org/api/matreshka-array/pull/">pull</a> method.</p>
+              <p>If we click on the element that is responsible for the item deletion, we delete this item from the <code>Todos</code> instance using the <a href="https://matreshka.js.org/#Matreshka.Array-pull">pull</a> method.</p>
 
             </div>
             

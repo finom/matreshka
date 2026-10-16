@@ -1,0 +1,75 @@
+---
+title: "Matreshka.Array#Model"
+sidebarTitle: "Model"
+description: "Matreshka.Array#Model: Властивість визначає клас елементів, які буде містити колекція"
+importance: 1
+---
+
+# Matreshka.Array#Model
+
+**Метод** · Починаючи з версії 0.2 · Визначається вами
+
+```js
+Matreshka.Array#Model(data, matreshkaArray, index)
+```
+
+Властивість визначає клас елементів, які буде містити колекція
+
+При кожному додаванні елементів в масив, вбудований обробник перевіряє, чи є доданий елемент екземпляром ``Model`` і конвертує його в такий, якщо перевірка не пройдена. Рекомендується наслідувати ``Model`` від класу [`Matreshka.Object`](/ua/api/matreshka-object/) або [`Matreshka.Array`](/ua/api/matreshka-array/) (на випадок, якщо потрібно отримати колекцію колекцій), щоб отримати можливість конвертації масиву в звичайний масив методом [`Matreshka.Array#toJSON`](/ua/api/matreshka-array/to-json/).
+
+Для більш гнучкого контролю класу елементів (наприклад, якщо для одних елементів потрібно використовувати одну "модель", а для інших - іншу), використовуйте [`Matreshka.Array#mediateItem`](/ua/api/matreshka-array/mediate-item/).
+
+``Model`` можна оголосити як поле класу (``Model = MyModel;``), а не лише як геттер. Поля класу встановлюються після повернення з ``super(...)``, тому елементи, передані в ``super(...)``, конвертуються, коли масив наступного разу змінює якийсь метод; геттер ``get Model()`` конвертує їх одразу.
+
+Якщо змінити ``Model`` пізніше, елементи, які вже є в масиві, конвертуються, а їх відрендерені вузли замінюються.
+
+## Аргументи
+
+| Ім'я | Тип | Опис |
+| --- | --- | --- |
+| `data` | [`object`](/ua/api/types/object/) | Дані, передані в конструктор |
+| `matreshkaArray` | [`matreshkaArray`](/ua/api/types/matreshka-array/) | Масив, в який додали елемент |
+| `index` | [`number`](/ua/api/types/number/) | Поточний індекс об'єкта в батьківському масиві |
+
+## Посилання
+
+- [`Matreshka.Array#mediateItem`](/ua/api/matreshka-array/mediate-item/)
+- [`Matreshka.Array#itemRenderer`](/ua/api/matreshka-array/item-renderer/)
+
+## Приклади
+
+```js
+// визначаємо "модель"
+class MyModel extends Matreshka.Object {
+	constructor(data, parentArray, index) {
+		super(data);
+		this.doSomething();
+	}
+	doSomething() { ... }
+}
+
+// визначаємо клас для колекції
+class MyArray extends Matreshka.Array {
+	get Model() {
+		return MyModel;
+	}
+}
+
+// створюємо екземпляр класу
+const myArray = new MyArray();
+
+// додаємо два елементи
+myArray.push({
+    a: 1,
+    b: 2
+}, {
+    a: 3,
+    b: 4
+});
+
+console.log(myArray[0] instanceof MyModel); // true
+console.log(myArray[1] instanceof MyModel); // true
+
+// поверне [{ a: 1, b: 2 }, { a: 3, b: 4 }]
+myArray.toJSON();
+```
