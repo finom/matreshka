@@ -94,7 +94,9 @@ describe.each(rendered)('the $code page', ({ code, prefix, sections, html, ids, 
 
   // a level that hides every member of a menu group hides the group, so no empty group shows
   it('hides a menu group exactly when the level hides all its members', () => {
-    const groups = Array.from(html.matchAll(/<details open data-group="[^"]+" data-importance="(\d)">([\s\S]*?)<\/details>/g));
+    const groups = Array.from(
+      html.matchAll(/<details open data-group="[^"]+" data-importance="(\d)">([\s\S]*?)<\/details>/g)
+    );
     expect(groups.length).toBe(Object.keys(UI[code].groups).length);
     for (const [, groupLevel, body] of groups) {
       const levels = Array.from(body.matchAll(/<li data-importance="(\d)"><a/g), ([, level]) => Number(level));
