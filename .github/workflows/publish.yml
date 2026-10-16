@@ -1,7 +1,8 @@
 name: Publish
 
 # A `<dir>-v<version>` tag, pushed by `PACKAGE=<dir> npm run patch|minor`, publishes every package version npm does not
-# have yet. A manual run is a dry run: npm publish --dry-run, and the release text goes to the run summary.
+# have yet and its CHANGELOG has a section for. A manual run is a dry run: npm publish --dry-run, and the release text
+# goes to the run summary.
 on:
   push:
     tags: ["*-v*"]
@@ -47,27 +48,33 @@ jobs:
             echo "tag $TAG does not match packages/$dir at $version" >&2
             exit 1
           fi
-      # A GitHub Release carries its version's CHANGELOG section, so a version without one never reaches npm.
-      - name: Check the CHANGELOG has a section for every version npm lacks
+      # A GitHub Release carries its version's CHANGELOG section, so a version without one never reaches npm. The
+      # tagged package must have one; another package's version without one waits for its own tag.
+      - name: Pick the versions to publish
+        env:
+          TAG: ${{ github.event_name == 'workflow_dispatch' && '' || github.ref_name }}
         run: |
+          : >publish.list
           for dir in matreshka router parse-form; do
             name="$(node -p "require('./packages/$dir/package.json').name")"
             version="$(node -p "require('./packages/$dir/package.json').version")"
             [ -n "$(npm view "$name@$version" version 2>/dev/null)" ] && continue
-            node scripts/changelog-section.mjs "packages/$dir/CHANGELOG.md" "$version" >/dev/null
+            if node scripts/changelog-section.mjs "packages/$dir/CHANGELOG.md" "$version" >/dev/null 2>&1; then
+              echo "$dir" >>publish.list
+            elif [ "$TAG" = "$dir-v$version" ]; then
+              node scripts/changelog-section.mjs "packages/$dir/CHANGELOG.md" "$version"
+            else
+              echo "$name@$version has no CHANGELOG section; it waits for its own tag"
+            fi
           done
-      - name: Publish every version not yet on npm
+      - name: Publish every picked version
         env:
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           set -o pipefail
-          for dir in matreshka router parse-form; do
+          while read -r dir; do
             name="$(node -p "require('./packages/$dir/package.json').name")"
             version="$(node -p "require('./packages/$dir/package.json').version")"
-            if [ -n "$(npm view "$name@$version" version 2>/dev/null)" ]; then
-              echo "$name@$version is on npm"
-              continue
-            fi
             # A prerelease goes to the dist-tag its id names (0.3.0-beta.1 → beta), a release to latest.
             case "$version" in
               *-*) tag="${version#*-}"; tag="${tag%%.*}" ;;
@@ -78,7 +85,7 @@ jobs:
             # npm validates a new version for a few minutes, unseen by npm view, so a later run may try it again.
             npm publish "${args[@]}" 2>&1 | tee publish.log ||
               grep -qE "previously (staged|published) version" publish.log
-          done
+          done <publish.list
       # The release carries the version's CHANGELOG section, and the npm provenance as an in-toto file, which is what
       # Scorecard's Signed-Releases reads. A dry run writes the text of each version npm lacks to the run summary.
       - name: A GitHub Release per pushed tag, with the CHANGELOG section and the npm provenance
@@ -93,7 +100,7 @@ jobs:
             tag="$dir-v$version"
             file="$tag.intoto.jsonl"
             if [ "$DRY_RUN" = true ]; then
-              [ -n "$(npm view "$name@$version" version 2>/dev/null)" ] && continue
+              grep -qxF "$dir" publish.list || continue
             else
               gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" --silent 2>/dev/null || continue
               # A release that has its provenance is done; its text stays as it is.
