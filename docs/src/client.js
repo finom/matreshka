@@ -24,13 +24,17 @@
       try {
         localStorage.setItem(key, value);
       } catch {}
+    },
+    remove(key) {
+      try {
+        localStorage.removeItem(key);
+      } catch {}
     }
   };
 
   const state = {
     mode: root.classList.contains('mk-one') ? 'one' : 'all',
     level: [3, 2].find((level) => root.classList.contains(`mk-level-${level}`)) ?? 1,
-    dark: root.classList.contains('dark'),
     navOpen: false,
     query: '',
     current: ''
@@ -87,14 +91,39 @@
     renderPager();
   });
 
-  // the theme: the system's until the button picks one
-  bindNode(state, 'dark', root, binders.className('dark'), now);
-  document.getElementById('mk-theme').addEventListener('click', () => {
-    state.dark = !state.dark;
-    store.set('mk-theme', state.dark ? 'dark' : 'light');
+  // the theme: light, dark or the system's; from the system's the button goes to the other look first
+  const systemDark = matchMedia('(prefers-color-scheme: dark)');
+  const themeButton = document.getElementById('mk-theme');
+  const saved = store.get('mk-theme');
+  state.theme = saved === 'light' || saved === 'dark' ? saved : 'system';
+  calc(state, 'dark', 'theme', (theme) => theme === 'dark' || (theme === 'system' && systemDark.matches), {
+    debounceCalc: false
   });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-    if (!store.get('mk-theme')) state.dark = event.matches;
+  bindNode(state, 'dark', root, binders.className('dark'), now);
+  bindNode(state, 'theme', themeButton, binders.attr('data-theme'), now);
+  bindNode(
+    state,
+    'theme',
+    themeButton,
+    binders.attr('title', (theme) => data.themes[theme]),
+    now
+  );
+  bindNode(
+    state,
+    'theme',
+    themeButton,
+    binders.attr('aria-label', (theme) => data.themes[theme]),
+    now
+  );
+  themeButton.addEventListener('click', () => {
+    const same = systemDark.matches ? 'dark' : 'light';
+    const other = same === 'dark' ? 'light' : 'dark';
+    state.theme = state.theme === 'system' ? other : state.theme === other ? same : 'system';
+    if (state.theme === 'system') store.remove('mk-theme');
+    else store.set('mk-theme', state.theme);
+  });
+  systemDark.addEventListener('change', () => {
+    if (state.theme === 'system') state.dark = systemDark.matches;
   });
 
   // the menu as a drawer on small screens

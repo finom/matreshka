@@ -90,6 +90,17 @@
   }
 }
 
+/* the theme button shows the icon of the current choice */
+#mk-theme > span {
+  display: none;
+}
+#mk-theme[data-theme='light'] > [data-theme='light'],
+#mk-theme[data-theme='dark'] > [data-theme='dark'],
+#mk-theme[data-theme='system'] > [data-theme='system'],
+#mk-theme:not([data-theme]) > [data-theme='system'] {
+  display: inline;
+}
+
 /* the light and the dark copy of an image or icon */
 .dark .mk-light,
 .mk-dark {
@@ -335,6 +346,9 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
 }
 .mk-section > h2.mk-title a {
   @apply text-foreground no-underline;
+}
+.mk-title-owner {
+  @apply text-muted-foreground;
 }
 /* shadcn's Badge: secondary for the level and the kind, outline for the rest */
 .mk-meta {

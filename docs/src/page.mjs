@@ -13,6 +13,7 @@ const ICONS = {
     '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>'
   ),
   moon: icon('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>'),
+  monitor: icon('<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/>'),
   search: icon('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>', 16),
   github:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg>',
@@ -121,6 +122,13 @@ function homeExtras(html, ui) {
 
 function article(section, sections, ui, lang) {
   let html = renderSection(section, lang, sections);
+  // a member's title shows its owner ("Matreshka.Object#") quieter than its name
+  html = html.replace(/(<h2 class="mk-title"><a [^>]*>)([^<]*)<\/a>/, (match, open, text) => {
+    const name = escapeHtml(section.menuTitle ?? '');
+    return name && text !== name && text.endsWith(name)
+      ? `${open}<span class="mk-title-owner">${text.slice(0, -name.length)}</span>${name}</a>`
+      : match;
+  });
   if (section.id === 'home') html = homeExtras(html, ui);
   // the level and the kind line under the title ("**Method** · Defined by you") as badges
   if (section.importance) {
@@ -169,6 +177,7 @@ export function page({ lang, sections, updated, assets }) {
     old: oldAnchorsOf(lang, sections),
     copy: ui.copy,
     copied: ui.copied,
+    themes: ui.themes,
     previous: ui.previous,
     next: ui.next
   }).replace(/</g, '\\u003c');
@@ -225,7 +234,7 @@ ${LANGS.filter((l) => l.code !== lang)
     ${iconLink(REPO, 'GitHub', ICONS.github)}
     ${iconLink(DISCORD, 'Discord', ICONS.discord, ' mk-wide-only')}
     ${iconLink(X, 'X', ICONS.x, ' mk-wide-only')}
-    <button type="button" class="mk-icon-button" id="mk-theme" aria-label="${ui.theme}" title="${ui.theme}"><span class="mk-light">${ICONS.moon}</span><span class="mk-dark">${ICONS.sun}</span></button>
+    <button type="button" class="mk-icon-button" id="mk-theme"><span data-theme="light">${ICONS.sun}</span><span data-theme="dark">${ICONS.moon}</span><span data-theme="system">${ICONS.monitor}</span></button>
   </div>
   </div>
 </header>
