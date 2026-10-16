@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.binders.dataset
 
-**Method** · Since 1.1
+**Method**
 
 **Import:**
 

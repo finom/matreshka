@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.Array#mediateItem
 
-**Method** · Since 0.1
+**Method**
 
 ```js
 Matreshka.Array#mediateItem(mediator)

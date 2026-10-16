@@ -24,6 +24,29 @@ const ICONS = {
 const iconLink = (href, label, svg, extra = '') =>
   `<a class="mk-icon-button${extra}" href="${href}" rel="noopener" aria-label="${label}" title="${label}">${svg}</a>`;
 
+// the words the old docs put on the first line of a member's article
+const KINDS = new Set([
+  'Method',
+  'Property',
+  'Class',
+  'Namespace',
+  'Type',
+  'Метод',
+  'Свойство',
+  'Класс',
+  'Пространство имен',
+  'Тип',
+  'Властивість',
+  'Клас',
+  'Простір імен'
+]);
+
+// a member's badges: its level (circles and the old level name), its kind and the rest of the kind line
+const meta = (level, ui, tags = []) =>
+  `<p class="mk-meta"><span class="mk-pill mk-pill-level" data-level="${level}">${circles(level)}${ui.levels[level - 1]}</span>${tags
+    .map((tag, i) => `<span class="mk-pill${i ? ' mk-pill-outline' : ''}">${tag}</span>`)
+    .join('')}</p>`;
+
 // One, two or three small circles: a member's importance level.
 const circles = (level, label) =>
   `<span class="mk-circles" data-level="${level}"${label ? ` title="${label}" aria-label="${label}" role="img"` : ' aria-hidden="true"'}>${'<i></i>'.repeat(level)}</span>`;
@@ -99,10 +122,15 @@ function homeExtras(html, ui) {
 function article(section, sections, ui, lang) {
   let html = renderSection(section, lang, sections);
   if (section.id === 'home') html = homeExtras(html, ui);
+  // the level and the kind line under the title ("**Method** · Defined by you") as badges
   if (section.importance) {
     html = html.replace(
-      /<\/h2>/,
-      `</h2><p class="mk-badge" data-level="${section.importance}">${circles(section.importance, ui.levels[section.importance - 1])}</p>`
+      /<\/h2>\s*(?:<p><strong>([^<]+)<\/strong>((?:(?!<\/p>).)*)<\/p>)?/,
+      (match, kind, rest = '') => {
+        if (kind && !KINDS.has(kind)) return match.replace(/<\/h2>/, `</h2>${meta(section.importance, ui)}`);
+        const tags = kind ? [kind, ...rest.split(' · ').filter(Boolean)] : [];
+        return `</h2>${meta(section.importance, ui, tags)}`;
+      }
     );
   }
   return `<article id="${section.id}" class="mk-section" data-importance="${section.importance}" data-group="${section.group}">

@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.Array#pull
 
-**Метод** · Починаючи з версії 0.1
+**Метод**
 
 ```js
 Matreshka.Array#pull(indexOrValue, [eventOptions]) → *|null

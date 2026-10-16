@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka#parseBindings
 
-**Method** · Since 1.1
+**Method**
 
 ```js
 Matreshka#parseBindings(node, [eventOptions]) → $nodes
@@ -15,7 +15,7 @@ Matreshka#parseBindings(node, [eventOptions]) → $nodes
 
 Parses DOM tree, declaring property bindings on which are double braced.
 
-Starting with 1.1 version, Matreshka includes a simple DOM parser that handles double braced syntactic constructions. ``parseBindings`` method receives HTML string, DOM node or selector corresponding to DOM node as the first argument.
+Matreshka includes a simple DOM parser that handles double braced syntactic constructions. ``parseBindings`` method receives HTML string, DOM node or selector corresponding to DOM node as the first argument.
 
 As the method is DOM template engine (and not HTML-replace parser), all child DOM nodes of the passed element remain in their same state (for example, DOM events aren’t erased).
 

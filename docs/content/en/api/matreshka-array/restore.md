@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.Array#restore
 
-**Method** · Since 1.3
+**Method**
 
 ```js
 Matreshka.Array#restore([selector], [eventOptions]) → matreshkaArray

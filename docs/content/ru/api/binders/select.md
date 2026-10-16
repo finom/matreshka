@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.binders.select
 
-**Метод** · Начиная с версии 0.3
+**Метод**
 
 **Импорт:**
 

@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.binders.progress
 
-**Метод** · Начиная с версии 1.1
+**Метод**
 
 **Импорт:**
 

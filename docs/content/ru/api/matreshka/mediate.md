@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka#mediate
 
-**Метод** · Начиная с версии 0.1
+**Метод**
 
 ```js
 Matreshka#mediate(key, mediator)

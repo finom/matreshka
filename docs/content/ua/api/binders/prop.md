@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.binders.prop
 
-**Метод** · Починаючи з версії 0.3
+**Метод**
 
 **Імпорт:**
 

@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.bindOptionalNode
 
-**Метод** · Починаючи з версії 1.1
+**Метод**
 
 **Імпорт:**
 

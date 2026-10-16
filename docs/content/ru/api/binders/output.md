@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.binders.output
 
-**Метод** · Начиная с версии 1.4
+**Метод**
 
 **Импорт:**
 

@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka#bindOptionalNode
 
-**Метод** · Починаючи з версії 0.3
+**Метод**
 
 ```js
 Matreshka#bindOptionalNode()

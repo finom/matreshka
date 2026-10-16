@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.Array.from
 
-**Method** · Since 1.1
+**Method**
 
 ```js
 Matreshka.Array.from(arrayLike, [mapFn], [thisArg]) → matreshkaArray

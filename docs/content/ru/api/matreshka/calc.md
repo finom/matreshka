@@ -7,7 +7,7 @@ importance: 1
 
 # Matreshka#calc
 
-**Метод** · Начиная с версии 2.0
+**Метод**
 
 ```js
 Matreshka#calc(target, source, [handler=(v)=>v], [eventOptions])

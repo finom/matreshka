@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.Array#trackBy
 
-**Property** · Since 1.2 · Defined by you
+**Property** · Defined by you
 
 ```js
 Matreshka.Array#trackBy: string

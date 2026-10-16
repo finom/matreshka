@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.bindSandbox
 
-**Метод** · Начиная с версии 1.1
+**Метод**
 
 **Импорт:**
 

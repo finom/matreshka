@@ -7,7 +7,7 @@ importance: 1
 
 # Matreshka.Array#Model
 
-**Метод** · Начиная с версии 0.2 · Определяется вами
+**Метод** · Определяется вами
 
 ```js
 Matreshka.Array#Model(data, matreshkaArray, index)

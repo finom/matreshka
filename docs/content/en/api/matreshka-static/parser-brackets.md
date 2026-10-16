@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.parserBrackets
 
-**Property** · Since 1.5
+**Property**
 
 **Import:**
 

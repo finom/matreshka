@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka#instantiate
 
-**Метод** · Начиная с версии 1.1
+**Метод**
 
 ```js
 Matreshka#instantiate(key, class, [updateCallback]) → object

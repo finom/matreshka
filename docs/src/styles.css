@@ -285,6 +285,10 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
 .mk-circles i {
   @apply size-[5px] rounded-full bg-current;
 }
+/* circles in a heading sit on the middle of the text, not on its baseline */
+.mk-section :is(h3, h4, p, li) .mk-circles {
+  @apply mr-1 align-middle;
+}
 .mk-nav li a .mk-circles {
   @apply ml-auto opacity-60;
 }
@@ -332,8 +336,21 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
 .mk-section > h2.mk-title a {
   @apply text-foreground no-underline;
 }
-.mk-badge {
-  @apply mt-2 inline-flex items-center rounded-full border px-2 py-1 text-muted-foreground;
+/* shadcn's Badge: secondary for the level and the kind, outline for the rest */
+.mk-meta {
+  @apply mt-3 flex flex-wrap items-center gap-1.5;
+}
+.mk-pill {
+  @apply inline-flex h-6 items-center gap-1.5 rounded-md border border-transparent bg-secondary px-2 text-xs font-medium whitespace-nowrap text-secondary-foreground;
+}
+.mk-pill code {
+  @apply bg-transparent p-0 text-xs;
+}
+.mk-pill-outline {
+  @apply border-border bg-transparent text-foreground;
+}
+.mk-pill-level {
+  @apply text-muted-foreground;
 }
 .mk-edit {
   @apply mt-8 text-sm;

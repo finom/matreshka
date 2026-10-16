@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.select
 
-**Method** · Since 1.1
+**Method**
 
 **Import:**
 

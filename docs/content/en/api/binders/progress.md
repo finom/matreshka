@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.binders.progress
 
-**Method** · Since 1.1
+**Method**
 
 **Import:**
 

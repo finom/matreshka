@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.Object#entries
 
-**Method** · Since 2.0.0
+**Method**
 
 ```js
 Matreshka.Object#entries() → array

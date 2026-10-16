@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.chain
 
-**Method** · Since 2.0
+**Method**
 
 **Import:**
 

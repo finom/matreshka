@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.Array#rerender
 
-**Method** · Since 0.3
+**Method**
 
 ```js
 Matreshka.Array#rerender([eventOptions]) → matreshkaArray

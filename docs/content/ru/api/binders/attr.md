@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.binders.attr
 
-**Метод** · Начиная с версии 0.3
+**Метод**
 
 **Импорт:**
 

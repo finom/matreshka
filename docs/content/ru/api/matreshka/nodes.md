@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka#nodes
 
-**Свойство** · Начиная с версии 1.1
+**Свойство**
 
 ```js
 Matreshka#nodes: node

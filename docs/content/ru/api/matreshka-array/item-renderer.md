@@ -7,7 +7,7 @@ importance: 1
 
 # Matreshka.Array#itemRenderer
 
-**Свойство** · Начиная с версии 0.1 · Определяется вами
+**Свойство** · Определяется вами
 
 ```js
 Matreshka.Array#itemRenderer: string|function

@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.Array#pull
 
-**Method** · Since 0.1
+**Method**
 
 ```js
 Matreshka.Array#pull(indexOrValue, [eventOptions]) → *|null

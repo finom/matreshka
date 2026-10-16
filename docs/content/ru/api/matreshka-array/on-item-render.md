@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.Array#onItemRender
 
-**Метод** · Начиная с версии 1.1 · Определяется вами
+**Метод** · Определяется вами
 
 ```js
 Matreshka.Array#onItemRender(item, renderEvent)

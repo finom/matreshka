@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.once
 
-**Method** · Since 1.1
+**Method**
 
 **Import:**
 

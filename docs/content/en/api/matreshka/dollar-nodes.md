@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka#$nodes
 
-**Property** · Since 1.1
+**Property**
 
 ```js
 Matreshka#$nodes: $nodes

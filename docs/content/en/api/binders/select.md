@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.binders.select
 
-**Method** · Since 0.3
+**Method**
 
 **Import:**
 

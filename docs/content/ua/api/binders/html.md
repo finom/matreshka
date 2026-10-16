@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.binders.html
 
-**Метод** · Починаючи з версії 0.1
+**Метод**
 
 **Імпорт:**
 

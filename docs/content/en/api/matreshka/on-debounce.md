@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka#onDebounce
 
-**Method** · Since 1.1
+**Method**
 
 ```js
 Matreshka#onDebounce(names, callback, [debounceDelay=0], [triggerOnInit=false], [context]) → object

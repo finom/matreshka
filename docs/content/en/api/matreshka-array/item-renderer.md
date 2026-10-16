@@ -7,7 +7,7 @@ importance: 1
 
 # Matreshka.Array#itemRenderer
 
-**Property** · Since 0.1 · Defined by you
+**Property** · Defined by you
 
 ```js
 Matreshka.Array#itemRenderer: string|function

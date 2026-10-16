@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.binders.existence
 
-**Метод** · Начиная с версии 2.3
+**Метод**
 
 **Импорт:**
 

@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.Array#orderBy
 
-**Метод** · Начиная с версии 1.6
+**Метод**
 
 ```js
 Matreshka.Array#orderBy(keys, [orders=asc]) → matreshkaArray

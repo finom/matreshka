@@ -7,7 +7,7 @@ importance: 1
 
 # Matreshka#on
 
-**Method** · Since 1.1
+**Method**
 
 ```js
 Matreshka#on(names, callback, [triggerOnInit=false], [context]) → object

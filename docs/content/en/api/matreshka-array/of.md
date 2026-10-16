@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka.Array.of
 
-**Method** · Since 1.1
+**Method**
 
 ```js
 Matreshka.Array.of() → matreshkaArray

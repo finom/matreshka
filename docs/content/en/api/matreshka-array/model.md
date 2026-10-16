@@ -7,7 +7,7 @@ importance: 1
 
 # Matreshka.Array#Model
 
-**Method** · Since 0.2 · Defined by you
+**Method** · Defined by you
 
 ```js
 Matreshka.Array#Model(data, matreshkaArray, index)

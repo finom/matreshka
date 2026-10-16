@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.parseBindings
 
-**Method** · Since 1.1
+**Method**
 
 **Import:**
 

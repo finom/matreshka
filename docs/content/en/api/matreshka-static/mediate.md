@@ -7,7 +7,7 @@ importance: 1
 
 # Matreshka.mediate
 
-**Method** · Since 1.1
+**Method**
 
 **Import:**
 

@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.parserBrackets
 
-**Свойство** · Начиная с версии 1.5
+**Свойство**
 
 **Импорт:**
 

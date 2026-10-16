@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka#once
 
-**Метод** · Починаючи з версії 1.1
+**Метод**
 
 ```js
 Matreshka#once(names, callback, [context]) → object

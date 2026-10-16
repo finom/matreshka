@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.onDebounce
 
-**Метод** · Начиная с версии 1.1
+**Метод**
 
 **Импорт:**
 

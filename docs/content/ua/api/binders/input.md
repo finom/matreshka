@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.binders.input
 
-**Метод** · Починаючи з версії 0.3
+**Метод**
 
 **Імпорт:**
 

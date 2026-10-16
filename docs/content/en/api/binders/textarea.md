@@ -7,7 +7,7 @@ importance: 3
 
 # Matreshka.binders.textarea
 
-**Method** · Since 0.3
+**Method**
 
 **Import:**
 

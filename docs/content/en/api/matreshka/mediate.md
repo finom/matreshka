@@ -7,7 +7,7 @@ importance: 2
 
 # Matreshka#mediate
 
-**Method** · Since 0.1
+**Method**
 
 ```js
 Matreshka#mediate(key, mediator) → object
