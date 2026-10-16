@@ -19,7 +19,6 @@ Start with [Hello World](./hello-world), the [Matreshka.Object example](./matres
 - [Markdown Editor](./markdown-editor)
 - [Treeview](./treeview)
 - [TodoMVC](./todomvc)
-- [SoundCloud Search](./soundcloud-search) (its live demo no longer works: SoundCloud's API refuses the demo's client ID)
 - [Router](./router) and [form parser](./parse-form) demos
 
 The pages load the framework from the site root (`/matreshka.min.js`, with the router and the form parser in it). The docs build copies it, with these examples, into the site, so to run them locally build the site and serve `docs/out`:

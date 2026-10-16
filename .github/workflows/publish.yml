@@ -38,7 +38,7 @@ jobs:
       - name: Read the version
         id: version
         env:
-          TAG: ${{ github.event_name == 'workflow_dispatch' && '' || github.ref_name }}
+          TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
         run: |
           version="$(node -p "require('./package.json').version")"
           # A mistyped tag would otherwise publish whatever version the tree holds.
