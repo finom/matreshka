@@ -22,7 +22,7 @@ app.x = 'A framework for single-page applications creation';
 
 For pages whose HTML already exists: server-rendered apps, widgets, old code, a single HTML file. Add one `<script>` tag, bind object properties to nodes in JavaScript, keep the markup as it is. Since 2013; 3.0 is one package with ES modules and TypeScript types, and zero dependencies.
 
-**Size:** `matreshka.min.js` is %size-min% kB minified, %size-gzip% kB with gzip and %size-brotli% kB with brotli, the compression a CDN uses for current browsers.
+**Size:** `matreshka.min.js` is %size-min% kB minified, %size-gzip% kB with gzip and %size-brotli% kB with brotli, the compression a CDN uses for current browsers. `matreshka.core.min.js`, the same without the router and the form parser, is %core-size-brotli% kB with brotli.
 
 ## Features
 

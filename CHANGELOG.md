@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `dist/matreshka.core.min.js`: the script-tag bundle without the router and the form parser, 16.9 kB with brotli.
+
+### Changed
+
+- The minified files throw short error messages with the error's code, for example `Matreshka error binding:node_missing (key: "x")`; `dist/matreshka.js` and the npm modules keep the full text. `matreshka.min.js` is 18.0 kB with brotli instead of 18.7 kB.
+
 ## [3.0.0] - 2026-10-17
 
 3.0.0 is a new major version: one package, written in TypeScript, ES modules only. The API of 2.x stays; the changes below say what moved and what was removed.
