@@ -29,7 +29,13 @@ import { initRouter, Router } from 'src/router';
 import { parseForm } from 'src/parse-form';
 
 // every claim and snippet of skills/matreshka/SKILL.md, run as written
-const wait = (ms = 20) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+// with no delay: hops through timers, so a debounced step that schedules the next one (getValue, then the
+// write-back) is done on a slow machine too
+const wait = async (ms) => {
+  if (ms !== undefined) return sleep(ms);
+  for (let i = 0; i < 5; i++) await sleep(0);
+};
 const $ = (selector) => document.querySelector(selector);
 const type = (input, value) => {
   input.value = value;
