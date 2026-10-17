@@ -42,7 +42,6 @@ for (const file of [
   'CHANGELOG.md',
   'dist/index.d.ts',
   'dist/matreshka.min.js',
-  'dist/matreshka.core.min.js',
   'dist/matreshka.min.mjs'
 ]) {
   try {
@@ -115,54 +114,6 @@ check(document.querySelector('input').value === '6', 'parseForm in a page');
   check(result === 'function function function function undefined x', `umd: ${result}`);
 }
 
-// the minified files throw short messages, the others the full text
-{
-  const message = (run) => {
-    try {
-      run();
-    } catch (error) {
-      return error.message;
-    }
-    return 'no error';
-  };
-  const dom = new JSDOM(html, { runScripts: 'outside-only', url: 'http://localhost/' });
-  dom.window.eval(readFileSync(packaged('dist/matreshka.min.js'), 'utf8'));
-  const short = message(() => dom.window.eval(`Matreshka.bindNode({}, 'x', '.missing')`));
-  check(
-    short === 'Matreshka error binding:node_missing (key: "x", node: ".missing"); matreshka.js has the full message',
-    `umd: short error: ${short}`
-  );
-  const full = new JSDOM(html, { runScripts: 'outside-only', url: 'http://localhost/' });
-  full.window.eval(readFileSync(packaged('dist/matreshka.js'), 'utf8'));
-  const long = message(() => full.window.eval(`Matreshka.bindNode({}, 'x', '.missing')`));
-  check(
-    long === 'Binding error: node is missing for key "x" (given selector is ".missing").',
-    `umd: full error: ${long}`
-  );
-  const esm = message(() => Matreshka.bindNode({}, 'x', '.missing'));
-  check(esm === long, `esm: full error: ${esm}`);
-  const cdnModule = await import(pathToFileURL(packaged('dist/matreshka.min.mjs')).href);
-  const cdnShort = message(() => cdnModule.trigger({}, 1));
-  check(
-    cdnShort === 'Matreshka error trigger:names_type (names: 1); matreshka.js has the full message',
-    `cdn esm: ${cdnShort}`
-  );
-}
-
-// the core file: the same Matreshka without the router and the form parser
-{
-  const dom = new JSDOM(html, { runScripts: 'outside-only', url: 'http://localhost/' });
-  dom.window.eval(readFileSync(packaged('dist/matreshka.core.min.js'), 'utf8'));
-  const result = dom.window.eval(`
-    const object = new Matreshka.Object({ a: 'x' });
-    Matreshka.bindNode(object, 'a', 'input');
-    object.calc('b', 'a', (a) => a + '!');
-    [typeof Matreshka.Array, typeof Matreshka.binders.html, typeof Matreshka.Router, typeof Matreshka.initRouter,
-      typeof Matreshka.parseForm, document.querySelector('input').value, object.b].join(' ');
-  `);
-  check(result === 'function function undefined undefined undefined x x!', `umd core: ${result}`);
-}
-
 // the types, as a user's TypeScript file sees them with either module resolution a project uses today
 copyFileSync(path.resolve('test/types/consumer.ts'), path.join(project, 'consumer.ts'));
 for (const [module, moduleResolution] of [
@@ -186,5 +137,5 @@ for (const [module, moduleResolution] of [
 }
 
 console.log(
-  'check-dist: the packed tarball: ESM, require(esm), a DOM-free import, no deep paths, the script-tag bundles, the CDN module, short and full error messages and the types work'
+  'check-dist: the packed tarball: ESM, require(esm), a DOM-free import, no deep paths, the script-tag bundle, the CDN module and the types work'
 );

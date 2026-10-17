@@ -37,9 +37,7 @@ for (const file of [
   'matreshka.min.js',
   'matreshka.min.js.map',
   'matreshka.min.mjs',
-  'matreshka.min.mjs.map',
-  'matreshka.core.min.js',
-  'matreshka.core.min.js.map'
+  'matreshka.min.mjs.map'
 ]) {
   const from = path.join(ROOT, 'dist', file);
   if (!existsSync(from)) throw new Error(`${from} is missing: run \`npm run build\` at the repo root first`);
@@ -47,7 +45,6 @@ for (const file of [
 }
 // the home pages show the script-tag file's size
 const bundle = readFileSync(path.join(ROOT, 'dist', 'matreshka.min.js'));
-const coreBundle = readFileSync(path.join(ROOT, 'dist', 'matreshka.core.min.js'));
 
 cpSync(path.join(ROOT, 'examples'), path.join(OUT, 'examples'), {
   recursive: true,
@@ -104,7 +101,7 @@ const targets = [];
 const idsOf = {};
 for (const { code: lang, prefix } of LANGS) {
   const sections = sectionsOf(lang);
-  for (const section of sections) section.body = fillSizes(section.body, lang, bundle, coreBundle);
+  for (const section of sections) section.body = fillSizes(section.body, lang, bundle);
   const html = page({ lang, sections, updated, assets });
   idsOf[`${prefix}/`] = new Set(Array.from(html.matchAll(/ id="([^"]+)"/g), ([, id]) => id));
   write(`${prefix.slice(1)}/index.html`.replace(/^\//, ''), html);
