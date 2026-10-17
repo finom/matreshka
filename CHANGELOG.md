@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [3.0.1] - 2026-10-17
+
 ### Fixed
 
 - Works again in the browsers jQuery 4 supports, Internet Explorer 11 included: `dist/` is compiled to ES5 and calls no API IE 11 lacks (3.0.0 needed ES2022). `matreshka.min.js` is 73 kB minified, 24 kB with gzip; `matreshka.min.mjs`, which needs a browser with ES modules, stays modern.
@@ -209,5 +211,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `new Router('custom')` makes a router of its own type.
 - The items of `unbindNode([{ key }])` may leave out the node.
 
-[Unreleased]: https://github.com/finom/matreshka/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/finom/matreshka/compare/v3.0.1...HEAD
+[3.0.1]: https://github.com/finom/matreshka/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/finom/matreshka/releases/tag/v3.0.0
