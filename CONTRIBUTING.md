@@ -16,7 +16,19 @@ The same gate CI runs:
 npm run lint && npm run typecheck && npm run test:coverage && npm run build && npm run check:dist
 ```
 
-A fix or a feature comes with a test; a fix's test fails on the code before it. Lint warnings fail the gate (`npx biome check --write .` fixes most of them).
+A fix or a feature comes with a test in the automated suite; a fix's test fails on the code before it. Coverage stays at 100% (the thresholds in `vitest.config.mjs` fail the gate below it).
+
+## Coding style
+
+TypeScript in `strict` mode, formatted and linted by [Biome](https://biomejs.dev) with its recommended rules (`biome.json`). CI runs both on every push and pull request, and a lint warning fails the gate (`npx biome check --write .` fixes most of them).
+
+## Sign-off
+
+By sending a pull request you certify the [Developer Certificate of Origin 1.1](https://developercertificate.org): you wrote the change, or have the right to submit it, under the project's MIT license. Sign your commits off with `git commit -s`.
+
+## Project documents
+
+[GOVERNANCE.md](./GOVERNANCE.md) (decisions, roles, continuity), [ROADMAP.md](./ROADMAP.md), [ARCHITECTURE.md](./ARCHITECTURE.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
 
 ## Layout
 
