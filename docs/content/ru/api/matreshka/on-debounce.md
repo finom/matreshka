@@ -45,7 +45,7 @@ Matreshka#onDebounce(names, callback, [debounceDelay=0], [triggerOnInit=false], 
 
 ```js
 this.onDebounce('change:x', () => {
-	alert(`x = ${this.x}`); // x = 100
+	alert(`x = ${this.x}`); // x = 101
 }, 300);
 
 this.x = 1;

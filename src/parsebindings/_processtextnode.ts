@@ -1,7 +1,7 @@
 import type { AnyObject, Binder } from '../types.js';
 import type { BindNodeOptions } from '../bindnode/types.js';
 import parserData from './_parserdata.js';
-import bindNode from '../bindnode/index.js';
+import bindKey from '../bindnode/_bindkey.js';
 import forEach from '../_helpers/foreach.js';
 
 const textNodeBinder: Binder = {
@@ -43,7 +43,7 @@ export default function processTextNode({ object, node, textNode, eventOptions }
       // if tokens item is even then it is a key
       // which needs to be bound to newly created text node
       if (index % 2 !== 0) {
-        bindNode(object, token, newTextNode, textNodeBinder, eventOptions);
+        bindKey(object, token, newTextNode, textNodeBinder, eventOptions);
       }
     }
   });

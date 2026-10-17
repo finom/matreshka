@@ -10,7 +10,7 @@ importance: 1
 **Method**
 
 ```js
-Matreshka#trigger([names], [arg]) → matreshka
+Matreshka#trigger(names, [arg]) → matreshka
 ```
 
 Fires an event
@@ -25,7 +25,7 @@ After adding event handlers using [`Matreshka#on`](/api/matreshka/on/), [`Matres
 
 | Name | Type | Details |
 | --- | --- | --- |
-| `names` (optional) | [`eventNames`](/api/types/event-names/) | An event name or some names which are separated by a space |
+| `names` | [`eventNames`](/api/types/event-names/) | An event name or some names which are separated by a space |
 | `arg` (optional) | `...*` | Any arguments which will be passed to every handler |
 
 ## Links

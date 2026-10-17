@@ -27,6 +27,7 @@ class MyArray extends Matreshka.Array {
 		return '_id';
 	}
 	constructor() {
+		super();
 		//...
 	}
 }
@@ -60,6 +61,7 @@ class MyArray extends Matreshka.Array {
 		return '$index';
 	}
 	constructor() {
+		super();
 		//...
 	}
 }

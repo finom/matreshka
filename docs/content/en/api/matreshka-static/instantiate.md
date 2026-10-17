@@ -35,6 +35,6 @@ This static method works the same as [`Matreshka#instantiate`](/api/matreshka/in
 const object = {};
 Matreshka.instantiate(object, 'x', SomeClass);
 object.x = { a: 42 };
-alert(this.x instanceof SomeClass); // true
-alert(this.x.a); // 42
+alert(object.x instanceof SomeClass); // true
+alert(object.x.a); // 42
 ```

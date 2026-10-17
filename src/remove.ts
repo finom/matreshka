@@ -59,9 +59,9 @@ export default function remove(this: any, object: any, givenKey: any, eventOptio
       unbindNode(object, deepBinding.key)
     );
 
-    // undelegate delegated and tree listeners (a.b@event, calc on "a.b") from the removed value
-    // (unless another property still holds it: delegated listeners on one object are shared)
-    if (value && typeof value === 'object' && !Object.keys(props).some((k) => k !== key && props[k].value === value)) {
+    // undelegate delegated and tree listeners (a.b@event, calc on "a.b") from the removed value;
+    // a listener that another property's delegation also keeps stays
+    if (value && typeof value === 'object') {
       triggerOne(object, `_change:delegated:${key}`, { key, value: undefined, previousValue: value });
     }
 

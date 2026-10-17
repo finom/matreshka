@@ -5,11 +5,20 @@ import escapeRegExp from './_escaperegexp.js';
 // the parser's brackets and the regular expressions made of them
 export interface ParserData {
   leftBracket: string;
+  // the left bracket as outerHTML may write it
+  htmlLeftBrackets: string[];
   rightBracket: string;
   escLeftBracket: string;
   escRightBracket: string;
   bindingReg: RegExp;
   strictBindingReg: RegExp;
+}
+
+// outerHTML escapes & < > in text, and & " (newer browsers also < >) in attributes
+function htmlForms(bracket: string): string[] {
+  const amp = bracket.replaceAll('&', '&amp;');
+  const text = amp.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  return [...new Set([bracket, text, amp.replaceAll('"', '&quot;'), text.replaceAll('"', '&quot;')])];
 }
 
 // calc fills every field right away
@@ -36,6 +45,10 @@ calc(
         object: parserBrackets,
         key: 'right'
       }
+    },
+    htmlLeftBrackets: {
+      source: 'leftBracket',
+      handler: htmlForms
     },
     escLeftBracket: {
       source: 'leftBracket',

@@ -39,6 +39,13 @@ function splitSelectorList(selectorList: string): string[] {
   return selectors;
 }
 
+// select and selectAll look inside the sandbox: a plain part of a list with :bound(KEY) becomes ":sandbox part"
+export function scopeToSandbox(selectorList: string): string {
+  return splitSelectorList(selectorList)
+    .map((selector) => (customSelectorReg.test(selector) ? selector : `:sandbox ${selector}`))
+    .join(',');
+}
+
 // the function selects nodes based on a selector (including custom values, eg :sandbox)
 // TODO: selectNodes looks not good, it needs to be refactored and accelerated if possible
 export default function selectNodes(object: AnyObject, givenSelector: string): Node[] {

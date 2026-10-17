@@ -77,7 +77,8 @@ class Todos extends MatreshkaArray<Todo> {
   override get Model() {
     return Todo;
   }
-  override itemRenderer: ItemRenderer = '<li>{{title}}</li>';
+  // itemRenderer is not declared by the library (a method, a getter or a field all work), so no override
+  itemRenderer: ItemRenderer = '<li>{{title}}</li>';
   constructor() {
     super();
     this.bindNode('container', '.todos');
@@ -145,6 +146,67 @@ const form: Element | null = parseForm({}, '.my-form', (name, field) => field.ge
 // @ts-expect-error: parseForm takes an object
 parseForm('nope', '.my-form');
 
+// the documented forms sweep 4 found rejected
+// Class: `this` in the prototype is the instance, the parent's methods included
+const ArrayClass2 = Matreshka.Class({
+  extends: Matreshka.Array,
+  constructor(items: number[]) {
+    this.recreate(items).sayHello();
+  },
+  sayHello(): string {
+    return 'hi';
+  }
+});
+const classed: string = new ArrayClass2([1]).sayHello();
+// itemRenderer as a method, a field, or set in the constructor
+class MethodRenderer extends MatreshkaArray {
+  itemRenderer() {
+    return '<li></li>';
+  }
+}
+class FieldRenderer extends MatreshkaArray {
+  itemRenderer = '<li></li>';
+}
+class SetRenderer extends MatreshkaArray {
+  constructor() {
+    super();
+    this.itemRenderer = (item: { a: string }) => `<li>${item.a}</li>`;
+    this.itemRenderer = null;
+  }
+}
+class GetterRenderer extends MatreshkaArray {
+  get itemRenderer() {
+    return ':sandbox .renderer';
+  }
+}
+const renderers = [new MethodRenderer(), new FieldRenderer(), new SetRenderer(), new GetterRenderer()];
+// a handler gets the context passed to on() as this
+app.on(
+  'foo',
+  function () {
+    return this.a;
+  },
+  { a: 5 }
+);
+// items of different types
+const mixed = new MatreshkaArray('Hi', { a: 'b' });
+// @ts-expect-error: an explicit item type is still checked
+new MatreshkaArray<number>('x');
+// from and of on a subclass give the subclass
+class Greeting extends MatreshkaArray {
+  sayHello() {}
+}
+const greetings: Greeting = Greeting.of(1, 2);
+const fromGreetings: Greeting = Greeting.from([1, 2]);
+const fromNumbers: number = MatreshkaArray.from([1, 2])[0];
+const mapped: string = MatreshkaArray.from([1, 2], (value) => String(value))[0];
+// a router of its own type
+const ownRouter: Router = new Router('custom');
+// unbindNode items may leave the node out
+app.unbindNode([{ key: 'x' }, { key: 'x', node: '.my-input' }]);
+// @ts-expect-error: bindNode items need a node
+app.bindNode([{ key: 'x' }]);
+
 export {
   app,
   node,
@@ -164,4 +226,5 @@ export {
   spread,
   fromArray
 };
+export { classed, renderers, mixed, greetings, fromGreetings, fromNumbers, mapped, ownRouter };
 export { converted, handler, calcHandler, mediator, ArrayClass, ObjectClass, MyClass, path, form };

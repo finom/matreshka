@@ -192,7 +192,7 @@ this.on('click::myKey', () => { ... });
 this.on('click::myKey(.my-inner-element)', () => { ... });
 ```
 
-> Если элемент не найден, бросается исключение ``"Bound element is missing"``. Для того, чтоб избежать ошибки используйте метод [`Matreshka#bindOptionalNode`](/ru/api/matreshka/bind-optional-node/)
+> Если элемент не найден, бросается исключение ``Binding error: node is missing for key "KEY"``. Для того, чтоб избежать ошибки используйте метод [`Matreshka#bindOptionalNode`](/ru/api/matreshka/bind-optional-node/)
 
 #### Создание песочницы
 

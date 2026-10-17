@@ -2,6 +2,7 @@ import syncFields from '../_syncfields.js';
 import reportModified from '../_reportmodified.js';
 import updateTracked from './_updatetracked.js';
 import itemsNotIn from '../_diffitems.js';
+import withLengthOptions from '../_withlengthoptions.js';
 import type { ArrayMethodOptions, MatreshkaArrayInstance } from '../types.js';
 
 // recreates an array
@@ -19,7 +20,7 @@ export default function recreate(
   const lengthDiff = oldLength - newLength;
   const was = this.toJSON(false);
   const { trackBy } = this;
-  const { skipItemMediator, silent, dontRender } = eventOptions;
+  const { skipItemMediator } = eventOptions;
   let newItems: any[];
 
   if (trackBy) {
@@ -54,11 +55,9 @@ export default function recreate(
   }
 
   // update length
-  this.length = newLength;
-
-  if (silent && dontRender) {
-    return this;
-  }
+  withLengthOptions(this, eventOptions, () => {
+    this.length = newLength;
+  });
 
   // counted per value, so a dropped duplicate counts as removed
   const removed = itemsNotIn(was, newItems);

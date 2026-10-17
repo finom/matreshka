@@ -228,6 +228,7 @@ class MyArray extends Matreshka.Array {
 	get Model() { return MyModel; }
 	itemRenderer = '...';
 	constructor() {
+		super();
 		//...
 	}
 	onItemRender(item, evt) {

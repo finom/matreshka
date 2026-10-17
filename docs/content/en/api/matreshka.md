@@ -36,7 +36,7 @@ const matreshka = new Matreshka();
 ```js
 class MyClass extends Matreshka {
 	constructor() {
-		this.sayHello();
+		super().sayHello();
 	}
 	sayHello() {
 		alert("Hello World!");
@@ -91,6 +91,7 @@ const MyClass = Matreshka.Class({
 - [`chain`](/api/matreshka-static/chain/) – Allows chained calls of universal methods
 - [`defaultBinders`](/api/matreshka-static/default-binders/) – An array of functions which return a corresponding binder
 - [`instantiate`](/api/matreshka-static/instantiate/) – Creates fixed class instance
+- [`initRouter`](/api/matreshka-static/init-router/) – Turns on two-way data binding between properties and parts of the URL
 - [`lookForBinder`](/api/matreshka-static/look-for-binder/)
 - [`mediate`](/api/matreshka-static/mediate/) – Transforms property value on its changing
 - [`off`](/api/matreshka-static/off/) – Deletes an event handler
@@ -98,6 +99,7 @@ const MyClass = Matreshka.Class({
 - [`onDebounce`](/api/matreshka-static/on-debounce/) – Adds an event handler which is called only once during a definite period of time
 - [`once`](/api/matreshka-static/once/) – Adds event handler which can be called only once
 - [`parseBindings`](/api/matreshka-static/parse-bindings/) – Parses DOM tree, declaring bindings with properties enclosed in double braces
+- [`parseForm`](/api/matreshka-static/parse-form/) – Binds named HTML form fields in a given HTML form to their corresponding properties
 - [`parserBrackets`](/api/matreshka-static/parser-brackets/) – Contains brackets for [bindings parser](/api/matreshka/parse-bindings/)
 - [`remove`](/api/matreshka-static/remove/) – Deletes a property
 - [`select`](/api/matreshka-static/select/) – Returns HTML node corresponding to a selector from a sandbox

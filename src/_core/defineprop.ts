@@ -2,9 +2,25 @@ import type { AnyObject, PropDef } from '../types.js';
 import initMK from './init.js';
 import set from '../set.js';
 import matreshkaError from '../_helpers/matreshkaerror.js';
+import getProp from '../_helpers/getprop.js';
 
 function errorAccessor(): never {
   throw matreshkaError('common:use_magic_props');
+}
+
+const libraryMarkers = ['isMatreshka', 'isMatreshkaArray', 'isMatreshkaObject'];
+
+// a setter of the object or of a class it is made by (stops at the library's own prototypes)
+function findSetter(object: AnyObject, key: string): PropertyDescriptor | undefined {
+  for (
+    let proto = Object.getPrototypeOf(object);
+    proto && proto !== Object.prototype && !libraryMarkers.some((marker) => Object.hasOwn(proto, marker));
+    proto = Object.getPrototypeOf(proto)
+  ) {
+    const descriptor = Object.getOwnPropertyDescriptor(proto, key);
+    if (descriptor) return descriptor.set ? descriptor : undefined;
+  }
+  return undefined;
 }
 
 // the function defines needed descriptor for given property
@@ -19,13 +35,21 @@ export default function defineProp(object: AnyObject, key: string, noAccessor?: 
     }
 
     const propDef: PropDef = {
-      value: object[key],
+      value: getProp(object, key),
       mediator: null,
       bindings: null
     };
-    // an own setter keeps running and gets each new value, and its getter gives the value; a getter alone is replaced
-    if (descriptor?.set) {
-      propDef.accessor = { get: descriptor.get, set: descriptor.set };
+    // a setter (own or a class's) keeps running and gets each new value, and its getter gives the value;
+    // a getter alone is replaced
+    const accessor = descriptor
+      ? descriptor.set
+        ? descriptor
+        : undefined
+      : noAccessor
+        ? undefined
+        : findSetter(object, key);
+    if (accessor) {
+      propDef.accessor = { get: accessor.get, set: accessor.set };
     }
     def.props[key] = propDef;
     let getter: (() => any) | undefined;
@@ -48,11 +72,7 @@ export default function defineProp(object: AnyObject, key: string, noAccessor?: 
           return propDef.accessor?.get ? propDef.accessor.get.call(object) : propDef.value;
         },
         set(v: any) {
-          return setter
-            ? setter()
-            : set(object, key, v, {
-                fromSetter: true
-              });
+          return setter ? setter() : set(object, key, v, { ...propDef.setterOptions, fromSetter: true });
         }
       });
     }

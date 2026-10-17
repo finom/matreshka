@@ -1,6 +1,7 @@
 import afterMatreshkaInit from '../matreshka/_afterinit.js';
 import addListener from '../on/_addlistener.js';
 import matreshkaError from '../_helpers/matreshkaerror.js';
+import modelCall from './_modelcall.js';
 import type { EventOptions } from '../types.js';
 import type { MatreshkaArrayInstance, ModelConstructor } from './types.js';
 
@@ -24,7 +25,13 @@ function modelItemMediator(this: MatreshkaArrayInstance, item: any, index: numbe
     itemData = item;
   }
 
-  return new Model(itemData, this, index);
+  modelCall.args = [itemData, this, index];
+
+  try {
+    return new Model(itemData, this, index);
+  } finally {
+    modelCall.args = null;
+  }
 }
 
 // event handler to listen changes of Model property

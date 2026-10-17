@@ -47,7 +47,7 @@ class MyArray extends Matreshka.Array {
 		return '<li>'
 	}
 	constructor() {
-		this.bindNode('sandbox', '.my-form');
+		super().bindNode('sandbox', '.my-form');
 	}
 	onItemRender(item, renderEvt) {
 		// ...

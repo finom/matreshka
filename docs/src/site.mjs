@@ -58,11 +58,13 @@ export const API = [
       'bind-optional-node',
       'bind-sandbox',
       'instantiate',
+      'init-router',
       'look-for-binder',
       'off',
       'once',
       'on-debounce',
       'parse-bindings',
+      'parse-form',
       'parser-brackets',
       'remove',
       'select',
@@ -133,6 +135,7 @@ export const API = [
       'textarea'
     ]
   },
+  { dir: 'router', index: true, members: [] },
   {
     dir: 'types',
     index: false,

@@ -6,6 +6,15 @@ import forEach from '../_helpers/foreach.js';
 import forOwn from '../_helpers/forown.js';
 import removeDomListener from './_removedomlistener.js';
 import isSameCallback from '../_helpers/issamecallback.js';
+import { dropOwner, hasOwner, type Owner } from '../on/_owners.js';
+
+// a pending onDebounce call doesn't fire once its listener is gone from every name
+function cancelIfGone(allEvents: Record<string, EventEntry[]>, callback: EventEntry['callback']): void {
+  for (const name in allEvents) {
+    if (allEvents[name].some((event) => event.callback === callback)) return;
+  }
+  (callback as { cancel?: () => void }).cancel?.();
+}
 
 // removes simple event listener from an object
 export default function removeListener(
@@ -49,22 +58,19 @@ export default function removeListener(
     def.events = Object.create(null);
   } else if (events) {
     const removed: { name: string; callback: EventEntry['callback']; context: any }[] = [];
+    // a delegation removes only its own listener, the one it added with this callback and context
+    const owner: Owner = info?.owner ?? null;
+    const matches = (event: EventEntry) =>
+      owner
+        ? event.callback === callback && event.context === context
+        : (!callback || isSameCallback(callback, event.callback)) && (!context || context === event.context);
 
     // if events with given name are found
     forEach(events, (event) => {
-      const owner = info?.delegated ? 'byDelegation' : 'byDirect';
-      const otherOwner = info?.delegated ? 'byDirect' : 'byDelegation';
-
-      if ((callback && !isSameCallback(callback, event.callback)) || (context && context !== event.context)) {
-        // keep event
-        retain.push(event);
-      } else if (event.info[otherOwner]) {
-        // the listener is still used by the other kind of listener
-        event.info = { ...event.info, [owner]: false };
+      if (!matches(event) || !hasOwner(event, owner) || !dropOwner(event, owner)) {
+        // kept: another listener, or one somebody else still keeps
         retain.push(event);
       } else {
-        // a pending onDebounce call doesn't fire after its listener is gone
-        (event.callback as { cancel?: () => void }).cancel?.();
         removed.push({ name, callback: event.callback, context: event.context });
       }
     });
@@ -74,6 +80,8 @@ export default function removeListener(
     } else {
       delete allEvents[name];
     }
+
+    forEach(removed, ({ callback: removedCallback }) => cancelIfGone(allEvents, removedCallback));
 
     // after the list changes: a handler that calls off() or on() for the same name sees the listener gone
     if (name[0] !== '_') {

@@ -25,12 +25,10 @@ export default function processRerender({ self, selfDef, eventOptions, container
         continue;
       }
 
-      // node removal is called when an item is rendered
-      // and forceRerender is truty
-      if (alreadyRenderedNode) {
-        if (container.contains(alreadyRenderedNode)) {
-          container.removeChild(alreadyRenderedNode);
-        }
+      // a forced rerender removes the old node, also from a container the array no longer uses
+      const parent = alreadyRenderedNode?.parentNode;
+      if (parent && selfDef.containers?.has(parent)) {
+        parent.removeChild(alreadyRenderedNode as Node);
       }
 
       // render new node

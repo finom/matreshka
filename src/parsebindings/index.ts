@@ -8,6 +8,9 @@ import getNodes from '../bindnode/_getnodes.js';
 import forEach from '../_helpers/foreach.js';
 import assign from '../_helpers/assign.js';
 
+const ELEMENT_NODE = 1;
+const TEXT_NODE = 3;
+
 // makes parsing of given node (node, $(nodes), selector, HTML)
 // and initializes bindings for attributes and text nodes which contain things like {{foo}}
 export default function parseBindings(object: object, nodes: NodeInput, eventOptions?: BindNodeOptions): Node[];
@@ -35,10 +38,13 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
   }
 
   let nodes: Node[] | undefined;
+  // the template holding the nodes of an HTML string
+  let htmlContent: ParentNode | null = null;
   const allNodes: Node[] = [];
   // extract all needed data from parserData
   // check out what is parserData in its module
-  const { leftBracket, bindingReg } = parserData;
+  const { leftBracket, htmlLeftBrackets, bindingReg } = parserData;
+  const hasBracket = (html: string) => htmlLeftBrackets.some((bracket) => html.includes(bracket));
 
   if (typeof givenNodes === 'string') {
     if (~givenNodes.indexOf('<')) {
@@ -49,6 +55,7 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
         // their existence for all included nodes in cycle below
         return nodes;
       }
+      htmlContent = nodes[0]?.parentNode ?? null;
     } else {
       // this is a selector
       nodes = getNodes(object, givenNodes);
@@ -66,8 +73,6 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
   // increasing # of needed iterations
   for (let i = 0; i < allNodes.length; i++) {
     const node = allNodes[i];
-    const ELEMENT_NODE = 1;
-    const TEXT_NODE = 3;
 
     // allow to parse elements only
     if (node.nodeType !== ELEMENT_NODE) {
@@ -77,9 +82,7 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
     const { outerHTML, innerHTML, childNodes, attributes } = node as Element;
 
     // if outerHTML does't contain left bracket, then this node doesn't need to be parsed
-    // we may need to check outerHTML existence for older browsers
-    // we may need to add !~outerHTML.indexOf(encodeURI(leftBracket) to support old FF
-    if (!~outerHTML.indexOf(leftBracket)) {
+    if (!hasBracket(outerHTML)) {
       continue;
     }
 
@@ -102,8 +105,7 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
 
     // if innerHTML does't contain left bracket,
     // then children of this node don't need to be parsed
-    // we may need to add !~innerHTML.indexOf(encodeURI(leftBracket) to support old FF
-    if (!~innerHTML.indexOf(leftBracket)) {
+    if (!hasBracket(innerHTML)) {
       continue;
     }
 
@@ -130,6 +132,22 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
         }
       }
     }
+  }
+
+  // a top-level text node of an HTML string ("{{a}} <b>{{b}}</b>") is split up too, so the nodes are read again
+  if (htmlContent) {
+    forEach(Array.from(htmlContent.childNodes), (textNode) => {
+      if (textNode.nodeType === TEXT_NODE && bindingReg.test(textNode.textContent as string)) {
+        processTextNode({
+          object,
+          node: htmlContent as ParentNode & Node,
+          textNode,
+          eventOptions: extendedEventOptions
+        });
+      }
+    });
+
+    return Array.from(htmlContent.childNodes);
   }
 
   return nodes as Node[];

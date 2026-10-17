@@ -9,6 +9,9 @@ import removeListener from './_removelistener.js';
 import undelegateListener from './_undelegatelistener.js';
 import triggerOne from '../trigger/_triggerone.js';
 import { unlisten } from '../_dom/index.js';
+import { dropOwner, hasOwner } from '../on/_owners.js';
+import isSameCallback from '../_helpers/issamecallback.js';
+import getProp from '../_helpers/getprop.js';
 
 const delegatedKeyReg = /^_change:delegated:(.*)$/;
 
@@ -32,7 +35,7 @@ function getDelegationTargets(object: AnyObject, def: ObjectDef, name: string): 
 
   const key = delegatedKeyReg.exec(name)?.[1];
 
-  return key === undefined ? null : [object[key]];
+  return key === undefined ? null : [getProp(object, key)];
 }
 
 // the names on() was given for the object's own plain and DOM events
@@ -43,6 +46,28 @@ function userEventNames(def: ObjectDef): string[] {
     else if (name.startsWith('_bind:')) forEach(events, ({ info }) => info.domEvent && names.add(info.domEvent.name));
   });
   return [...names];
+}
+
+// the delegated names ("a.b@x", "*@x") on() was given for this object, with the callback and context
+function userDelegations(def: ObjectDef, callback?: EventHandler | null, context?: any): [string[], string][] {
+  const found = new Map<string, [string[], string]>();
+  forOwn(def.events, (events, name) => {
+    const key = name === '_asterisk:add' || name === '_asterisk:set' ? '*' : delegatedKeyReg.exec(name)?.[1];
+    if (key === undefined) return;
+    forEach(events, (event) => {
+      const { delegatedData, pathStr } = event.info;
+      if (
+        delegatedData.info.user &&
+        hasOwner(event, null) &&
+        (!callback || isSameCallback(callback, delegatedData.callback)) &&
+        (!context || context === delegatedData.context)
+      ) {
+        const path = pathStr ? [key, ...pathStr.split('.')] : [key];
+        found.set(`${path.join('.')}@${delegatedData.name}`, [path, delegatedData.name]);
+      }
+    });
+  });
+  return [...found.values()];
 }
 
 // removes listeners added by on/once/onDebounce and keeps the ones the framework adds (bindings, calc etc)
@@ -61,7 +86,8 @@ function removeUserListeners(object: AnyObject, def: ObjectDef): void {
       const { info } = event;
       const isUserEvent = isDelegation ? info.delegatedData?.info.user : info.user;
 
-      if (!isUserEvent) {
+      // a listener a parent's delegation (or another owner) keeps stays; this object's own ownership goes
+      if (!isUserEvent || !hasOwner(event, null) || !dropOwner(event, null)) {
         retain.push(event);
       } else if (isDelegation) {
         const targets = getDelegationTargets(object, def, name);
@@ -113,10 +139,10 @@ function removeUserListeners(object: AnyObject, def: ObjectDef): void {
   });
 
   forEach(undelegations, ({ targets, delegatedData }) => {
-    const { path, name, callback, context } = delegatedData;
+    const { path, name, callback, context, info } = delegatedData;
     forEach(targets, (target) => {
       if (target && typeof target === 'object') {
-        undelegateListener(target, path, name, callback, context, { delegated: true });
+        undelegateListener(target, path, name, callback, context, info);
       }
     });
   });
@@ -168,6 +194,13 @@ export default function off(this: any, object: any, givenNames?: any, callback?:
   // split by spaces
   // no names with a callback or a context: every plain and DOM event of the object
   const names: string[] = isNamesVarArray ? givenNames : givenNames ? splitNames(givenNames) : userEventNames(def);
+
+  // no names: the delegated events too
+  if (!givenNames) {
+    forEach(userDelegations(def, callback, context), ([path, delegatedName]) =>
+      undelegateListener(object, path, delegatedName, callback, context)
+    );
+  }
 
   forEach(names, (name) => {
     const delegated = splitDelegated(name);

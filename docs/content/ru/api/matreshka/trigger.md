@@ -10,7 +10,7 @@ importance: 1
 **Метод**
 
 ```js
-Matreshka#trigger([names], [arg]) → object
+Matreshka#trigger(names, [arg]) → object
 ```
 
 Генерирует событие
@@ -25,7 +25,7 @@ Matreshka#trigger([names], [arg]) → object
 
 | Имя | Тип | Описание |
 | --- | --- | --- |
-| `names` (необязательный) | [`eventNames`](/ru/api/types/event-names/) | Имя события или несколько имен, разделенных пробелом |
+| `names` | [`eventNames`](/ru/api/types/event-names/) | Имя события или несколько имен, разделенных пробелом |
 | `arg` (необязательный) | `...*` | Аргументы, которые будут переданы обработчикам |
 
 ## Ссылки

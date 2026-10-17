@@ -1,5 +1,5 @@
 import defs from './_core/defs.js';
-import selectNodes from './bindnode/_selectnodes.js';
+import selectNodes, { scopeToSandbox } from './bindnode/_selectnodes.js';
 import checkObjectType from './_helpers/checkobjecttype.js';
 
 const customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/;
@@ -18,7 +18,7 @@ export default function select(this: any, object: any, selector?: any): Node | n
 
   // the selector includes "custom" things like :sandbox or :bound(KEY)
   if (customSelectorTestReg.test(selector)) {
-    return selectNodes(object, selector)[0] || null;
+    return selectNodes(object, scopeToSandbox(selector))[0] || null;
   }
   const def = defs.get(object);
 

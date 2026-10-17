@@ -5,7 +5,7 @@ import initMK from '../_core/init.js';
 import matreshkaError from '../_helpers/matreshkaerror.js';
 import type { Binder, EventHandler, EventOptions, Mediator } from '../types.js';
 import type { EventHandlerMap, EventNames } from '../on/types.js';
-import type { BindingItem, BindNodeOptions, KeyNodeMap, NodeInput } from '../bindnode/types.js';
+import type { BindingItem, BindNodeOptions, KeyNodeMap, NodeInput, UnbindingItem } from '../bindnode/types.js';
 import type { CalcDefinition, CalcEventOptions, CalcHandler, CalcSource } from '../calc/types.js';
 import type { InstantiatedClass, InstantiateUpdateFunction } from '../instantiate.js';
 import type * as universalMethods from './_universalmethods.js';
@@ -78,7 +78,7 @@ interface Matreshka {
 
   // no key (or null) removes the bindings of every key; no node removes every node of the key
   unbindNode(key?: string | string[] | null, node?: NodeInput, eventOptions?: BindNodeOptions): this;
-  unbindNode(bindings: BindingItem[], eventOptions?: BindNodeOptions): this;
+  unbindNode(bindings: UnbindingItem[], eventOptions?: BindNodeOptions): this;
   unbindNode(bindings: KeyNodeMap, eventOptions?: BindNodeOptions): this;
 
   bindSandbox(node: NodeInput, eventOptions?: BindNodeOptions): this;

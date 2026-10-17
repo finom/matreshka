@@ -1,5 +1,6 @@
-// as lodash's orderBy: values first, then null, then undefined (a missing key or a null item); desc flips it all
-const rank = (value: any): number => (value === undefined ? 2 : value === null ? 1 : 0);
+// as lodash's orderBy: values first, then null, then undefined (a missing key or a null item), then NaN;
+// desc flips it all
+const rank = (value: any): number => (value === undefined ? 2 : value === null ? 1 : Number.isNaN(value) ? 3 : 0);
 function compareValues(a: any, b: any): number {
   const ranks = rank(a) - rank(b);
   if (ranks || rank(a)) {

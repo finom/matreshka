@@ -1,6 +1,7 @@
 import syncFields from '../_syncfields.js';
 import reportModified from '../_reportmodified.js';
 import assign from '../../_helpers/assign.js';
+import withLengthOptions from '../_withlengthoptions.js';
 import type { ArrayEventOptions, ArrayMethodOptions, MatreshkaArrayInstance } from '../types.js';
 
 // creates removing method and returns it (pop, shift, pop_, shift_)
@@ -16,7 +17,9 @@ export default function createRemovingMethod(
     }
 
     // call original method
-    const returns = Array.prototype[name].call(this as unknown as any[]);
+    const returns = withLengthOptions(this, hasOptions ? givenEventOptions : null, () =>
+      Array.prototype[name].call(this as unknown as any[])
+    );
     const eventOptions: ArrayEventOptions = {
       method: name,
       self: this,

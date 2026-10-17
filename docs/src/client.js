@@ -92,9 +92,11 @@
     renderPager();
   });
 
-  // the theme: light, dark or the system's; from the system's the button goes to the other look first
+  // the theme: light, dark or the system's, picked from a list as in Nextra's sidebar
   const systemDark = matchMedia('(prefers-color-scheme: dark)');
-  const themeButton = document.getElementById('mk-theme');
+  const themeButton = document.querySelector('.mk-theme-button');
+  const themeList = document.getElementById('mk-theme-list');
+  const themeOptions = Array.from(themeList.children);
   const saved = store.get('mk-theme');
   state.theme = saved === 'light' || saved === 'dark' ? saved : 'system';
   calc(state, 'dark', 'theme', (theme) => theme === 'dark' || (theme === 'system' && systemDark.matches), {
@@ -109,31 +111,112 @@
     binders.attr('content', (dark) => (dark ? '#0a0a0a' : '#ffffff')),
     now
   );
-  bindNode(state, 'theme', themeButton, binders.attr('data-theme'), now);
+  const optionOf = (theme) => themeOptions.find((option) => option.dataset.theme === theme);
   bindNode(
     state,
     'theme',
-    themeButton,
-    binders.attr('title', (theme) => data.themes[theme]),
+    '.mk-theme-name',
+    binders.text((theme) => optionOf(theme).textContent),
     now
   );
-  bindNode(
-    state,
-    'theme',
-    themeButton,
-    binders.attr('aria-label', (theme) => data.themes[theme]),
-    now
-  );
-  themeButton.addEventListener('click', () => {
-    const same = systemDark.matches ? 'dark' : 'light';
-    const other = same === 'dark' ? 'light' : 'dark';
-    state.theme = state.theme === 'system' ? other : state.theme === other ? same : 'system';
+  for (const option of themeOptions) {
+    bindNode(
+      state,
+      'theme',
+      option,
+      binders.attr('aria-selected', (theme) => String(theme === option.dataset.theme)),
+      now
+    );
+  }
+  on(state, 'change:theme', () => {
     if (state.theme === 'system') store.remove('mk-theme');
     else store.set('mk-theme', state.theme);
   });
   systemDark.addEventListener('change', () => {
     if (state.theme === 'system') state.dark = systemDark.matches;
   });
+
+  state.themeOpen = false;
+  bindNode(
+    state,
+    'themeOpen',
+    themeList,
+    binders.prop('hidden', (open) => !open),
+    now
+  );
+  bindNode(state, 'themeOpen', themeButton, binders.attr('aria-expanded', String), now);
+  const closeThemes = (focusButton) => {
+    state.themeOpen = false;
+    if (focusButton) themeButton.focus();
+  };
+  themeButton.addEventListener('click', () => {
+    state.themeOpen = !state.themeOpen;
+    if (state.themeOpen) optionOf(state.theme).focus();
+  });
+  themeList.addEventListener('click', (event) => {
+    const option = event.target.closest('[data-theme]');
+    if (option) {
+      state.theme = option.dataset.theme;
+      closeThemes(true);
+    }
+  });
+  themeList.addEventListener('keydown', (event) => {
+    const index = themeOptions.indexOf(document.activeElement);
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const step = event.key === 'ArrowDown' ? 1 : themeOptions.length - 1;
+      themeOptions[(index + step) % themeOptions.length].focus();
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (index !== -1) state.theme = themeOptions[index].dataset.theme;
+      closeThemes(true);
+    } else if (event.key === 'Escape' || event.key === 'Tab') {
+      // the list closes first; the drawer around it stays open
+      event.stopPropagation();
+      if (event.key === 'Escape') event.preventDefault();
+      closeThemes(event.key === 'Escape');
+    }
+  });
+  document.addEventListener('pointerdown', (event) => {
+    if (state.themeOpen && !event.target.closest('#mk-theme')) closeThemes(false);
+  });
+
+  // shadcn-like tooltips for the header's icons and the theme switch: shown on hover and on keyboard focus
+  const tooltip = document.createElement('div');
+  tooltip.className = 'mk-tooltip';
+  tooltip.setAttribute('role', 'tooltip');
+  tooltip.hidden = true;
+  tooltip.innerHTML = '<span></span><i></i>';
+  document.body.append(tooltip);
+  const showTooltip = (target) => {
+    const [text, arrow] = tooltip.children;
+    text.textContent = target.dataset.tooltip;
+    tooltip.hidden = false;
+    const box = target.getBoundingClientRect();
+    const { width, height } = tooltip.getBoundingClientRect();
+    const center = box.left + box.width / 2;
+    const left = Math.min(Math.max(center - width / 2, 8), innerWidth - width - 8);
+    const above = target.dataset.tooltipSide === 'top';
+    tooltip.dataset.side = above ? 'top' : 'bottom';
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${above ? box.top - height - 8 : box.bottom + 8}px`;
+    arrow.style.left = `${center - left}px`;
+  };
+  const hideTooltip = () => {
+    tooltip.hidden = true;
+  };
+  for (const target of document.querySelectorAll('[data-tooltip]')) {
+    target.addEventListener('pointerenter', (event) => {
+      if (event.pointerType === 'mouse') showTooltip(target);
+    });
+    target.addEventListener('pointerleave', hideTooltip);
+    target.addEventListener('focus', () => {
+      if (target.matches(':focus-visible')) showTooltip(target);
+    });
+    target.addEventListener('blur', hideTooltip);
+    target.addEventListener('click', hideTooltip);
+  }
+  addEventListener('scroll', hideTooltip, { passive: true, capture: true });
 
   // the menu as a drawer on small screens
   bindNode(state, 'navOpen', root, binders.className('mk-nav-open'), now);

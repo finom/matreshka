@@ -1,9 +1,11 @@
-import type { AnyObject, EventEntry, EventHandler } from '../types.js';
+import type { AnyObject, EventEntry } from '../types.js';
 import initMK from '../_core/init.js';
 import triggerOne from '../trigger/_triggerone.js';
 import defineProp from '../_core/defineprop.js';
 import domEventReg from './_domeventregexp.js';
 import addDomListener from './_adddomlistener.js';
+import { addOwner, type Owner } from './_owners.js';
+import { isDuplicateCallback } from '../_helpers/issamecallback.js';
 
 // property modifier event regexp
 const propModEventReg =
@@ -21,12 +23,14 @@ export default function addListener(
   const { events: allEvents } = initMK(object);
   const ctx = context || object;
   const events = allEvents[name];
+  // a delegation passes its owner; the internal events of a delegation pass their owners list
+  const owner: Owner = info.owner ?? null;
   const event: EventEntry = {
     callback,
     context,
     ctx,
     name,
-    info: name[0] === '_' ? info : { ...info, [info.delegated ? 'byDelegation' : 'byDirect']: true }
+    info: { owners: [owner], ...info }
   };
   // skipChecks is used by internal methods for better performance
   const { skipChecks = false } = info;
@@ -53,13 +57,9 @@ export default function addListener(
       // if there are events with the same data, return false
       for (let i = 0; i < events.length; i++) {
         const existingEvent = events[i];
-        const argCallback: EventHandler | undefined = callback?._callback || callback;
-        const eventCallback = existingEvent.callback._callback || existingEvent.callback;
-        if (argCallback === eventCallback && existingEvent.context === context) {
-          // the listener is kept until both a direct listener and a delegated one using it are removed
-          if (name[0] !== '_') {
-            existingEvent.info = { ...existingEvent.info, [info.delegated ? 'byDelegation' : 'byDirect']: true };
-          }
+        if (isDuplicateCallback(callback, existingEvent.callback) && existingEvent.context === context) {
+          // the listener is kept until everyone who added it removes it
+          addOwner(existingEvent, owner);
           return false;
         }
       }

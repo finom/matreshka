@@ -6,6 +6,7 @@ import triggerOne from '../trigger/_triggerone.js';
 import getNodes from '../bindnode/_getnodes.js';
 import renderedNodes from './_processrendering/renderednodes.js';
 import syncFields from './_syncfields.js';
+import { addContainer } from './_processrendering/index.js';
 import type { ArrayDef, ArrayMethodOptions, ItemEventOptions, MatreshkaArrayInstance, RenderedNode } from './types.js';
 
 // restores Matreshka.Array from external nodes
@@ -14,8 +15,8 @@ export default function restore(
   selector?: string | null,
   eventOptions: ArrayMethodOptions = {}
 ): MatreshkaArrayInstance {
-  const selfDef = initMK(this);
-  syncFields(this);
+  const selfDef: ArrayDef = initMK(this);
+  const { itemMediator } = syncFields(this);
   const { Model } = this;
   const { silent } = eventOptions;
   const newItems: any[] = [];
@@ -37,7 +38,9 @@ export default function restore(
   }
 
   forEach(nodes, (node, index) => {
-    const item = Model ? new Model({}, this, index) : {}; // create new item
+    const created = Model ? new Model({}, this, index) : {}; // create new item
+    // the item the array will hold: the mediated one is linked to the node
+    const item = itemMediator ? itemMediator(created, index) : created;
     const { bindRenderedAsSandbox } = item;
     const itemDef: ArrayDef = initMK(item);
 
@@ -45,6 +48,10 @@ export default function restore(
       [selfDef.id]: node
     };
     renderedNodes.add(node);
+    // the array owns the restored nodes: a forced rerender takes them out of where they are
+    if (node.parentNode) {
+      addContainer(selfDef, node.parentNode);
+    }
 
     if (bindRenderedAsSandbox !== false) {
       bindNode(item, 'sandbox', node, null, eventOptions);
@@ -81,6 +88,7 @@ export default function restore(
   // recreate an array but don't render newly added items
   return this.recreate(newItems, {
     dontRender: true,
-    ...eventOptions
+    ...eventOptions,
+    skipItemMediator: true
   });
 }

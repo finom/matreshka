@@ -51,7 +51,8 @@ describe.each(rendered)('the $code page', ({ code, prefix, sections, html, ids, 
   it('links to no old page route', () => {
     const internal = Array.from(html.matchAll(/href="(\/[^"]*)"/g), ([, href]) => href).filter(
       (href) =>
-        !/^\/((ua|ru)\/)?$/.test(href) && !/^\/(examples\/|logo\/|[^/]+\.(js|css|svg|png|ico|webmanifest)$)/.test(href)
+        !/^\/((ua|ru)\/)?$/.test(href) &&
+        !/^\/(examples\/|logo\/|[^/]+\.(js|css|svg|png|ico|webmanifest)$|((ua|ru)\/)?llms-full\.txt$)/.test(href)
     );
     expect(internal).toEqual([]);
   });

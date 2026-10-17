@@ -65,12 +65,13 @@ describe('docs content', () => {
   });
 
   // A link written as a route (`/api/matreshka/calc/`) must name a section of the same language.
-  it('links only to sections, language homes, examples and the bundles', () => {
+  it('links only to sections, language homes, examples, the bundles and the llms files', () => {
     for (const lang of LANG_CODES) {
       const sections = sectionsOf(lang);
       for (const { file, md } of pages.filter((page) => page.lang === lang)) {
         for (const [, href] of prose(md).matchAll(/\]\((\/[^)\s]*)\)/g)) {
-          if (/^\/(ua\/|ru\/)?$/.test(href) || /^\/(examples\/|[^/]+\.js$)/.test(href)) continue;
+          if (/^\/(ua\/|ru\/)?$/.test(href) || /^\/(examples\/|[^/]+\.js$|((ua|ru)\/)?llms(-full)?\.txt$)/.test(href))
+            continue;
           expect(linkTarget(href, lang, sections), `${file} links to ${href}`).not.toBeNull();
         }
       }

@@ -9,11 +9,10 @@ const icon = (paths, size = 24) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 const ICONS = {
   menu: icon('<path d="M4 6h16M4 12h16M4 18h16"/>'),
-  sun: icon(
-    '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>'
-  ),
-  moon: icon('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>'),
-  monitor: icon('<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/>'),
+  // Nextra's theme switch icons (nextra/icons)
+  sun: '<svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="2 2 20 20" fill="currentColor" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
+  moon: '<svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="2 2 20 20" fill="currentColor" stroke="currentColor" aria-hidden="true"><path stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>',
+  check: icon('<path d="M20 6 9 17l-5-5"/>', 14),
   search: icon('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>', 16),
   github:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg>',
@@ -23,7 +22,22 @@ const ICONS = {
 };
 
 const iconLink = (href, label, svg, extra = '') =>
-  `<a class="mk-icon-button${extra}" href="${href}" rel="noopener" aria-label="${label}" title="${label}">${svg}</a>`;
+  `<a class="mk-icon-button${extra}" href="${href}" rel="noopener" aria-label="${label}" data-tooltip="${label}">${svg}</a>`;
+
+// as Nextra's: the icon of the look in use and the name of the choice; the list opens above it
+const themeSwitch = (ui) => `<div class="mk-theme" id="mk-theme">
+      <button type="button" class="mk-theme-button" aria-haspopup="listbox" aria-expanded="false" aria-controls="mk-theme-list" data-tooltip="${ui.theme}" data-tooltip-side="top"><span class="mk-light">${ICONS.sun}</span><span class="mk-dark">${ICONS.moon}</span><span class="mk-theme-name">${ui.themes.system}</span></button>
+      <ul class="mk-theme-list" id="mk-theme-list" role="listbox" aria-label="${ui.theme}" hidden>${[
+        'light',
+        'dark',
+        'system'
+      ]
+        .map(
+          (theme) =>
+            `<li role="option" tabindex="-1" data-theme="${theme}" aria-selected="false">${ui.themes[theme]}${ICONS.check}</li>`
+        )
+        .join('')}</ul>
+    </div>`;
 
 // the words the old docs put on the first line of a member's article
 const KINDS = new Set([
@@ -154,6 +168,8 @@ export function page({ lang, sections, updated, assets }) {
   const url = `${SITE}${prefix}/`;
   const home = sections.find(({ id }) => id === 'home');
   const image = `${SITE}/og/${lang}.png`;
+  // the social card shows the name and the home page's demo line
+  const imageAlt = `Matreshka.js: ${ui.demo}`;
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
@@ -167,6 +183,11 @@ export function page({ lang, sections, updated, assets }) {
         programmingLanguage: 'JavaScript',
         runtimePlatform: 'Web browser',
         license: `${REPO}/blob/main/LICENSE`,
+        isAccessibleForFree: true,
+        keywords: ['two-way data binding', 'reactive', 'JavaScript framework', 'no build step', 'zero dependencies'],
+        image,
+        sameAs: [REPO, 'https://www.npmjs.com/package/matreshka'],
+        dateCreated: '2013',
         inLanguage: hreflang,
         dateModified: updated,
         author: { '@type': 'Person', name: 'Andrey Gubanov', url: 'https://github.com/finom' }
@@ -177,7 +198,6 @@ export function page({ lang, sections, updated, assets }) {
     old: oldAnchorsOf(lang, sections),
     copy: ui.copy,
     copied: ui.copied,
-    themes: ui.themes,
     previous: ui.previous,
     next: ui.next
   }).replace(/</g, '\\u003c');
@@ -206,9 +226,12 @@ ${LANGS.filter((l) => l.code !== lang)
 <meta property="og:image" content="${image}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="${escapeHtml(imageAlt)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@andrey_gubanov1">
 <meta name="twitter:image" content="${image}">
+<meta name="twitter:image:alt" content="${escapeHtml(imageAlt)}">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -223,24 +246,26 @@ ${LANGS.filter((l) => l.code !== lang)
 <body>
 <a class="mk-skip" href="#main">${ui.skip}</a>
 <header class="mk-header"><div class="mk-header-inner">
-  <button type="button" class="mk-icon-button mk-menu-button" id="mk-menu" aria-label="${ui.menu}" aria-controls="mk-nav" aria-expanded="false">${ICONS.menu}</button>
+  <button type="button" class="mk-icon-button mk-menu-button" id="mk-menu" aria-label="${ui.menu}" data-tooltip="${ui.menu}" aria-controls="mk-nav" aria-expanded="false">${ICONS.menu}</button>
   <a class="mk-brand" href="#home"><img src="/logo/matreshka.svg" alt="" width="17" height="32"><b>Matreshka.js</b></a>
   <span class="mk-version">3.0</span>
   <div class="mk-header-end">
     <nav class="mk-langs" aria-label="${ui.languages}">${LANGS.map(
       (l) =>
-        `<a href="${l.prefix}/" hreflang="${l.hreflang}"${l.code === lang ? ' aria-current="page"' : ''}>${l.code.toUpperCase()}</a>`
+        `<a href="${l.prefix}/" hreflang="${l.hreflang}" lang="${l.hreflang}" aria-label="${l.name}" data-tooltip="${l.name}"${l.code === lang ? ' aria-current="page"' : ''}>${l.code.toUpperCase()}</a>`
     ).join('')}</nav>
     ${iconLink(REPO, 'GitHub', ICONS.github)}
     ${iconLink(DISCORD, 'Discord', ICONS.discord, ' mk-wide-only')}
     ${iconLink(X, 'X', ICONS.x, ' mk-wide-only')}
-    <button type="button" class="mk-icon-button" id="mk-theme"><span data-theme="light">${ICONS.sun}</span><span data-theme="dark">${ICONS.moon}</span><span data-theme="system">${ICONS.monitor}</span></button>
   </div>
   </div>
 </header>
 <div class="mk-layout">
   <aside class="mk-nav" id="mk-nav" aria-label="${ui.menu}">${menu(sections, ui, lang)}
-    <p class="mk-updated">${ui.updated} <time datetime="${updated}">${updated}</time></p>
+    <div class="mk-nav-footer">
+      ${themeSwitch(ui)}
+      <p class="mk-updated">${ui.updated} <time datetime="${updated}">${updated}</time></p>
+    </div>
   </aside>
   <main id="main" class="mk-main">
 ${articles}

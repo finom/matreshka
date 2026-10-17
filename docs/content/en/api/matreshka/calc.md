@@ -313,7 +313,7 @@ If the sources change again before a promise resolves, only the latest calculati
 this.calc('a', ['b', 'c'], (b, c) => {
 	return new Promise(resolve => {
 		setTimeout(() => {
-			resolve(a + b)
+			resolve(b + c)
 		}, 1000);
 	});
 }, {

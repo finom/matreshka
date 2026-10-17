@@ -36,7 +36,7 @@ const matreshka = new Matreshka();
 ```js
 class MyClass extends Matreshka {
 	constructor() {
-		this.sayHello();
+		super().sayHello();
 	}
 	sayHello() {
 		alert("Hello World!");
@@ -91,6 +91,7 @@ const MyClass = Matreshka.Class({
 - [`chain`](/ua/api/matreshka-static/chain/) – Дозволяє викликати універсальні методи ланцюгом
 - [`defaultBinders`](/ua/api/matreshka-static/default-binders/) – Масив функцій, які повертають відповідний Байндер або ``undefined``
 - [`instantiate`](/ua/api/matreshka-static/instantiate/) – Створює фіксований екземпляр класу
+- [`initRouter`](/ua/api/matreshka-static/init-router/) – Вмикає двостороннє зв'язування даних між властивостями і частинами URL
 - [`lookForBinder`](/ua/api/matreshka-static/look-for-binder/)
 - [`mediate`](/ua/api/matreshka-static/mediate/) – Трансформує значення властивості при його зміні
 - [`off`](/ua/api/matreshka-static/off/) – Видаляє обробник події
@@ -98,6 +99,7 @@ const MyClass = Matreshka.Class({
 - [`onDebounce`](/ua/api/matreshka-static/on-debounce/) – Додатє обробник події, що викликається лише однин раз за певний проміжок часу
 - [`once`](/ua/api/matreshka-static/once/) – Додає обробник події, який може бути викликаний лише один раз
 - [`parseBindings`](/ua/api/matreshka-static/parse-bindings/) – Парсить DOM дерево, оголошуючи прив'язки властивостей, взятих в подвійні фігурні дужки
+- [`parseForm`](/ua/api/matreshka-static/parse-form/) – Прив'язує іменовані поля HTML форми до відповідних властивостей
 - [`parserBrackets`](/ua/api/matreshka-static/parser-brackets/) – Містить дужки для [парсера](/ua/api/matreshka/parse-bindings/)
 - [`remove`](/ua/api/matreshka-static/remove/) – Видаляє властивість
 - [`select`](/ua/api/matreshka-static/select/) – Повертає елемент з пісочниці, відповідний селектору

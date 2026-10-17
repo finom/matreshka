@@ -33,6 +33,14 @@ export default function reportModified(
     triggerOne(self, asteriskRemoveEvtName, eventOptions);
   }
 
+  // the nodes go in before the events: a handler that changes the array again renders after this change
+  if (modified && !dontRender && renderIfPossible) {
+    processRendering({
+      self,
+      eventOptions
+    });
+  }
+
   if (!silent) {
     // fire additional event name (like "push")
     if (events[method]) {
@@ -48,6 +56,7 @@ export default function reportModified(
       if (events.addone) {
         for (let i = 0; i < addedLength; i++) {
           triggerOne(self, 'addone', {
+            ...eventOptions,
             self,
             addedItem: added[i]
           });
@@ -64,6 +73,7 @@ export default function reportModified(
       if (events.removeone) {
         for (let i = 0; i < removedLength; i++) {
           triggerOne(self, 'removeone', {
+            ...eventOptions,
             self,
             removedItem: removed[i]
           });
@@ -75,13 +85,5 @@ export default function reportModified(
     if (events.modify) {
       triggerOne(self, 'modify', eventOptions);
     }
-  }
-
-  // trigger rendering logic if possible
-  if (modified && !dontRender && renderIfPossible) {
-    processRendering({
-      self,
-      eventOptions
-    });
   }
 }

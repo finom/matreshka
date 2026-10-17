@@ -1,6 +1,7 @@
 import syncFields from '../_syncfields.js';
 import reportModified from '../_reportmodified.js';
 import assign from '../../_helpers/assign.js';
+import withLengthOptions from '../_withlengthoptions.js';
 import type { ArrayDef, ArrayEventOptions, MatreshkaArrayInstance } from '../types.js';
 
 // creates methods: push, unshift, push_, unshift_
@@ -40,9 +41,13 @@ export default function createAddingMethod(
         this[length + i] = args[i];
       }
     } else {
-      // move current items to new indexes
+      // move current items to new indexes; a hole stays a hole, as in the native method
       for (let i = length - 1; i >= 0; i--) {
-        this[argsLength + i] = this[i];
+        if (i in this) {
+          this[argsLength + i] = this[i];
+        } else {
+          delete this[argsLength + i];
+        }
       }
       // insert new items to the begin of array
       for (let i = 0; i < argsLength; i++) {
@@ -52,7 +57,9 @@ export default function createAddingMethod(
 
     // update length
     length += argsLength;
-    this.length = length;
+    withLengthOptions(this, givenEventOptions, () => {
+      this.length = length;
+    });
 
     const eventOptions: ArrayEventOptions = {
       method: name,

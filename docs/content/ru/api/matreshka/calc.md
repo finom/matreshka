@@ -311,7 +311,7 @@ console.log(this.a); // 2
 this.calc('a', ['b', 'c'], (b, c) => {
 	return new Promise(resolve => {
 		setTimeout(() => {
-			resolve(a + b)
+			resolve(b + c)
 		}, 1000);
 	});
 }, {

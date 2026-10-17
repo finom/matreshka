@@ -1,7 +1,7 @@
 import type { AnyObject, Binder } from '../../types.js';
 import type { BindNodeOptions } from '../../bindnode/types.js';
 import getBindingKey from './_getbindingkey.js';
-import bindNode from '../../bindnode/index.js';
+import bindKey from '../../bindnode/_bindkey.js';
 import lookForBinder from '../../lookforbinder.js';
 import defs from '../../_core/defs.js';
 
@@ -54,13 +54,14 @@ export default function processAttribute({ node, attribute, object, eventOptions
         }
       : binder;
 
-  if (defaultBinder) {
+  // a submit or reset button's binder sets nothing: its value attribute is its label, bound as an attribute
+  if (defaultBinder?.setValue) {
     // if deault binder is found then this is default HTML5 form element
     // remove the attribute and use found binder
     node.removeAttribute(name);
-    bindNode(object, key, node, ownBinder(defaultBinder), eventOptions);
+    bindKey(object, key, node, ownBinder(defaultBinder), eventOptions);
   } else {
     // simply bind an attribute
-    bindNode(object, key, attribute, ownBinder(attributeBinder), eventOptions);
+    bindKey(object, key, attribute, ownBinder(attributeBinder), eventOptions);
   }
 }

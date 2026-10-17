@@ -2,25 +2,18 @@ import type { Binder } from '../types.js';
 import type {
   BindingItem,
   BindNodeOptions,
-  DeepBinding,
   KeyNodeMap,
   NodeInput,
   NodeWithBinder,
   OptionalFlagHolder
 } from './types.js';
 import initMK from '../_core/init.js';
-import defineProp from '../_core/defineprop.js';
-import getNodes from './_getnodes.js';
-import createBindingSwitcher from './_createbindingswitcher.js';
-import bindSingleNode from './_bindsinglenode.js';
 import checkObjectType from '../_helpers/checkobjecttype.js';
 import forOwn from '../_helpers/forown.js';
 import forEach from '../_helpers/foreach.js';
 import matreshkaError from '../_helpers/matreshkaerror.js';
-import addTreeListener from '../on/_addtreelistener.js';
 import assign from '../_helpers/assign.js';
-import { uniqueNodes } from '../_dom/index.js';
-import deepBindings from './_deepbindings.js';
+import bindKey from './_bindkey.js';
 
 // initializes binsing between a property of an object to HTML node
 // key may be a path ("a.b.c") or an array of keys
@@ -148,81 +141,5 @@ export default function bindNode(this: any, object: any, key?: any, node?: any, 
     return object;
   }
 
-  const {
-    optional = temporaryOptionalFlag || false, // check out bindOptionalNode
-    exactKey = false
-  } = eventOptions;
-  const $nodes = getNodes(object, node);
-
-  // check node existence
-  if (!$nodes.length) {
-    if (optional) {
-      return object;
-    }
-
-    throw matreshkaError('binding:node_missing', { key, node });
-  }
-
-  if (!exactKey) {
-    const deepPath = key.split('.');
-    const deepPathLength = deepPath.length;
-
-    if (deepPathLength > 1) {
-      // handle binding when key arg includes dots (eg "a.b.c.d")
-      const deepBinding: DeepBinding = { key, deepPath, $nodes };
-      const bindingSwitcher = createBindingSwitcher({
-        object,
-        deepBinding,
-        binder,
-        eventOptions,
-        bindNode
-      });
-
-      deepBinding.bindingSwitcher = bindingSwitcher;
-
-      if (!deepBindings.has(object)) {
-        deepBindings.set(object, []);
-      }
-
-      (deepBindings.get(object) as DeepBinding[]).push(deepBinding);
-
-      addTreeListener(object, deepPath.slice(0, deepPathLength - 1), bindingSwitcher);
-
-      bindingSwitcher();
-
-      return object;
-    }
-  }
-
-  const propDef = defineProp(object, key);
-
-  if (object.isMatreshka) {
-    // if an object is Matreshka instance then extend "$nodes" and "nodes" objects
-    const { $nodes: $allNodes, nodes: allNodes } = object;
-
-    if (!$allNodes || !allNodes) {
-      throw matreshkaError('binding:instance_nodes_missing', {
-        $nodes: $allNodes,
-        nodes: allNodes
-      });
-    }
-
-    $allNodes[key] = $allNodes[key]?.length ? uniqueNodes($allNodes[key], $nodes) : $nodes;
-
-    allNodes[key] = $allNodes[key][0];
-  }
-
-  // handle binding for every node separately
-  forEach($nodes, (oneNode) =>
-    bindSingleNode(object, {
-      $nodes,
-      node: oneNode,
-      key,
-      eventOptions,
-      binder,
-      propDef
-    })
-  );
-
-  return object;
+  return bindKey(object, key, node, binder, eventOptions, temporaryOptionalFlag);
 }

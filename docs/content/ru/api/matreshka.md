@@ -36,7 +36,7 @@ const matreshka = new Matreshka();
 ```js
 class MyClass extends Matreshka {
 	constructor() {
-		this.sayHello();
+		super().sayHello();
 	}
 	sayHello() {
 		alert("Hello World!");
@@ -91,6 +91,7 @@ const MyClass = Matreshka.Class({
 - [`chain`](/ru/api/matreshka-static/chain/) – Позволяет вызывать универсальные методы цепочкой
 - [`defaultBinders`](/ru/api/matreshka-static/default-binders/) – Массив функций, возвращающих соответствующий байндер или ``undefined``
 - [`instantiate`](/ru/api/matreshka-static/instantiate/) – Создаёт фиксированный экземпляр класса
+- [`initRouter`](/ru/api/matreshka-static/init-router/) – Включает двустороннее связывание данных между свойствами и частями URL
 - [`lookForBinder`](/ru/api/matreshka-static/look-for-binder/)
 - [`mediate`](/ru/api/matreshka-static/mediate/) – Трансформирует значение свойства при его изменении
 - [`off`](/ru/api/matreshka-static/off/) – Удаляет обработчик события
@@ -98,6 +99,7 @@ const MyClass = Matreshka.Class({
 - [`onDebounce`](/ru/api/matreshka-static/on-debounce/) – Добавляет обработчик события, вызываемый лишь однажды за определенный промежуток времени
 - [`once`](/ru/api/matreshka-static/once/) – Добавляет обработчик события, который может быть вызван однажды
 - [`parseBindings`](/ru/api/matreshka-static/parse-bindings/) – Парсит DOM дерево, объявляя привязки свойств, заключенных в двойные фигурные скобки.
+- [`parseForm`](/ru/api/matreshka-static/parse-form/) – Привязывает именованные поля HTML формы к соответствующим свойствам
 - [`parserBrackets`](/ru/api/matreshka-static/parser-brackets/) – Содержит скобки для [парсера](/ru/api/matreshka/parse-bindings/)
 - [`remove`](/ru/api/matreshka-static/remove/) – Удаляет свойство
 - [`select`](/ru/api/matreshka-static/select/) – Возвращает элемент из песочницы, соответствующий селектору

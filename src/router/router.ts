@@ -50,15 +50,17 @@ class Router {
 
   hashPath = '#!/';
 
-  declare type: RouterType;
+  // any other type makes a router of its own that reads no URL
+  declare type: RouterType | (string & {});
 
   declare initialized?: boolean;
 
-  constructor(type: RouterType) {
+  constructor(type: RouterType | (string & {})) {
     // the history and hash routers are singletons
-    if (Object.hasOwn(Router, type) && Router[type] instanceof Router) {
+    const singleton = type === 'hash' ? Router.hash : type === 'history' ? Router.history : undefined;
+    if (singleton) {
       // biome-ignore lint/correctness/noConstructorReturn: new Router('hash') gives Router.hash
-      return Router[type];
+      return singleton;
     }
 
     this.type = type;
@@ -146,13 +148,15 @@ class Router {
 
         window.addEventListener('hashchange', () => handleHashChange(this));
 
-        const segments = (path: string) => path.split('/').filter(Boolean).join('/');
+        const route = (path: string) => splitPath(path).map(decode).join('/');
         onDebounce(this, 'change:hashPath', (evt) => {
-          if (evt?.hashEvent) {
+          const isRoute = location.hash.startsWith('#!');
+          // an empty route leaves a plain anchor such as #top alone
+          if (evt?.hashEvent || (!this.hashPath && !isRoute)) {
             return;
           }
-          // the same route in another spelling (#!/foo for #!/foo/) is rewritten in place, with no history entry
-          if (location.hash.startsWith('#!') && segments(location.hash.slice(2)) === segments(this.path)) {
+          // the same route in another spelling (#!/foo for #!/foo/, %40 for @) is rewritten in place, with no history entry
+          if (isRoute && route(location.hash.slice(2)) === route(this.path)) {
             history.replaceState(history.state, '', this.hashPath || `${location.pathname}${location.search}`);
           } else {
             location.hash = this.hashPath;

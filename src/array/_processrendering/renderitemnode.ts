@@ -4,6 +4,7 @@ import releaseNode from './releasenode.js';
 import renderedNodes from './renderednodes.js';
 import triggerOne from '../../trigger/_triggerone.js';
 import initMK from '../../_core/init.js';
+import defs from '../../_core/defs.js';
 import matreshkaError from '../../_helpers/matreshkaerror.js';
 import getNodes from '../../bindnode/_getnodes.js';
 import type { AnyObject, EventOptions } from '../../types.js';
@@ -47,8 +48,15 @@ export default function renderItemNode({
   const { id: selfId } = selfDef;
   const { moveSandbox, forceRerender, silent } = eventOptions;
 
-  // if renderer is not found return null as a node
+  // if renderer is not found return null as a node; the node rendered before is dropped, so sorting
+  // doesn't bring it back
   if (!usedRenderer) {
+    const oldDef = defs.get(item) as ArrayDef | undefined;
+    const oldNode = oldDef?.renderedInArrays?.[selfId];
+    if (oldDef && oldNode) {
+      releaseNode(item, oldDef, oldNode, eventOptions);
+      delete oldDef.renderedInArrays?.[selfId];
+    }
     return { node: null };
   }
 
