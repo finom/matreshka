@@ -11,10 +11,9 @@ Matreshka.js has one maintainer, [Andrey Gubanov](https://github.com/finom), who
 
 ## Continuity
 
-The project can go on if the maintainer can't:
+If the maintainer can't go on:
 
 - The code, the issues, the docs, the docs deploy and the release workflow all live in this GitHub repository; nothing is kept on the maintainer's machine. Releases publish to npm from the repository's workflow (trusted publishing), with no npm token to hand over.
-- The maintainer's GitHub account has a designated [account successor](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/maintaining-ownership-continuity-of-your-personal-accounts-repositories), who can archive the repository or transfer it to a new maintainer.
 - The license is MIT: anyone can fork the project and go on.
 
 The bus factor is 1: there is one maintainer.
