@@ -90,17 +90,6 @@
   }
 }
 
-/* the theme button shows the icon of the current choice */
-#mk-theme > span {
-  display: none;
-}
-#mk-theme[data-theme='light'] > [data-theme='light'],
-#mk-theme[data-theme='dark'] > [data-theme='dark'],
-#mk-theme[data-theme='system'] > [data-theme='system'],
-#mk-theme:not([data-theme]) > [data-theme='system'] {
-  display: inline;
-}
-
 /* the light and the dark copy of an image or icon */
 .dark .mk-light,
 .mk-dark {
@@ -313,7 +302,60 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
   @apply ml-auto opacity-60;
 }
 .mk-updated {
-  @apply mt-6 px-2 text-xs text-muted-foreground;
+  @apply px-2 text-xs text-muted-foreground;
+}
+
+/* the bottom of the menu, as Nextra's: the theme switch and the date */
+.mk-nav-footer {
+  @apply sticky -bottom-4 -mx-3 mt-6 -mb-4 flex flex-col items-start gap-2 border-t bg-background px-3 py-3;
+}
+.mk-theme {
+  @apply relative;
+}
+/* Nextra's Select: the look in use and the name of the choice */
+.mk-theme-button {
+  @apply flex h-7 cursor-pointer items-center gap-2 rounded-md px-2 text-xs font-medium text-muted-foreground transition-colors outline-none hover:bg-accent hover:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-expanded:bg-accent aria-expanded:text-accent-foreground;
+}
+.mk-theme-list {
+  @apply absolute bottom-full left-0 z-50 mb-1 min-w-full rounded-md border bg-background py-1 text-sm whitespace-nowrap text-foreground shadow-lg;
+}
+.mk-theme-list li {
+  @apply flex cursor-pointer items-center justify-between gap-3 px-3 py-1.5 outline-none hover:bg-accent focus:bg-accent;
+}
+.mk-theme-list li svg {
+  @apply invisible;
+}
+.mk-theme-list li[aria-selected='true'] svg {
+  @apply visible;
+}
+
+/* shadcn's Tooltip */
+.mk-tooltip {
+  @apply pointer-events-none fixed z-50 rounded-md bg-foreground px-3 py-1.5 text-xs text-background;
+  animation: mk-tooltip-in 150ms ease-out;
+}
+.mk-tooltip[hidden] {
+  display: none;
+}
+.mk-tooltip i {
+  @apply absolute size-2.5 -translate-x-1/2 rotate-45 rounded-[2px] bg-foreground;
+}
+.mk-tooltip[data-side='bottom'] i {
+  @apply -top-1;
+}
+.mk-tooltip[data-side='top'] i {
+  @apply -bottom-1;
+}
+@keyframes mk-tooltip-in {
+  from {
+    opacity: 0;
+    scale: 0.95;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-tooltip {
+    animation: none;
+  }
 }
 
 /* hidden by script state; without JavaScript every section shows */
@@ -327,6 +369,21 @@ html:not(.mk-one) .mk-mode [data-mode='all'],
 }
 .mk-nav.mk-searching details[data-importance] {
   display: block;
+}
+/* a group with no members (Matreshka.Router) is a plain link to its own page */
+.mk-nav details:not(:has(li)) > ul,
+.mk-nav details:not(:has(li)) > summary::after {
+  display: none;
+}
+/* a group whose members the level hides all (Matreshka.binders at level 1) is a plain link to its own page */
+.mk-level-1 .mk-nav:not(.mk-searching) details:not(:has(li[data-importance='1'])) > ul,
+.mk-level-2 .mk-nav:not(.mk-searching) details:not(:has(li[data-importance='1'], li[data-importance='2'])) > ul,
+.mk-level-1 .mk-nav:not(.mk-searching) details:not(:has(li[data-importance='1'])) > summary::after,
+.mk-level-2
+  .mk-nav:not(.mk-searching)
+  details:not(:has(li[data-importance='1'], li[data-importance='2']))
+  > summary::after {
+  display: none;
 }
 .mk-one .mk-section:not(.mk-current),
 .mk-one .mk-footer {

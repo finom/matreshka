@@ -26,9 +26,10 @@ export const codeColorsCss = () =>
     const light = /(?:^|;)color:([^;]+)/.exec(style)?.[1];
     const dark = /--shiki-dark:([^;]+)/.exec(style)?.[1];
     const font = /font-style:([^;]+)/.exec(style)?.[1];
-    // github-dark's comment gray is below the 4.5:1 contrast text needs; this one is above it
+    // github-light's orange and github-dark's comment gray are below the 4.5:1 contrast text needs; these are above it
+    const lightColor = light === '#E36209' ? '#BC4C00' : light;
     const darkColor = dark === '#6A737D' ? '#959DA5' : dark;
-    return `.${name}{color:${light}${font ? `;font-style:${font}` : ''}}.dark .${name}{color:${darkColor}}`;
+    return `.${name}{color:${lightColor}${font ? `;font-style:${font}` : ''}}.dark .${name}{color:${darkColor}}`;
   }).join('');
 
 const escapeHtml = (text) =>

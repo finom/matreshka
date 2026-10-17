@@ -24,8 +24,22 @@ function wrap(text, max) {
   return lines;
 }
 
+// Two lines split where the longer one is shortest.
+function balance(text) {
+  const words = text.split(' ');
+  const splits = words.slice(1).map((_, i) => [words.slice(0, i + 1).join(' '), words.slice(i + 1).join(' ')]);
+  return splits.reduce((best, lines) =>
+    Math.max(...lines.map((line) => line.length)) < Math.max(...best.map((line) => line.length)) ? lines : best
+  );
+}
+
+// the Ukrainian line takes two lines, set a little smaller to fit
+const LAYOUT = { ua: { lines: balance, size: 54 } };
+
 for (const { code, prefix } of LANGS) {
-  const lines = wrap(UI[code].demo, 30);
+  const layout = LAYOUT[code];
+  const lines = layout ? layout.lines(UI[code].demo) : wrap(UI[code].demo, 30);
+  const size = layout?.size ?? 58;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
@@ -40,7 +54,7 @@ for (const { code, prefix } of LANGS) {
   ${lines
     .map(
       (line, i) =>
-        `<text x="90" y="${360 + i * 72}" font-family="${FONT}" font-size="58" font-weight="700" fill="#2b2b2b">${escapeXml(line)}</text>`
+        `<text x="90" y="${360 + i * 72}" font-family="${FONT}" font-size="${size}" font-weight="700" fill="#2b2b2b">${escapeXml(line)}</text>`
     )
     .join('\n  ')}
   <text x="90" y="550" font-family="${FONT}" font-size="30" fill="#2e7d32">matreshka.js.org${prefix}/</text>

@@ -36,7 +36,14 @@ for (const deep of ['matreshka/bindnode', 'matreshka/dist/index.js', 'matreshka/
   }
   check(refused, `${deep} resolves`);
 }
-for (const file of ['LICENSE', 'README.md', 'CHANGELOG.md', 'dist/index.d.ts', 'dist/matreshka.min.js']) {
+for (const file of [
+  'LICENSE',
+  'README.md',
+  'CHANGELOG.md',
+  'dist/index.d.ts',
+  'dist/matreshka.min.js',
+  'dist/matreshka.min.mjs'
+]) {
   try {
     readFileSync(packaged(file));
   } catch {
@@ -61,6 +68,20 @@ delete Matreshka.binders.custom;
 check(typeof initRouter === 'function' && typeof Router === 'function', 'esm: matreshka/router');
 check(typeof parseForm === 'function', 'esm: matreshka/parse-form');
 check(!('initRouter' in Matreshka) && !('parseForm' in Matreshka), 'esm: the entry stays without router and parser');
+
+// the one-file ES module for a CDN: every named export of the entry, the router and the parser
+{
+  const cdn = await import(pathToFileURL(packaged('dist/matreshka.min.mjs')).href);
+  const expected = [...Object.keys(entry), 'initRouter', 'Router', 'parseForm'].sort();
+  check(JSON.stringify(Object.keys(cdn).sort()) === JSON.stringify(expected), `cdn esm exports: ${Object.keys(cdn)}`);
+  check(cdn.default === cdn.Matreshka && cdn.default.initRouter === cdn.initRouter, 'cdn esm: default and statics');
+  check(cdn.default.Router === cdn.Router && cdn.default.parseForm === cdn.parseForm, 'cdn esm: Router and parseForm');
+  const data = new cdn.MatreshkaObject({ b: 2 });
+  data.calc('a', 'b', (b) => b * 2);
+  const custom = new cdn.Router('custom');
+  custom.subscribe(data, '/a/');
+  check(data.a === 4 && custom.path === '/4/', 'cdn esm: calc and the router share one copy');
+}
 
 // require(esm) gives the same modules
 check(require('matreshka').Matreshka === Matreshka, 'require: another copy of Matreshka');
@@ -116,5 +137,5 @@ for (const [module, moduleResolution] of [
 }
 
 console.log(
-  'check-dist: the packed tarball: ESM, require(esm), a DOM-free import, no deep paths, the script-tag bundle and the types work'
+  'check-dist: the packed tarball: ESM, require(esm), a DOM-free import, no deep paths, the script-tag bundle, the CDN module and the types work'
 );

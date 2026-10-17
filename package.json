@@ -10,7 +10,14 @@
     "no-build",
     "dom",
     "router",
-    "forms"
+    "forms",
+    "two-way-binding",
+    "framework",
+    "javascript-framework",
+    "mvvm",
+    "spa",
+    "typescript",
+    "zero-dependencies"
   ],
   "homepage": "https://matreshka.js.org",
   "repository": {
@@ -29,16 +36,16 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "router": [
-        "./dist/router/index.d.ts"
-      ],
-      "parse-form": [
-        "./dist/parse-form/index.d.ts"
-      ]
-    }
-  },
+      "typesVersions": {
+        "*": {
+          "router": [
+            "./dist/router/index.d.ts"
+          ],
+          "parse-form": [
+            "./dist/parse-form/index.d.ts"
+          ]
+        }
+      },
       "default": "./dist/index.js"
     },
     "./router": {

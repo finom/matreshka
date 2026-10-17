@@ -75,6 +75,7 @@ this.instantiate('x', MyClass, (instance, data) => {
 ```js
 class MyClass extends Matreshka {
 	constructor(data, parent, key) {
+		super();
 		// parent - это экземпляр MyParentClass,
         // который создал свойство
 		// key - имя свойства ("х")
@@ -110,6 +111,7 @@ this.mediate('x', (data, currentValue) => {
 // app.js
 class App extends Matreshka {
 	constructor(appData) {
+		super();
 		this.appData = appData;
 		this.instantiate('appData', AppData);
 	}

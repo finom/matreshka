@@ -5,6 +5,15 @@ import checkObjectType from './_helpers/checkobjecttype.js';
 import is from './_helpers/is.js';
 import forOwn from './_helpers/forown.js';
 
+// a key named __proto__ is a key like any other: defined, so it never replaces the prototype
+function assign(object: any, key: string, value: any): void {
+  if (key === '__proto__') {
+    Object.defineProperty(object, key, { value, writable: true, enumerable: true, configurable: true });
+  } else {
+    object[key] = value;
+  }
+}
+
 // the function sets new value for a property
 // since its performance is very critical we're checking events existence manually
 export default function set<T extends object>(object: T, key: string, value: any, eventOptions?: EventOptions): T;
@@ -37,7 +46,7 @@ export default function set(this: any, object: any, key: any, value?: any, event
 
   // if no object definition then make simple assignment
   if (!def) {
-    object[key] = value;
+    assign(object, key, value);
     return object;
   }
 
@@ -46,7 +55,7 @@ export default function set(this: any, object: any, key: any, value?: any, event
 
   // if no property definition then make simple assignment
   if (!propDef) {
-    object[key] = value;
+    assign(object, key, value);
     return object;
   }
 

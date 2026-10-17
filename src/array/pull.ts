@@ -1,6 +1,7 @@
 import syncFields from './_syncfields.js';
 import reportModified from './_reportmodified.js';
 import matreshkaError from '../_helpers/matreshkaerror.js';
+import withLengthOptions from './_withlengthoptions.js';
 import type { ArrayMethodOptions, MatreshkaArrayInstance } from './types.js';
 
 // removes an item by a valid index and returns it
@@ -36,7 +37,7 @@ export default function pull(this: MatreshkaArrayInstance, toRemove: any, eventO
     return null;
   }
 
-  const removed = removeAt(this, index);
+  const removed = withLengthOptions(this, eventOptions, () => removeAt(this, index));
 
   reportModified(this, {
     method: 'pull',

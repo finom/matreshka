@@ -1,6 +1,6 @@
 import defs from './_core/defs.js';
 import { uniqueNodes } from './_dom/index.js';
-import selectNodes from './bindnode/_selectnodes.js';
+import selectNodes, { scopeToSandbox } from './bindnode/_selectnodes.js';
 import checkObjectType from './_helpers/checkobjecttype.js';
 import forEach from './_helpers/foreach.js';
 
@@ -20,7 +20,7 @@ export default function selectAll(this: any, object: any, selector?: any): Node[
 
   // the selector includes "custom" things like :sandbox or :bound(KEY)
   if (customSelectorTestReg.test(selector)) {
-    return selectNodes(object, selector);
+    return selectNodes(object, scopeToSandbox(selector));
   }
 
   const def = defs.get(object);

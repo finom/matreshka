@@ -8,7 +8,10 @@ export default function existence(switcher: boolean | ((value: any) => any) = tr
   // one binder can be bound to many nodes, so every node gets its own comment
   const comments = new WeakMap<Element, Comment>();
 
+  // like display: the node's own value (a field's text) is not the flag
   return {
+    on: null,
+    getValue: null,
     setValue(this: ExistenceNode, value: any) {
       let comment = comments.get(this);
 

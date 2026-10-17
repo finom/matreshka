@@ -10,11 +10,13 @@ export default function toJSON(this: AnyObject, recursive = true): Record<string
   forOwn(keys, (_, key) => {
     const value = this[key];
     // when recursive is true and when value has toJSON method then call it recusively
-    if (recursive && value && typeof value.toJSON === 'function') {
-      result[key] = value.toJSON(true);
-    } else {
-      result[key] = value;
-    }
+    // defined, not assigned: a data key named __proto__ is a key, not the result's prototype
+    Object.defineProperty(result, key, {
+      value: recursive && value && typeof value.toJSON === 'function' ? value.toJSON(true) : value,
+      enumerable: true,
+      writable: true,
+      configurable: true
+    });
   });
 
   return result;

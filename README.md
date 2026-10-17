@@ -10,6 +10,7 @@
 > Matreshka.js is a JavaScript framework to create single-page applications (SPAs). The simple and intuitive API is based on JavaScript classes and accessors which are accessible to all application developers of varying skills. The requirement to start your first project with Matreshka.js is basic knowledge of JavaScript!
 
 ## Features
+- Zero dependencies
 - A reactive API to solve hard problems
 - High robustness of developed apps
 - The ability to refactor legacy applications without rewriting them from scratch
@@ -38,6 +39,8 @@ npm install --save matreshka
 ```
 npx skills add finom/matreshka
 ```
+
+**The whole documentation in one file for an LLM:** [llms-full.txt](https://matreshka.js.org/llms-full.txt)
 
 -----------------------------------
 

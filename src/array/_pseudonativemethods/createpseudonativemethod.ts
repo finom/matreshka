@@ -50,7 +50,9 @@ export const methodNames = [
   'lastIndexOf',
   'includes',
   'reduce',
-  'reduceRight'
+  'reduceRight',
+  'toString',
+  'toLocaleString'
 ] as const;
 
 // the native methods are called on Matreshka.Array instances, which are array-like

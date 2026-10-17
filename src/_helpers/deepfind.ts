@@ -1,3 +1,5 @@
+import getProp from './getprop.js';
+
 // gets value of a property in nested object
 // eg "d" from a.b.c.d
 export default function deepFind(obj: any, path: string): any {
@@ -5,11 +7,11 @@ export default function deepFind(obj: any, path: string): any {
   let current = obj;
 
   for (let i = 0; i < paths.length; ++i) {
-    if (current === null || current === undefined || typeof current[paths[i]] === 'undefined') {
+    if (current === null || current === undefined) {
       return undefined;
     }
 
-    current = current[paths[i]];
+    current = getProp(current, paths[i]);
   }
 
   return current;

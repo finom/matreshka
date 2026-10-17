@@ -43,6 +43,11 @@ export interface BindingItem {
   event?: BindNodeOptions;
 }
 
+// one item of unbindNode(object, [{ key, node, event }]); no node unbinds every node of the key
+export interface UnbindingItem extends Omit<BindingItem, 'node'> {
+  node?: NodeInput | null;
+}
+
 // a deep binding ("a.b.c"); unbindNode removes its tree listener
 export interface DeepBinding {
   key: string;

@@ -8,9 +8,9 @@ import createObjectHandler from './_createobjecthandler.js';
 import triggerOne from '../trigger/_triggerone.js';
 import addListener from '../on/_addlistener.js';
 import debounce from '../_helpers/debounce.js';
-import matreshkaError from '../_helpers/matreshkaerror.js';
 import forEach from '../_helpers/foreach.js';
 import assign from '../_helpers/assign.js';
+import is from '../_helpers/is.js';
 
 const spaceReg = /\s+/;
 
@@ -62,18 +62,15 @@ export default function bindSingleNode(
   let syncNodeHandler: NodeHandler | undefined;
   let debouncedNodeHandler: Debounced<NodeHandler> | undefined;
   let debouncedObjectHandler: Debounced<(eventOptions?: BindNodeOptions) => void> | undefined;
-
-  // do not allow to bind more than 2 nodes to "sandbox" (for all nodes)
-  // and "container" (for Matreshka.Array)
-  if (bindings.length && (key === 'sandbox' || (object.isMatreshkaArray && key === 'container'))) {
-    throw matreshkaError('binding:magic_props_nodes_length');
-  }
+  // what the node showed when a program write was scheduled, while that write waits
+  let pendingWrite: { shown: unknown } | null = null;
 
   // the given binder extends the node's default binder, unless useExactBinder is on
   const defaultBinder = useExactBinder ? null : lookForBinder(node);
-  const binder: Binder = defaultBinder ? assign(defaultBinder, givenBinder) : givenBinder;
+  const binder: Binder = defaultBinder ? assign({}, defaultBinder, givenBinder) : givenBinder;
 
   const { getValue, setValue, on, initialize } = binder;
+  const readNode = () => getValue?.call(node, { ...bindingOptions, previousValue: propDef.value });
 
   // call binder.initialize
   if (initialize) {
@@ -105,11 +102,17 @@ export default function bindSingleNode(
     if (typeof on === 'function') {
       on.call(node, nodeHandler, bindingOptions);
     } else if (typeof on === 'string') {
-      // input from the node is newer than a program write still waiting for its debounce, so that write is dropped
-      const readNode = nodeHandler;
+      // input from the node is newer than a program write still waiting for its debounce, so that write is dropped;
+      // an event that leaves the node as it was (a Tab keyup on a checkbox) is not input, and the write goes ahead
+      const handleNode = nodeHandler;
       nodeHandler = function nodeEventHandler(this: unknown, ...args: Parameters<NodeHandler>) {
-        debouncedObjectHandler?.cancel();
-        return readNode.apply(this, args);
+        if (pendingWrite) {
+          if (is(readNode(), pendingWrite.shown)) {
+            return;
+          }
+          debouncedObjectHandler?.cancel();
+        }
+        return handleNode.apply(this, args);
       };
       forEach(on.split(spaceReg), (evtName) => node.addEventListener(evtName, nodeHandler as NodeHandler));
     }
@@ -127,16 +130,34 @@ export default function bindSingleNode(
 
   // add needed event handlers to the object when setValue is given
   if (setValue) {
-    const syncObjectHandler = createObjectHandler({
+    const writeNode = createObjectHandler({
       node,
       propDef,
       binder,
       bindingOptions,
       eventOptions
     });
+    const syncObjectHandler = (handlerEventOptions?: BindNodeOptions) => {
+      pendingWrite = null;
+      writeNode(handlerEventOptions);
+    };
 
     if (debounceSetValue || debounceSetValueOnBind) {
-      debouncedObjectHandler = debounce(syncObjectHandler, debounceSetValueDelay);
+      const debouncedWrite = debounce(syncObjectHandler, debounceSetValueDelay);
+      debouncedObjectHandler = Object.assign(
+        (handlerEventOptions?: BindNodeOptions) => {
+          if (!pendingWrite && getValue) {
+            pendingWrite = { shown: readNode() };
+          }
+          debouncedWrite(handlerEventOptions);
+        },
+        {
+          cancel() {
+            pendingWrite = null;
+            debouncedWrite.cancel();
+          }
+        }
+      );
     }
 
     if (debounceSetValue) {

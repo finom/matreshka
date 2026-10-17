@@ -9,6 +9,8 @@ import objectRemoveHandler from './objectremovehandler.js';
 import changeHandler from './changehandler.js';
 import matchesDelegation from './_matchesdelegation.js';
 import forOwn from '../../_helpers/forown.js';
+import { addOwner, type Owner } from '../_owners.js';
+import getProp from '../../_helpers/getprop.js';
 
 // adds delegated event listener to an object by given path
 export default function delegateListener(
@@ -32,11 +34,13 @@ export default function delegateListener(
   } else {
     // else do all magic
     const key = path[0];
+    // who delegates through this object: the user (null) or a delegation from a parent
+    const hopOwner: Owner = info.owner ?? null;
+    // what the next object along the path is kept by: this delegation
+    info = { ...info, owner: { object, path: path.join('.') } };
     path = path.slice(1);
     // needed for undelegation
     const pathStr = path.join('.');
-    // the listener at the end of the path is told apart from one added directly with the same function
-    info = { ...info, delegated: true };
 
     const delegatedData: DelegatedData = {
       path,
@@ -48,16 +52,25 @@ export default function delegateListener(
     };
 
     // internal events are added with { skipChecks: true }, so the same handler can serve many listeners;
-    // a listener which is already delegated is skipped here
-    const isDelegated = (eventName: string) => {
-      const events = defs.get(object)?.events[eventName];
-      return !!events?.some((event) => matchesDelegation(event, { pathStr, ...delegatedData }, true));
+    // a listener which is already delegated gets one more owner here
+    const isDelegated = (...eventNames: string[]) => {
+      let found = false;
+      for (const eventName of eventNames) {
+        for (const event of defs.get(object)?.events[eventName] ?? []) {
+          if (matchesDelegation(event, { pathStr, ...delegatedData }, true)) {
+            addOwner(event, hopOwner);
+            found = true;
+          }
+        }
+      }
+      return found;
     };
+    const owners = [hopOwner];
 
     if (key === '*') {
       // handling asterisk events
       if (object.isMatreshkaArray) {
-        if (isDelegated('_asterisk:add')) {
+        if (isDelegated('_asterisk:add', '_asterisk:remove')) {
           return;
         }
 
@@ -65,14 +78,16 @@ export default function delegateListener(
         addListener(object, '_asterisk:add', arrayAddHandler, null, {
           delegatedData,
           pathStr,
-          skipChecks: true
+          skipChecks: true,
+          owners
         });
 
         // the event is triggered when something is removed from an array
         addListener(object, '_asterisk:remove', arrayRemoveHandler, null, {
           delegatedData,
           pathStr,
-          skipChecks: true
+          skipChecks: true,
+          owners
         });
 
         // call handler manually to delegate listener for currently existing data props
@@ -84,7 +99,7 @@ export default function delegateListener(
           delegatedData
         );
       } else if (object.isMatreshkaObject) {
-        if (isDelegated('_asterisk:set')) {
+        if (isDelegated('_asterisk:set', '_asterisk:remove')) {
           return;
         }
 
@@ -95,14 +110,16 @@ export default function delegateListener(
         addListener(object, '_asterisk:set', objectSetHandler, null, {
           delegatedData,
           pathStr,
-          skipChecks: true
+          skipChecks: true,
+          owners
         });
 
         // the event is triggered when data prop is removed
         addListener(object, '_asterisk:remove', objectRemoveHandler, null, {
           delegatedData,
           pathStr,
-          skipChecks: true
+          skipChecks: true,
+          owners
         });
 
         // delegate listener for currently existing data props
@@ -125,13 +142,14 @@ export default function delegateListener(
       addListener(object, delegatedEventName, changeHandler, null, {
         delegatedData,
         pathStr,
-        skipChecks: true
+        skipChecks: true,
+        owners
       });
 
       // call handler manually
       changeHandler(
         {
-          value: object[key]
+          value: getProp(object, key)
         },
         delegatedData
       );

@@ -72,10 +72,14 @@ export default function onDebounce(
 
   const delay = typeof givenDelay === 'number' ? givenDelay : 0;
 
-  const callback: Debounced<EventHandler> & { _callback?: EventHandler } = debounce(givenCallback, delay);
+  const callback: Debounced<EventHandler> & { _callback?: EventHandler; _kind?: string } = debounce(
+    givenCallback,
+    delay
+  );
 
   // allow to remove event listener py passing original callback to "off"
   callback._callback = givenCallback;
+  callback._kind = 'debounce';
 
   return on(object, names, callback, triggerOnInit, context);
 }

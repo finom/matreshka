@@ -31,12 +31,12 @@ export default defineConfig({
         }
       }
     ],
-    // the bar the project kept since 2016
+    // every line and branch of src is covered
     coverage: {
       provider: 'v8',
       include: ['src/**'],
       reporter: ['text', 'json-summary', 'html'],
-      thresholds: { lines: 98, statements: 98, branches: 96, functions: 100 }
+      thresholds: { lines: 100, statements: 100, branches: 100, functions: 100 }
     }
   }
 });

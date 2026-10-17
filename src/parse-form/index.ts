@@ -1,5 +1,5 @@
 import type { BindNodeOptions } from '../bindnode/types.js';
-import bindNode from '../bindnode/index.js';
+import bindKey from '../bindnode/_bindkey.js';
 import select from '../select.js';
 
 const FIELDS = 'input, textarea, output, progress, select';
@@ -68,10 +68,11 @@ function parseForm(
 
   for (let i = 0; i < fields.length; i++) {
     const field = fields[i];
-    const { name } = field;
+    // a <progress> has no name property, only the attribute
+    const name = field.getAttribute('name');
 
     if (name) {
-      bindNode(object, name, field, undefined, eventOptions);
+      bindKey(object, name, field, undefined, eventOptions);
       if (callback) {
         callback(name, field);
       }

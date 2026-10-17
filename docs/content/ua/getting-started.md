@@ -19,7 +19,7 @@ const { Matreshka } = require('matreshka');
 
 Роутер і парсер форм — у тому ж пакеті: `matreshka/router` пов’язує властивості з частинами URL, `matreshka/parse-form` пов’язує іменовані поля форми з властивостями.
 
-`initRouter(object, '/a/b/')` синхронізує `object.a` і `object.b` з частинами `location.hash` після `#!` (`#!/foo/bar/`); в URL значення закодовані, у властивостях — декодовані. Щоб натомість використовувати шлях через History API, передайте `'history'` третім аргументом. `parseForm(object, form)` повертає форму або `null`, якщо форму не знайдено.
+`initRouter(object, '/a/b/')` синхронізує `object.a` і `object.b` з частинами `location.hash` після `#!` (`#!/foo/bar/`); в URL значення закодовані, у властивостях — декодовані. Щоб натомість використовувати шлях через History API, передайте `'history'` третім аргументом. `parseForm(object, form)` повертає форму або `null`, якщо форму не знайдено. Докладніше: [`Matreshka.initRouter`](/ua/api/matreshka-static/init-router/), [`Matreshka.parseForm`](/ua/api/matreshka-static/parse-form/).
 
 ```js
 import { initRouter } from 'matreshka/router';
@@ -35,6 +35,16 @@ import { parseForm } from 'matreshka/parse-form';
 ```
 
 Цей самий файл віддає і цей сайт: [/matreshka.min.js](/matreshka.min.js).
+
+### ES-модуль з CDN
+
+Без збирача можна імпортувати `matreshka.min.mjs` — той самий код одним ES-модулем: усі іменовані експорти `matreshka`, а також `initRouter`, `Router` і `parseForm`. Це один запит, і важить він стільки ж, скільки файл для тегу script.
+
+```html
+<script type="module">
+  import { bindNode, calc, binders, initRouter } from 'https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.mjs';
+</script>
+```
 
 ## Модулі
 

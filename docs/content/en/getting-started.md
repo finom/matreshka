@@ -19,7 +19,7 @@ const { Matreshka } = require('matreshka');
 
 The router and the form parser are in the same package: `matreshka/router` binds properties to parts of the URL, `matreshka/parse-form` binds named form fields to properties.
 
-`initRouter(object, '/a/b/')` keeps `object.a` and `object.b` in sync with the parts of `location.hash` after `#!` (`#!/foo/bar/`); the values are encoded in the URL and decoded in the properties. Pass `'history'` as the third argument to use the path through the History API instead. `parseForm(object, form)` returns the form, or `null` when the form isn't found.
+`initRouter(object, '/a/b/')` keeps `object.a` and `object.b` in sync with the parts of `location.hash` after `#!` (`#!/foo/bar/`); the values are encoded in the URL and decoded in the properties. Pass `'history'` as the third argument to use the path through the History API instead. `parseForm(object, form)` returns the form, or `null` when the form isn't found. More: [`Matreshka.initRouter`](/api/matreshka-static/init-router/), [`Matreshka.parseForm`](/api/matreshka-static/parse-form/).
 
 ```js
 import { initRouter } from 'matreshka/router';
@@ -35,6 +35,16 @@ Without a bundler, load the browser bundle. It defines the global `Matreshka`, w
 ```
 
 This site serves the same file: [/matreshka.min.js](/matreshka.min.js).
+
+### An ES module from a CDN
+
+Without a bundler, `matreshka.min.mjs` is the same code as one ES module: every named export of `matreshka`, with `initRouter`, `Router` and `parseForm` included. It's one request, as small as the script-tag file.
+
+```html
+<script type="module">
+  import { bindNode, calc, binders, initRouter } from 'https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.mjs';
+</script>
+```
 
 ## Modules
 

@@ -4,6 +4,7 @@ import unbindNode from 'src/unbindnode';
 import parseBindings from 'src/parsebindings';
 import select from 'src/select';
 import selectAll from 'src/selectall';
+import selectNodes from 'src/bindnode/_selectnodes';
 import mediate from 'src/mediate';
 import Matreshka from 'src/matreshka';
 import parserBrackets from 'src/parserbrackets';
@@ -253,17 +254,50 @@ describe('Bindings regressions', () => {
     expect(output.value).toBe('0');
   });
 
-  it('3.0: a mediator does not rewrite the field being typed in', () => {
+  it('3.0: a mediator rewrites the field being typed in and keeps its caret', () => {
     const input = el('<input>');
+    document.body.appendChild(input);
+    input.focus();
     const obj = {};
     mediate(obj, 'x', (value = '') => value.toUpperCase());
     bindNode(obj, 'x', input, undefined, sync);
     input.value = 'abc';
+    input.setSelectionRange(1, 2);
     fire(input, 'input');
     expect(obj.x).toBe('ABC');
-    expect(input.value).toBe('abc');
+    expect(input.value).toBe('ABC');
+    expect([input.selectionStart, input.selectionEnd]).toEqual([1, 2]);
+    input.remove();
     obj.x = 'def';
     expect(input.value).toBe('DEF');
+  });
+
+  it('3.0: a mediator rewrites the textarea being typed in and keeps its caret', () => {
+    const textarea = el('<textarea></textarea>');
+    document.body.appendChild(textarea);
+    textarea.focus();
+    const obj = {};
+    mediate(obj, 'x', (value = '') => value.toUpperCase());
+    bindNode(obj, 'x', textarea, undefined, sync);
+    textarea.value = 'abc';
+    textarea.setSelectionRange(1, 1);
+    fire(textarea, 'input');
+    expect(textarea.value).toBe('ABC');
+    expect([textarea.selectionStart, textarea.selectionEnd]).toEqual([1, 1]);
+    textarea.remove();
+  });
+
+  it('3.0: a program write into a focused field puts the caret at the end, as before', () => {
+    // TodoMVC's edit: the field is focused, then the debounced title lands in it
+    const input = el('<input>');
+    document.body.appendChild(input);
+    input.focus();
+    const obj = {};
+    bindNode(obj, 'x', input, undefined, sync);
+    input.setSelectionRange(0, 0);
+    obj.x = 'second';
+    expect([input.selectionStart, input.selectionEnd]).toEqual([6, 6]);
+    input.remove();
   });
 
   // BN-13
@@ -407,12 +441,14 @@ describe('Bindings regressions', () => {
     expect(select({}, ':sandbox')).toBe(null);
   });
 
+  // bindNode's selectors: select and selectAll look inside the sandbox only (sweep 4, BR-8)
   it('BN-19 on an object without bindings, plain selectors in a list with :sandbox still select', () => {
     const foo = document.createElement('i');
     foo.className = 'bn19-foo';
     document.body.appendChild(foo);
     try {
-      expect([...selectAll({}, ':sandbox, .bn19-foo')]).toEqual([foo]);
+      expect(selectNodes({}, ':sandbox, .bn19-foo')).toEqual([foo]);
+      expect(selectAll({}, ':sandbox, .bn19-foo')).toEqual([]);
     } finally {
       foo.remove();
     }

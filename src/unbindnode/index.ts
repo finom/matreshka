@@ -1,6 +1,6 @@
 import type { AnyObject, Binding } from '../types.js';
 import type {
-  BindingItem,
+  UnbindingItem,
   BindNodeOptions,
   DeepBinding,
   KeyNodeMap,
@@ -17,6 +17,7 @@ import assign from '../_helpers/assign.js';
 import removeBinding from './_removebinding.js';
 import toArray from '../_helpers/toarray.js';
 import deepBindings from '../bindnode/_deepbindings.js';
+import getProp from '../_helpers/getprop.js';
 
 // removes the tree listeners of deep bindings ("a.b.c") for given key and nodes (all nodes when null)
 function removeDeepBindings(object: AnyObject, key: string, $nodes: Node[] | null): void {
@@ -67,7 +68,7 @@ export default function unbindNode<T extends object>(
 // [{ key, node, event }]; eventOptions are common to all items
 export default function unbindNode<T extends object>(
   object: T,
-  bindings: BindingItem[],
+  bindings: UnbindingItem[],
   eventOptions?: BindNodeOptions
 ): T;
 export default function unbindNode(this: any, object: any, key?: any, node?: any, eventOptions?: any): any {
@@ -95,7 +96,7 @@ export default function unbindNode(this: any, object: any, key?: any, node?: any
        * acept array of objects
        * this.unbindNode([{ key, node, binder, event }], { silent: true });
        */
-      forEach(key as BindingItem[], ({ key: itemKey, node: itemNode, event: itemEventOptions }) => {
+      forEach(key as UnbindingItem[], ({ key: itemKey, node: itemNode, event: itemEventOptions }) => {
         const commonEventOptions: BindNodeOptions | undefined = node;
         const mergedEventOptions: BindNodeOptions = {};
 
@@ -180,7 +181,7 @@ export default function unbindNode(this: any, object: any, key?: any, node?: any
       let target = object;
 
       for (let i = 0; i < deepPathLength - 1; i++) {
-        target = target[deepPath[i]];
+        target = getProp(target, deepPath[i]);
 
         // the branch is gone, so there is no binding to remove from its end
         if (!target || typeof target !== 'object') {
@@ -219,40 +220,15 @@ export default function unbindNode(this: any, object: any, key?: any, node?: any
     return object;
   }
 
-  // if no node is pased remove all bindings for given key
-  if (!node) {
-    forEach(bindings, (binding) => {
-      removeBinding({
-        object,
-        key,
-        eventOptions,
-        binding
-      });
-    });
-
-    propDef.bindings = null;
-
-    // update nodes and $nodes for Matreshka instance
-    if (object.isMatreshka) {
-      delete object.nodes[key];
-      delete object.$nodes[key];
-    }
-
-    return object;
-  }
-
-  const removedNodes = toArray(getNodes(object, node));
+  // no node removes every binding of the key
+  const removedNodes = node ? toArray(getNodes(object, node)) : null;
+  const removedBindings: Binding[] = [];
   const retainBindings: Binding[] = [];
   const retainNodes: Node[] = [];
 
   forEach(bindings, (binding) => {
-    if (removedNodes.includes(binding.node)) {
-      removeBinding({
-        object,
-        key,
-        eventOptions,
-        binding
-      });
+    if (!removedNodes || removedNodes.includes(binding.node)) {
+      removedBindings.push(binding);
     } else {
       retainBindings.push(binding);
 
@@ -273,12 +249,17 @@ export default function unbindNode(this: any, object: any, key?: any, node?: any
     }
   }
 
-  // update bindings object
-  if (retainBindings.length) {
-    propDef.bindings = retainBindings;
-  } else {
-    propDef.bindings = null;
-  }
+  propDef.bindings = retainBindings.length ? retainBindings : null;
+
+  // the state is updated first: an unbind handler may bind the key again
+  forEach(removedBindings, (binding) => {
+    removeBinding({
+      object,
+      key,
+      eventOptions,
+      binding
+    });
+  });
 
   return object;
 }

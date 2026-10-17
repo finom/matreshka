@@ -38,11 +38,11 @@ export type ClassConstructor<P, S = unknown> = {
 
 export interface ClassFunction {
   <P extends ClassPrototype, S extends object = never>(
-    prototype: P,
+    prototype: P & ThisType<ClassInstance<P>>,
     staticProps?: S
   ): ClassConstructor<P, [S] extends [never] ? unknown : S>;
   // new Class({}) returns an instance
-  new <P extends ClassPrototype>(prototype: P, staticProps?: object): ClassInstance<P>;
+  new <P extends ClassPrototype>(prototype: P & ThisType<ClassInstance<P>>, staticProps?: object): ClassInstance<P>;
 }
 
 function isConstructor(fn: any): boolean {

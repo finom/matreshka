@@ -1,14 +1,15 @@
 import type { AnyObject, Binder } from '../types.js';
 import type { BindNodeOptions, DeepBinding } from './types.js';
-import type bindNodeFunction from './index.js';
+import type bindKeyFunction from './_bindkey.js';
 import unbindNode from '../unbindnode/index.js';
+import getProp from '../_helpers/getprop.js';
 
 interface BindingSwitcherData {
   object: AnyObject;
   deepBinding: DeepBinding;
   binder: Binder | null;
   eventOptions: BindNodeOptions;
-  bindNode: typeof bindNodeFunction;
+  bindKey: typeof bindKeyFunction;
 }
 
 // what addTreeListener passes when a branch changes
@@ -28,7 +29,7 @@ export default function createBindingSwitcher({
   deepBinding,
   binder,
   eventOptions,
-  bindNode
+  bindKey
 }: BindingSwitcherData): (changeEvent?: BranchChangeEvent) => void {
   return function bindingSwitcher(changeEvent: BranchChangeEvent = {}) {
     const { deepPath, $nodes } = deepBinding;
@@ -44,14 +45,14 @@ export default function createBindingSwitcher({
       return;
     }
 
-    let target: any; // an object to call bindNode
+    let target: any; // an object to call bindKey
     let previousTarget: any; // an object to call unbindNode
 
     if (value && typeof value === 'object' && restPath) {
       // if rest path is given and new value is an object
       target = value;
       for (let i = 0; i < restPath.length; i++) {
-        target = target[restPath[i]];
+        target = getProp(target, restPath[i]);
         if (!target) {
           break;
         }
@@ -60,7 +61,7 @@ export default function createBindingSwitcher({
       // if rest path is not given
       target = object;
       for (let i = 0; i < deepPathLength - 1; i++) {
-        target = target[deepPath[i]];
+        target = getProp(target, deepPath[i]);
         if (!target) {
           break;
         }
@@ -71,7 +72,7 @@ export default function createBindingSwitcher({
     if (previousValue && typeof previousValue === 'object' && restPath) {
       previousTarget = previousValue;
       for (let i = 0; i < restPath.length; i++) {
-        previousTarget = previousTarget[restPath[i]];
+        previousTarget = getProp(previousTarget, restPath[i]);
         if (!previousTarget) {
           break;
         }
@@ -80,12 +81,12 @@ export default function createBindingSwitcher({
 
     // remove binding for previously used object; first, so a target both share keeps its binding
     if (previousTarget && typeof previousTarget === 'object') {
-      unbindNode(previousTarget, lastDeepPathItem, $nodes);
+      unbindNode(previousTarget, lastDeepPathItem, $nodes, eventOptions);
     }
 
     // add binding for new target
     if (target && typeof target === 'object') {
-      bindNode(target, lastDeepPathItem, $nodes, binder, eventOptions);
+      bindKey(target, lastDeepPathItem, $nodes, binder, eventOptions);
     }
   };
 }

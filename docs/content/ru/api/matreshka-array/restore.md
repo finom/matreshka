@@ -45,7 +45,7 @@ class MyCollection extends Matreshka.Array {
 		return ':sandbox .renderer';
 	}
 	constructor() {
-		this
+		super()
 			.bindNode('sandbox', '.collection-node')
 			.restore(':sandbox li');
 	}

@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Named exports: `import { bindNode, calc, MatreshkaObject, MatreshkaArray } from 'matreshka'`, next to the default `Matreshka`.
 - The router and the form parser are part of the package: `import { initRouter, Router } from 'matreshka/router'` and `import { parseForm } from 'matreshka/parse-form'`. The script-tag bundle has them as `Matreshka.initRouter`, `Matreshka.Router` and `Matreshka.parseForm`.
 - The binders that came from the `common-binders` package are part of Matreshka (`Matreshka.binders`, `import { binders } from 'matreshka'`).
+- `dist/matreshka.min.mjs`: the whole library as one minified ES module, the router and the form parser included, for `<script type="module">` pages that load it from a CDN.
 - `"sideEffects": false` in `package.json`, so a bundler drops the parts an app doesn't import.
 - `Matreshka.Array` has `at`, `findLast`, `findLastIndex`, `flat`, `flatMap`, `toSorted`, `toReversed`, `toSpliced` and `with`; its iterators are iterable, and a native `concat` spreads it.
 
@@ -24,7 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - The entry points are `matreshka`, `matreshka/router` and `matreshka/parse-form`; the deep paths of 2.x (`matreshka/bindnode`, `matreshka/array/from`) are gone.
 - One script-tag bundle, `dist/matreshka.js` and `dist/matreshka.min.js` (also on jsDelivr and unpkg), with the router and the form parser in it.
 - `$nodes` and the result of `selectAll` and `$` are arrays of nodes. 2.x returned a collection of its bundled jQuery-like library, or of jQuery when it was on the page.
-- A change that comes from a node isn't written back into that node: clearing a field whose value a mediator turns into `0` leaves it empty, and the other nodes bound to the property show `0`.
+- A change that comes from a node isn't written back into that node while the node shows that value: clearing a field whose value a mediator turns into `0` leaves it empty, and the other nodes bound to the property show `0`. A value the mediator changed in another way (clamped, upper-cased) is written back, and the caret stays where it was.
 - The code targets current browsers and Node.js; it is no longer compiled to ES5. It imports without a DOM (server-side rendering, Node.js, test runners without jsdom).
 - `off()` with no arguments removes only the listeners added with `on`, `once` and `onDebounce`; bindings, `calc` dependencies and the built-in events of `Matreshka.Object` and `Matreshka.Array` keep working. It fires `removeevent`.
 - `undefined` and `null` show as empty in the binders and in parsed `{{key}}` attributes, as they already did in parsed text.
@@ -67,6 +68,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - A trailing space in event names adds no listener with an empty name.
 - `remove` takes off the DOM listeners of the key, and `remove` of a `calc` target stops the calculation.
 - `removeevent` fires after the listener is gone: a `removeevent:x` handler that calls `off('x')` no longer loops until the stack overflows, and a listener it adds to `x` stays.
+- A listener that several delegated paths reach (`a@x` and `b@x` on one shared object, `selected@x` and `items.*@x`, two deep `calc` sources through one object) stays until the last of them is removed; `off`, `remove` and a changed branch no longer take it from the others.
+- `off(root, 'c@x', f)` keeps the same delegated listener that another root added to a shared child.
+- `on(name, f)` after `once(name, f)` or `onDebounce(name, f)` adds a listener of its own.
+- `off(null, callback)` also removes the callback from delegated events.
+- `off()` on an object keeps the listeners a parent delegated to it, so the parent can add them again.
+- `off` of one name of an `onDebounce` on several names keeps the pending call of the others.
 
 #### Bindings
 
@@ -97,6 +104,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `trigger` and `selectAll` with a selector skip the text and attribute nodes bound by `parseBindings`.
 - A property's own setter keeps running after the property becomes reactive: it gets each new value, and the property's getter gives the value the events and bindings see.
 - The radio binder checks the radio whose value equals a number, as the select binder does.
+- Parser brackets containing `<`, `>`, `&` or `"` bind text and attributes.
+- `binders.existence()` on a form field no longer takes the field's text as its value.
+- `value="{{x}}"` of a submit, reset, button or image input binds as an attribute.
+- `parseBindings` with an HTML string binds `{{key}}` in its top-level text.
+- A refused second `sandbox` or `container` node no longer appears in `$nodes`.
+- `bindNode` with a binder no longer changes the binder a `defaultBinders` function returns.
+- `select` and `selectAll` with a list such as `.y, :bound(k)` search the sandbox for the plain parts.
+- A keyup or click that leaves a checkbox as it was no longer undoes a value the program has just set.
+- A node bound in an `unbind` handler stays bound.
+- A `silent` deep binding no longer fires `unbind` on the old branch when the branch changes.
 
 #### Data
 
@@ -115,6 +132,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - A key named `__proto__` in data passed to `setData`, `Matreshka.Object` or a tracked array item no longer writes onto `Object.prototype`.
 - `setData` of the value a key already holds makes it a data key with its `*@` listeners and fires `set` and `modify`; with `replaceData` and `silent` it fires no `remove` or `modify`.
 - `new Matreshka.Object(instance)` and `setData(instance)` take only the instance's data keys.
+- A setter declared in a class keeps running after the property becomes reactive.
+- `Matreshka.Object#toJSON` keeps a data key named `__proto__`.
+- A path through `__proto__` (`calc(obj, 'a', '__proto__.x', fn)`, `on(obj, '__proto__@change:x')`, `bindNode(obj, '__proto__.x', node)`) no longer defines its key on `Object.prototype` or a class prototype; `set(obj, '__proto__', value)` writes an own key.
 
 #### Matreshka.Array
 
@@ -139,6 +159,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `recreate` takes an array-like on a non-empty array, and reports a dropped duplicate as removed.
 - `copyWithin` takes `*@` listeners off the overwritten items; `fill` over an empty range fires no `modify`; `push_()`, `unshift_()` and `splice_()` with no items no longer throw.
 - Rerendering also releases the bindings of parsed attributes (`title="{{a}}!"`) and their calculations.
+- A `Model` that extends `Matreshka.Array` gets the item's data as its items, so a collection of collections works and converts to JSON.
+- Items are rendered before `add`, `push` and the other events fire; an array changed from such a handler keeps the DOM in its order.
+- `from`, `of` and a silent `recreate` keep `*@` listeners in step with the items.
+- `silent: true` also silences `change:length`.
+- `addone` and `removeone` get the event options passed to the `METHOD_` call.
+- `restore()` on an array with an item mediator links the restored nodes to the mediated items.
+- After `itemRenderer = null`, sorting no longer brings the old nodes back.
+- A forced rerender removes the old nodes from a container the array no longer uses, and leaves a node the user moved elsewhere.
+- `unshift` keeps holes, as the native method does.
+- `orderBy` puts `NaN` last, as lodash does.
+- `String(array)` and `toLocaleString()` list the items, as for an ordinary array.
 
 #### Router
 
@@ -151,6 +182,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `router.parts` no longer holds `undefined` entries, and three or more slashes in a row are treated like one.
 - Opening a hash route that differs from the router's path only by its trailing slash no longer adds a history entry.
 - `0` is a route value, not an empty part.
+- Subscribing to the hash router keeps a plain anchor (`#section`) in the URL.
+- Opening a hash route spelled another way (`@` unescaped, lowercase escapes) no longer adds a history entry.
 
 #### Form parser
 
@@ -158,5 +191,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - A wrong first argument throws `parseForm`'s own `TypeError`.
 - `parseForm` binds every field of a form, including `<input type="image">` and fields tied to it with the `form` attribute.
 - A file input bound to an object that already has a value no longer throws.
+- `parseForm` binds a named `<progress>`.
+
+#### Types
+
+- `this` in the prototype passed to `Matreshka.Class` has the parent's methods.
+- An event handler may use `this` (the context given to `on`).
+- `new Matreshka.Array('Hi', { a: 'b' })` with items of different types; `MyArray.from` and `MyArray.of` give `MyArray`.
+- `itemRenderer` may be a method, a getter or a field.
+- `new Router('custom')` makes a router of its own type.
+- The items of `unbindNode([{ key }])` may leave out the node.
 
 [Unreleased]: https://github.com/finom/matreshka/compare/v2.4.0...HEAD

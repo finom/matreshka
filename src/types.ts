@@ -30,11 +30,12 @@ export interface EventOptions {
   [option: string]: any;
 }
 
-export type EventHandler = (...args: any[]) => any;
+// a context passed to on() becomes this
+export type EventHandler = (this: any, ...args: any[]) => any;
 
 // one listener in an object's definition
 export interface EventEntry {
-  callback: EventHandler & { _callback?: EventHandler };
+  callback: EventHandler & { _callback?: EventHandler; _kind?: string };
   context?: any;
   ctx: any;
   name: string;
@@ -57,6 +58,8 @@ export interface PropDef {
   bindings: Binding[] | null;
   // the property's own getter and setter, kept when Matreshka defines its accessor
   accessor?: { get?: () => any; set?: (value: any) => void };
+  // event options for a write through the accessor, while an array method runs
+  setterOptions?: Record<string, any>;
   [field: string]: any;
 }
 

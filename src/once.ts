@@ -39,6 +39,7 @@ export default function once(this: any, object: any, names: any, givenCallback?:
 
   // allow to remove event listener py passing original callback to "off"
   callback._callback = givenCallback;
+  callback._kind = 'once';
 
   return on(object, names, callback, context);
 }

@@ -55,6 +55,8 @@ export interface ArrayDef extends ObjectDef {
   itemMediator?: ItemMediator;
   // array id -> the node rendered for this item
   renderedInArrays?: Record<string, RenderedNode>;
+  // the containers the array has rendered into
+  containers?: WeakSet<Node>;
 }
 
 type Predicate<Item, Self> = (item: Item, index: number, array: Self) => unknown;
@@ -67,7 +69,7 @@ export interface MatreshkaArrayInstance<Item = any> extends Matreshka {
   length: number;
   readonly isMatreshkaArray: true;
   Model?: ModelConstructor;
-  itemRenderer?: ItemRenderer<Item> | null;
+  // itemRenderer is not declared: a class may set it as a method, a field or in the constructor (ItemRenderer)
   // false turns rendering off
   renderIfPossible?: boolean;
   // a key of items, or '$index', whose value says which old item a new item updates in recreate
@@ -158,19 +160,31 @@ export interface MatreshkaArrayInstance<Item = any> extends Matreshka {
   toJSON(recursive?: boolean): any[];
 }
 
+// what from and of return: a subclass gives its own instances
+type ArrayOf<C, Item> = C extends abstract new (
+  ...args: any[]
+) => infer Instance
+  ? MatreshkaArrayInstance<any> extends Instance
+    ? MatreshkaArrayInstance<Item>
+    : Instance
+  : MatreshkaArrayInstance<Item>;
+
 // Matreshka.Array itself: the constructor and its statics
 export interface MatreshkaArrayConstructor extends MatreshkaStatics {
   // a single number is the length, as for native Array
   new <Item = any>(length: number): MatreshkaArrayInstance<Item>;
   new <Item = any>(...items: ItemInput<Item>[]): MatreshkaArrayInstance<Item>;
+  // items of different types, with no type argument
+  new (...items: any[]): MatreshkaArrayInstance<any>;
   readonly prototype: MatreshkaArrayInstance;
-  from<Item = any>(arrayLike: ArrayLike<Item> | Iterable<Item>): MatreshkaArrayInstance<Item>;
-  from<Source, Item>(
+  from<C, Item = any>(this: C, arrayLike: ArrayLike<Item> | Iterable<Item>): ArrayOf<C, Item>;
+  from<C, Source, Item>(
+    this: C,
     arrayLike: ArrayLike<Source> | Iterable<Source>,
     mapFn: (value: Source, index: number) => Item,
     thisArg?: any
-  ): MatreshkaArrayInstance<Item>;
-  of<Item = any>(...items: Item[]): MatreshkaArrayInstance<Item>;
+  ): ArrayOf<C, Item>;
+  of<C, Item = any>(this: C, ...items: Item[]): ArrayOf<C, Item>;
 }
 
 // what the rendering functions get for one array method call

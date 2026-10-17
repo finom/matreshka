@@ -13,6 +13,8 @@ function createTreeListener({ handler, restPath }: { handler: EventHandler; rest
   };
 
   newHandler._callback = handler;
+  // tree listeners of one handler differ by the rest of their path
+  newHandler._kind = `tree:${restPath.join('.')}`;
 
   return newHandler;
 }

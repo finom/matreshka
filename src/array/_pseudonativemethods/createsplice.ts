@@ -3,6 +3,7 @@ import reportModified from '../_reportmodified.js';
 import toMatreshkaArray from '../_tomatreshkaarray.js';
 import apply from '../../_helpers/apply.js';
 import assign from '../../_helpers/assign.js';
+import withLengthOptions from '../_withlengthoptions.js';
 import toAbsoluteIndex from '../_toabsoluteindex.js';
 import { spliceStart } from '../_processrendering/processspliceadd.js';
 import type { ArrayDef, ArrayEventOptions, MatreshkaArrayInstance } from '../types.js';
@@ -37,7 +38,7 @@ export default function createSplice(
 
     // call original method
     // TODO: Change array manually in splice method for better performance
-    const returns: any[] = apply(Array.prototype.splice, this, args);
+    const returns: any[] = withLengthOptions(this, givenEventOptions, () => apply(Array.prototype.splice, this, args));
     // removed items mean returned items
     const removed = returns;
 

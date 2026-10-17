@@ -9,6 +9,7 @@ import path from 'node:path';
 import { compile, optimize } from '@tailwindcss/node';
 import { Scanner } from '@tailwindcss/oxide';
 import { notFound, page } from '../src/page.mjs';
+import { fillSizes } from '../src/sizes.mjs';
 import { CONTENT, LANGS, linkTarget, SITE, sectionsOf } from '../src/site.mjs';
 
 const DOCS = path.join(import.meta.dirname, '..');
@@ -31,11 +32,20 @@ try {
 rmSync(OUT, { recursive: true, force: true });
 cpSync(path.join(DOCS, 'public'), OUT, { recursive: true });
 
-for (const file of ['matreshka.js', 'matreshka.min.js', 'matreshka.min.js.map']) {
+for (const file of [
+  'matreshka.js',
+  'matreshka.min.js',
+  'matreshka.min.js.map',
+  'matreshka.min.mjs',
+  'matreshka.min.mjs.map'
+]) {
   const from = path.join(ROOT, 'dist', file);
   if (!existsSync(from)) throw new Error(`${from} is missing: run \`npm run build\` at the repo root first`);
   cpSync(from, path.join(OUT, file));
 }
+// the home pages show the script-tag file's size
+const bundle = readFileSync(path.join(ROOT, 'dist', 'matreshka.min.js'));
+
 cpSync(path.join(ROOT, 'examples'), path.join(OUT, 'examples'), {
   recursive: true,
   filter: (file) => !/(^|\/)(README\.md|\.DS_Store)$/.test(file)
@@ -91,6 +101,7 @@ const targets = [];
 const idsOf = {};
 for (const { code: lang, prefix } of LANGS) {
   const sections = sectionsOf(lang);
+  for (const section of sections) section.body = fillSizes(section.body, lang, bundle);
   const html = page({ lang, sections, updated, assets });
   idsOf[`${prefix}/`] = new Set(Array.from(html.matchAll(/ id="([^"]+)"/g), ([, id]) => id));
   write(`${prefix.slice(1)}/index.html`.replace(/^\//, ''), html);
@@ -155,9 +166,11 @@ ${LANGS.map((l) => `    <xhtml:link rel="alternate" hreflang="${l.hreflang}" hre
 write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 write('404.html', notFound({ assets }));
 
+const escapeRegExp = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 for (const file of ['llms.txt', 'llms-full.txt', 'ua/llms-full.txt', 'ru/llms-full.txt']) {
   const text = readFileSync(path.join(OUT, file), 'utf8');
-  for (const [, target] of text.matchAll(new RegExp(`${SITE}(/(?:ua/|ru/)?#[^)\\s]+)`, 'g'))) targets.push(target);
+  for (const [, target] of text.matchAll(new RegExp(`${escapeRegExp(SITE)}(/(?:ua/|ru/)?#[^)\\s]+)`, 'g')))
+    targets.push(target);
 }
 const broken = targets.filter((target) => {
   const [home, id] = target.split('#');

@@ -20,6 +20,6 @@ export interface DelegatedData {
 export interface DomEventData {
   eventName: string;
   selector?: string;
-  callback?: (EventHandler & { _callback?: EventHandler }) | null;
+  callback?: (EventHandler & { _callback?: EventHandler; _kind?: string }) | null;
   context?: any;
 }

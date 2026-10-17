@@ -10,7 +10,7 @@ importance: 1
 **Метод**
 
 ```js
-Matreshka#trigger([names], [arg]) → object
+Matreshka#trigger(names, [arg]) → object
 ```
 
 Генерує подію
@@ -25,7 +25,7 @@ Matreshka#trigger([names], [arg]) → object
 
 | Ім'я | Тип | Опис |
 | --- | --- | --- |
-| `names` (необов'язковий) | [`eventNames`](/ua/api/types/event-names/) | Ім'я події або кілька імен, розділених пробілом |
+| `names` | [`eventNames`](/ua/api/types/event-names/) | Ім'я події або кілька імен, розділених пробілом |
 | `arg` (необов'язковий) | `...*` | Аргументи, які будуть передані обробникам |
 
 ## Посилання

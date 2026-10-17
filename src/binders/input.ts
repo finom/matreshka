@@ -73,7 +73,11 @@ export default function input(type?: string): Binder {
       return this.value;
     },
     setValue(this: HTMLInputElement, value: any) {
-      this.value = value === null || value === undefined ? '' : value;
+      const text = value === null || value === undefined ? '' : String(value);
+      // the same text isn't written again, so the caret stays
+      if (this.value !== text) {
+        this.value = text;
+      }
     }
   };
 }
