@@ -43,7 +43,7 @@ The bundle defines one global, `Matreshka`, with everything on it, the router an
 </html>
 ```
 
-It weighs about 64 kB minified, 21 kB gzipped, 19 kB with brotli (what a CDN sends). The same file is on unpkg: `https://unpkg.com/matreshka@3/dist/matreshka.min.js`. For an offline copy, download that file next to the page and use `<script src="matreshka.min.js">`.
+It weighs about 62 kB minified, 20 kB gzipped, 18 kB with brotli (what a CDN sends). A page that uses neither the router nor `parseForm` can load `matreshka.core.min.js` instead: the same global `Matreshka` without `initRouter`, `Router` and `parseForm`, about 17 kB with brotli. The same file is on unpkg: `https://unpkg.com/matreshka@3/dist/matreshka.min.js`. For an offline copy, download that file next to the page and use `<script src="matreshka.min.js">`.
 
 ### B. CDN ES module, no bundler
 
@@ -176,7 +176,7 @@ Use the class in `extends`, call `super()` first in the constructor, and never r
 - **A value typed by the user is not written back to the same element.** With `mediate(obj, 'x', Number)`, clearing the field leaves it empty while `obj.x` becomes `0`; typing `5abc` keeps the text while `obj.x` is `NaN`. Other elements bound to `x` are updated. A mediator that changes the typed text (a clamp, upper case) is written back, and the caret stays in place.
 - **Assigning the same value fires nothing** (`Object.is`). Pass `{ force: true }` to `set` to fire anyway.
 - **Only reactive keys are watched.** A key becomes reactive (an accessor) when it is first used by `bindNode`, `calc`, `mediate`, `instantiate`, `on('change:KEY')`, a `PATH@` listener or `setData`. A brand-new plain assignment (`obj.other = 1`) fires nothing, and the `change` event (any key) fires only for reactive keys.
-- **A missing element throws** `Binding error: node is missing for key "x"`. Use `bindOptionalNode` for elements that may be absent.
+- **A missing element throws** `Binding error: node is missing for key "x"`; the minified files (`matreshka.min.js`, `matreshka.core.min.js`, `matreshka.min.mjs`) throw a short message with the error's code: `Matreshka error binding:node_missing (key: "x")`. Use `bindOptionalNode` for elements that may be absent.
 - **A selector is resolved once**, at `bindNode`. Elements added to the page later are not bound; bind them then, or render them with `Matreshka.Array`.
 - `$nodes` and `selectAll` return plain arrays. A node argument may be a selector, an element, an array, a NodeList, an HTMLCollection, a jQuery object or any array-like.
 - Keys with dots are paths: `bindNode(obj, 'user.name', el)` follows `obj.user.name`, and keeps following when `obj.user` is replaced by another object. Pass `{ exactKey: true }` to use a dotted key as is.

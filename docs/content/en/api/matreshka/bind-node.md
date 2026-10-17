@@ -192,7 +192,7 @@ this.on('click::myKey', () => { ... });
 this.on('click::myKey(.my-inner-element)', () => { ... });
 ```
 
-> If a node is not found ``Binding error: node is missing for key "KEY"`` error will be thrown. Check out [`Matreshka#bindOptionalNode`](/api/matreshka/bind-optional-node/).
+> If a node is not found ``Binding error: node is missing for key "KEY"`` error will be thrown (the minified files throw the short ``Matreshka error binding:node_missing (key: "KEY")``). Check out [`Matreshka#bindOptionalNode`](/api/matreshka/bind-optional-node/).
 
 #### Sandbox definition
 [`Matreshka#bindNode`](/api/matreshka/bind-node/) can associate a class instance with the "main" HTML element on the page creating so-called **sandbox**. It is necessary to limit the instance influence on other HTML nodes. A special property ``sandbox`` is used for binding a sandbox.
