@@ -38,7 +38,7 @@ wrapMap.th = wrapMap.td;
 
 // the nodes of HTML; <template> parses rows, cells and options without wrapping them
 export function parseHTML(givenHTML: string): Node[] {
-  const html = givenHTML.replace(/^\s+|\s+$/g, '');
+  const html = givenHTML.trim();
   const template = document.createElement('template') as HTMLTemplateElement;
   if (template.content) {
     template.innerHTML = html;
