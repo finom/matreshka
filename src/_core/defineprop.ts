@@ -3,6 +3,8 @@ import initMK from './init.js';
 import set from '../set.js';
 import matreshkaError from '../_helpers/matreshkaerror.js';
 import getProp from '../_helpers/getprop.js';
+import hasOwn from '../_helpers/hasown.js';
+import assign from '../_helpers/assign.js';
 
 function errorAccessor(): never {
   throw matreshkaError('common:use_magic_props');
@@ -14,7 +16,7 @@ const libraryMarkers = ['isMatreshka', 'isMatreshkaArray', 'isMatreshkaObject'];
 function findSetter(object: AnyObject, key: string): PropertyDescriptor | undefined {
   for (
     let proto = Object.getPrototypeOf(object);
-    proto && proto !== Object.prototype && !libraryMarkers.some((marker) => Object.hasOwn(proto, marker));
+    proto && proto !== Object.prototype && !libraryMarkers.some((marker) => hasOwn(proto, marker));
     proto = Object.getPrototypeOf(proto)
   ) {
     const descriptor = Object.getOwnPropertyDescriptor(proto, key);
@@ -72,7 +74,7 @@ export default function defineProp(object: AnyObject, key: string, noAccessor?: 
           return propDef.accessor?.get ? propDef.accessor.get.call(object) : propDef.value;
         },
         set(v: any) {
-          return setter ? setter() : set(object, key, v, { ...propDef.setterOptions, fromSetter: true });
+          return setter ? setter() : set(object, key, v, assign({}, propDef.setterOptions, { fromSetter: true }));
         }
       });
     }

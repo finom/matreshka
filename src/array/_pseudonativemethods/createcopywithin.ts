@@ -4,6 +4,7 @@ import reportModified from '../_reportmodified.js';
 import assign from '../../_helpers/assign.js';
 import itemsNotIn from '../_diffitems.js';
 import type { ArrayEventOptions, MatreshkaArrayInstance } from '../types.js';
+import toArray from '../../_helpers/toarray.js';
 
 export default function createCopyWithin(
   hasOptions: boolean
@@ -19,7 +20,7 @@ export default function createCopyWithin(
       args[i] = arguments[i];
     }
 
-    const was = Array.from(this);
+    const was = toArray(this);
     apply(Array.prototype.copyWithin, this, args);
 
     // an overwritten item the array no longer holds is removed, so its listeners come off

@@ -3,7 +3,7 @@ import type { Binder } from '../types.js';
 // returns a binder for style properties
 // the property is camel-cased (backgroundColor); a dashed (background-color) or custom (--x) name works too
 export default function style(property: string, mappingFn?: (value: any) => any): Binder {
-  const isDashed = property.includes('-');
+  const isDashed = property.indexOf('-') !== -1;
 
   return {
     on: null,

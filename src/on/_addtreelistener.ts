@@ -1,13 +1,16 @@
 import type { AnyObject, EventHandler } from '../types.js';
 import delegateListener from './_delegatelistener/index.js';
+import assign from '../_helpers/assign.js';
 
 // creates tree listener
 function createTreeListener({ handler, restPath }: { handler: EventHandler; restPath: string[] }) {
   const newHandler = function treeListener(this: any, changeEvent: AnyObject) {
-    const extendedChangeEvent = {
-      restPath,
-      ...changeEvent
-    };
+    const extendedChangeEvent = assign(
+      {
+        restPath
+      },
+      changeEvent
+    );
     // call original handler
     handler.call(this, extendedChangeEvent);
   };

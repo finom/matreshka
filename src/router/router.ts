@@ -115,7 +115,7 @@ class Router {
           source: 'hashPath',
           handler(hashPath: string) {
             // a plain anchor such as #top is not a route
-            return hashPath?.startsWith('#!') ? hashPath.slice(2) : '';
+            return hashPath?.slice(0, 2) === '#!' ? hashPath.slice(2) : '';
           }
         }
       },
@@ -150,7 +150,7 @@ class Router {
 
         const route = (path: string) => splitPath(path).map(decode).join('/');
         onDebounce(this, 'change:hashPath', (evt) => {
-          const isRoute = location.hash.startsWith('#!');
+          const isRoute = location.hash.slice(0, 2) === '#!';
           // an empty route leaves a plain anchor such as #top alone
           if (evt?.hashEvent || (!this.hashPath && !isRoute)) {
             return;

@@ -2,6 +2,7 @@ import syncFields from '../_syncfields.js';
 import pureOrderBy from './_pureorderby.js';
 import reportModified from '../_reportmodified.js';
 import type { ArrayMethodOptions, MatreshkaArrayInstance } from '../types.js';
+import assign from '../../_helpers/assign.js';
 
 // sorts by properties of items
 export default function orderBy(
@@ -18,13 +19,18 @@ export default function orderBy(
       this[i] = ordered[i];
     }
 
-    reportModified(this, {
-      method: 'sort', // makes possible to listen "sort" event
-      self: this,
-      added: [],
-      removed: [],
-      ...eventOptions
-    });
+    reportModified(
+      this,
+      assign(
+        {
+          method: 'sort', // makes possible to listen "sort" event
+          self: this,
+          added: [],
+          removed: []
+        },
+        eventOptions
+      )
+    );
   }
 
   return this;

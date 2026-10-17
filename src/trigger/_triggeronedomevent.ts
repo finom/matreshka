@@ -8,10 +8,9 @@ export default function triggerOneDOMEvent({
   eventName: string;
   triggerArgs: any[];
 }): void {
-  const event: Event & { matreshkaTriggerArgs?: any[] } = new window.Event(eventName, {
-    bubbles: true,
-    cancelable: true
-  });
+  // createEvent, as IE 11 has no Event constructor
+  const event: Event & { matreshkaTriggerArgs?: any[] } = window.document.createEvent('Event');
+  event.initEvent(eventName, true, true);
 
   // matreshkaTriggerArgs will be used in a handler created by addDOMListener
   event.matreshkaTriggerArgs = triggerArgs;

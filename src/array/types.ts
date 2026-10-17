@@ -56,7 +56,7 @@ export interface ArrayDef extends ObjectDef {
   // array id -> the node rendered for this item
   renderedInArrays?: Record<string, RenderedNode>;
   // the containers the array has rendered into
-  containers?: WeakSet<Node>;
+  containers?: WeakMap<Node, true>;
 }
 
 type Predicate<Item, Self> = (item: Item, index: number, array: Self) => unknown;

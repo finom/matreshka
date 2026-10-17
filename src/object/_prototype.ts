@@ -11,6 +11,7 @@ import toJSON from './tojson.js';
 import each from './each.js';
 import iterator from './iterator.js';
 import type { AnyObject } from '../types.js';
+import addSymbolMembers from '../_helpers/addsymbolmembers.js';
 
 // the members Class() puts on the prototype; extends and constructor join in ./index.js
 const instanceMembers: AnyObject = {
@@ -26,8 +27,9 @@ const instanceMembers: AnyObject = {
   toJSON,
   each,
   isMatreshkaObject: true,
-  jset: setData, // alias
-  [Symbol.iterator]: iterator
+  jset: setData // alias
 };
+
+addSymbolMembers(instanceMembers, iterator);
 
 export default instanceMembers;

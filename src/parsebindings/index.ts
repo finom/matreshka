@@ -7,6 +7,7 @@ import processAttribute from './_processattribute/index.js';
 import getNodes from '../bindnode/_getnodes.js';
 import forEach from '../_helpers/foreach.js';
 import assign from '../_helpers/assign.js';
+import toArray from '../_helpers/toarray.js';
 
 const ELEMENT_NODE = 1;
 const TEXT_NODE = 3;
@@ -44,7 +45,7 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
   // extract all needed data from parserData
   // check out what is parserData in its module
   const { leftBracket, htmlLeftBrackets, bindingReg } = parserData;
-  const hasBracket = (html: string) => htmlLeftBrackets.some((bracket) => html.includes(bracket));
+  const hasBracket = (html: string) => htmlLeftBrackets.some((bracket) => html.indexOf(bracket) !== -1);
 
   if (typeof givenNodes === 'string') {
     if (~givenNodes.indexOf('<')) {
@@ -110,7 +111,7 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
     }
 
     // a copy: processTextNode inserts the bound text nodes, and a value holding "{{y}}" must stay text
-    const children = Array.from(childNodes);
+    const children = toArray(childNodes);
     for (let j = 0; j < children.length; j++) {
       const childNode = children[j];
       const { nodeType, textContent } = childNode;
@@ -136,7 +137,7 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
 
   // a top-level text node of an HTML string ("{{a}} <b>{{b}}</b>") is split up too, so the nodes are read again
   if (htmlContent) {
-    forEach(Array.from(htmlContent.childNodes), (textNode) => {
+    forEach(toArray(htmlContent.childNodes), (textNode) => {
       if (textNode.nodeType === TEXT_NODE && bindingReg.test(textNode.textContent as string)) {
         processTextNode({
           object,
@@ -147,7 +148,7 @@ export default function parseBindings(this: any, object: any, givenNodes?: any, 
       }
     });
 
-    return Array.from(htmlContent.childNodes);
+    return toArray(htmlContent.childNodes);
   }
 
   return nodes as Node[];

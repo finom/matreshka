@@ -28,7 +28,7 @@ import { parseForm } from 'matreshka/parse-form';
 
 ### Тег script
 
-Без збирача підключіть браузерний бандл. Він визначає глобальну змінну `Matreshka` з роутером і парсером форм: `Matreshka.initRouter`, `Matreshka.Router` і `Matreshka.parseForm`. Бандл розрахований на сучасні браузери.
+Без збирача підключіть браузерний бандл. Він визначає глобальну змінну `Matreshka` з роутером і парсером форм: `Matreshka.initRouter`, `Matreshka.Router` і `Matreshka.parseForm`. Він працює в тих самих браузерах, що й jQuery 4, зокрема в Internet Explorer 11.
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>

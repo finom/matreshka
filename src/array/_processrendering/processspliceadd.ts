@@ -4,9 +4,10 @@ import forEach from '../../_helpers/foreach.js';
 import checkAlreadyRendered from './checkalreadyrendered.js';
 import getAlreadyRendered from './getalreadyrendered.js';
 import type { RenderingArgs } from '../types.js';
+import privateKey from '../../_helpers/privatekey.js';
 
 // the index where splice inserted the items; a symbol, so it never clashes with user's event options
-export const spliceStart: unique symbol = Symbol('spliceStart');
+export const spliceStart: string = privateKey('spliceStart');
 
 // the function handles rendering of added items passed as third and rest arguments to splice method
 export default function processSpliceAdd({ self, selfDef, eventOptions, container }: RenderingArgs): void {
@@ -28,7 +29,8 @@ export default function processSpliceAdd({ self, selfDef, eventOptions, containe
   forEach(added, (item) => {
     if (item && typeof item === 'object') {
       // an item the same splice removes keeps its node, which only moves
-      const kept = eventOptions.removed?.includes(item) && getAlreadyRendered({ item, selfDef });
+      const kept =
+        !!eventOptions.removed && eventOptions.removed.indexOf(item) !== -1 && getAlreadyRendered({ item, selfDef });
       if (kept) {
         if (nextNode) {
           container.insertBefore(kept, nextNode);

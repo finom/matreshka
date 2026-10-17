@@ -8,6 +8,7 @@ import renderedNodes from './_processrendering/renderednodes.js';
 import syncFields from './_syncfields.js';
 import { addContainer } from './_processrendering/index.js';
 import type { ArrayDef, ArrayMethodOptions, ItemEventOptions, MatreshkaArrayInstance, RenderedNode } from './types.js';
+import assign from '../_helpers/assign.js';
 
 // restores Matreshka.Array from external nodes
 export default function restore(
@@ -44,10 +45,9 @@ export default function restore(
     const { bindRenderedAsSandbox } = item;
     const itemDef: ArrayDef = initMK(item);
 
-    itemDef.renderedInArrays = {
-      [selfDef.id]: node
-    };
-    renderedNodes.add(node);
+    itemDef.renderedInArrays = {};
+    itemDef.renderedInArrays[selfDef.id] = node;
+    renderedNodes.set(node, true);
     // the array owns the restored nodes: a forced rerender takes them out of where they are
     if (node.parentNode) {
       addContainer(selfDef, node.parentNode);
@@ -86,9 +86,5 @@ export default function restore(
   });
 
   // recreate an array but don't render newly added items
-  return this.recreate(newItems, {
-    dontRender: true,
-    ...eventOptions,
-    skipItemMediator: true
-  });
+  return this.recreate(newItems, assign({ dontRender: true }, eventOptions, { skipItemMediator: true }));
 }

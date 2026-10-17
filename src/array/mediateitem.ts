@@ -1,3 +1,4 @@
+import assign from '../_helpers/assign.js';
 import initMK from '../_core/init.js';
 import reportModified from './_reportmodified.js';
 import processRendering from './_processrendering/index.js';
@@ -63,7 +64,7 @@ export default function mediateItem(
     const { renderIfPossible = true } = this;
 
     // no array events are fired, as before, but converted items are rendered as usual (with render hooks)
-    reportModified(this, { ...eventOptions, silent: true, dontRender: true });
+    reportModified(this, assign({}, eventOptions, { silent: true, dontRender: true }));
 
     if (renderIfPossible) {
       processRendering({ self: this, eventOptions });

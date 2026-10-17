@@ -9,6 +9,7 @@ import matreshkaError from '../../_helpers/matreshkaerror.js';
 import getNodes from '../../bindnode/_getnodes.js';
 import type { AnyObject, EventOptions } from '../../types.js';
 import type { ArrayDef, ArrayEventOptions, ItemEventOptions, MatreshkaArrayInstance, RenderedNode } from '../types.js';
+import objectValues from '../../_helpers/objectvalues.js';
 
 const htmlTestReg = /</;
 
@@ -23,7 +24,7 @@ function releaseStaleSandbox(
   const bindings = itemDef.props.sandbox?.bindings;
   const sandbox: Node | undefined = bindings?.[0].node;
 
-  if (sandbox && renderedNodes.has(sandbox) && !(Object.values(renderedInArrays) as Node[]).includes(sandbox)) {
+  if (sandbox && renderedNodes.has(sandbox) && objectValues(renderedInArrays).indexOf(sandbox as RenderedNode) === -1) {
     releaseNode(item, itemDef, sandbox, eventOptions);
   }
 }
@@ -142,7 +143,7 @@ export default function renderItemNode({
 
   const node = parsed[0] as RenderedNode;
   renderedInArrays[selfId] = node;
-  renderedNodes.add(node);
+  renderedNodes.set(node, true);
 
   if (bindRenderedAsSandbox) {
     bindNode(item, 'sandbox', node, null, eventOptions);

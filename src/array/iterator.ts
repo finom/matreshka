@@ -4,10 +4,7 @@ import type { MatreshkaArrayInstance } from './types.js';
 export default function matreshkaArrayIterator(this: MatreshkaArrayInstance): IterableIterator<any> {
   let i = 0;
 
-  return {
-    [Symbol.iterator]() {
-      return this;
-    },
+  const result = {
     next: () => {
       if (i > this.length - 1) {
         return { done: true } as IteratorReturnResult<any>;
@@ -18,5 +15,9 @@ export default function matreshkaArrayIterator(this: MatreshkaArrayInstance): It
         value: this[i++]
       };
     }
-  };
+  } as IterableIterator<any>;
+
+  result[Symbol.iterator] = () => result;
+
+  return result;
 }

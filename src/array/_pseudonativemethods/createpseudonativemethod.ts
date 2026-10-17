@@ -89,7 +89,7 @@ export default function createPseudoNativeMethod(
         return this;
       };
     default:
-      if (copyingMethodNames.includes(name)) {
+      if (copyingMethodNames.indexOf(name) !== -1) {
         return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
           return toMatreshkaArray(apply(arrayPrototype[name], this, arguments));
         };

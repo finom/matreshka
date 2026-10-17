@@ -4,6 +4,10 @@ import set from '../set.js';
 import deepFind from '../_helpers/deepfind.js';
 import forEach from '../_helpers/foreach.js';
 import apply from '../_helpers/apply.js';
+import assign from '../_helpers/assign.js';
+
+// the flags meant for the source property only; "silent" reaches the target
+const sourceOnlyOptions = ['protector', 'skipMediator', 'fromMediator', 'force', 'forceHTML', 'silentHTML'];
 
 // creates event handler for target object which will be fired when a source is changed
 export default function createCalcHandler({
@@ -26,16 +30,11 @@ export default function createCalcHandler({
 
   return function calcHandler(changeEvent: AnyObject = {}) {
     const values: any[] = [];
-    // flags meant for the source property don't apply to the target ("silent" does)
-    const {
-      protector = {},
-      skipMediator,
-      fromMediator,
-      force,
-      forceHTML,
-      silentHTML,
-      ...sourceEventOptions
-    } = changeEvent;
+    const protector: AnyObject = changeEvent.protector || {};
+    const sourceEventOptions = assign({}, changeEvent);
+    forEach(sourceOnlyOptions, (name) => {
+      delete sourceEventOptions[name];
+    });
     // a deep source hears skipCalc here; a plain one is skipped by set; a removed target is not written back
     if (changeEvent.skipCalc || !def.props[target]) {
       return;
@@ -49,11 +48,9 @@ export default function createCalcHandler({
       return;
     }
 
-    const setEventOptions = {
-      protector: { ...protector, [protectKey]: true },
-      ...eventOptions,
-      ...sourceEventOptions
-    };
+    const nextProtector = assign({}, protector);
+    nextProtector[protectKey] = true;
+    const setEventOptions = assign({ protector: nextProtector }, eventOptions, sourceEventOptions);
 
     forEach(allSources, ({ sourceObject, sourceKey, isDelegated }) => {
       const value = isDelegated ? deepFind(sourceObject, sourceKey) : sourceObject[sourceKey];
@@ -67,8 +64,10 @@ export default function createCalcHandler({
       const calcId = latestCalcId;
 
       // a rejection is left unhandled, so the original error reaches the environment
-      const promise = targetValue instanceof Promise ? targetValue : Promise.resolve(targetValue);
-      promise.then((promiseResult) => {
+      // a thenable needs no global Promise, which IE 11 lacks without a polyfill
+      const promise =
+        targetValue && typeof targetValue.then === 'function' ? targetValue : Promise.resolve(targetValue);
+      promise.then((promiseResult: any) => {
         if (calcId === latestCalcId) {
           set(object, target, promiseResult, setEventOptions);
         }

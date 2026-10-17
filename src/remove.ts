@@ -7,6 +7,8 @@ import deepBindings from './bindnode/_deepbindings.js';
 import checkObjectType from './_helpers/checkobjecttype.js';
 import matreshkaError from './_helpers/matreshkaerror.js';
 import forEach from './_helpers/foreach.js';
+import hasOwn from './_helpers/hasown.js';
+import assign from './_helpers/assign.js';
 
 // removes a property, its bindings and its events
 export default function remove<T extends object>(object: T, key: string | string[], eventOptions?: EventOptions): T;
@@ -40,11 +42,11 @@ export default function remove(this: any, object: any, givenKey: any, eventOptio
 
     // a property Matreshka doesn't track is simply deleted, and still announced
     if (!propDef) {
-      const existed = Object.hasOwn(object, key);
+      const existed = hasOwn(object, key);
       const value = object[key];
       delete object[key];
       if (def && existed && !silent) {
-        const extendedEventOptions = { key, value, ...eventOptions };
+        const extendedEventOptions = assign({ key, value }, eventOptions);
         triggerOne(object, 'delete', extendedEventOptions);
         triggerOne(object, `delete:${key}`, extendedEventOptions);
       }
@@ -88,11 +90,13 @@ export default function remove(this: any, object: any, givenKey: any, eventOptio
     // delete the property itself
     delete object[key];
 
-    const extendedEventOptions = {
-      key,
-      value,
-      ...eventOptions
-    };
+    const extendedEventOptions = assign(
+      {
+        key,
+        value
+      },
+      eventOptions
+    );
 
     // trigger delegated events logic removal for asterisk events (*.*.*@foo)
     triggerOne(object, '_delete:delegated', extendedEventOptions);

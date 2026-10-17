@@ -70,7 +70,7 @@ export default function bindSingleNode(
   const binder: Binder = defaultBinder ? assign({}, defaultBinder, givenBinder) : givenBinder;
 
   const { getValue, setValue, on, initialize } = binder;
-  const readNode = () => getValue?.call(node, { ...bindingOptions, previousValue: propDef.value });
+  const readNode = () => getValue?.call(node, assign({}, bindingOptions, { previousValue: propDef.value }));
 
   // call binder.initialize
   if (initialize) {
@@ -144,7 +144,7 @@ export default function bindSingleNode(
 
     if (debounceSetValue || debounceSetValueOnBind) {
       const debouncedWrite = debounce(syncObjectHandler, debounceSetValueDelay);
-      debouncedObjectHandler = Object.assign(
+      debouncedObjectHandler = assign(
         (handlerEventOptions?: BindNodeOptions) => {
           if (!pendingWrite && getValue) {
             pendingWrite = { shown: readNode() };
@@ -191,11 +191,13 @@ export default function bindSingleNode(
     bindingOptions
   });
 
-  const extendedEventOptions = {
-    key,
-    node,
-    ...eventOptions
-  };
+  const extendedEventOptions = assign(
+    {
+      key,
+      node
+    },
+    eventOptions
+  );
 
   // DOM listeners ("click::x") follow the node even when the binding is silent
   triggerOne(object, `_bind:${key}`, extendedEventOptions);

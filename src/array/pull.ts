@@ -3,6 +3,8 @@ import reportModified from './_reportmodified.js';
 import matreshkaError from '../_helpers/matreshkaerror.js';
 import withLengthOptions from './_withlengthoptions.js';
 import type { ArrayMethodOptions, MatreshkaArrayInstance } from './types.js';
+import isInteger from '../_helpers/isinteger.js';
+import assign from '../_helpers/assign.js';
 
 // removes an item by a valid index and returns it
 function removeAt(arr: MatreshkaArrayInstance, index: number): any {
@@ -28,7 +30,7 @@ export default function pull(this: MatreshkaArrayInstance, toRemove: any, eventO
   if (toRemove && typeofToRemove === 'object') {
     index = Array.prototype.indexOf.call(this as unknown as any[], toRemove);
   } else if (typeofToRemove === 'number') {
-    index = Number.isInteger(toRemove) && toRemove < this.length ? toRemove : -1;
+    index = isInteger(toRemove) && toRemove < this.length ? toRemove : -1;
   } else {
     throw matreshkaError('pull:to_remove_type', { toRemove });
   }
@@ -39,13 +41,18 @@ export default function pull(this: MatreshkaArrayInstance, toRemove: any, eventO
 
   const removed = withLengthOptions(this, eventOptions, () => removeAt(this, index));
 
-  reportModified(this, {
-    method: 'pull',
-    self: this,
-    added: [],
-    removed: [removed],
-    ...eventOptions
-  });
+  reportModified(
+    this,
+    assign(
+      {
+        method: 'pull',
+        self: this,
+        added: [],
+        removed: [removed]
+      },
+      eventOptions
+    )
+  );
 
   return removed;
 }

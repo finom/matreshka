@@ -1,6 +1,9 @@
 // The DOM work Matreshka needs, without a DOM library: node lists are arrays of unique nodes, HTML is parsed through
-// <template>, and delegated listeners are kept per node in a WeakMap, so a removed node takes its listeners with it.
+// <template> (a wrapping <div> on IE 11), and delegated listeners are kept per node in a WeakMap, so a removed node
+// takes its listeners with it.
 import type { NodeInput } from '../bindnode/types.js';
+import toArray from '../_helpers/toarray.js';
+import forEach from '../_helpers/foreach.js';
 
 // what listen added to a node
 interface ListenerItem {
@@ -19,28 +22,76 @@ const nonBubblingReg =
   /^(focus|blur|mouseenter|mouseleave|pointerenter|pointerleave|load|error|scroll|toggle|invalid)$/;
 const scopeAttr = `${Math.random().toString().replace('0.', 'x')}y`; // x12345y
 
+// the parents rows, cells and options need where there is no <template> (from jQuery)
+const wrapMap: Record<string, [number, string, string]> = {
+  option: [1, '<select multiple="multiple">', '</select>'],
+  legend: [1, '<fieldset>', '</fieldset>'],
+  thead: [1, '<table>', '</table>'],
+  tr: [2, '<table><tbody>', '</tbody></table>'],
+  td: [3, '<table><tbody><tr>', '</tr></tbody></table>'],
+  col: [2, '<table><tbody></tbody><colgroup>', '</colgroup></table>'],
+  area: [1, '<map>', '</map>']
+};
+wrapMap.optgroup = wrapMap.option;
+wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
+wrapMap.th = wrapMap.td;
+
 // the nodes of HTML; <template> parses rows, cells and options without wrapping them
-export function parseHTML(html: string): Node[] {
-  const template = document.createElement('template');
-  template.innerHTML = html.trim();
-  return Array.from(template.content.childNodes);
+export function parseHTML(givenHTML: string): Node[] {
+  const html = givenHTML.replace(/^\s+|\s+$/g, '');
+  const template = document.createElement('template') as HTMLTemplateElement;
+  if (template.content) {
+    template.innerHTML = html;
+    return toArray(template.content.childNodes);
+  }
+
+  const tag = /<([\w:]+)/.exec(html);
+  const [depth, before, after] = (tag && wrapMap[tag[1].toLowerCase()]) || [0, '', ''];
+  let node: Element = document.createElement('div');
+  node.innerHTML = before + html + after;
+  for (let i = 0; i < depth; i++) node = node.children[0];
+  return toArray(node.childNodes);
 }
 
 // nodes from a selector, HTML, a node, window or anything array-like (NodeList, jQuery, an array)
 export function toNodes(input: NodeInput): Node[] {
   if (!input) return [];
   // window isn't a Node, but it is kept in the same list
-  if ((input as Node).nodeType || input === globalThis.window) return [input as Node];
+  if ((input as Node).nodeType || (typeof window !== 'undefined' && input === window)) return [input as Node];
   if (typeof input === 'string') {
-    return /</.test(input) ? parseHTML(input) : Array.from(document.querySelectorAll(input));
+    return /</.test(input) ? parseHTML(input) : toArray(document.querySelectorAll(input));
   }
-  if (typeof (input as ArrayLike<Node>).length === 'number') return Array.from(input as ArrayLike<Node>);
+  if (typeof (input as ArrayLike<Node>).length === 'number') return toArray(input as ArrayLike<Node>);
   return [input as Node];
 }
 
 // the nodes of every list once, in order
 export function uniqueNodes(...lists: ArrayLike<Node>[]): Node[] {
-  return [...new Set(lists.flatMap((list) => Array.from(list)))];
+  const seen = new Set<Node>();
+  const result: Node[] = [];
+  forEach(lists, (list) =>
+    forEach(list, (node) => {
+      if (!seen.has(node)) {
+        seen.add(node);
+        result.push(node);
+      }
+    })
+  );
+  return result;
+}
+
+// Element#matches, msMatchesSelector on IE 11; false for a node that has neither (text, document, window)
+export function matches(node: any, selector: string): boolean {
+  const method = node.matches || node.msMatchesSelector;
+  return Boolean(method?.call(node, selector));
+}
+
+// Element#closest, which IE 11 lacks
+function closest(node: any, selector: string): Element | null {
+  for (let current = node; current && current.nodeType === 1; current = current.parentNode) {
+    if (matches(current, selector)) return current;
+  }
+  return null;
 }
 
 // the parts of a selector list, split at the commas outside brackets, parentheses and quotes
@@ -71,7 +122,7 @@ function splitSelectorList(selector: string): string[] {
 function matchesInside(node: Element, target: Element, selector: string): boolean {
   // document, a fragment or window can't take the scope attribute; everything is inside them
   if (!node.setAttribute) {
-    const found = target.closest?.(selector);
+    const found = closest(target, selector);
     return Boolean(found && (!(node as Node).contains || (node as Node).contains(found)));
   }
   const scoped = splitSelectorList(selector)
@@ -79,7 +130,7 @@ function matchesInside(node: Element, target: Element, selector: string): boolea
     .join(',');
   node.setAttribute(scopeAttr, '');
   try {
-    return Boolean(target.matches?.(scoped));
+    return matches(target, scoped);
   } finally {
     node.removeAttribute(scopeAttr);
   }

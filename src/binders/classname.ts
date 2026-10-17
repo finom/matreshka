@@ -10,7 +10,9 @@ export default function className(elementClassName: string, switcher = true): Bi
       return switcher ? value : !value;
     },
     setValue(this: Element, value: any) {
-      this.classList.toggle(elementClassName, switcher ? !!value : !value);
+      // IE 11 ignores toggle's second argument
+      if (switcher ? value : !value) this.classList.add(elementClassName);
+      else this.classList.remove(elementClassName);
     }
   };
 }

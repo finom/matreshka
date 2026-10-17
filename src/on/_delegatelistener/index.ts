@@ -11,6 +11,7 @@ import matchesDelegation from './_matchesdelegation.js';
 import forOwn from '../../_helpers/forown.js';
 import { addOwner, type Owner } from '../_owners.js';
 import getProp from '../../_helpers/getprop.js';
+import assign from '../../_helpers/assign.js';
 
 // adds delegated event listener to an object by given path
 export default function delegateListener(
@@ -37,7 +38,7 @@ export default function delegateListener(
     // who delegates through this object: the user (null) or a delegation from a parent
     const hopOwner: Owner = info.owner ?? null;
     // what the next object along the path is kept by: this delegation
-    info = { ...info, owner: { object, path: path.join('.') } };
+    info = assign({}, info, { owner: { object, path: path.join('.') } });
     path = path.slice(1);
     // needed for undelegation
     const pathStr = path.join('.');
@@ -57,7 +58,7 @@ export default function delegateListener(
       let found = false;
       for (const eventName of eventNames) {
         for (const event of defs.get(object)?.events[eventName] ?? []) {
-          if (matchesDelegation(event, { pathStr, ...delegatedData }, true)) {
+          if (matchesDelegation(event, assign({ pathStr }, delegatedData), true)) {
             addOwner(event, hopOwner);
             found = true;
           }

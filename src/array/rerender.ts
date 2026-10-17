@@ -1,6 +1,7 @@
 import syncFields from './_syncfields.js';
 import processRendering from './_processrendering/index.js';
 import type { ArrayMethodOptions, MatreshkaArrayInstance } from './types.js';
+import assign from '../_helpers/assign.js';
 
 // rerenders not rendered items in an array
 // force rerender when forceRerender event option is truthy
@@ -13,12 +14,14 @@ export default function rerender(
   if (renderIfPossible) {
     processRendering({
       self: this,
-      eventOptions: {
-        method: 'rerender',
-        added: [],
-        removed: [],
-        ...eventOptions
-      }
+      eventOptions: assign(
+        {
+          method: 'rerender',
+          added: [],
+          removed: []
+        },
+        eventOptions
+      )
     });
   }
 

@@ -1,6 +1,7 @@
 import type { AnyObject, Binder, BindingOptions, PropDef } from '../types.js';
 import is from '../_helpers/is.js';
 import set from '../set.js';
+import assign from '../_helpers/assign.js';
 
 interface NodeHandlerData {
   object: AnyObject;
@@ -35,20 +36,25 @@ export default function createNodeHandler({
     const { which, target, ctrlKey, altKey } = domEvent;
     const { getValue } = binder;
     // the handler is made only for a binder with getValue
-    const value = (getValue as NonNullable<Binder['getValue']>).call(node, {
-      previousValue,
-      domEvent,
-      originalEvent: domEvent.originalEvent || domEvent, // jQuery thing
-      // will throw "preventDefault is not a function" when domEvent is empty object
-      preventDefault: () => domEvent.preventDefault(),
-      // will throw "stopPropagation is not a function" when domEvent is empty object
-      stopPropagation: () => domEvent.stopPropagation(),
-      which,
-      target,
-      ctrlKey,
-      altKey,
-      ...bindingOptions
-    });
+    const value = (getValue as NonNullable<Binder['getValue']>).call(
+      node,
+      assign(
+        {
+          previousValue,
+          domEvent,
+          originalEvent: domEvent.originalEvent || domEvent, // jQuery thing
+          // will throw "preventDefault is not a function" when domEvent is empty object
+          preventDefault: () => domEvent.preventDefault(),
+          // will throw "stopPropagation is not a function" when domEvent is empty object
+          stopPropagation: () => domEvent.stopPropagation(),
+          which,
+          target,
+          ctrlKey,
+          altKey
+        },
+        bindingOptions
+      )
+    );
 
     if (!is(value, previousValue)) {
       set(object, key, value, {

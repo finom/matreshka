@@ -6,6 +6,7 @@ import initMK from '../_core/init.js';
 import staticMembers from './_staticmembers.js';
 import modelCall from './_modelcall.js';
 import type { MatreshkaArrayConstructor, MatreshkaArrayInstance } from './types.js';
+import isInteger from '../_helpers/isinteger.js';
 
 instanceMembers.extends = Matreshka;
 
@@ -33,7 +34,7 @@ instanceMembers.constructor = function MatreshkaArray(
     });
   } else if (arguments.length === 1 && typeof length === 'number') {
     // repeat the same logic as for native Array
-    if (!Number.isInteger(length) || length < 0 || length > 2 ** 32 - 1) {
+    if (!isInteger(length) || length < 0 || length > 2 ** 32 - 1) {
       throw new RangeError('Invalid array length');
     }
 

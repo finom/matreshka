@@ -72,7 +72,7 @@ export default function bindNode(this: any, object: any, key?: any, node?: any, 
        * this.bindNode(['a', 'b', 'c'], node)
        */
       if (temporaryOptionalFlag) {
-        eventOptions = { ...eventOptions, optional: true };
+        eventOptions = assign({}, eventOptions, { optional: true });
       }
 
       forEach(key as string[], (itemKey) => bindNode(object, itemKey, node, binder, eventOptions));
@@ -110,7 +110,7 @@ export default function bindNode(this: any, object: any, key?: any, node?: any, 
     forOwn(key as KeyNodeMap, (keyObjValue: any, keyObjKey) => {
       // binder means eventOptions
       if (temporaryOptionalFlag) {
-        eventOptions = { ...binder, optional: true };
+        eventOptions = assign({}, binder, { optional: true });
       } else {
         eventOptions = binder;
       }

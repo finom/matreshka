@@ -5,6 +5,7 @@ import matreshkaError from '../../_helpers/matreshkaerror.js';
 import forEach from '../../_helpers/foreach.js';
 import getAlreadyRendered from './getalreadyrendered.js';
 import type { ArrayDef, RenderingArgs } from '../types.js';
+import removeNode from '../../_helpers/removenode.js';
 
 // this function renders inserted items if possible when recreate method is called
 export default function processRecreate({ self, selfDef, eventOptions, container }: RenderingArgs): void {
@@ -20,8 +21,8 @@ export default function processRecreate({ self, selfDef, eventOptions, container
       const node = renderedInArrays?.[selfId];
       if (renderedInArrays && node) {
         delete renderedInArrays[selfId];
-        node.__replacedByNode?.remove();
-        node.remove();
+        removeNode(node.__replacedByNode);
+        removeNode(node);
       }
     }
   });

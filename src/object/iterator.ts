@@ -5,10 +5,7 @@ export default function matreshkaObjectIterator(this: AnyObject): IterableIterat
   const keys: string[] = this.keys();
   let i = 0;
 
-  return {
-    [Symbol.iterator]() {
-      return this;
-    },
+  const result = {
     next: () => {
       if (i > keys.length - 1) {
         // no value, as before
@@ -20,5 +17,9 @@ export default function matreshkaObjectIterator(this: AnyObject): IterableIterat
         value: this[keys[i++]]
       };
     }
-  };
+  } as IterableIterator<any>;
+
+  result[Symbol.iterator] = () => result;
+
+  return result;
 }

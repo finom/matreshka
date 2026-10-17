@@ -6,12 +6,15 @@ import is from '../_helpers/is.js';
 import forEach from '../_helpers/foreach.js';
 import triggerOne from '../trigger/_triggerone.js';
 import type { AnyObject, EventOptions } from '../types.js';
+import hasOwn from '../_helpers/hasown.js';
+import fromEntries from '../_helpers/fromentries.js';
+import assign from '../_helpers/assign.js';
 
 // returns an array of keys listed at inObject but not listed at fromObject
 function getNotListedKeys(inObject: Record<string, any>, fromObject: object): string[] {
   const result: string[] = [];
   forOwn(inObject, (_, key) => {
-    if (!Object.hasOwn(fromObject, key)) {
+    if (!hasOwn(fromObject, key)) {
       result.push(key);
     }
   });
@@ -39,7 +42,7 @@ function setOne(object: AnyObject, keys: Record<string, any>, key: string, value
   keys[key] = 1;
 
   if (isNew && is(object[key], value)) {
-    const extendedEventOptions = { ...eventOptions, key, value };
+    const extendedEventOptions = assign({}, eventOptions, { key, value });
     triggerOne(object, '_asterisk:set', extendedEventOptions);
     // with force, set() fires them itself
     if (!eventOptions.silent && !eventOptions.force) {
@@ -69,7 +72,7 @@ export default function setData<T extends AnyObject>(
   if (typeof key === 'object') {
     eventOptions = (value || {}) as EventOptions;
     // a Matreshka.Object gives its data, not its own fields such as nodes
-    const data: Record<string, any> = key.isMatreshkaObject ? Object.fromEntries(key.entries()) : key;
+    const data: Record<string, any> = key.isMatreshkaObject ? fromEntries(key.entries()) : key;
 
     // remove data keys not listed at key-value object
     if (eventOptions.replaceData) {
@@ -87,7 +90,7 @@ export default function setData<T extends AnyObject>(
 
   // remove all data keys except given key
   if (eventOptions.replaceData) {
-    removeKeys(this, keys, getNotListedKeys(keys, { [key]: true }), eventOptions.silent);
+    removeKeys(this, keys, getNotListedKeys(keys, fromEntries([[key, true]])), eventOptions.silent);
   }
 
   return setOne(this, keys, key, value, eventOptions);
