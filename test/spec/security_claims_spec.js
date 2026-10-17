@@ -1,7 +1,6 @@
 // one test per claim in SECURITY.md, "What you can expect"
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import Matreshka from 'src/matreshka';
 import MatreshkaObject from 'src/object';
 import binders from 'src/binders';
 import set from 'src/set';
