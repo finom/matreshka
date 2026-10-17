@@ -1,6 +1,6 @@
 {
   "name": "matreshka",
-  "version": "2.4.18",
+  "version": "3.0.0",
   "description": "Reactive data binding for the HTML you already have",
   "keywords": [
     "matreshka",

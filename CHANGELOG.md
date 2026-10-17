@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-10-17
+
 3.0.0 is a new major version: one package, written in TypeScript, ES modules only. The API of 2.x stays; the changes below say what moved and what was removed.
 
 ### Added
@@ -202,4 +204,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `new Router('custom')` makes a router of its own type.
 - The items of `unbindNode([{ key }])` may leave out the node.
 
-[Unreleased]: https://github.com/finom/matreshka/compare/v2.4.0...HEAD
+[Unreleased]: https://github.com/finom/matreshka/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/finom/matreshka/releases/tag/v3.0.0
