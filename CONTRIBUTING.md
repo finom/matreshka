@@ -20,7 +20,7 @@ A fix or a feature comes with a test; a fix's test fails on the code before it. 
 
 ## Layout
 
-- `src/` — the package, in TypeScript. `src/index.ts` is the `matreshka` entry, `src/router/` and `src/parse-form/` are `matreshka/router` and `matreshka/parse-form`, `src/bundle.ts` is the script-tag bundle. `npm run build` writes `dist/`: ES modules with type declarations, `dist/matreshka.js` and `dist/matreshka.min.js` for a script tag, `dist/matreshka.core.min.js` without the router and the form parser, and `dist/matreshka.min.mjs`, the same as one ES module for a CDN. The minified files take their short error messages from `scripts/short-errors.mjs`.
+- `src/` — the package, in TypeScript. `src/index.ts` is the `matreshka` entry, `src/router/` and `src/parse-form/` are `matreshka/router` and `matreshka/parse-form`, `src/bundle.ts` is the script-tag bundle. `npm run build` writes `dist/`: ES modules with type declarations, `dist/matreshka.js` and `dist/matreshka.min.js` for a script tag, and `dist/matreshka.min.mjs`, the same as one ES module for a CDN.
 - `test/` — the tests (Vitest, jsdom).
 - `docs/` — the site at [matreshka.js.org](https://matreshka.js.org): one page per language (English, Ukrainian, Russian) built from the Markdown in `docs/content/<lang>/`; the menu order is in `docs/src/site.mjs`. `npm run dev -w matreshka-docs` serves it at http://localhost:4807 and rebuilds on change (run `npm run build` first: the site serves the bundle from `dist/`).
 - `examples/` — the example apps, published on the site.

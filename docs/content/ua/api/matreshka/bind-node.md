@@ -193,7 +193,7 @@ this.on('click::myKey', () => {...});
 this.on('click::myKey(.my-inner-element)', () => {...});
 ```
 
-> Якщо елемент не знайдений, кидається виняток ``Binding error: node is missing for key "KEY"`` (мініфіковані файли кидають коротке ``Matreshka error binding:node_missing (key: "KEY")``). Для того, щоб уникнути помилки використовуйте метод [`Matreshka#bindOptionalNode`](/ua/api/matreshka/bind-optional-node/)
+> Якщо елемент не знайдений, кидається виняток ``Binding error: node is missing for key "KEY"``. Для того, щоб уникнути помилки використовуйте метод [`Matreshka#bindOptionalNode`](/ua/api/matreshka/bind-optional-node/)
 
 #### Створення пісочниці
 
