@@ -6,6 +6,7 @@ import forEach from '../_helpers/foreach.js';
 import matchesDelegation, { type Delegation } from '../on/_delegatelistener/_matchesdelegation.js';
 import { dropOwner, hasOwner, type Owner } from '../on/_owners.js';
 import getProp from '../_helpers/getprop.js';
+import assign from '../_helpers/assign.js';
 
 // drops the owner from internal events such as _asterisk:add of given delegated listener;
 // returns the delegations nobody keeps any more
@@ -83,17 +84,21 @@ export default function undelegateListener(
   const owner: Owner = info.owner ?? null;
   const exact = !!owner;
   // the owner the next objects along the path know this delegation by
-  info = { ...info, owner: { object, path: path.join('.') } };
+  info = assign({}, info, { owner: { object, path: path.join('.') } });
   path = path.slice(1);
   const delegation: Delegation = { pathStr: path.join('.'), name, callback, context };
   const detach = (...delegatedEventNames: string[]) => {
-    const removed = new Set<DelegatedData>();
+    const seen = new Set<DelegatedData>();
+    const removed: DelegatedData[] = [];
     forEach(delegatedEventNames, (delegatedEventName) =>
-      forEach(detatchDelegatedLogic({ delegatedEventName, allEvents, delegation, owner, exact }), (data) =>
-        removed.add(data)
-      )
+      forEach(detatchDelegatedLogic({ delegatedEventName, allEvents, delegation, owner, exact }), (data) => {
+        if (!seen.has(data)) {
+          seen.add(data);
+          removed.push(data);
+        }
+      })
     );
-    return [...removed];
+    return removed;
   };
   // the next objects lose the listener only through a delegation nobody keeps
   const undelegateFrom = (removed: DelegatedData[], target: any) => {

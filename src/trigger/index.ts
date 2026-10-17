@@ -16,10 +16,13 @@ export default function trigger(this: any, ...args: any[]): any {
 
   if (typeof this === 'object' && this.isMatreshka) {
     // when context is Matreshka instance, use this as an object and shift other args
-    [givenNames, ...triggerArgs] = args;
+    givenNames = args[0];
+    triggerArgs = args.slice(1);
     object = this;
   } else {
-    [object, givenNames, ...triggerArgs] = args;
+    object = args[0];
+    givenNames = args[1];
+    triggerArgs = args.slice(2);
     // throw error when object type is wrong
     checkObjectType(object, 'trigger');
   }

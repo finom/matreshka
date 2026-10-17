@@ -16,9 +16,11 @@ export interface ParserData {
 
 // outerHTML escapes & < > in text, and & " (newer browsers also < >) in attributes
 function htmlForms(bracket: string): string[] {
-  const amp = bracket.replaceAll('&', '&amp;');
-  const text = amp.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
-  return [...new Set([bracket, text, amp.replaceAll('"', '&quot;'), text.replaceAll('"', '&quot;')])];
+  const replace = (string: string, from: string, to: string) => string.split(from).join(to);
+  const amp = replace(bracket, '&', '&amp;');
+  const text = replace(replace(amp, '<', '&lt;'), '>', '&gt;');
+  const forms = [bracket, text, replace(amp, '"', '&quot;'), replace(text, '"', '&quot;')];
+  return forms.filter((form, i) => forms.indexOf(form) === i);
 }
 
 // calc fills every field right away

@@ -48,9 +48,9 @@ export default function createSplice(
         added,
         removed,
         method: 'splice',
-        self: this,
-        [spliceStart]: start
+        self: this
       };
+      eventOptions[spliceStart] = start;
 
       // extend event options by custom event options if they are given
       if (hasOptions) {

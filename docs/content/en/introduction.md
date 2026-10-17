@@ -25,7 +25,7 @@ Binding a property gives it a getter and a setter. Assigning `app.x = 'hi'` runs
 - Change events, including on nested data
 - A router and a form parser
 
-It's about 19 kB gzipped, with TypeScript types included.
+It's about 24 kB gzipped, with TypeScript types included.
 
 ## What it isn't
 

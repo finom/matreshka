@@ -6,6 +6,7 @@ import domEventReg from './_domeventregexp.js';
 import addDomListener from './_adddomlistener.js';
 import { addOwner, type Owner } from './_owners.js';
 import { isDuplicateCallback } from '../_helpers/issamecallback.js';
+import assign from '../_helpers/assign.js';
 
 // property modifier event regexp
 const propModEventReg =
@@ -30,7 +31,7 @@ export default function addListener(
     context,
     ctx,
     name,
-    info: { owners: [owner], ...info }
+    info: assign({ owners: [owner] }, info)
   };
   // skipChecks is used by internal methods for better performance
   const { skipChecks = false } = info;

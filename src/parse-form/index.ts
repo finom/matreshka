@@ -1,6 +1,8 @@
 import type { BindNodeOptions } from '../bindnode/types.js';
 import bindKey from '../bindnode/_bindkey.js';
 import select from '../select.js';
+import forEach from '../_helpers/foreach.js';
+import { matches } from '../_dom/index.js';
 
 const FIELDS = 'input, textarea, output, progress, select';
 
@@ -33,16 +35,19 @@ function getFields(form: Element): ArrayLike<FormField> {
     return inside;
   }
 
-  const fields = new Set(Array.prototype.filter.call(inside, (field: FormField) => !field.form || field.form === form));
+  const fields: FormField[] = Array.prototype.filter.call(
+    inside,
+    (field: FormField) => !field.form || field.form === form
+  ) as FormField[];
 
-  for (const field of (form as HTMLFormElement).elements) {
-    if (field.matches(FIELDS)) {
-      fields.add(field);
+  forEach((form as HTMLFormElement).elements as ArrayLike<FormField>, (field) => {
+    if (matches(field, FIELDS) && fields.indexOf(field) === -1) {
+      fields.push(field);
     }
-  }
+  });
 
   // document order
-  return [...fields].sort((a, b) => (a.compareDocumentPosition(b) & form.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
+  return fields.sort((a, b) => (a.compareDocumentPosition(b) & form.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
 }
 
 // binds the named fields of a form (or any container) to the properties of their names; returns the form

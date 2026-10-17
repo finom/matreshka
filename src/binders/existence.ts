@@ -16,15 +16,16 @@ export default function existence(switcher: boolean | ((value: any) => any) = tr
       let comment = comments.get(this);
 
       if (!comment) {
-        const { tagName, id, classList, className } = this;
+        const { tagName, id } = this;
+        const classes = (this.getAttribute('class') || '').split(/\s+/).filter(Boolean);
         let commentText = tagName;
 
         if (id) {
           commentText += `#${id}`;
         }
 
-        if (className) {
-          commentText += `.${[...classList].join('.')}`;
+        if (classes.length) {
+          commentText += `.${classes.join('.')}`;
         }
 
         comment = window.document.createComment(commentText);

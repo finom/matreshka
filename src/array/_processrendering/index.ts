@@ -12,8 +12,8 @@ import type { ArrayDef, ArrayEventOptions, MatreshkaArrayInstance } from '../typ
 // the containers an array has rendered into: a forced rerender takes old nodes out of these, and leaves a node
 // the user moved elsewhere
 export function addContainer(selfDef: ArrayDef, container: Node): void {
-  selfDef.containers ??= new WeakSet();
-  selfDef.containers.add(container);
+  selfDef.containers ??= new WeakMap();
+  selfDef.containers.set(container, true);
 }
 
 // makes possible to render array items based on a name of called method

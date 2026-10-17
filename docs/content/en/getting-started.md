@@ -28,7 +28,7 @@ import { parseForm } from 'matreshka/parse-form';
 
 ### A script tag
 
-Without a bundler, load the browser bundle. It defines the global `Matreshka`, with the router and the form parser on it: `Matreshka.initRouter`, `Matreshka.Router` and `Matreshka.parseForm`. The bundle targets current browsers.
+Without a bundler, load the browser bundle. It defines the global `Matreshka`, with the router and the form parser on it: `Matreshka.initRouter`, `Matreshka.Router` and `Matreshka.parseForm`. It works in the browsers jQuery 4 supports, Internet Explorer 11 included.
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>

@@ -12,6 +12,8 @@ import { unlisten } from '../_dom/index.js';
 import { dropOwner, hasOwner } from '../on/_owners.js';
 import isSameCallback from '../_helpers/issamecallback.js';
 import getProp from '../_helpers/getprop.js';
+import toArray from '../_helpers/toarray.js';
+import assign from '../_helpers/assign.js';
 
 const delegatedKeyReg = /^_change:delegated:(.*)$/;
 
@@ -26,7 +28,7 @@ interface RemoveEventData {
 function getDelegationTargets(object: AnyObject, def: ObjectDef, name: string): any[] | null {
   if (name === '_asterisk:add') {
     // the event lives on a Matreshka.Array
-    return Array.from(object as ArrayLike<any>);
+    return toArray(object as ArrayLike<any>);
   }
 
   if (name === '_asterisk:set') {
@@ -40,12 +42,15 @@ function getDelegationTargets(object: AnyObject, def: ObjectDef, name: string): 
 
 // the names on() was given for the object's own plain and DOM events
 function userEventNames(def: ObjectDef): string[] {
-  const names = new Set<string>();
+  const names: string[] = [];
+  const add = (name: string) => {
+    if (names.indexOf(name) === -1) names.push(name);
+  };
   forOwn(def.events, (events, name) => {
-    if (name[0] !== '_') names.add(name);
-    else if (name.startsWith('_bind:')) forEach(events, ({ info }) => info.domEvent && names.add(info.domEvent.name));
+    if (name[0] !== '_') add(name);
+    else if (name.indexOf('_bind:') === 0) forEach(events, ({ info }) => info.domEvent && add(info.domEvent.name));
   });
-  return [...names];
+  return names;
 }
 
 // the delegated names ("a.b@x", "*@x") on() was given for this object, with the callback and context
@@ -62,12 +67,16 @@ function userDelegations(def: ObjectDef, callback?: EventHandler | null, context
         (!callback || isSameCallback(callback, delegatedData.callback)) &&
         (!context || context === delegatedData.context)
       ) {
-        const path = pathStr ? [key, ...pathStr.split('.')] : [key];
+        const path = pathStr ? [key].concat(pathStr.split('.')) : [key];
         found.set(`${path.join('.')}@${delegatedData.name}`, [path, delegatedData.name]);
       }
     });
   });
-  return [...found.values()];
+  const result: [string[], string][] = [];
+  found.forEach((value) => {
+    result.push(value);
+  });
+  return result;
 }
 
 // removes listeners added by on/once/onDebounce and keeps the ones the framework adds (bindings, calc etc)
@@ -78,8 +87,8 @@ function removeUserListeners(object: AnyObject, def: ObjectDef): void {
   const undelegations: { targets: any[]; delegatedData: DelegatedData }[] = [];
   const retained: { name: string; events: EventEntry[]; length: number; retain: EventEntry[] }[] = [];
 
-  forOwn({ ...allEvents }, (events, name) => {
-    const isDelegation = name.startsWith('_change:delegated:') || name.startsWith('_asterisk:');
+  forOwn(assign({}, allEvents), (events, name) => {
+    const isDelegation = name.indexOf('_change:delegated:') === 0 || name.indexOf('_asterisk:') === 0;
     const retain: EventEntry[] = [];
 
     forEach(events, (event) => {
@@ -96,7 +105,7 @@ function removeUserListeners(object: AnyObject, def: ObjectDef): void {
         }
       } else if (info.domEvent) {
         // _bind:KEY and _unbind:KEY share one domEvent, so it's handled once
-        if (name.startsWith('_bind:')) {
+        if (name.indexOf('_bind:') === 0) {
           const { domEvent } = info;
           const bindings = props[name.slice(6)]?.bindings;
           if (bindings) {
@@ -123,7 +132,7 @@ function removeUserListeners(object: AnyObject, def: ObjectDef): void {
   forEach(retained, ({ events, retain }) => {
     // a pending onDebounce call doesn't fire after its listener is gone
     forEach(events, (event) => {
-      if (!retain.includes(event)) (event.callback as { cancel?: () => void }).cancel?.();
+      if (retain.indexOf(event) === -1) (event.callback as { cancel?: () => void }).cancel?.();
     });
   });
 

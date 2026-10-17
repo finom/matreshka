@@ -1,5 +1,6 @@
 import MatreshkaArray from './index.js';
 import type { MatreshkaArrayConstructor, MatreshkaArrayInstance } from './types.js';
+import arrayFrom from '../_helpers/arrayfrom.js';
 
 // creates a new Matreshka.Array instance from an array-like or iterable object
 export default function from(
@@ -13,7 +14,7 @@ export default function from(
   const result = new ParentClass();
 
   // recreate applies Model and item mediator of the class
-  return result.recreate(Array.from(arrayLike, mapFn as (value: any, index: number) => any, thisArg), {
+  return result.recreate(arrayFrom(arrayLike, mapFn as (value: any, index: number) => any, thisArg), {
     silent: true,
     dontRender: true
   });

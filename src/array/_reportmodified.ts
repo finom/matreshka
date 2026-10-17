@@ -3,6 +3,7 @@ import triggerOne from '../trigger/_triggerone.js';
 import processRendering from './_processrendering/index.js';
 import type { ObjectDef } from '../types.js';
 import type { ArrayEventOptions, MatreshkaArrayInstance } from './types.js';
+import assign from '../_helpers/assign.js';
 
 // fires events and triggers rendering logic
 // `reordered`: recreate got the same items in another order, so their nodes move
@@ -55,11 +56,7 @@ export default function reportModified(
 
       if (events.addone) {
         for (let i = 0; i < addedLength; i++) {
-          triggerOne(self, 'addone', {
-            ...eventOptions,
-            self,
-            addedItem: added[i]
-          });
+          triggerOne(self, 'addone', assign({}, eventOptions, { self, addedItem: added[i] }));
         }
       }
     }
@@ -72,11 +69,7 @@ export default function reportModified(
 
       if (events.removeone) {
         for (let i = 0; i < removedLength; i++) {
-          triggerOne(self, 'removeone', {
-            ...eventOptions,
-            self,
-            removedItem: removed[i]
-          });
+          triggerOne(self, 'removeone', assign({}, eventOptions, { self, removedItem: removed[i] }));
         }
       }
     }

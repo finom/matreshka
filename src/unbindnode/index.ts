@@ -33,7 +33,7 @@ function removeDeepBindings(object: AnyObject, key: string, $nodes: Node[] | nul
   forEach(objectDeepBindings, (deepBinding) => {
     if (deepBinding.key === key) {
       if (removedNodes) {
-        deepBinding.$nodes = toArray(deepBinding.$nodes).filter((node) => !removedNodes.includes(node));
+        deepBinding.$nodes = toArray(deepBinding.$nodes).filter((node) => removedNodes.indexOf(node) === -1);
       }
 
       if (!removedNodes || !deepBinding.$nodes.length) {
@@ -157,7 +157,7 @@ export default function unbindNode(this: any, object: any, key?: any, node?: any
   if (key === null || typeof key === 'undefined') {
     // a prop's key is exact: "a.b" made with exactKey is a key with a dot, not a path
     forOwn(props, (_, propsKey) => {
-      unbindNode(object, propsKey, null, { ...eventOptions, exactKey: true });
+      unbindNode(object, propsKey, null, assign({}, eventOptions, { exactKey: true }));
     });
 
     const objectDeepBindings = deepBindings.get(object);
@@ -194,7 +194,7 @@ export default function unbindNode(this: any, object: any, key?: any, node?: any
         $nodes ??
         (deepBindings.get(object) ?? [])
           .filter((deepBinding) => deepBinding.key === key)
-          .flatMap((deepBinding) => toArray(deepBinding.$nodes));
+          .reduce<Node[]>((nodes, deepBinding) => nodes.concat(toArray(deepBinding.$nodes)), []);
 
       removeDeepBindings(object, key, $nodes);
 
@@ -227,12 +227,12 @@ export default function unbindNode(this: any, object: any, key?: any, node?: any
   const retainNodes: Node[] = [];
 
   forEach(bindings, (binding) => {
-    if (!removedNodes || removedNodes.includes(binding.node)) {
+    if (!removedNodes || removedNodes.indexOf(binding.node) !== -1) {
       removedBindings.push(binding);
     } else {
       retainBindings.push(binding);
 
-      if (!retainNodes.includes(binding.node)) {
+      if (retainNodes.indexOf(binding.node) === -1) {
         retainNodes.push(binding.node);
       }
     }

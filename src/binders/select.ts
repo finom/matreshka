@@ -31,7 +31,7 @@ export default function select(multiple?: boolean): Binder {
         values = values.map(String);
 
         for (let i = options.length - 1; i >= 0; i--) {
-          options[i].selected = values.includes(options[i].value);
+          options[i].selected = values.indexOf(options[i].value) !== -1;
         }
       }
     };

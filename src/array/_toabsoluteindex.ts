@@ -4,7 +4,9 @@ export default function toAbsoluteIndex(value: any, length: number, defaultValue
     return defaultValue;
   }
 
-  const relative = Math.trunc(+value) || 0;
+  // Math.trunc, which IE 11 lacks
+  const number = +value;
+  const relative = (number < 0 ? Math.ceil(number) : Math.floor(number)) || 0;
 
   return relative < 0 ? Math.max(length + relative, 0) : Math.min(relative, length);
 }

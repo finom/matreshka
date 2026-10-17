@@ -4,9 +4,10 @@ import triggerOne from './trigger/_triggerone.js';
 import checkObjectType from './_helpers/checkobjecttype.js';
 import is from './_helpers/is.js';
 import forOwn from './_helpers/forown.js';
+import assign from './_helpers/assign.js';
 
 // a key named __proto__ is a key like any other: defined, so it never replaces the prototype
-function assign(object: any, key: string, value: any): void {
+function write(object: any, key: string, value: any): void {
   if (key === '__proto__') {
     Object.defineProperty(object, key, { value, writable: true, enumerable: true, configurable: true });
   } else {
@@ -46,7 +47,7 @@ export default function set(this: any, object: any, key: any, value?: any, event
 
   // if no object definition then make simple assignment
   if (!def) {
-    assign(object, key, value);
+    write(object, key, value);
     return object;
   }
 
@@ -55,7 +56,7 @@ export default function set(this: any, object: any, key: any, value?: any, event
 
   // if no property definition then make simple assignment
   if (!propDef) {
-    assign(object, key, value);
+    write(object, key, value);
     return object;
   }
 
@@ -85,14 +86,13 @@ export default function set(this: any, object: any, key: any, value?: any, event
   // add to eventOptions object some useful properties
   // we override default eventOptions because some of the properties need to have actual values,
   // not inherited ones (eg when calc is used)
-  const extendedEventOptions = {
-    ...eventOptions,
+  const extendedEventOptions = assign({}, eventOptions, {
     value: newValue,
     self: object,
     previousValue,
     key,
     isChanged
-  };
+  });
 
   const triggerChange = (isChanged || force) && !silent;
 
@@ -149,7 +149,7 @@ export default function set(this: any, object: any, key: any, value?: any, event
   // a change handler may have set the key again: delegated listeners and deep bindings go to the value it holds now
   const branchEventOptions = is(propDef.value, newValue)
     ? extendedEventOptions
-    : { ...extendedEventOptions, value: propDef.value };
+    : assign({}, extendedEventOptions, { value: propDef.value });
 
   // trigger common delegated events logic
   if (isChanged) {

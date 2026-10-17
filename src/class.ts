@@ -1,10 +1,20 @@
 import forEach from './_helpers/foreach.js';
 import forOwn from './_helpers/forown.js';
+import hasOwn from './_helpers/hasown.js';
+import privateKey from './_helpers/privatekey.js';
 
 // static methods and properties of classes will be hidden under Symbol('staticNames')
-const staticNamesProperty = Symbol('staticNames');
-const { getOwnPropertySymbols } = Object;
-const hasOwn = Object.prototype.hasOwnProperty;
+const staticNamesProperty = privateKey('staticNames');
+
+// the own symbol keys; none where the browser has no Symbol (IE 11)
+function ownSymbols(object: object): symbol[] {
+  return Object.getOwnPropertySymbols ? Object.getOwnPropertySymbols(object) : [];
+}
+
+// IE 11 has no Reflect, and no ES classes or methods that `new` refuses
+function hasReflect(): boolean {
+  return typeof Reflect === 'object';
+}
 
 type AnyConstructor = new (...args: any[]) => any;
 
@@ -46,6 +56,7 @@ export interface ClassFunction {
 }
 
 function isConstructor(fn: any): boolean {
+  if (!hasReflect()) return true;
   try {
     Reflect.construct(Object, [], fn);
     return true;
@@ -54,11 +65,16 @@ function isConstructor(fn: any): boolean {
   }
 }
 
+// an ES class or a built-in such as Array: only Reflect.construct builds it for a subclass
+function hasReadOnlyPrototype(fn: any): boolean {
+  return Object.getOwnPropertyDescriptor(fn, 'prototype')?.writable === false;
+}
+
 // `constructor() {}` in an object literal is a method, which `new` refuses, and an ES class has a read-only
 // prototype; both get a wrapper
 function toConstructor(fn: (...args: any[]) => any): AnyConstructor {
   if (isConstructor(fn)) {
-    if (Object.getOwnPropertyDescriptor(fn, 'prototype')?.writable === false) {
+    if (hasReadOnlyPrototype(fn)) {
       return function Constructor(...args: any[]) {
         return Reflect.construct(fn, args, new.target);
       } as unknown as AnyConstructor;
@@ -80,13 +96,15 @@ const Class = function Class(this: any, prototype: ClassPrototype, staticProps?:
   const Parent: any = prototype.extends;
   let Constructor: AnyConstructor & Record<PropertyKey, any>;
 
-  if (hasOwn.call(prototype, 'constructor')) {
+  if (hasOwn(prototype, 'constructor')) {
     Constructor = toConstructor(prototype.constructor as (...args: any[]) => any);
   } else if (Parent) {
     // like an ES class without a constructor, call the parent constructor with the same arguments
     Constructor = function EmptyConstructor(this: any, ...args: any[]) {
-      // `Child.call(this)` from a subclass constructor has no `new.target`
-      return new.target ? Reflect.construct(Parent, args, new.target) : Parent.apply(this, args);
+      // a plain function parent runs on `this`, so `Child.call(this)` from a subclass constructor works too
+      return new.target && hasReadOnlyPrototype(Parent) && hasReflect()
+        ? Reflect.construct(Parent, args, new.target)
+        : Parent.apply(this, args);
     } as unknown as AnyConstructor;
   } else {
     Constructor = function EmptyConstructor() {} as unknown as AnyConstructor;
@@ -97,7 +115,12 @@ const Class = function Class(this: any, prototype: ClassPrototype, staticProps?:
   const parentStaticNames = Parent ? Parent[staticNamesProperty] : undefined;
 
   // descriptors, so getters and setters stay accessors; "extends" is an option, not a member
-  const { constructor: _constructor, extends: _extends, ...members } = Object.getOwnPropertyDescriptors(prototype);
+  const members: PropertyDescriptorMap = {};
+  forEach((Object.getOwnPropertyNames(prototype) as PropertyKey[]).concat(ownSymbols(prototype)), (key) => {
+    if (key !== 'constructor' && key !== 'extends') {
+      members[key] = Object.getOwnPropertyDescriptor(prototype, key) as PropertyDescriptor;
+    }
+  });
   Object.defineProperties(proto, members);
   // non-enumerable, as in ES classes
   Object.defineProperty(proto, 'constructor', {
@@ -110,7 +133,8 @@ const Class = function Class(this: any, prototype: ClassPrototype, staticProps?:
   // inherit staric properties of a parent
   if (typeof parentStaticNames === 'object') {
     const staticNames: Record<PropertyKey, true> = Constructor[staticNamesProperty] || {};
-    Constructor[staticNamesProperty] = staticNames;
+    // hidden from for-in where the key is a string (IE 11)
+    Object.defineProperty(Constructor, staticNamesProperty, { value: staticNames, writable: true, configurable: true });
 
     forOwn(parentStaticNames, (_, name) => {
       Constructor[name] = Parent[name];
@@ -118,7 +142,7 @@ const Class = function Class(this: any, prototype: ClassPrototype, staticProps?:
     });
 
     // inherit static properties of a parent when their keys are symbols
-    forEach(getOwnPropertySymbols(parentStaticNames), (symbol) => {
+    forEach(ownSymbols(parentStaticNames), (symbol) => {
       Constructor[symbol] = Parent[symbol];
       staticNames[symbol] = true;
     });
@@ -127,7 +151,8 @@ const Class = function Class(this: any, prototype: ClassPrototype, staticProps?:
   // extend Constructor with passed static properties
   if (typeof staticProps === 'object') {
     const staticNames: Record<PropertyKey, true> = Constructor[staticNamesProperty] || {};
-    Constructor[staticNamesProperty] = staticNames;
+    // hidden from for-in where the key is a string (IE 11)
+    Object.defineProperty(Constructor, staticNamesProperty, { value: staticNames, writable: true, configurable: true });
 
     forOwn(staticProps, (value, key) => {
       Constructor[key] = value;
@@ -135,7 +160,7 @@ const Class = function Class(this: any, prototype: ClassPrototype, staticProps?:
     });
 
     // extend Constructor with passed static properties if their keys are symbols
-    forEach(getOwnPropertySymbols(staticProps), (symbol) => {
+    forEach(ownSymbols(staticProps), (symbol) => {
       Constructor[symbol] = staticProps[symbol];
       staticNames[symbol] = true;
     });

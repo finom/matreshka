@@ -4,6 +4,7 @@ import getBindingKey from './_getbindingkey.js';
 import bindKey from '../../bindnode/_bindkey.js';
 import lookForBinder from '../../lookforbinder.js';
 import defs from '../../_core/defs.js';
+import assign from '../../_helpers/assign.js';
 
 // a binder for instance of Attr
 const attributeBinder: Binder = {
@@ -45,13 +46,12 @@ export default function processAttribute({ node, attribute, object, eventOptions
   const removeCalc = defs.get(object)?.props[key]?.removeCalc;
   const ownBinder = (binder: Binder): Binder =>
     removeCalc
-      ? {
-          ...binder,
+      ? assign({}, binder, {
           destroy(this: any, bindingOptions: any) {
             binder.destroy?.call(this, bindingOptions);
             removeCalc();
           }
-        }
+        })
       : binder;
 
   // a submit or reset button's binder sets nothing: its value attribute is its label, bound as an attribute

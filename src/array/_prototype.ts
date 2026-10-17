@@ -10,6 +10,7 @@ import toJSON from './tojson.js';
 import pseudoNativeMethods from './_pseudonativemethods/index.js';
 import iterator from './iterator.js';
 import type { AnyObject } from '../types.js';
+import addSymbolMembers from '../_helpers/addsymbolmembers.js';
 
 // the instance members Class builds Matreshka.Array from; index.ts adds extends and constructor
 const instanceMembers: AnyObject = assign(
@@ -23,12 +24,11 @@ const instanceMembers: AnyObject = assign(
     restore,
     toJSON,
     length: 0,
-    isMatreshkaArray: true,
-    // a native concat spreads it as it spreads an array
-    [Symbol.isConcatSpreadable]: true,
-    [Symbol.iterator]: iterator
+    isMatreshkaArray: true
   },
   pseudoNativeMethods
 );
+
+addSymbolMembers(instanceMembers, iterator, true);
 
 export default instanceMembers;

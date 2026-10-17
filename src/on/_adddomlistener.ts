@@ -6,6 +6,7 @@ import { listen, unlisten } from '../_dom/index.js';
 import createDomEventHandler from './_createdomeventhandler.js';
 import forEach from '../_helpers/foreach.js';
 import findDomListeners from './_finddomlisteners.js';
+import assign from '../_helpers/assign.js';
 
 // _bind:KEY and _unbind:KEY always carry the node
 type BindEvent = { node: Node };
@@ -65,15 +66,13 @@ export default function addDomListener(
   });
 
   // skipChecks: the listener is deduplicated above and fires addevent under its own name
-  const domInfo = {
-    ...info,
+  const domInfo = assign({}, info, {
     skipChecks: true,
-    domEvent: {
-      ...domEventData,
+    domEvent: assign({}, domEventData, {
       name: name || `${eventName}::${key}${selector ? `(${selector})` : ''}`,
       domEventHandler
-    }
-  };
+    })
+  });
 
   addListener(object, bindEventName, bindHandler, context, domInfo);
   addListener(object, `_unbind:${key}`, unbindHandler, context, domInfo);

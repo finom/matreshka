@@ -4,6 +4,8 @@ import updateTracked from './_updatetracked.js';
 import itemsNotIn from '../_diffitems.js';
 import withLengthOptions from '../_withlengthoptions.js';
 import type { ArrayMethodOptions, MatreshkaArrayInstance } from '../types.js';
+import arrayFrom from '../../_helpers/arrayfrom.js';
+import assign from '../../_helpers/assign.js';
 
 // recreates an array
 export default function recreate(
@@ -32,7 +34,7 @@ export default function recreate(
     });
   } else {
     // if trackBy is not given then use given new items as is (an array-like is copied into an array)
-    newItems = Array.isArray(givenNewItems) ? givenNewItems : Array.from(givenNewItems);
+    newItems = Array.isArray(givenNewItems) ? givenNewItems : arrayFrom(givenNewItems);
   }
 
   // call item mediator for every new item (but don't modify passed newItems)
@@ -75,13 +77,15 @@ export default function recreate(
 
   reportModified(
     this,
-    {
-      added,
-      removed,
-      method: 'recreate',
-      self: this,
-      ...eventOptions
-    },
+    assign(
+      {
+        added,
+        removed,
+        method: 'recreate',
+        self: this
+      },
+      eventOptions
+    ),
     reordered
   );
 

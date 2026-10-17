@@ -3,6 +3,7 @@ import type { BindNodeOptions } from '../bindnode/types.js';
 import removeListener from '../off/_removelistener.js';
 import triggerOne from '../trigger/_triggerone.js';
 import forEach from '../_helpers/foreach.js';
+import assign from '../_helpers/assign.js';
 
 const spaceReg = /\s+/;
 
@@ -48,11 +49,13 @@ export default function removeBinding({ object, key, eventOptions, binding }: Re
     destroy.call(node, bindingOptions);
   }
 
-  const extendedEventOptions = {
-    key,
-    node,
-    ...eventOptions
-  };
+  const extendedEventOptions = assign(
+    {
+      key,
+      node
+    },
+    eventOptions
+  );
 
   // DOM listeners ("click::x") leave the node even when the unbinding is silent
   triggerOne(object, `_unbind:${key}`, extendedEventOptions);

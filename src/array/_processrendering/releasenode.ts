@@ -4,6 +4,7 @@ import forEach from '../../_helpers/foreach.js';
 import toArray from '../../_helpers/toarray.js';
 import deepBindings from '../../bindnode/_deepbindings.js';
 import type { AnyObject, EventOptions, ObjectDef } from '../../types.js';
+import assign from '../../_helpers/assign.js';
 
 // window and other non-Node targets can't be inside a rendered node; an attribute is where its element is
 const isInside = (boundNode: any, node: Node): boolean => {
@@ -30,7 +31,7 @@ export default function releaseNode(
   });
 
   // own properties, including exact keys with a dot in their name
-  const exactKeyOptions: EventOptions = { ...eventOptions, exactKey: true };
+  const exactKeyOptions: EventOptions = assign({}, eventOptions, { exactKey: true });
 
   forOwn(itemDef.props, (propDef, key) => {
     forEach(propDef?.bindings || [], ({ node: boundNode }) => {

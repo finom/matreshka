@@ -1,5 +1,6 @@
 import type { Binder, BindingOptions, EventOptions, PropDef } from '../types.js';
 import is from '../_helpers/is.js';
+import assign from '../_helpers/assign.js';
 
 interface ObjectHandlerData {
   node: Node;
@@ -35,7 +36,7 @@ export default function createObjectHandler({
       fromThisNode && field.ownerDocument?.activeElement === field ? field : noSelection;
 
     // the handler is made only for a binder with setValue
-    (binder.setValue as NonNullable<Binder['setValue']>).call(node, value, { ...bindingOptions });
+    (binder.setValue as NonNullable<Binder['setValue']>).call(node, value, assign({}, bindingOptions));
 
     if (typeof selectionStart === 'number' && typeof selectionEnd === 'number') {
       const { length } = field.value;

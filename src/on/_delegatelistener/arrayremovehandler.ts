@@ -10,7 +10,7 @@ export default function arrayRemoveHandler(
   { path, name, callback, context, info, object }: DelegatedData = triggerOne.latestEvent.info.delegatedData
 ): void {
   forEach(removed, (item) => {
-    if (item && typeof item === 'object' && !Array.prototype.includes.call(object, item)) {
+    if (item && typeof item === 'object' && Array.prototype.indexOf.call(object, item) === -1) {
       undelegateListener(item, path, name, callback, context, info);
     }
   });

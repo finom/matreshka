@@ -87,7 +87,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "build": "node scripts/build.mjs",
-    "check:dist": "node scripts/check-dist.mjs",
+    "check:dist": "node scripts/check-dist.mjs && node scripts/check-legacy.mjs && node scripts/check-legacy-run.mjs && npm run test:dist",
+    "test:dist": "MATRESHKA_DIST=1 vitest run --project matreshka",
     "build:docs": "npm run build -w matreshka-docs",
     "patch": "node scripts/release.mjs patch",
     "minor": "node scripts/release.mjs minor",
@@ -98,9 +99,13 @@
     "prepublishOnly": "node scripts/ci-only.mjs"
   },
   "devDependencies": {
+    "@babel/core": "^8.0.7",
+    "@babel/preset-env": "^8.0.7",
     "@biomejs/biome": "^2.5.15",
     "@rollup/plugin-terser": "^1.0.0",
     "@vitest/coverage-v8": "^5.0.4",
+    "acorn": "^8.19.0",
+    "acorn-walk": "^8.3.5",
     "fast-check": "^4.10.2",
     "jsdom": "^30.1.2",
     "rollup": "^4.64.6",

@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- Works again in the browsers jQuery 4 supports, Internet Explorer 11 included: `dist/` is compiled to ES5 and calls no API IE 11 lacks (3.0.0 needed ES2022). `matreshka.min.js` is 73 kB minified, 24 kB with gzip; `matreshka.min.mjs`, which needs a browser with ES modules, stays modern.
+- On IE 11, a `Matreshka.Array` has the array methods the browser has, as a native array does: no `includes`, `find`, `at` and the like. `promiseCalc` there needs a promise (or a `Promise` polyfill) when the handler returns a plain value.
+
 ## [3.0.0] - 2026-10-17
 
 3.0.0 is a new major version: one package, written in TypeScript, ES modules only. The API of 2.x stays; the changes below say what moved and what was removed.

@@ -1,4 +1,5 @@
+import hasOwn from './hasown.js';
 // a key named __proto__ is a key like any other: only the object's own value, never its prototype
 export default function getProp(object: any, key: string): any {
-  return key === '__proto__' && !Object.hasOwn(object, key) ? undefined : object[key];
+  return key === '__proto__' && !hasOwn(object, key) ? undefined : object[key];
 }

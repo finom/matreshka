@@ -43,7 +43,7 @@ The bundle defines one global, `Matreshka`, with everything on it, the router an
 </html>
 ```
 
-It weighs about 64 kB minified, 21 kB gzipped, 19 kB with brotli (what a CDN sends). The same file is on unpkg: `https://unpkg.com/matreshka@3/dist/matreshka.min.js`. For an offline copy, download that file next to the page and use `<script src="matreshka.min.js">`.
+It weighs about 73 kB minified, 24 kB gzipped, 21 kB with brotli (what a CDN sends). It runs in the browsers jQuery 4 supports, Internet Explorer 11 included; for IE 11 the page's own code must be ES5 too (`var` and `function`, no arrows, classes or template strings), and a `Matreshka.Array` there has only the array methods IE 11 has (no `includes`, `find`, `at`…). The same file is on unpkg: `https://unpkg.com/matreshka@3/dist/matreshka.min.js`. For an offline copy, download that file next to the page and use `<script src="matreshka.min.js">`.
 
 ### B. CDN ES module, no bundler
 

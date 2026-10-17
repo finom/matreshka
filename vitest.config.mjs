@@ -2,6 +2,9 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vitest/config';
 
 const src = resolve(import.meta.dirname, 'src');
+const dist = resolve(import.meta.dirname, 'dist');
+// the suite against src/, and with MATRESHKA_DIST=1 against the ES5 build in dist/ (npm run test:dist)
+const target = process.env.MATRESHKA_DIST ? dist : src;
 
 export default defineConfig({
   test: {
@@ -16,8 +19,10 @@ export default defineConfig({
         },
         resolve: {
           alias: [
-            { find: /^src(\/.*)?$/, replacement: `${src}$1` },
-            { find: /^matreshka$/, replacement: `${src}/index.js` }
+            // dist/matreshka.js is the bundle, so the folder is named in full
+            { find: /^src\/matreshka$/, replacement: `${target}/matreshka/index.js` },
+            { find: /^src(\/.*)?$/, replacement: `${target}$1` },
+            { find: /^matreshka$/, replacement: `${target}/index.js` }
           ]
         }
       },
