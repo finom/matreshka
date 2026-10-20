@@ -7,14 +7,7 @@ import forOwn from '../_helpers/forown.js';
 import removeDomListener from './_removedomlistener.js';
 import isSameCallback from '../_helpers/issamecallback.js';
 import { dropOwner, hasOwner, type Owner } from '../on/_owners.js';
-
-// a pending onDebounce call doesn't fire once its listener is gone from every name
-function cancelIfGone(allEvents: Record<string, EventEntry[]>, callback: EventEntry['callback']): void {
-  for (const name in allEvents) {
-    if (allEvents[name].some((event) => event.callback === callback)) return;
-  }
-  (callback as { cancel?: () => void }).cancel?.();
-}
+import cancelIfGone from './_cancelifgone.js';
 
 // removes simple event listener from an object
 export default function removeListener(
@@ -31,10 +24,12 @@ export default function removeListener(
   const events = name === undefined ? undefined : allEvents[name];
   const retain: EventEntry[] = [];
   const domEventExecResult = name === undefined ? null : domEventReg.exec(name);
+  // a delegation removes only its own listener, the one it added with this callback and context
+  const owner: Owner = info?.owner ?? null;
 
   if (domEventExecResult) {
     const [, eventName, key = 'sandbox', selector] = domEventExecResult;
-    removeDomListener(object, def, key, eventName, selector, callback, context);
+    removeDomListener(object, def, key, eventName, selector, callback, context, owner);
 
     return true;
   }
@@ -58,8 +53,6 @@ export default function removeListener(
     def.events = Object.create(null);
   } else if (events) {
     const removed: { name: string; callback: EventEntry['callback']; context: any }[] = [];
-    // a delegation removes only its own listener, the one it added with this callback and context
-    const owner: Owner = info?.owner ?? null;
     const matches = (event: EventEntry) =>
       owner
         ? event.callback === callback && event.context === context
@@ -81,7 +74,10 @@ export default function removeListener(
       delete allEvents[name];
     }
 
-    forEach(removed, ({ callback: removedCallback }) => cancelIfGone(allEvents, removedCallback));
+    // a delegation that goes from one object keeps a call pending from another one
+    if (!owner) {
+      forEach(removed, ({ callback: removedCallback }) => cancelIfGone(allEvents, removedCallback));
+    }
 
     // after the list changes: a handler that calls off() or on() for the same name sees the listener gone
     if (name[0] !== '_') {

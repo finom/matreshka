@@ -7,6 +7,7 @@ import matchesDelegation, { type Delegation } from '../on/_delegatelistener/_mat
 import { dropOwner, hasOwner, type Owner } from '../on/_owners.js';
 import getProp from '../_helpers/getprop.js';
 import assign from '../_helpers/assign.js';
+import cancelIfGone from './_cancelifgone.js';
 
 // drops the owner from internal events such as _asterisk:add of given delegated listener;
 // returns the delegations nobody keeps any more
@@ -106,23 +107,26 @@ export default function undelegateListener(
       forEach(removed, (data) => undelegateListener(target, path, name, data.callback, data.context, info));
     }
   };
+  let removed: DelegatedData[] = [];
 
   if (key === '*') {
     // remove asterisk events
     if (object.isMatreshkaArray) {
-      const removed = detach('_asterisk:add', '_asterisk:remove');
+      removed = detach('_asterisk:add', '_asterisk:remove');
       // undelegate asterisk events for existing items
-      if (removed.length) {
-        forEach(object as ArrayLike<any>, (item) => undelegateFrom(removed, item));
-      }
+      forEach(object as ArrayLike<any>, (item) => undelegateFrom(removed, item));
     } else if (object.isMatreshkaObject) {
-      const removed = detach('_asterisk:set', '_asterisk:remove');
-      if (removed.length) {
-        object.each((item: any) => undelegateFrom(removed, item));
-      }
+      removed = detach('_asterisk:set', '_asterisk:remove');
+      object.each((item: any) => undelegateFrom(removed, item));
     }
   } else {
     // remove non-asterisk delegated events
-    undelegateFrom(detach(`_change:delegated:${key}`), getProp(object, key));
+    removed = detach(`_change:delegated:${key}`);
+    undelegateFrom(removed, getProp(object, key));
+  }
+
+  // the user's off cancels a pending onDebounce call; a parent's undelegation keeps it: another object may hold it
+  if (!owner) {
+    forEach(removed, (data) => cancelIfGone(allEvents, data.callback));
   }
 }

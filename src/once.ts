@@ -31,7 +31,11 @@ export default function once(this: any, object: any, names: any, givenCallback?:
     return object;
   }
 
+  let called = false;
   const callback = function onceCallback(this: any) {
+    // a trigger that started before the listener was removed still reaches it
+    if (called) return;
+    called = true;
     // remove event listener before its call, so the handler can fire its own event again
     off(object, names, onceCallback, context);
     apply(givenCallback, this, arguments);

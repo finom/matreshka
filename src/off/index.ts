@@ -6,6 +6,7 @@ import forOwn from '../_helpers/forown.js';
 import forEach from '../_helpers/foreach.js';
 import defs from '../_core/defs.js';
 import removeListener from './_removelistener.js';
+import cancelIfGone from './_cancelifgone.js';
 import undelegateListener from './_undelegatelistener.js';
 import triggerOne from '../trigger/_triggerone.js';
 import { unlisten } from '../_dom/index.js';
@@ -129,13 +130,6 @@ function removeUserListeners(object: AnyObject, def: ObjectDef): void {
     triggerOne(object, 'removeevent', removeEventData);
   });
 
-  forEach(retained, ({ events, retain }) => {
-    // a pending onDebounce call doesn't fire after its listener is gone
-    forEach(events, (event) => {
-      if (retain.indexOf(event) === -1) (event.callback as { cancel?: () => void }).cancel?.();
-    });
-  });
-
   forEach(retained, ({ name, events, length, retain }) => {
     // keep listeners which removeevent handlers have added meanwhile
     const current = allEvents[name] === events ? retain.concat(events.slice(length)) : retain;
@@ -145,6 +139,16 @@ function removeUserListeners(object: AnyObject, def: ObjectDef): void {
     } else {
       delete allEvents[name];
     }
+  });
+
+  // a pending onDebounce call doesn't fire after its listener is gone
+  forEach(retained, ({ events, retain }) => {
+    forEach(events, (event) => {
+      if (retain.indexOf(event) === -1) {
+        const { domEvent, delegatedData } = event.info;
+        cancelIfGone(allEvents, domEvent ? domEvent.callback : delegatedData ? delegatedData.callback : event.callback);
+      }
+    });
   });
 
   forEach(undelegations, ({ targets, delegatedData }) => {
