@@ -11,6 +11,15 @@ Matreshka.js connects JavaScript objects to the HTML a page already has. You bin
 
 Binding a property gives it a getter and a setter. Assigning `app.x = 'hi'` runs the setter, which updates every node bound to `x` and fires a `change:x` event. Computed properties, value transforms and collections are all built on this one mechanism.
 
+```js
+const app = new Matreshka();
+app.bindNode('name', '.name');                          // <input class="name">
+app.bindNode('name', '.out', Matreshka.binders.text()); // <span class="out">
+
+app.name = 'Ann'; // the input and the span show "Ann"
+// type "Bob" in the input → app.name is 'Bob', the span shows "Bob"
+```
+
 ## Where it fits
 
 - Pages whose HTML comes from a server: server-rendered sites, CMS themes, older apps. Matreshka adds behavior to that markup without taking it over.
