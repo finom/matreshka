@@ -71,7 +71,8 @@ describe('Matreshka.Array renderer', () => {
 
     expect(() => arr.push(arr[0])).toThrow();
 
-    expect(arr.length).toEqual(n + 1);
+    // the array is left as it was
+    expect(arr.length).toEqual(n);
     expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
     expect(arr.nodes.sandbox.children.length).toEqual(n);
   });

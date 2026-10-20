@@ -14,15 +14,20 @@ export default function processSpliceAdd({ self, selfDef, eventOptions, containe
   const { added, silent } = eventOptions;
   let nextNode: ChildNode | undefined;
 
-  // find the first rendered node after the last added item to insert newly rendered items before it
+  // find the first rendered node after the last added item to insert newly rendered items before it;
+  // a node out of the container (the container was rebound) doesn't count
   for (let i = (eventOptions[spliceStart] as number) + added.length; i < self.length && !nextNode; i++) {
     const next = self[i];
 
     if (next && typeof next === 'object') {
-      nextNode = getAlreadyRendered({
+      const node = getAlreadyRendered({
         item: next,
         selfDef
       });
+
+      if (node && node.parentNode === container) {
+        nextNode = node;
+      }
     }
   }
 

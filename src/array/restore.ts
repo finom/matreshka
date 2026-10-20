@@ -7,8 +7,28 @@ import getNodes from '../bindnode/_getnodes.js';
 import renderedNodes from './_processrendering/renderednodes.js';
 import syncFields from './_syncfields.js';
 import { addContainer } from './_processrendering/index.js';
-import type { ArrayDef, ArrayMethodOptions, ItemEventOptions, MatreshkaArrayInstance, RenderedNode } from './types.js';
+import modelCall from './_modelcall.js';
+import type {
+  ArrayDef,
+  ArrayMethodOptions,
+  ItemEventOptions,
+  MatreshkaArrayInstance,
+  ModelConstructor,
+  RenderedNode
+} from './types.js';
 import assign from '../_helpers/assign.js';
+
+// a restored item has no data: a Model made of Matreshka.Array takes it as its items, as in the item mediator
+function createModel(Model: ModelConstructor, parentArray: MatreshkaArrayInstance, index: number): any {
+  const data = Model.prototype?.isMatreshkaArray ? [] : {};
+  modelCall.args = [data, parentArray, index];
+
+  try {
+    return new Model(data, parentArray, index);
+  } finally {
+    modelCall.args = null;
+  }
+}
 
 // restores Matreshka.Array from external nodes
 export default function restore(
@@ -39,7 +59,7 @@ export default function restore(
   }
 
   forEach(nodes, (node, index) => {
-    const created = Model ? new Model({}, this, index) : {}; // create new item
+    const created = Model ? createModel(Model, this, index) : {}; // create new item
     // the item the array will hold: the mediated one is linked to the node
     const item = itemMediator ? itemMediator(created, index) : created;
     const { bindRenderedAsSandbox } = item;

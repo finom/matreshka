@@ -2,6 +2,7 @@ import syncFields from '../_syncfields.js';
 import reportModified from '../_reportmodified.js';
 import assign from '../../_helpers/assign.js';
 import toAbsoluteIndex from '../_toabsoluteindex.js';
+import { checkCompatRenderer } from '../_processrendering/checkbeforechange.js';
 import type { ArrayDef, ArrayEventOptions, MatreshkaArrayInstance } from '../types.js';
 
 export default function createFill(
@@ -22,6 +23,8 @@ export default function createFill(
     if (from >= to) {
       return this;
     }
+
+    checkCompatRenderer(this, 'fill', givenEventOptions);
 
     for (let i = from; i < to; i++) {
       const item = useMediator ? itemMediator(value, i) : value;
