@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [3.0.2] - 2026-10-20
+
 ### Fixed
 
 - A DOM event listener (`click::x`) stays while another path or the object's own `on` still holds it; `off` removes only the one it was asked for and leaves no internal entries behind.
@@ -226,6 +228,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `new Router('custom')` makes a router of its own type.
 - The items of `unbindNode([{ key }])` may leave out the node.
 
-[Unreleased]: https://github.com/finom/matreshka/compare/v3.0.1...HEAD
+[Unreleased]: https://github.com/finom/matreshka/compare/v3.0.2...HEAD
+[3.0.2]: https://github.com/finom/matreshka/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/finom/matreshka/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/finom/matreshka/releases/tag/v3.0.0
