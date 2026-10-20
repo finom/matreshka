@@ -14,15 +14,21 @@
   };
   // the case that runs now; an error in a later step fails it
   var current;
+  // hops through timers before the wait, so a debounced step that schedules the next one is done on a busy machine too
   var later = function (fn) {
     var owner = current;
-    setTimeout(function () {
-      try {
-        fn();
-      } catch (error) {
-        owner.finish(error);
-      }
-    }, 20);
+    var hops = 5;
+    var hop = function () {
+      if (hops--) return setTimeout(hop, 0);
+      setTimeout(function () {
+        try {
+          fn();
+        } catch (error) {
+          owner.finish(error);
+        }
+      }, 20);
+    };
+    hop();
   };
   var root = document.getElementById('legacy-root');
   var html = function (markup) {
