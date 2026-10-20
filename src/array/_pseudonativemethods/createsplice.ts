@@ -6,7 +6,10 @@ import assign from '../../_helpers/assign.js';
 import withLengthOptions from '../_withlengthoptions.js';
 import toAbsoluteIndex from '../_toabsoluteindex.js';
 import { spliceStart } from '../_processrendering/processspliceadd.js';
+import checkAddedItems from '../_processrendering/checkbeforechange.js';
 import type { ArrayDef, ArrayEventOptions, MatreshkaArrayInstance } from '../types.js';
+
+const { slice } = Array.prototype;
 
 // creates splice or splice_ method and returns it
 // TODO: Improve readability of createSplice function
@@ -14,7 +17,8 @@ export default function createSplice(
   hasOptions: boolean
 ): (this: MatreshkaArrayInstance, ...args: any[]) => MatreshkaArrayInstance {
   return function pseudoNativeMethod(this: MatreshkaArrayInstance): MatreshkaArrayInstance {
-    const { itemMediator }: ArrayDef = syncFields(this);
+    const selfDef: ArrayDef = syncFields(this);
+    const { itemMediator } = selfDef;
     const functionArguments = arguments;
     const argsLength = Math.max(functionArguments.length - +hasOptions, 0);
     const args: any[] = Array(argsLength);
@@ -34,6 +38,11 @@ export default function createSplice(
         args[i] = useMediator ? itemMediator(arg, start + (i - 2)) : arg;
         added[i - 2] = args[i];
       }
+    }
+
+    if (added.length) {
+      // the items this splice removes keep their nodes
+      checkAddedItems(this, selfDef, added, givenEventOptions, slice.call(this, start, start + +args[1]));
     }
 
     // call original method

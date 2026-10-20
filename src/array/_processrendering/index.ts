@@ -1,5 +1,4 @@
 import defs from '../../_core/defs.js';
-import matreshkaError from '../../_helpers/matreshkaerror.js';
 import processPush from './processpush.js';
 import processUnshift from './processunshift.js';
 import processRecreate from './processrecreate.js';
@@ -36,9 +35,6 @@ export default function processRendering({
   addContainer(selfDef, container);
 
   switch (method) {
-    case 'fill':
-    case 'copyWithin':
-      throw matreshkaError('array:method_compat_renderer', { method });
     case 'push':
       processPush({
         self,
