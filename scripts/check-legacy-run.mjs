@@ -42,6 +42,14 @@ function toIE11(window) {
     'getOwnPropertySymbols',
     'getOwnPropertyDescriptors'
   ]);
+  // ES5's Object.keys: a primitive throws
+  const { keys } = window.Object;
+  window.Object.keys = (object) => {
+    if (object === null || (typeof object !== 'object' && typeof object !== 'function')) {
+      throw new window.TypeError('Object.keys: argument is not an Object');
+    }
+    return keys(object);
+  };
   drop(window.Array, ['from', 'of']);
   drop(window.Array.prototype, [
     'includes',

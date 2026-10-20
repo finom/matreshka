@@ -15,7 +15,7 @@ export default function html(mappingFn?: (value: any) => any): Binder {
         this.innerHTML = '';
         this.appendChild(val);
       } else {
-        this.innerHTML = val === null || val === undefined ? '' : `${val}`;
+        this.innerHTML = val === null || val === undefined ? '' : String(val);
       }
     }
   };

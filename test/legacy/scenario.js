@@ -405,6 +405,44 @@
     equal(list.fill(0, 1).join('-'), '1-0-0', 'fill is its own');
   });
 
+  test('<col> items, Array.from holes, a primitive in instantiate, String(value) in text', function (done) {
+    html('<table><colgroup class="g"></colgroup></table><span class="m"></span>');
+    var cols = new M.Array();
+    cols.itemRenderer = '<col>';
+    M.bindNode(cols, 'container', '.g');
+    cols.push({}, {});
+    equal($('.g').getElementsByTagName('col').length, 2, 'cols rendered');
+    equal(
+      M.Array.from({ length: 3 }, function (_, i) {
+        return i * 2;
+      }).join(),
+      '0,2,4',
+      'Array.from range'
+    );
+    var Point = function (data) {
+      this.d = data;
+    };
+    var app = {};
+    M.instantiate(app, 'p', Point);
+    app.p = { a: 1 };
+    app.p = 5;
+    equal(app.p.a, 1, 'instantiate keeps the instance');
+    var price = {
+      valueOf: function () {
+        return 42;
+      },
+      toString: function () {
+        return '$42.00';
+      }
+    };
+    M.bindNode(app, 'price', '.m', binders.text());
+    app.price = price;
+    later(function () {
+      equal($('.m').textContent, '$42.00', 'text shows toString');
+      done();
+    });
+  });
+
   // runs the cases in order; window.legacyResult holds { passed, failed: [message] } when all are done
   var failed = [];
   var passed = 0;

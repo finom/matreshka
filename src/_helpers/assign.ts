@@ -5,8 +5,9 @@ const isEnumerable = Object.prototype.propertyIsEnumerable;
 // Object.assign, which IE 11 lacks; symbol keys are copied where the browser has them
 const assign: typeof Object.assign = function assign(target: any) {
   for (let i = 1; i < arguments.length; i++) {
-    const source = arguments[i];
-    if (source !== null && source !== undefined) {
+    if (arguments[i] !== null && arguments[i] !== undefined) {
+      // a primitive is read as an object: IE 11's Object.keys throws on it
+      const source = Object(arguments[i]);
       forEach(Object.keys(source), (key) => {
         target[key] = source[key];
       });
