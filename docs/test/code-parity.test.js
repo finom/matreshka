@@ -1,13 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { pages } from './pages';
 
+// Repeats a replace until nothing changes, so a removal can't leave a new match behind.
+const replaceAll = (text, pattern, replacement) => {
+  let previous;
+  do {
+    previous = text;
+    text = text.replace(pattern, replacement);
+  } while (text !== previous);
+  return text;
+};
+
 // Code blocks of a page, comments dropped, each line trimmed with spaces collapsed, blank lines dropped.
 const codeBlocks = (md) =>
   [...md.matchAll(/^(`{3,})(\S*)[^\n]*\n([\s\S]*?)^\1[ \t]*$/gm)].map(([, , lang, code]) => ({
     lang,
-    lines: code
-      .replace(/<!--[\s\S]*?-->/g, '')
-      .replace(/\/\*[\s\S]*?\*\//g, '')
+    lines: replaceAll(replaceAll(code, /<!--[\s\S]*?-->/g, ''), /\/\*[\s\S]*?\*\//g, '')
       .replace(/(^|[\s;{}(),])\/\/.*$/gm, '$1')
       .split('\n')
       .map((line) => line.trim().replace(/[ \t]+/g, ' '))
