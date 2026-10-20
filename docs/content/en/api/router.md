@@ -41,7 +41,7 @@ By changing these properties you can trigger needed procedures (update the path,
 #### Methods
 
 - ``subscribe(object, route)`` - subscribes object for route changes.
-- ``init()`` - used for lazy initialization in  ``subscribe`` method (no need to call it manually).
+- ``init()`` - used for lazy initialization on first use of ``Matreshka.Router.hash`` or ``Matreshka.Router.history`` and in the ``subscribe`` method (no need to call it manually).
 
 ## Arguments
 
