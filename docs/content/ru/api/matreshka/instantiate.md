@@ -92,7 +92,7 @@ class MyParentClass extends Matreshka {
 **Нестандартный способ использования ``updateCallback`` для игнорирования любых изменений свойства.**
 
 ```js
-this.instantiate('x', SubClass, () => {});
+this.instantiate('x', MyClass, () => {});
 ```
 
 **В случае, если ваш класс не подерживает использование оператора ``new``, вместо ``instantiate`` воспользуйтесь методом [`Matreshka#mediate`](/ru/api/matreshka/mediate/).**

@@ -72,13 +72,13 @@ class User extends Matreshka.Object {
                 // pseudo-sandbox creation for syntax sugar at selectors
                 // (not required)
                 nodeA: node,
-                name: ':bound(nodeA) .name',
-                email: ':bound(nodeA) .email',
+                name: { node: ':bound(nodeA) .name', binder: Matreshka.binders.text() },
+                email: { node: ':bound(nodeA) .email', binder: Matreshka.binders.text() },
             });
         } else if(parentArray instanceof UsersB) {
             this.bindNode({
                 nodeB: node,
-                name: ':bound(nodeB) .user-name',
+                name: { node: ':bound(nodeB) .user-name', binder: Matreshka.binders.text() },
             });
         }
     }

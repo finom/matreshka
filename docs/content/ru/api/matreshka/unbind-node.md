@@ -10,7 +10,7 @@ importance: 2
 **Метод**
 
 ```js
-Matreshka#unbindNode(key, [node], [eventOptions]) → matreshka
+Matreshka#unbindNode(key, [node], [eventOptions]) → object
 ```
 
 Разрывает связь между свойством и HTML элементом
@@ -19,7 +19,7 @@ Matreshka#unbindNode(key, [node], [eventOptions]) → matreshka
 
 Ключ с точками — это путь к вложенному свойству, как и в [`Matreshka#bindNode`](/ru/api/matreshka/bind-node/); с опцией события ``exactKey: true`` он используется как есть. ``null`` вместо ключа удаляет также привязки вложенных свойств (``"a.b"``).
 
-**Возвращает:** [`matreshka`](/ru/api/types/matreshka/) – self
+**Возвращает:** [`object`](/ru/api/types/object/) – self
 
 **Генерирует события:** `unbind`, `unbind:KEY`
 
@@ -48,10 +48,10 @@ this.myKey = false;
 ## Альтернативный синтаксис unbindNode, позволяющий передать объект с байндингами. См. Matreshka#bindNode(2) [#variation-2]
 
 ```js
-Matreshka#unbindNode(bindings, [eventOptions]) → matreshka
+Matreshka#unbindNode(bindings, [eventOptions]) → object
 ```
 
-**Возвращает:** [`matreshka`](/ru/api/types/matreshka/) – self
+**Возвращает:** [`object`](/ru/api/types/object/) – self
 
 ### Аргументы
 

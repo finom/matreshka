@@ -32,9 +32,8 @@ class MyArray extends Matreshka.Array {
 	itemRenderer = '<li>';
 	get Model() { return MyModel; }
 	constructor() {
-        super();
 		// визначаємо пісочницю
-		this.bindNode('sandbox', '.my-list');
+		super().bindNode('sandbox', '.my-list');
 	}
 }
 ```
@@ -197,7 +196,7 @@ const app = new MyArray();
 Не забувайте, що в Matreshka.js реалізована можливість вилову делегованих подій. Тобто сам масив може відловити подію рендеринга айтема, використовуючи ім'я події ``*@render`` (див. документацію до [`eventNames`](/ua/api/types/event-names/)).
 ```js
 this.on('*@render', () => {
-	alert('Child element is rendered');
+	alert('Child item is rendered');
 });
 ```
 
@@ -275,7 +274,7 @@ this.push_(item, {
 #### Перевизначення ``itemRenderer``
 При перевизначенні властивості ``itemRenderer``, колекція автоматично перемальовується.
 ```js
-this.itemRenderer = '<div>';
+this.itemRenderer = '<div class="new-renderer"></div>';
 ```
 Ця можливість корисна в тому випадку, коли розробник бажає завантажити шаблон з сервера.
 ```js

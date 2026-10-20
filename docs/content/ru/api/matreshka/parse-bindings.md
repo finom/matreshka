@@ -38,15 +38,11 @@ JS: this.user = {name: 'Joe'}
 JS: this.x = 'some value';
 -->
 <input type="text" value="{{x}}">
-```
-```html
 <!--
 Для привязки textarea и select нужно использовать атрибут value
 -->
 <textarea value="{{x}}"></textarea>
 <select value="{{x}}">...</select>
-```
-```html
 <!--
 Свяжет свойство "x" экземпляра с чекбоксом
 (двусторонняя привязка)

@@ -33,8 +33,8 @@ Matreshka.parseBindings() → $nodes
 
 ```js
 const object = {};
-const $node = Matreshka.parseBindings(object, `<h3>
-        Hello, {{name}}
-    </h3>`);
+const $node = Matreshka.parseBindings(object, `
+    <h3>Hello, {{name}}</h3>
+`);
 object.name = 'World';
 ```

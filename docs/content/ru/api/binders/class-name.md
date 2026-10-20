@@ -36,18 +36,18 @@ Matreshka.binders.className(className, [bool=true]) → binder
 
 ```js
 this.bindNode('myKey', '.my-element',
-        Matreshka.binders.className('blah'));
+        Matreshka.binders.className('foo'));
 
-this.myKey = true; // добавляет класс 'blah'
+this.myKey = true; // добавляет класс 'foo'
 
-this.myKey = false; // убирает класс 'blah'
+this.myKey = false; // убирает класс 'foo'
 ```
 
 ```js
 this.bindNode('myKey', '.my-element',
-        Matreshka.binders.className('blah', false));
+        Matreshka.binders.className('foo', false));
 
-this.myKey = false; // добавляет класс 'blah'
+this.myKey = false; // добавляет класс 'foo'
 
-this.myKey = true; // убирает класс 'blah'
+this.myKey = true; // убирает класс 'foo'
 ```

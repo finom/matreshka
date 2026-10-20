@@ -38,7 +38,7 @@ Matreshka#set(key, value, [eventOptions])
 ## Приклади
 
 ```js
-this.on('change: myKey', evt => {
+this.on('change:myKey', evt => {
 	alert(evt.value);
 });
 

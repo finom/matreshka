@@ -10,7 +10,7 @@ importance: 2
 **Метод**
 
 ```js
-Matreshka#unbindNode(key, [node], [eventOptions]) → matreshka
+Matreshka#unbindNode(key, [node], [eventOptions]) → object
 ```
 
 Розриває зв'язок між властивістю і HTML елементом
@@ -19,7 +19,7 @@ Matreshka#unbindNode(key, [node], [eventOptions]) → matreshka
 
 Ключ з крапками — це шлях до вкладеної властивості, як і в [`Matreshka#bindNode`](/ua/api/matreshka/bind-node/); з опцією події ``exactKey: true`` він використовується як є. ``null`` замість ключа видаляє також прив'язки вкладених властивостей (``"a.b"``).
 
-**Повертає:** [`matreshka`](/ua/api/types/matreshka/) – self
+**Повертає:** [`object`](/ua/api/types/object/) – self
 
 **Генерує події:** `unbind`, `unbind:KEY`
 
@@ -48,10 +48,10 @@ this.myKey = false;
 ## Альтернативний синтаксис unbindNode, що дозволяє передати об'єкт з байндінгамі. Див. Matreshka#bindNode(2) [#variation-2]
 
 ```js
-Matreshka#unbindNode(bindings, [eventOptions]) → matreshka
+Matreshka#unbindNode(bindings, [eventOptions]) → object
 ```
 
-**Повертає:** [`matreshka`](/ua/api/types/matreshka/) – self
+**Повертає:** [`object`](/ua/api/types/object/) – self
 
 ### Аргументи
 
