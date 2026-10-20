@@ -7,8 +7,8 @@ sidebarTitle: "Головна"
 # Matreshka.js
 
 ```html
-<output class="out"></output>
 <input class="in" type="text">
+<output class="out"></output>
 
 <script src="https://cdn.jsdelivr.net/npm/matreshka@3/dist/matreshka.min.js"></script>
 <script>

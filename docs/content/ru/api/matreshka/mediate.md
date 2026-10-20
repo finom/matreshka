@@ -10,7 +10,7 @@ importance: 2
 **Метод**
 
 ```js
-Matreshka#mediate(key, mediator)
+Matreshka#mediate(key, mediator) → object
 ```
 
 Трансформирует значение свойства при его изменении
@@ -24,6 +24,8 @@ const object = {};
 mediate(object, key, mediator);
 // вместо this.mediate(key, mediator);
 ```
+
+**Возвращает:** [`object`](/ru/api/types/object/) – self
 
 ## Аргументы
 

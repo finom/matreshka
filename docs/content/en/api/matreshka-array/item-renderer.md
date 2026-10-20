@@ -277,7 +277,7 @@ But sometimes you just need to move an object across few collections without re-
 ```js
 this.push_(item, {
 	moveSandbox: true
-})
+});
 ```
 
 #### ``itemRenderer`` reassigning

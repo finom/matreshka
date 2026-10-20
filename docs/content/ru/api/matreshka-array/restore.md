@@ -41,6 +41,9 @@ class MyModel extends Matreshka.Object {
 }
 
 class MyCollection extends Matreshka.Array {
+	get Model() {
+		return MyModel;
+	}
 	get itemRenderer() {
 		return ':sandbox .renderer';
 	}

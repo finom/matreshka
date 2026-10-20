@@ -60,7 +60,7 @@ const C = Matreshka.Class({
 const D = Matreshka.Class({
 	// D is inherited from C
 	extends: C,
-	method3() {
+	method3(a, b) {
 		// calling the parent method
 		C.prototype.method3.apply(this, arguments);
 	}

@@ -44,7 +44,7 @@ arr.recreate([
 // the next recreate call
 // removes an object with _id: 0
 // adds an object with _id: 3
-// updates an object with _id: 3 (changes name from Bar to BarNew)
+// updates an object with _id: 1 (changes name from Bar to BarNew)
 // updates an object with _id: 2 (changes name from Baz to BazNew)
 // resorts collection
 arr.recreate([

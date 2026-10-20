@@ -47,7 +47,7 @@ It weighs about 73 kB minified, 24 kB gzipped, 21 kB with brotli (what a CDN sen
 
 ### B. CDN ES module, no bundler
 
-`matreshka.min.mjs` is the whole library as one minified ES module: every named export of `matreshka` plus `initRouter`, `Router` and `parseForm`, and the default export is `Matreshka` with them attached. One request, the same size as the script-tag file.
+`matreshka.min.mjs` is the whole library as one minified ES module: every named export of `matreshka` plus `initRouter`, `Router` and `parseForm`, and the default export is `Matreshka` with them attached. One request, a little smaller than the script-tag file: it is not compiled down to ES5.
 
 ```html
 <script type="module">

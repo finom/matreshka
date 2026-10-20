@@ -92,7 +92,7 @@ class MyParentClass extends Matreshka {
 **Нестандартний спосіб використання ``updateCallback`` для ігнорування будь-яких змін властивості**
 
 ```js
-this.instantiate('x', SubClass, () => {});
+this.instantiate('x', MyClass, () => {});
 ```
 
 **У разі, якщо ваш клас не підтримує використання оператора ``new``, замість ``instantiate`` скористайтеся методом [`Matreshka#mediate`](/ua/api/matreshka/mediate/).**
@@ -123,7 +123,7 @@ class AppData extends Matreshka.Object {
 		super(data)
 			.instantiate({
 				friends: Friends,
-				settins: Settings
+				settings: Settings
 			});
 	}
 }

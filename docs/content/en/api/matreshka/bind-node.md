@@ -120,7 +120,7 @@ const checkboxBinder = () => {
 // to the beginning of the Matreshka.defaultBinders array
 Matreshka.defaultBinders.unshift(node => {
 	// check if the element is a checkbox
-	if(node.tagName == 'INPUT' && node.type == 'checkbox') {
+	if(node.tagName === 'INPUT' && node.type === 'checkbox') {
 		// if checking is OK, return a new binder
 		return checkboxBinder();
 	}

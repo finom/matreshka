@@ -33,8 +33,8 @@ bindNode(object, key, node, binder, eventOptions);
 ```js
 this.bindNode('myKey', '.my-element', {
 	on: 'click',
-	getValue () {...},
-	setValue () {...}
+	getValue() { ... },
+	setValue() { ... }
 });
 ```
 
@@ -52,7 +52,7 @@ this.bindNode('myKey', '.my-checkbox', {
 	// Як встановити стан елемента?
 	// - Встановити значення 'checked'
 	setValue(v) {
-		this.checked = !! v;
+		this.checked = !!v;
 	}
 });
 ```
@@ -108,11 +108,11 @@ this.bindNode('myKey', '.my-element');
 const checkboxBinder = () => {
 	return {
 		on: 'click',
-		getValue () {
+		getValue() {
 			return this.checked;
 		},
-		setValue (v) {
-			this.checked = !! v;
+		setValue(v) {
+			this.checked = !!v;
 		}
 	}
 };
@@ -121,7 +121,7 @@ const checkboxBinder = () => {
 // у початок масиву Matreshka.defaultBinders
 Matreshka.defaultBinders.unshift(node => {
 	// Перевіряємо, чи це чекбокс
-	if (node.tagName === 'INPUT' && node.type === 'checkbox') {
+	if(node.tagName === 'INPUT' && node.type === 'checkbox') {
 		// Якщо перевірка пройдена, повертаємо новий байндер
 		return checkboxBinder();
 	}
@@ -149,7 +149,8 @@ const uiSlider = (min, max) => {
 		}
 	}
 };
-
+```
+```js
 this.bindNode('myKey1', '.my-slider1', uiSlider(0, 100));
 this.bindNode('myKey2', '.my-slider2', uiSlider(1, 1000));
 this.myKey1 = 42;
@@ -187,10 +188,10 @@ this.bindNode('myAnotherKey', ':bound(myKey) .my-inner-element');
 this.bindNode('myKey', '.my-element');
 
 // Відловити клік на елементі .my-element
-this.on('click::myKey', () => {...});
+this.on('click::myKey', () => { ... });
 
 // Відловити клік на елементі .my-element .my-inner-element
-this.on('click::myKey(.my-inner-element)', () => {...});
+this.on('click::myKey(.my-inner-element)', () => { ... });
 ```
 
 > Якщо елемент не знайдений, кидається виняток ``Binding error: node is missing for key "KEY"``. Для того, щоб уникнути помилки використовуйте метод [`Matreshka#bindOptionalNode`](/ua/api/matreshka/bind-optional-node/)
@@ -223,7 +224,7 @@ this.bindNode('sandbox', '.my-sandbox');
 this.bindNode('myKey', ':sandbox .my-element');
 
 // Для делегованих подій всередині пісочниці не потрібно вказувати ключ
-this.on('click::(.my-button)', () => {...});
+this.on('click::(.my-button)', () => { ... });
 
 // Виведе в консоль елемент .inner-node,
 // Який знаходиться всередині пісочниці
@@ -310,7 +311,7 @@ setTimeout(() => {
 Наприклад, ми хочемо зв'язати ``input[type="text"]`` з властивістю. За замовчуванням, стандартний байндер для цього елемента містить властивість ``"on"`` зі значенням ``"input"``. Це означає, що значення властивості об'єкта і стан елемента будуть синхронізовані відразу після введення або видалення символу користувачем. У разі, якщо ви хочете, щоб синхронізація відбувалася після DOM події ``"blur"``, вам буде потрібно передати третім аргументом об'єкт, що містить єдину властивість ``"on"``. Цей об'єкт об'єднається зі стандартним байндером, зберігши при цьому значення ``getValue`` і ``setValue``.
 
 ```js
-this.bindNode('x', '.my-input', { on: "blur" });
+this.bindNode('myKey', '.my-input', { on: 'blur' });
 ```
 
 Для скасування цієї поведінки і використання байндера як він є, в об'єкт події можна передати прапор ``useExactBinder`` зі значенням ``true``.

@@ -37,9 +37,9 @@ Matreshka.binders.style(property, [mappingFn]) → binder
 ## Приклади
 
 ```js
-this.bindNode('myKey', '.my-node',
+this.bindNode('myKey', '.my-element',
     Matreshka.binders.style('backgroundColor'));
-this.myKey = 'red'; // колір фону .my-node став червоним
+this.myKey = 'red'; // колір фону .my-element став червоним
 ```
 
 **Використання ``mappingFn``**

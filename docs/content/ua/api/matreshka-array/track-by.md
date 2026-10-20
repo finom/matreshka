@@ -34,7 +34,7 @@ class MyArray extends Matreshka.Array {
 
 const arr = new MyArray();
 
-// додає два об'єкти в масив
+// додає три об'єкти в масив
 arr.recreate([
 	{_id: 0, name: 'Foo'},
 	{_id: 1, name: 'Bar'},

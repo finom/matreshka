@@ -123,7 +123,7 @@ class AppData extends Matreshka.Object {
 		super(data)
 			.instantiate({
 				friends: Friends,
-				settins: Settings
+				settings: Settings
 			});
 	}
 }

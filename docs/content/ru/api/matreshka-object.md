@@ -49,7 +49,7 @@ this.toJSON();
 При добавлении и изменении свойств, отвечающих за данные генерируется события ``set`` и ``modify``, при удалении - ``remove`` и ``modify``. Т. е. любые изменения данных можно слушать с помощью ``modify``.
 ```js
 this.on('modify', () => {
-	alert('Object is modified');
+	alert('an object is modified');
 });
 ```
 

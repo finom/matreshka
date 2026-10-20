@@ -28,7 +28,7 @@ The method works recursively, calling ``toJSON`` for all items which have such m
 ## Examples
 
 ```js
-const matreshkaArray = new Matreshka.Array(1, 2, new MatreshkaArray(3, 4));
+const matreshkaArray = new Matreshka.Array(1, 2, new Matreshka.Array(3, 4));
 
 // returns [1, 2, [3, 4]]
 console.log(matreshkaArray.toJSON());
