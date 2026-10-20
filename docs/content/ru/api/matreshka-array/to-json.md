@@ -28,7 +28,7 @@ Matreshka.Array#toJSON([recursive=true]) → array
 ## Примеры
 
 ```js
-const matreshkaArray = new Matreshka.Array(1, 2, new MatreshkaArray(3, 4));
+const matreshkaArray = new Matreshka.Array(1, 2, new Matreshka.Array(3, 4));
 
 // возвращает [1, 2, [3, 4]]
 console.log(matreshkaArray.toJSON());

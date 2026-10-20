@@ -33,6 +33,27 @@ function splitPath(path: string): string[] {
   return trimmed ? trimmed.split('/') : [];
 }
 
+// the parts up to the first empty one, as a path: ['a', 'b'] → '/a/b/'
+function toPath(parts: string[]): string {
+  const nonEmptyParts: string[] = [];
+
+  for (let i = 0; i < parts.length; i++) {
+    if (isPart(parts[i])) {
+      nonEmptyParts.push(encodeURIComponent(parts[i]));
+    } else {
+      break;
+    }
+  }
+
+  return nonEmptyParts.length ? `/${nonEmptyParts.join('/')}/` : '/';
+}
+
+// the same route in any spelling: '/a' and '/a/', '%40' and '@'
+const route = (path: string) => splitPath(path).map(decode).join('/');
+
+// the hash and history singletons, made and initialized on first use
+const singletons: { hash?: Router; history?: Router } = {};
+
 function handlePopStateChange(router: Router): void {
   set(router, 'path', window.location.pathname, {
     popEvent: true
@@ -40,7 +61,7 @@ function handlePopStateChange(router: Router): void {
 }
 
 class Router {
-  // the singletons, set below
+  // the singletons, defined below
   declare static history: Router;
   declare static hash: Router;
 
@@ -57,13 +78,20 @@ class Router {
 
   constructor(type: RouterType | (string & {})) {
     // the history and hash routers are singletons
-    const singleton = type === 'hash' ? Router.hash : type === 'history' ? Router.history : undefined;
+    const kind = type === 'hash' || type === 'history' ? (type as RouterType) : undefined;
+    const singleton = kind && singletons[kind];
     if (singleton) {
       // biome-ignore lint/correctness/noConstructorReturn: new Router('hash') gives Router.hash
       return singleton;
     }
 
     this.type = type;
+
+    if (kind) {
+      singletons[kind] = this;
+      // a singleton reads the URL as soon as it exists, so it can be bound like any object
+      this.init();
+    }
   }
 
   init(): this {
@@ -84,19 +112,7 @@ class Router {
         },
         path: {
           source: 'parts',
-          handler(parts: string[]) {
-            const nonEmptyParts: string[] = [];
-
-            for (let i = 0; i < parts.length; i++) {
-              if (isPart(parts[i])) {
-                nonEmptyParts.push(encodeURIComponent(parts[i]));
-              } else {
-                break;
-              }
-            }
-
-            return nonEmptyParts.length ? `/${nonEmptyParts.join('/')}/` : '/';
-          }
+          handler: toPath
         }
       },
       { debounceCalc: false }
@@ -148,7 +164,6 @@ class Router {
 
         window.addEventListener('hashchange', () => handleHashChange(this));
 
-        const route = (path: string) => splitPath(path).map(decode).join('/');
         onDebounce(this, 'change:hashPath', (evt) => {
           const isRoute = location.hash.slice(0, 2) === '#!';
           // an empty route leaves a plain anchor such as #top alone
@@ -158,8 +173,11 @@ class Router {
           // the same route in another spelling (#!/foo for #!/foo/, %40 for @) is rewritten in place, with no history entry
           if (isRoute && route(location.hash.slice(2)) === route(this.path)) {
             history.replaceState(history.state, '', this.hashPath || `${location.pathname}${location.search}`);
-          } else {
+          } else if (this.hashPath) {
             location.hash = this.hashPath;
+          } else {
+            // location.hash = '' would leave a bare '#'; pushState fires no hashchange, and the router already holds the new route
+            history.pushState(history.state, '', `${location.pathname}${location.search}`);
           }
         });
       } else if (type === 'history') {
@@ -177,10 +195,19 @@ class Router {
         });
 
         onDebounce(this, 'change:path', (evt) => {
-          if (!evt?.popEvent) {
-            history.pushState(null, '', this.path + location.search + location.hash);
-            ({ pathname } = location);
+          if (evt?.popEvent) {
+            return;
           }
+          // the route the URL already shows adds no entry; another spelling of it (/a for /a/) is rewritten in place
+          if (route(location.pathname) === route(this.path)) {
+            const canonical = toPath(splitPath(this.path).map(decode));
+            if (location.pathname !== canonical) {
+              history.replaceState(history.state, '', canonical + location.search + location.hash);
+            }
+          } else {
+            history.pushState(null, '', this.path + location.search + location.hash);
+          }
+          ({ pathname } = location);
         });
       }
     }
@@ -197,6 +224,17 @@ class Router {
     const parts: string[] = [];
 
     this.init();
+
+    // the properties after an empty part get null: the URL can't show them
+    const resetAfter = (index: number) => {
+      for (let i = index + 1; i < keys.length; i++) {
+        if (keys[i] !== '*' && isPart(obj[keys[i]])) {
+          set(obj, keys[i], null, {
+            routeSilent: true
+          });
+        }
+      }
+    };
 
     for (let i = 0; i < filteredKeys.length; i++) {
       const key = filteredKeys[i];
@@ -220,6 +258,11 @@ class Router {
         }
       }
 
+      // a change:key triggered by hand has no event object
+      if (evt && !isPart(evt.value)) {
+        resetAfter(keys.indexOf(evt.key));
+      }
+
       this.parts = values;
     });
 
@@ -236,6 +279,8 @@ class Router {
     // the parts after this route stay in the URL
     if (parts.length === keys.length) {
       parts.push(...this.parts.slice(keys.length));
+    } else {
+      resetAfter(parts.length);
     }
 
     for (let i = 0; i < keys.length; i++) {
@@ -264,7 +309,19 @@ class Router {
   }
 }
 
-Router.history = new Router('history');
-Router.hash = new Router('hash');
+// a page that loads the library but never uses the router gets no listener
+for (const type of ['hash', 'history'] as const) {
+  Object.defineProperty(Router, type, {
+    configurable: true,
+    enumerable: true,
+    get: () => singletons[type] || new Router(type)
+  });
+}
+
+// dist/ assigns class methods (Babel's setClassMethods): as in a native class, a for-in doesn't list them
+const methods = Object.getOwnPropertyNames(Router.prototype);
+for (let i = 0; i < methods.length; i++) {
+  Object.defineProperty(Router.prototype, methods[i], { enumerable: false });
+}
 
 export default Router;

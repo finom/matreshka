@@ -7,6 +7,7 @@ import createDomEventHandler from './_createdomeventhandler.js';
 import forEach from '../_helpers/foreach.js';
 import findDomListeners from './_finddomlisteners.js';
 import assign from '../_helpers/assign.js';
+import { addOwner } from './_owners.js';
 
 // _bind:KEY and _unbind:KEY always carry the node
 type BindEvent = { node: Node };
@@ -48,7 +49,15 @@ export default function addDomListener(
   const bindEventName = `_bind:${key}`;
   const domEventData = { eventName, selector, callback, context };
 
-  if (findDomListeners(def.events[bindEventName], domEventData, true).length) {
+  const [existing] = findDomListeners(def.events[bindEventName], domEventData, true);
+
+  if (existing) {
+    // the listener is kept until everyone who added it removes it
+    const { domEvent } = existing.info;
+    forEach(def.events[`_unbind:${key}`], (event) => {
+      if (event.info.domEvent === domEvent) addOwner(event, info.owner ?? null);
+    });
+    addOwner(existing, info.owner ?? null);
     return false;
   }
 

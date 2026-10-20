@@ -49,7 +49,7 @@ Yet they work the same as the ``Array.prototype``. There are only a few remarks:
 - The methods which should return a new array (``splice``, ``slice``, ``filter``, ``map``...) return a new ``Matreshka.Array`` instance.
 - The ``keys``, ``values`` and ``entries`` methods return an array instead of an iterator.
 - ``fill`` reports the replaced items as ``removed`` in the ``remove`` and ``modify`` events, and ``added`` holds one item per filled index.
-- ``fill`` and ``copyWithin`` throw an error on a rendered array (one that has a ``container`` or a ``sandbox``).
+- ``fill`` and ``copyWithin`` throw an error on a rendered array (one that has a ``container`` or a ``sandbox``) and leave it unchanged.
 
 Moreover, the methods generate events which are fired on any array modification. For more detailed information look at [`Matreshka.Array`](/api/matreshka-array/).
 

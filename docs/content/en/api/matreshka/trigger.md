@@ -10,7 +10,7 @@ importance: 1
 **Method**
 
 ```js
-Matreshka#trigger(names, [arg]) → matreshka
+Matreshka#trigger(names, [arg]) → object
 ```
 
 Fires an event
@@ -19,7 +19,7 @@ After adding event handlers using [`Matreshka#on`](/api/matreshka/on/), [`Matres
 
 > Note that the method has [static alternative](/api/matreshka-static/trigger/)
 
-**Returns:** [`matreshka`](/api/types/matreshka/) – self
+**Returns:** [`object`](/api/types/object/) – self
 
 ## Arguments
 

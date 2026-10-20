@@ -39,7 +39,7 @@ export default function defineHiddenContentProperty({ object, keys, text }: Hidd
 
       // replace things like {{x}} by actual values; a function keeps "$&" and the like in a value literal
       for (let i = 0; i < keys.length; i++) {
-        const value = values[i] === null || values[i] === undefined ? '' : `${values[i]}`;
+        const value = values[i] === null || values[i] === undefined ? '' : String(values[i]);
         result = result.replace(regs[keys[i]], () => value);
       }
 

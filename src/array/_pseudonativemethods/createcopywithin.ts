@@ -3,6 +3,7 @@ import apply from '../../_helpers/apply.js';
 import reportModified from '../_reportmodified.js';
 import assign from '../../_helpers/assign.js';
 import itemsNotIn from '../_diffitems.js';
+import { checkCompatRenderer } from '../_processrendering/checkbeforechange.js';
 import type { ArrayEventOptions, MatreshkaArrayInstance } from '../types.js';
 import toArray from '../../_helpers/toarray.js';
 
@@ -19,6 +20,8 @@ export default function createCopyWithin(
     for (let i = 0; i < argsLength; i++) {
       args[i] = arguments[i];
     }
+
+    checkCompatRenderer(this, 'copyWithin', givenEventOptions);
 
     const was = toArray(this);
     apply(Array.prototype.copyWithin, this, args);

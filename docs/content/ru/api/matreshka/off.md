@@ -10,7 +10,7 @@ importance: 1
 **Метод**
 
 ```js
-Matreshka#off([names], [callback], [context]) → matreshka
+Matreshka#off([names], [callback], [context]) → object
 ```
 
 Удаляет обработчик события
@@ -19,7 +19,7 @@ Matreshka#off([names], [callback], [context]) → matreshka
 
 Без аргументов ``off`` удаляет все обработчики, добавленные через ``on``, ``once`` и ``onDebounce``, и генерирует ``removeevent`` для каждого из них. Привязки, зависимости ``calc`` и внутренние события ``Matreshka.Object`` и ``Matreshka.Array`` остаются.
 
-**Возвращает:** [`matreshka`](/ru/api/types/matreshka/) – self
+**Возвращает:** [`object`](/ru/api/types/object/) – self
 
 **Генерирует события:** `removeevent`, `removeevent:NAME`
 

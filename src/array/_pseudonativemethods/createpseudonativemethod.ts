@@ -24,7 +24,7 @@ export const changingMethodNames = [
 ] as const;
 
 // the methods that copy; they return a Matreshka.Array
-const copyingMethodNames = ['map', 'filter', 'slice', 'flat', 'flatMap', 'toSorted', 'toReversed', 'toSpliced', 'with'];
+const copyingMethodNames = ['map', 'filter', 'slice', 'toSorted', 'toReversed', 'toSpliced', 'with'];
 
 export const methodNames = [
   ...changingMethodNames,
@@ -61,6 +61,31 @@ const arrayPrototype = Array.prototype as unknown as Record<
   (this: MatreshkaArrayInstance, ...args: any[]) => any
 >;
 
+// a nested Matreshka.Array is spread like an array, as concat does: up to `depth` levels are made arrays
+function spreadNested(value: any, depth: number): any {
+  return depth >= 1 && value && typeof value === 'object' && (value.isMatreshkaArray || Array.isArray(value))
+    ? arrayPrototype.map.call(value, (item: any) => spreadNested(item, depth - 1))
+    : value;
+}
+
+function flat(this: MatreshkaArrayInstance, depth?: any): MatreshkaArrayInstance {
+  const levels = typeof depth === 'undefined' ? 1 : +depth || 0;
+  const items = arrayPrototype.map.call(this, (item: any) => spreadNested(item, levels));
+  return toMatreshkaArray(apply(arrayPrototype.flat, items, arguments));
+}
+
+function flatMap(this: MatreshkaArrayInstance, callback: any, thisArg?: any): MatreshkaArrayInstance {
+  // a non-function goes as is, so the native method throws its TypeError
+  const spreading =
+    typeof callback === 'function'
+      ? function spreadResult(this: any) {
+          const result = apply(callback, this, arguments);
+          return result && typeof result === 'object' && result.isMatreshkaArray ? result.toJSON(false) : result;
+        }
+      : callback;
+  return toMatreshkaArray(arrayPrototype.flatMap.call(this, spreading, thisArg));
+}
+
 // creates pseudo native method and returns it (push, push_, sort, sort_...)
 export default function createPseudoNativeMethod(
   name: (typeof methodNames)[number],
@@ -82,6 +107,10 @@ export default function createPseudoNativeMethod(
       return createCopyWithin(hasOptions);
     case 'fill':
       return createFill(hasOptions);
+    case 'flat':
+      return flat;
+    case 'flatMap':
+      return flatMap;
     case 'forEach':
       return function pseudoNativeMethod(this: MatreshkaArrayInstance) {
         apply(arrayPrototype.forEach, this, arguments);

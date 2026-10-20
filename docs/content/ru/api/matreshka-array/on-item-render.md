@@ -23,7 +23,7 @@ Matreshka.Array#onItemRender(item, renderEvent)
 
 | Имя | Тип | Описание |
 | --- | --- | --- |
-| `item` | [`object`](/ru/api/types/object/) | Отрисованный элемент коллекции |
+| `item` | [`object`](/ru/api/types/object/) | Отрисованный объект коллекции |
 | `renderEvent` | [`object`](/ru/api/types/object/) | Объект события ``render`` |
 
 ## Примеры
@@ -44,7 +44,10 @@ class MyArray extends Matreshka.Array {
 		return MyModel;
 	}
 	itemRenderer() {
-		return '<li>'
+		return `<label>
+			<input type="checkbox" class="my-checkbox">
+			<span class="text"></span>
+		</label>`;
 	}
 	constructor() {
 		super().bindNode('sandbox', '.my-form');

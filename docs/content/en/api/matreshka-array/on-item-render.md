@@ -23,7 +23,7 @@ At the same time ``onRender`` method is called in a rendered item with the only 
 
 | Name | Type | Details |
 | --- | --- | --- |
-| `item` | [`object`](/api/types/object/) | A rendered node of a collection |
+| `item` | [`object`](/api/types/object/) | A rendered item of a collection |
 | `renderEvent` | [`object`](/api/types/object/) | ``"render"`` event object |
 
 ## Examples
@@ -44,7 +44,10 @@ class MyArray extends Matreshka.Array {
 		return MyModel;
 	}
 	itemRenderer() {
-		return '<li>'
+		return `<label>
+			<input type="checkbox" class="my-checkbox">
+			<span class="text"></span>
+		</label>`;
 	}
 	constructor() {
 		super().bindNode('sandbox', '.my-form');

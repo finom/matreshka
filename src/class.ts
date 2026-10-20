@@ -70,14 +70,21 @@ function hasReadOnlyPrototype(fn: any): boolean {
   return Object.getOwnPropertyDescriptor(fn, 'prototype')?.writable === false;
 }
 
+// what `new` built `this` for, read the way Babel compiles new.target: a parent called with `apply` from a subclass
+// constructor gets the subclass, so a chain over an ES class works in src/ and in the ES5 build alike
+function newTarget(self: any, Constructor: AnyConstructor | ((...args: any[]) => any)): AnyConstructor | undefined {
+  return self instanceof Constructor ? self.constructor : undefined;
+}
+
 // `constructor() {}` in an object literal is a method, which `new` refuses, and an ES class has a read-only
 // prototype; both get a wrapper
 function toConstructor(fn: (...args: any[]) => any): AnyConstructor {
   if (isConstructor(fn)) {
     if (hasReadOnlyPrototype(fn)) {
-      return function Constructor(...args: any[]) {
-        return Reflect.construct(fn, args, new.target);
+      const Constructor = function Constructor(this: any, ...args: any[]) {
+        return Reflect.construct(fn, args, newTarget(this, Constructor));
       } as unknown as AnyConstructor;
+      return Constructor;
     }
 
     return fn as unknown as AnyConstructor;
@@ -101,9 +108,10 @@ const Class = function Class(this: any, prototype: ClassPrototype, staticProps?:
   } else if (Parent) {
     // like an ES class without a constructor, call the parent constructor with the same arguments
     Constructor = function EmptyConstructor(this: any, ...args: any[]) {
+      const target = newTarget(this, Constructor);
       // a plain function parent runs on `this`, so `Child.call(this)` from a subclass constructor works too
-      return new.target && hasReadOnlyPrototype(Parent) && hasReflect()
-        ? Reflect.construct(Parent, args, new.target)
+      return target && hasReadOnlyPrototype(Parent) && hasReflect()
+        ? Reflect.construct(Parent, args, target)
         : Parent.apply(this, args);
     } as unknown as AnyConstructor;
   } else {

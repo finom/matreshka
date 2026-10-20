@@ -10,7 +10,7 @@ export default function text(mappingFn?: (value: any) => any): Binder {
     },
     setValue(this: Node, value: any) {
       const val = typeof mappingFn === 'function' ? mappingFn(value) : value;
-      this.textContent = val === null || val === undefined ? '' : `${val}`;
+      this.textContent = val === null || val === undefined ? '' : String(val);
     }
   };
 }

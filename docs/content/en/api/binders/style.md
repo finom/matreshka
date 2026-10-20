@@ -37,9 +37,9 @@ The property value can be transformed using ``mappingFn`` argument.
 ## Examples
 
 ```js
-this.bindNode('myKey', '.my-progres',
-        Matreshka.binders.style('backgroundColor'));
-this.myKey = 'red'; // background-color of .my-progress is red now
+this.bindNode('myKey', '.my-element',
+    Matreshka.binders.style('backgroundColor'));
+this.myKey = 'red'; // background-color of .my-element is red now
 ```
 
 **The usage of mapping function**

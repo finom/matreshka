@@ -41,5 +41,5 @@ Matreshka#trigger(names, [arg]) → object
 this.on('foo bar', (a, b, c) => {
 	alert(a + b + c);
 });
-this.trigger('bar', 1, 2, 3); // alerts 6
+this.trigger('foo', 1, 2, 3); // alerts 6
 ```

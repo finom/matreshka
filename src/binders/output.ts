@@ -9,7 +9,7 @@ export default function output(): Binder {
     },
     setValue(this: HTMLOutputElement, value: any) {
       const property = 'form' in this ? 'value' : 'textContent';
-      this[property] = value === null || value === undefined ? '' : `${value}`;
+      this[property] = value === null || value === undefined ? '' : String(value);
     }
   };
 }

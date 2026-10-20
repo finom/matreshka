@@ -15,5 +15,5 @@ importance: 2
 
 ```js
 const matreshka = new Matreshka();
-obj.calc('a', 'b');
+matreshka.calc('a', 'b');
 ```

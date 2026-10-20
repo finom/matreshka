@@ -10,14 +10,14 @@ importance: 3
 **Метод**
 
 ```js
-Matreshka#remove(key, [eventOptions]) → matreshka
+Matreshka#remove(key, [eventOptions]) → object
 ```
 
 Видаляє властивість
 
 > У метода є [статичний аналог](/ua/api/matreshka-static/remove/).
 
-**Повертає:** [`matreshka`](/ua/api/types/matreshka/) – self
+**Повертає:** [`object`](/ua/api/types/object/) – self
 
 **Генерує події:** `delete`, `delete:KEY`
 

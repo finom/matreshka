@@ -2,6 +2,7 @@ import syncFields from '../_syncfields.js';
 import reportModified from '../_reportmodified.js';
 import assign from '../../_helpers/assign.js';
 import withLengthOptions from '../_withlengthoptions.js';
+import checkAddedItems from '../_processrendering/checkbeforechange.js';
 import type { ArrayDef, ArrayEventOptions, MatreshkaArrayInstance } from '../types.js';
 
 // creates methods: push, unshift, push_, unshift_
@@ -10,7 +11,8 @@ export default function createAddingMethod(
   hasOptions: boolean
 ): (this: MatreshkaArrayInstance, ...args: any[]) => number {
   return function pseudoNativeMethod(this: MatreshkaArrayInstance): number {
-    const { itemMediator }: ArrayDef = syncFields(this);
+    const selfDef: ArrayDef = syncFields(this);
+    const { itemMediator } = selfDef;
     // +hasOptions is converted to 0 or 1 depending on its value (false/true)
     const argsLength = Math.max(arguments.length - +hasOptions, 0);
     const args: any[] = Array(argsLength);
@@ -34,6 +36,8 @@ export default function createAddingMethod(
         args[i] = arg;
       }
     }
+
+    checkAddedItems(this, selfDef, args, givenEventOptions);
 
     if (isPush) {
       // insert new items to the end of array

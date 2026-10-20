@@ -34,7 +34,7 @@ this
 	.addDataKeys('c')
 	.each((value, key) => {
 		console.log(key, value);
-	});
+	}, this);
 ;
 // >>> a 1, b 2, c undefined
 ```

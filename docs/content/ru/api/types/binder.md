@@ -47,7 +47,7 @@ this.bindNode('a', '.my-checkbox', binder);
 const binder = {
 	on(callback, bindingOptions) {
 		this.onclick = callback;
-	}
+	},
 	// ...
 };
 // ...

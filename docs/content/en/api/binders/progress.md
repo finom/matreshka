@@ -28,5 +28,5 @@ Returns a binder which binds an object property to a ``progress`` element value.
 ## Examples
 
 ```js
-this.bindNode('myKey', '.my-progres', Matreshka.binders.progress());
+this.bindNode('myKey', '.my-progress', Matreshka.binders.progress());
 ```

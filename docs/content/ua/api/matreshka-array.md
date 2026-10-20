@@ -136,7 +136,7 @@ new Matreshka.Array(42);
 **Передача елементів при створенні**
 
 ```js
-new Matreshka.Array('Hi', { a: 'b' });
+new Matreshka.Array('Hi', {a: 'b'});
 ```
 
 **Спадкування**

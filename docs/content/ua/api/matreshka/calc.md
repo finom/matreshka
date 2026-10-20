@@ -71,7 +71,7 @@ const someObject = {
 	c: 2,
 	d: 3
 };
-this.calc ('a', {
+this.calc('a', {
 	object: someObject,
 	key: ['b', 'c', 'd']
 }, (b, c, d) => b + c + d);
@@ -227,11 +227,11 @@ this.b = 1;
 this.c = 2;
 this.d = 3;
 
-this.calc ('a', ['b', 'c', 'd'], (b, c, d) => b + c + d, {
+this.calc('a', ['b', 'c', 'd'], (b, c, d) => b + c + d, {
 	debounceCalc: false
 });
 
-this.on('change: a', () => {
+this.on('change:a', () => {
 	// Обробник буде викликаний тричі,
 	// кожен раз коли властивості b, c чи d змінюються
 
@@ -259,7 +259,7 @@ this.b = 1;
 this.c = 2;
 this.d = 3;
 
-this.calc ('a', ['b', 'c', 'd'], (b, c, d) => b + c + d, {
+this.calc('a', ['b', 'c', 'd'], (b, c, d) => b + c + d, {
     debounceCalcOnInit: true
 });
 
@@ -365,12 +365,12 @@ this.b = 4;
 
 this
     .calc('p', ['a', 'b'], (a, b) => (a + b) * 2)
-    .calc('a', ['p', 'b'], (p, b) => p / 2 - b)
-    .calc('b', ['p', 'a'], (p, a) => p / 2 - a);
+    .calc('a', ['p', 'b'], (p, b) => p/2 - b)
+    .calc('b', ['p', 'a'], (p, a) => p/2 - a);
 
 alert(this.p); // 14
 
-this.on('change: p', () => {
+this.on('change:p', () => {
     // "периметр змінений і дорівнює 18"
     console.log(`периметр змінений і дорівнює ${this.p}`);
 });

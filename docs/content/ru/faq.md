@@ -25,7 +25,7 @@ function bindNode(object, key, node, binder) {
     node.addEventListener(binder.on, () => {
         value = binder.getValue.call(node);
     });
-};
+}
 ```
 Для упрощения, функция не поддерживает связь многие-ко-многим и другие фичи оригинала.
 
@@ -73,13 +73,13 @@ class User extends Matreshka.Object {
 				// для синтаксического сахара в селекторах
 				// (это не обязательно)
 				nodeA: node,
-				name: ':bound(nodeA) .name',
-				email: ':bound(nodeA) .email',
+				name: { node: ':bound(nodeA) .name', binder: Matreshka.binders.text() },
+				email: { node: ':bound(nodeA) .email', binder: Matreshka.binders.text() },
 			});
 		} else if(parentArray instanceof UsersB) {
 			this.bindNode({
 				nodeB: node,
-				name: ':bound(nodeB) .user-name',
+				name: { node: ':bound(nodeB) .user-name', binder: Matreshka.binders.text() },
 			});
 		}
 	}
