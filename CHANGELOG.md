@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- A DOM event listener (`click::x`) stays while another path or the object's own `on` still holds it; `off` removes only the one it was asked for and leaves no internal entries behind.
+- `off` cancels a pending `onDebounce` call on a DOM event. Removing a delegated listener from one object no longer cancels a call pending from another.
+- `once` fires once when an earlier listener triggers the same event again.
+- The router in history mode adds no history entry when the path doesn't change. Emptying a hash route leaves no bare `#` in the URL. A property set to `null` makes the next ones `null` even when the URL stays the same.
+- `Matreshka.Router.hash` and `Matreshka.Router.history` work on first use, before any `initRouter` call.
+- In `dist/` (the ES5 build): the text, html and output binders and `{{key}}` show a value's `toString()`, not its `valueOf()`; `<col>` renders on IE 11; `Matreshka.Array.from({ length: 3 }, fn)` fills every index on IE 11; a data key named `__proto__` stays a key; router methods don't show in a `for…in`.
+- A `Class` that extends an ES class through another `Class` builds in `matreshka.min.mjs` and the npm package, as it did in `matreshka.min.js`.
+- A `Matreshka.Array` method that throws because of rendering (`push` of an item rendered already, `fill` and `copyWithin` on a rendered array) leaves the array as it was.
+- `splice` that adds items works after the container is bound to another node.
+- `restore()` with a `Matreshka.Array` as the `Model` gives empty collections.
+- `flat` and `flatMap` spread a nested `Matreshka.Array`, as `concat` does.
+- Docs: samples that didn't run or showed wrong results are fixed, and the Ukrainian and Russian pages show the same code as the English ones.
+
 ## [3.0.1] - 2026-10-17
 
 ### Fixed
