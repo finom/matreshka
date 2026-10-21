@@ -14,7 +14,7 @@
   "devDependencies": {
     "@tailwindcss/node": "^4.3.3",
     "@tailwindcss/oxide": "^4.3.3",
-    "markdown-it": "^15.0.2",
+    "markdown-it": "^15.0.3",
     "sharp": "^0.35.5",
     "shiki": "^3.23.0",
     "tailwindcss": "^4.3.3"
