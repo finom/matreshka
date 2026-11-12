@@ -12,11 +12,11 @@
     "dev": "node scripts/dev.mjs"
   },
   "devDependencies": {
-    "@tailwindcss/node": "^4.3.3",
-    "@tailwindcss/oxide": "^4.3.3",
-    "markdown-it": "^15.0.2",
+    "@tailwindcss/node": "^4.3.5",
+    "@tailwindcss/oxide": "^4.3.5",
+    "markdown-it": "^15.0.3",
     "sharp": "^0.35.5",
-    "shiki": "^3.23.0",
+    "shiki": "^4.6.0",
     "tailwindcss": "^4.3.3"
   }
 }
