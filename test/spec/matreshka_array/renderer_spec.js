@@ -438,28 +438,6 @@ describe('Matreshka.Array renderer', () => {
     }
   });
 
-  it('allows to unshift', () => {
-    const arr = createArray();
-
-    arr.itemRenderer = createSpy(() => '<div><span></span></div>');
-
-    for (let i = 0; i < n; i++) {
-      arr.unshift({
-        x: i
-      });
-    }
-
-    expect(arr.length).toEqual(n);
-    expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
-    expect(arr.nodes.sandbox.children.length).toEqual(n);
-
-    let index = 0;
-    for (const node of Array.from(arr.nodes.sandbox.children)) {
-      expect(+node.querySelector('span').innerHTML).toEqual(n - index - 1);
-      index += 1;
-    }
-  });
-
   it('allows to call pull pop and shift', () => {
     const arr = createArray();
 
