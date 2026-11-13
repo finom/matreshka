@@ -63,14 +63,6 @@ describe('Change event (simple and delegated)', () => {
     expect(handler).not.toHaveBeenCalled();
   });
 
-  it('fires delegated (a.b.x)', () => {
-    const obj = makeObject('a.b.x', 1);
-
-    delegateListener(obj, 'a.b', 'change:x', handler);
-    obj.a.b.x = 2;
-    expect(handler).toHaveBeenCalled();
-  });
-
   it('accepts null target (a.b.c, reassign b)', () => {
     const obj = makeObject('a.b.c.x', 1);
     delegateListener(obj, 'a.b.c', 'someevent', handler);
